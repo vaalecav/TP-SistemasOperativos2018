@@ -14,7 +14,40 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#define true 1;
+#define false 0;
+
+typedef int Bool;
+//typedef int Function;
+
+typedef struct {
+	char* cmd;
+	//Function func;
+	char* info;
+} COMANDO;
+
+COMANDO comandos[] = {
+		{ "pausar", "Este comando aun no se ha desarrollado."},
+		{ "continuar", "Este comando aun no se ha desarrollado."},
+		{ "bloquear", "Este comando aun no se ha desarrollado."},
+		{ "desbloquear", "Este comando aun no se ha desarrollado."},
+		{ "listar","Este comando aun no se ha desarrollado."},
+		{ "kill", "Este comando aun no se ha desarrollado."},
+		{ "status","Este comando aun no se ha desarrollado."},
+		{ "deadlock","Este comando aun no se ha desarrollado."}
+};
+
 int done;
+
+Bool existeComando(char* comando){
+	register int i;
+	for(i = 0; comandos[i].cmd; i++) {
+		if (strcmp(comando, comandos[i].cmd) == 0){
+			return true;
+		}
+	}
+	return false;
+}
 
 void leerComando(char *linea, char **comando) {
 	int i, j;
@@ -34,7 +67,12 @@ void leerComando(char *linea, char **comando) {
 void ejecutarComando(char *linea) {
 	char *comando;
 	leerComando(linea, &comando);
-	printf("%s\n", comando);
+	if(!existeComando(comando)){
+		puts("El comando ingresado no existe.");
+	} else {
+		puts("El comando existe! :)");
+	}
+	free(comando);
 }
 
 char *recortarLinea(char *string) {
