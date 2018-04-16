@@ -18,38 +18,39 @@
 #define false 0;
 
 typedef int Bool;
-//typedef int Function;
 
 typedef struct {
 	char* cmd;
-	//Function func;
 	char* info;
+	int parametros;
 } COMANDO;
 
 COMANDO comandos[] = {
-		{ "pausar", "Este comando aun no se ha desarrollado."},
-		{ "continuar", "Este comando aun no se ha desarrollado."},
-		{ "bloquear", "Este comando aun no se ha desarrollado."},
-		{ "desbloquear", "Este comando aun no se ha desarrollado."},
-		{ "listar","Este comando aun no se ha desarrollado."},
-		{ "kill", "Este comando aun no se ha desarrollado."},
-		{ "status","Este comando aun no se ha desarrollado."},
-		{ "deadlock","Este comando aun no se ha desarrollado."}
+		{ "pausar","Este comando aun no se ha desarrollado.", 0},
+		{ "continuar","Este comando aun no se ha desarrollado.", 0},
+		{ "bloquear","Este comando aun no se ha desarrollado.", 2},
+		{ "desbloquear","Este comando aun no se ha desarrollado.", 1},
+		{ "listar","Este comando aun no se ha desarrollado.", 1},
+		{ "kill","Este comando aun no se ha desarrollado.", 1},
+		{ "status","Este comando aun no se ha desarrollado.", 1},
+		{ "deadlock","Este comando aun no se ha desarrollado.", 0},
+		{ "quit","Finaliza al Planificador.", 0}
 };
 
 int done;
 
-Bool existeComando(char* comando){
+int existeComando(char* comando) {
 	register int i;
-	for(i = 0; comandos[i].cmd; i++) {
-		if (strcmp(comando, comandos[i].cmd) == 0){
-			return true;
+	for (i = 0; comandos[i].cmd; i++) {
+		if (strcmp(comando, comandos[i].cmd) == 0) {
+			return i;
 		}
 	}
-	return false;
+	return -1;
 }
 
-void leerComando(char *linea, char **comando) {
+char *leerComando(char *linea) {
+	char *comando;
 	int i, j;
 	int largocmd = 0;
 	for (i = 0; i < strlen(linea); i++) {
@@ -57,20 +58,62 @@ void leerComando(char *linea, char **comando) {
 			break;
 		largocmd++;
 	}
-	(*comando) = malloc(largocmd);
+	comando = malloc(largocmd + 1);
 	for (j = 0; j < largocmd; j++) {
-		(*comando)[j] = linea[j];
+		comando[j] = linea[j];
 	}
-	(*comando)[j++] = '\0';
+	comando[j++] = '\0';
+	return comando;
+}
+
+void obtenerParametros(char **parametros, char *linea) {
+	int i, j;
+	for (i = 0; i < strlen(linea); i++) {
+		if (linea[i] == ' ')
+			break;
+	}
+	(*parametros) = malloc(strlen(linea) - i);
+	i++;
+	for (j = 0; i < strlen(linea); j++) {
+		if (linea[i] == '\0')
+			break;
+		(*parametros)[j] = linea[i];
+		i++;
+	}
+	(*parametros)[j++] = '\0';
+}
+
+void verificarParametros(char *linea, int posicion) {
+	int i;
+	int espacios = 0;
+	char *parametros;
+	for (i = 0; i < strlen(linea); i++) {
+		if (linea[i] == ' ')
+			espacios++;
+	}
+	if (comandos[posicion].parametros == espacios) {
+		puts("La cantidad de parametros es correcta.");
+		if (espacios == 0) {
+			puts("No hay parametros para mostrar.");
+		} else {
+			obtenerParametros(&parametros, linea);
+			printf("Los parametros ingresados son: %s\n", parametros);
+			free(parametros);
+		}
+	} else {
+		puts("La cantidad de parametros es incorrecta.");
+	}
 }
 
 void ejecutarComando(char *linea) {
-	char *comando;
-	leerComando(linea, &comando);
-	if(!existeComando(comando)){
-		puts("El comando ingresado no existe.");
+	char *comando = leerComando(linea);
+	int posicion = existeComando(comando);
+	if (posicion == -1) {
+		printf("%s: El comando ingresado no existe\n", comando);
 	} else {
-		puts("El comando existe! :)");
+		printf("%s: El comando ingresado existe en la posicion %d\n", comando,
+				posicion);
+		verificarParametros(linea, posicion);
 	}
 	free(comando);
 }
