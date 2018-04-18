@@ -8,45 +8,21 @@
  ============================================================================
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "planificador.h"
 
-int cmdHelp();
+int main() {
+	puts("Iniciando Planificador.");
+	iniciarConsola();
+	puts("El Planificador se ha finalizado correctamente.");
+	return 0;
+}
 
-#define true 1;
-#define false 0;
-
-typedef int Bool;
-
-int done;
-
-typedef struct COMANDO{
-	char* cmd;
-	int (*funcion)();
-	char* info;
-	int parametros;
-} COMANDO;
+//=======================COMANDOS DE CONSOLA====================================
 
 int cmdQuit(){
 	done = 1;
 	return 0;
 }
-
-COMANDO comandos[] = {
-/*		{ "pausar","Este comando aun no se ha desarrollado.", 0},
-		{ "continuar","Este comando aun no se ha desarrollado.", 0},
-		{ "bloquear","Este comando aun no se ha desarrollado.", 2},
-		{ "desbloquear","Este comando aun no se ha desarrollado.", 1},
-		{ "listar","Este comando aun no se ha desarrollado.", 1},
-		{ "kill","Este comando aun no se ha desarrollado.", 1},
-		{ "status","Este comando aun no se ha desarrollado.", 1},
-		{ "deadlock","Este comando aun no se ha desarrollado.", 0},*/
-		{ "help", cmdHelp, "Imprime los comandos disponibles.", 0},
-		{ "quit", cmdQuit, "Finaliza al Planificador.", 0}
-};
 
 int cmdHelp(){
 	register int i;
@@ -56,6 +32,8 @@ int cmdHelp(){
 	}
 	return 0;
 }
+
+//=====================FUNCIONES DE CONSOLA=====================================
 
 int existeComando(char* comando) {
 	register int i;
@@ -174,11 +152,4 @@ void iniciarConsola() {
 			ejecutarComando(aux);
 		free(linea);
 	}
-}
-
-int main() {
-	puts("Iniciando Planificador.");
-	iniciarConsola();
-	puts("El Planificador se ha finalizado correctamente.");
-	return 0;
 }
