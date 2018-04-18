@@ -14,30 +14,48 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+int cmdHelp();
+
 #define true 1;
 #define false 0;
 
 typedef int Bool;
 
-typedef struct {
+int done;
+
+typedef struct COMANDO{
 	char* cmd;
+	int (*funcion)();
 	char* info;
 	int parametros;
 } COMANDO;
 
+int cmdQuit(){
+	done = 1;
+	return 0;
+}
+
 COMANDO comandos[] = {
-		{ "pausar","Este comando aun no se ha desarrollado.", 0},
+/*		{ "pausar","Este comando aun no se ha desarrollado.", 0},
 		{ "continuar","Este comando aun no se ha desarrollado.", 0},
 		{ "bloquear","Este comando aun no se ha desarrollado.", 2},
 		{ "desbloquear","Este comando aun no se ha desarrollado.", 1},
 		{ "listar","Este comando aun no se ha desarrollado.", 1},
 		{ "kill","Este comando aun no se ha desarrollado.", 1},
 		{ "status","Este comando aun no se ha desarrollado.", 1},
-		{ "deadlock","Este comando aun no se ha desarrollado.", 0},
-		{ "quit","Finaliza al Planificador.", 0}
+		{ "deadlock","Este comando aun no se ha desarrollado.", 0},*/
+		{ "help", cmdHelp, "Imprime los comandos disponibles.", 0},
+		{ "quit", cmdQuit, "Finaliza al Planificador.", 0}
 };
 
-int done;
+int cmdHelp(){
+	register int i;
+	puts("Comando:					Descripcion:");
+	for(i=0; comandos[i].cmd; i++){
+		printf("%s						%s\n", comandos[i].cmd, comandos[i].info);
+	}
+	return 0;
+}
 
 int existeComando(char* comando) {
 	register int i;
@@ -83,36 +101,49 @@ void obtenerParametros(char **parametros, char *linea) {
 	(*parametros)[j++] = '\0';
 }
 
-void verificarParametros(char *linea, int posicion) {
+COMANDO *punteroComando(int posicion){
+	return (&comandos[posicion]);
+}
+
+int ejecutarSinParametros(COMANDO *comando){
+	return ((*(comando->funcion)) ());
+}
+
+int ejecutarConParametros(char *parametros, COMANDO *comando){
+	return ((*(comando->funcion)) (parametros));
+}
+
+int verificarParametros(char *linea, int posicion) {
 	int i;
 	int espacios = 0;
 	char *parametros;
+	COMANDO *comando;
 	for (i = 0; i < strlen(linea); i++) {
 		if (linea[i] == ' ')
 			espacios++;
 	}
 	if (comandos[posicion].parametros == espacios) {
-		puts("La cantidad de parametros es correcta.");
 		if (espacios == 0) {
-			puts("No hay parametros para mostrar.");
+			comando = punteroComando(posicion);
+			ejecutarSinParametros(comando);
 		} else {
 			obtenerParametros(&parametros, linea);
-			printf("Los parametros ingresados son: %s\n", parametros);
+			comando = punteroComando(posicion);
+			ejecutarConParametros(parametros,comando);
 			free(parametros);
 		}
 	} else {
-		puts("La cantidad de parametros es incorrecta.");
+		printf("%s: La cantidad de parametros ingresados es incorrecta.\n", comandos[posicion].cmd);
 	}
+	return 0;
 }
 
 void ejecutarComando(char *linea) {
 	char *comando = leerComando(linea);
 	int posicion = existeComando(comando);
 	if (posicion == -1) {
-		printf("%s: El comando ingresado no existe\n", comando);
+		printf("%s: El comando ingresado no existe.\n", comando);
 	} else {
-		printf("%s: El comando ingresado existe en la posicion %d\n", comando,
-				posicion);
 		verificarParametros(linea, posicion);
 	}
 	free(comando);
