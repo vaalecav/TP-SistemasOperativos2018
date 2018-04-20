@@ -36,7 +36,7 @@ int sockfd, client_socket;
 //estructuras
 typedef struct {
   int id;
-  int len;
+  int largo;
 } __attribute__((packed)) ContentHeader;
 
 

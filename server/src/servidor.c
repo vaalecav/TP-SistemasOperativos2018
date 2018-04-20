@@ -4,7 +4,7 @@
  *  Created on: 19 abr. 2018
  *      Author: utnso
  */
-#include <servidor.h>
+#include "servidor.h"
 
 //Crear socket
 void crearSocket(){
@@ -58,7 +58,7 @@ void acceptSocket(){
 
 void enviarHeaderCliente(size_t tamanioMensaje){
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
-	header->len = tamanioMensaje;
+	header->largo = tamanioMensaje;
 	header->id = 69;
 	if(send(sockfd, header, sizeof(ContentHeader), 0) < 0){
 		puts("Error en enviar header");
@@ -75,14 +75,42 @@ void enviarMensajeCliente(char* mensaje){
 	puts("Mensaje enviado");
 }
 
-void recibirMensajeCliente(){
+int recibirHeader(){
+	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
+	int recibido;
+	int largo;
+
+	recibido = recv(client_socket, header, sizeof(ContentHeader), 0);
+	if (recibido < 0) {
+		puts("Error en recibir mensaje");
+		exit(1);
+	} else if (recibido == 0) {
+		puts("Cliente desconectado");
+		close(client_socket);
+		free(header);
+		exit(1);
+	}
+
+	if (write(client_socket, "Mensaje recibido", 16) < 0){
+		puts("Error write socket");
+		exit(1);
+	}
+
+	// Tambien tiene que ver que hacer con el ID (todavia no esta hecho)
+	largo = header->largo;
+	printf("Recibi el header que tiene el largo: %d\n", header->largo);
+
+	free(header);
+	return largo;
+}
+
+void recibirMensaje(int tamanioMensaje){
 	char *buffer;
-	size_t bufsize = 32;
 	int recibido;
 
-	buffer = (char*) malloc(bufsize* sizeof(char));
+	buffer = (char*) malloc(tamanioMensaje + 1);
 
-	recibido = recv(client_socket, buffer, sizeof(buffer), 0);
+	recibido = recv(client_socket, buffer, tamanioMensaje, 0);
 	if(recibido < 0){
 		puts("Error en recibir mensaje");
 		exit(1);
@@ -92,23 +120,27 @@ void recibirMensajeCliente(){
 		free(buffer);
 		exit(1);
 	}
-	printf("El mensaje recibido es: %s", buffer);
+
+	buffer[tamanioMensaje] = '\0';
+	printf("El mensaje recibido es: %s\n", buffer);
 
 	free(buffer);
 
-	if(write(client_socket, "Mensaje recibido", 16) < 0){
-			puts("Error write socket");
-			exit(1);
+	if (write(client_socket, "Mensaje recibido", 16) < 0) {
+		puts("Error write socket");
+		exit(1);
 	}
 }
 
 int main(void){
+	size_t tamanioMensaje;
 
 	crearSocket();
 	bindSocket();
 	listenSocket();
 	acceptSocket();
-	recibirMensajeCliente();
+	tamanioMensaje = recibirHeader();
+	recibirMensaje(tamanioMensaje);
 
 	close(sockfd);
 	return 0;
