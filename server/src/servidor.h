@@ -24,14 +24,9 @@
 #include <readline/readline.h>
 
 //constantes
-#define MYPORT 8000
+#define PUERTO 8000
 #define IP "127.0.0.1"
 #define MAX_CONEX 10
-
-//variables globales
-struct sockaddr_in server;
-struct sockaddr_in client;
-int sockfd, client_socket;
 
 //estructuras
 typedef struct {

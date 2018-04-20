@@ -6,12 +6,15 @@
  */
 #include "servidor.h"
 
-//Crear socket
-void crearSocket(){
+//Crear socket, devuelvo cliente
+int socketServidor(char* puerto,char* ip){
+	struct sockaddr_in server;
+	struct sockaddr_in client;
+	int socketServidor, socketCliente;
 	//Funcion que crea el socket.
-	sockfd = socket(AF_INET,SOCK_STREAM,0);
+	socketServidor = socket(AF_INET,SOCK_STREAM,0);
 	//comprobacion de errores del socket
-	if(sockfd == -1){
+	if(socketServidor == -1){
 		perror("Socket error");
 		exit(1);
 	}
@@ -19,48 +22,46 @@ void crearSocket(){
 
 	memset(&server,0,sizeof(server));
 	server.sin_family = AF_INET;
-	server.sin_port = htons(MYPORT);
-	server.sin_addr.s_addr = inet_addr(IP);
-}
+	server.sin_port = htons(puerto);
+	server.sin_addr.s_addr = inet_addr(ip);
 
-//Bind
-void bindSocket(){
+	//Bind
 	//Realizo bind, compruebo error
-	if(bind(sockfd, (struct sockaddr *) &server, sizeof(server)) == -1){
+	if(bind(socketServidor, (struct sockaddr *) &server, sizeof(server)) == -1){
 		perror("Bind error");
 		exit(1);
 	}
 	puts("Bind realizado");
-}
 
-//Listen
-void listenSocket(){
+
+	//Listen
 	//Escucho, y comprobacion errores
-	if(listen(sockfd , MAX_CONEX) == -1){
+	if(listen(socketServidor , MAX_CONEX) == -1){
 		perror("Listen error");
 		exit(1);
 	}
 	puts("Escuchando nuevas conexiones...");
-}
 
-//Aceptar conexion
-void acceptSocket(){
+
+	//Aceptar conexion
 	//Ciclo de accept, bloquea el proceso hasta que cliente se concete
 	int c = sizeof(struct sockaddr_in);
-	client_socket = accept(sockfd, (struct sockaddr *)&client,(socklen_t *) &c);
+	socketCliente = accept(socketServidor, (struct sockaddr *)&client,(socklen_t *) &c);
 
-	if(client_socket == -1){
+	if(socketCliente == -1){
 		perror("Accept error");
 		exit(1);
 	}
 	puts("Conexion aceptada");
+
+	return socketCliente;
 }
 
 void enviarHeaderCliente(size_t tamanioMensaje){
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
 	header->largo = tamanioMensaje;
 	header->id = 69;
-	if(send(sockfd, header, sizeof(ContentHeader), 0) < 0){
+	if(send(socketServidor, header, sizeof(ContentHeader), 0) < 0){
 		puts("Error en enviar header");
 		exit(1);
 	}
@@ -68,30 +69,30 @@ void enviarHeaderCliente(size_t tamanioMensaje){
 }
 
 void enviarMensajeCliente(char* mensaje){
-	if(send(sockfd, mensaje, sizeof(mensaje), 0) < 0){
+	if(send(socketServidor, mensaje, sizeof(mensaje), 0) < 0){
 		puts("Error en enviar mensaje");
 		exit(1);
 	}
 	puts("Mensaje enviado");
 }
 
-int recibirHeader(){
+int recibirHeader(int socketCliente){
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
 	int recibido;
 	int largo;
 
-	recibido = recv(client_socket, header, sizeof(ContentHeader), 0);
+	recibido = recv(socketCliente, header, sizeof(ContentHeader), 0);
 	if (recibido < 0) {
 		puts("Error en recibir mensaje");
 		exit(1);
 	} else if (recibido == 0) {
 		puts("Cliente desconectado");
-		close(client_socket);
+		close(socketCliente);
 		free(header);
 		exit(1);
 	}
 
-	if (write(client_socket, "Mensaje recibido", 16) < 0){
+	if (write(socketCliente, "Mensaje recibido", 16) < 0){
 		puts("Error write socket");
 		exit(1);
 	}
@@ -104,19 +105,19 @@ int recibirHeader(){
 	return largo;
 }
 
-void recibirMensaje(int tamanioMensaje){
+void recibirMensaje(int socketCliente, int tamanioMensaje){
 	char *buffer;
 	int recibido;
 
 	buffer = (char*) malloc(tamanioMensaje + 1);
 
-	recibido = recv(client_socket, buffer, tamanioMensaje, 0);
+	recibido = recv(socketCliente, buffer, tamanioMensaje, 0);
 	if(recibido < 0){
 		puts("Error en recibir mensaje");
 		exit(1);
 	} else if (recibido == 0){
 		puts("Cliente desconectado");
-		close(client_socket);
+		close(socketCliente);
 		free(buffer);
 		exit(1);
 	}
@@ -126,23 +127,22 @@ void recibirMensaje(int tamanioMensaje){
 
 	free(buffer);
 
-	if (write(client_socket, "Mensaje recibido", 16) < 0) {
+	if (write(socketCliente, "Mensaje recibido", 16) < 0) {
 		puts("Error write socket");
 		exit(1);
 	}
 }
 
+
 int main(void){
 	size_t tamanioMensaje;
+	int socketCliente;
 
-	crearSocket();
-	bindSocket();
-	listenSocket();
-	acceptSocket();
-	tamanioMensaje = recibirHeader();
-	recibirMensaje(tamanioMensaje);
+	socketCliente = socketServidor(PUERTO,IP);
+	tamanioMensaje = recibirHeader(socketCliente);
+	recibirMensaje(socketCliente, tamanioMensaje);
 
-	close(sockfd);
+	close(socketServidor);
 	return 0;
 }
 
