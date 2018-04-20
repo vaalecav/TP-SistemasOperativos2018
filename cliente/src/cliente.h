@@ -31,7 +31,8 @@ typedef struct {
 
 //prototipos
 int socketCliente(char*, char*);
-int enviarInformacion(int, char*, int*);
+int enviarInformacion(int, void*, int*);
+int enviarHeader(int, int);
 
 
 #endif /* SRC_CLIENTE_H_ */

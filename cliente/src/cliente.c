@@ -32,23 +32,7 @@ int socketCliente(char* puerto, char* ip) {
 	 return socketDelServidor;
 }
 
-int enviarDatosHeader(int socket, ContentHeader *header, int *bytesAMandar) {
-	int totalEnviados = 0; // cuántos bytes se mandan ahora
-	int bytesRestantes = *bytesAMandar; // cuántos se han quedado pendientes de antes, lo asigno a una variable local
-
-	int bytesEnviados;
-	while (totalEnviados < *bytesAMandar) {
-		bytesEnviados = send(socket, header + totalEnviados, bytesRestantes, 0);
-		if (bytesEnviados == -1) { break; }
-		totalEnviados += bytesEnviados;
-		bytesRestantes -= bytesEnviados;
-	}
-
-	*bytesAMandar = totalEnviados; // devuelve aquí la cantidad que se termino por mandar, se deberían haber mandado todos
-	return bytesEnviados == -1 ? -1 : 0; // devuelve -1 si hay fallo, 0 en otro caso
-}
-
-int enviarInformacion(int socket, char *texto, int *bytesAMandar) {
+int enviarInformacion(int socket, void *texto, int *bytesAMandar) {
 	int totalEnviados = 0; // cuántos bytes se mandan ahora
 	int bytesRestantes = *bytesAMandar; // cuántos se han quedado pendientes de antes, lo asigno a una variable local
 
@@ -72,7 +56,7 @@ void enviarHeader(int socketCliente, int tamanioMensaje){
 	header->id = 69;
 
 	cantidadDeDatos = sizeof(ContentHeader);
-	enviarDatosHeader(socketCliente, header, &cantidadDeDatos);
+	enviarInformacion(socketCliente, header, &cantidadDeDatos);
 	puts("Header enviado");
 }
 
