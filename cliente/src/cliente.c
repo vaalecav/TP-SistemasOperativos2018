@@ -48,7 +48,7 @@ int enviarInformacion(int socket, void *texto, int *bytesAMandar) {
 	return bytesEnviados == -1 ? -1 : 0; // devuelve -1 si hay fallo, 0 en otro caso
 }
 
-void enviarHeader(int socketCliente, int tamanioMensaje){
+int enviarHeader(int socketCliente, int tamanioMensaje){
 	int cantidadDeDatos;
 
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
@@ -58,6 +58,8 @@ void enviarHeader(int socketCliente, int tamanioMensaje){
 	cantidadDeDatos = sizeof(ContentHeader);
 	enviarInformacion(socketCliente, header, &cantidadDeDatos);
 	puts("Header enviado");
+
+	return 1;
 }
 
 int main() {

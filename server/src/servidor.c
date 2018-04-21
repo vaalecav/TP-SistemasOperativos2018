@@ -7,7 +7,7 @@
 #include "servidor.h"
 
 //Crear socket, devuelvo cliente
-int socketServidor(char* puerto,char* ip){
+int socketServidor(int puerto,char* ip){
 	struct sockaddr_in server;
 	struct sockaddr_in client;
 	int socketServidor, socketCliente;
@@ -57,7 +57,7 @@ int socketServidor(char* puerto,char* ip){
 	return socketCliente;
 }
 
-void enviarHeaderCliente(size_t tamanioMensaje){
+void enviarHeaderCliente(int socketServidor, size_t tamanioMensaje){
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
 	header->largo = tamanioMensaje;
 	header->id = 69;
@@ -68,7 +68,7 @@ void enviarHeaderCliente(size_t tamanioMensaje){
 	puts("Header enviado");
 }
 
-void enviarMensajeCliente(char* mensaje){
+void enviarMensajeCliente(int socketServidor, char* mensaje){
 	if(send(socketServidor, mensaje, sizeof(mensaje), 0) < 0){
 		puts("Error en enviar mensaje");
 		exit(1);
@@ -136,13 +136,13 @@ void recibirMensaje(int socketCliente, int tamanioMensaje){
 
 int main(void){
 	size_t tamanioMensaje;
-	int socketCliente;
+	int miSocket;
 
-	socketCliente = socketServidor(PUERTO,IP);
-	tamanioMensaje = recibirHeader(socketCliente);
-	recibirMensaje(socketCliente, tamanioMensaje);
+	miSocket = socketServidor(PUERTO,IP);
+	tamanioMensaje = recibirHeader(miSocket);
+	recibirMensaje(miSocket, tamanioMensaje);
 
-	close(socketServidor);
+	close(miSocket);
 	return 0;
 }
 
