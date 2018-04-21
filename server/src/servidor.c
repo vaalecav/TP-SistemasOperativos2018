@@ -6,15 +6,15 @@
  */
 #include "servidor.h"
 
-//Crear socket, devuelvo cliente
+//Crear socket, devuelvo un socket que se conecto
 int socketServidor(int puerto,char* ip){
 	struct sockaddr_in server;
-	struct sockaddr_in client;
-	int socketServidor, socketCliente;
+	struct sockaddr_in conexion;
+	int miSocket, socketConectado;
 	//Funcion que crea el socket.
-	socketServidor = socket(AF_INET,SOCK_STREAM,0);
+	miSocket = socket(AF_INET,SOCK_STREAM,0);
 	//comprobacion de errores del socket
-	if(socketServidor == -1){
+	if (miSocket == -1) {
 		perror("Socket error");
 		exit(1);
 	}
@@ -27,7 +27,7 @@ int socketServidor(int puerto,char* ip){
 
 	//Bind
 	//Realizo bind, compruebo error
-	if(bind(socketServidor, (struct sockaddr *) &server, sizeof(server)) == -1){
+	if(bind(miSocket, (struct sockaddr *) &server, sizeof(server)) == -1){
 		perror("Bind error");
 		exit(1);
 	}
@@ -36,7 +36,7 @@ int socketServidor(int puerto,char* ip){
 
 	//Listen
 	//Escucho, y comprobacion errores
-	if(listen(socketServidor , MAX_CONEX) == -1){
+	if(listen(miSocket , MAX_CONEX) == -1){
 		perror("Listen error");
 		exit(1);
 	}
@@ -46,30 +46,30 @@ int socketServidor(int puerto,char* ip){
 	//Aceptar conexion
 	//Ciclo de accept, bloquea el proceso hasta que cliente se concete
 	int c = sizeof(struct sockaddr_in);
-	socketCliente = accept(socketServidor, (struct sockaddr *)&client,(socklen_t *) &c);
+	socketConectado = accept(miSocket, (struct sockaddr *)&conexion,(socklen_t *) &c);
 
-	if(socketCliente == -1){
+	if (socketConectado == -1) {
 		perror("Accept error");
 		exit(1);
 	}
 	puts("Conexion aceptada");
 
-	return socketCliente;
+	return socketConectado;
 }
 
-void enviarHeaderCliente(int socketServidor, size_t tamanioMensaje){
+void enviarHeaderCliente(int miSocket, size_t tamanioMensaje){
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
 	header->largo = tamanioMensaje;
 	header->id = 69;
-	if(send(socketServidor, header, sizeof(ContentHeader), 0) < 0){
+	if(send(miSocket, header, sizeof(ContentHeader), 0) < 0){
 		puts("Error en enviar header");
 		exit(1);
 	}
 	puts("Header enviado");
 }
 
-void enviarMensajeCliente(int socketServidor, char* mensaje){
-	if(send(socketServidor, mensaje, sizeof(mensaje), 0) < 0){
+void enviarMensajeCliente(int miSocket, char* mensaje){
+	if(send(miSocket, mensaje, sizeof(mensaje), 0) < 0){
 		puts("Error en enviar mensaje");
 		exit(1);
 	}
