@@ -19,20 +19,10 @@
 #include <sys/socket.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "biblioteca/sockets.c"
 
 #define PUERTO "8000"
 #define IP "127.0.0.1"
-
-//estructuras
-typedef struct {
-  int id;
-  int largo;
-} __attribute__((packed)) ContentHeader;
-
-//prototipos
-int socketCliente(char*, char*);
-int enviarInformacion(int, void*, int*);
-int enviarHeader(int, int);
 
 
 #endif /* SRC_CLIENTE_H_ */

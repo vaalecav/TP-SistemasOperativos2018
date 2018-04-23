@@ -22,27 +22,12 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <readline/readline.h>
+#include "biblioteca/sockets.c"
 
 //constantes
 #define PUERTO 8000
 #define IP "127.0.0.1"
 #define MAX_CONEX 10
-
-//estructuras
-typedef struct {
-  int id;
-  int largo;
-} __attribute__((packed)) ContentHeader;
-
-
-//prototipos funciones
-void crearSocket();
-void bindSocket();
-void listenSocket();
-void acceptSocket();
-void enviarHeaderCliente();
-void enviarMensajeCliente();
-void recibirMensajeCliente();
 
 
 #endif /* SERVIDOR_H_ */
