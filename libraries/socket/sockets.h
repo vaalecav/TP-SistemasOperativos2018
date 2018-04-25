@@ -19,6 +19,7 @@
 #include <sys/socket.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <arpa/inet.h>
 
 
 #define MAX_CONEX 10

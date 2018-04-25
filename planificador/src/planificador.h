@@ -1,4 +1,14 @@
 /*
+ * planificador.h
+ *
+ *  Created on: 25 abr. 2018
+ *      Author: utnso
+ */
+
+#ifndef PLANIFICADOR_H_
+#define PLANIFICADOR_H_
+
+/*
  ============================================================================
  Name        : planificador.c
  Author      : Los Simuladores
@@ -13,6 +23,8 @@
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <socket/sockets.h>
+
 
 //=======================COMANDOS DE CONSOLA====================================
 
@@ -58,3 +70,4 @@ int verificarParametros(char *linea, int posicion);					// Chequea que la cantid
 COMANDO *punteroComando(int posicion);								// Devuelve el puntero al comando del array.
 
 
+#endif /* PLANIFICADOR_H_ */

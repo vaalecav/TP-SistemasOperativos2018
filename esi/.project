@@ -3,6 +3,7 @@
 	<name>esi</name>
 	<comment></comment>
 	<projects>
+		<project>libraries</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

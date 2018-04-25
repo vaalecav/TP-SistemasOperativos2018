@@ -10,9 +10,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <socket/sockets.h>
+
+//constantes
+#define PUERTO 8000
+#define IP "127.0.0.1"
+#define MAX_CONEX 10
 
 int main() {
 	puts("Iniciando Coordinador.");
+	size_t tamanioMensaje;
+	int miSocket;
+	miSocket = socketServidor(PUERTO,IP);
+	tamanioMensaje = recibirHeader(miSocket);
+	recibirMensaje(miSocket, tamanioMensaje);
+
+	close(miSocket);
 	puts("El Coordinador se ha finalizado correctamente.");
 	return 0;
 }
