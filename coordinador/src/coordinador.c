@@ -15,7 +15,6 @@
 //constantes
 #define PUERTO 8000
 #define IP "127.0.0.1"
-#define MAX_CONEX 10
 
 int main() {
 	puts("Iniciando Coordinador.");

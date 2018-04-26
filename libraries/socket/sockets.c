@@ -140,28 +140,28 @@ int enviarMensaje(int miSocket, char* mensaje){
 	return 1;
 }
 
-int recibirHeader(int socketCliente){
+int recibirHeader(int socketEmisor){
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
 	int recibido;
 	int largo;
 
-	recibido = recv(socketCliente, header, sizeof(ContentHeader), 0);
+	recibido = recv(socketEmisor, header, sizeof(ContentHeader), 0);
 	if (recibido < 0) {
 		puts("Error en recibir mensaje");
 		exit(1);
 	} else if (recibido == 0) {
-		puts("Cliente desconectado");
-		close(socketCliente);
+		puts("Socket emisor desconectado");
+		close(socketEmisor);
 		free(header);
 		exit(1);
 	}
 
-	if (write(socketCliente, "Mensaje recibido", 16) < 0){
+	if (write(socketEmisor, "Mensaje recibido", 16) < 0){
 		puts("Error write socket");
 		exit(1);
 	}
 
-	// Tambien tiene que ver que hacer con el ID (todavia no esta hecho)
+	// Tambien tiene que ver que hacer con el ID (todavia no esta hecho) chequeo si es ese id
 	largo = header->largo;
 	printf("Recibi el header que tiene el largo: %d\n", header->largo);
 
@@ -169,19 +169,19 @@ int recibirHeader(int socketCliente){
 	return largo;
 }
 
-void recibirMensaje(int socketCliente, int tamanioMensaje){
+void recibirMensaje(int socketEmisor, int tamanioMensaje){
 	char *buffer;
 	int recibido;
 
 	buffer = (char*) malloc(tamanioMensaje + 1);
 
-	recibido = recv(socketCliente, buffer, tamanioMensaje, 0);
+	recibido = recv(socketEmisor, buffer, tamanioMensaje, 0);
 	if(recibido < 0){
 		puts("Error en recibir mensaje");
 		exit(1);
 	} else if (recibido == 0){
-		puts("Cliente desconectado");
-		close(socketCliente);
+		puts("Socket Emisor desconectado");
+		close(socketEmisor);
 		free(buffer);
 		exit(1);
 	}
@@ -191,7 +191,7 @@ void recibirMensaje(int socketCliente, int tamanioMensaje){
 
 	free(buffer);
 
-	if (write(socketCliente, "Mensaje recibido", 16) < 0) {
+	if (write(socketEmisor, "Mensaje recibido", 16) < 0) {
 		puts("Error write socket");
 		exit(1);
 	}

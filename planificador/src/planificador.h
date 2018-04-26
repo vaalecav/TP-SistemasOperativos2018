@@ -25,6 +25,11 @@
 #include <readline/history.h>
 #include <socket/sockets.h>
 
+//===================DEFINES====================================================
+#define PUERTO_COORDINADOR 8000
+#define IP_COORDINADOR "127.0.0.1"
+#define PUERTO 8001
+#define IP "127.0.0.2"
 
 //=======================COMANDOS DE CONSOLA====================================
 
