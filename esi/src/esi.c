@@ -16,17 +16,16 @@ int main() {
 	puts("Iniciando ESI.");
 	int socketCli;
 	char* texto;
-	int cantidadDeDatos;
 
+	//conectar con Planificador y Coordinador
 	socketCli = socketCliente("8000", "127.0.0.1");
-	*texto = malloc(4 * sizeof(char));
+	texto = malloc(4 * sizeof(char));
 	strcpy(texto, "hola");
 
-	cantidadDeDatos = strlen(texto);
-	enviarHeader(socketCli, cantidadDeDatos);
-	enviarInformacion(socketCli, texto, &cantidadDeDatos);
+	enviarHeader(socketCli, texto);
+	enviarMensaje(socketCli, texto);
 
-	printf("Se mandaron %d bytes\n", cantidadDeDatos);
+	printf("Se mandaron %d bytes\n", strlen(texto));
 	close(socketCli);
 	free(texto);
 	puts("El ESI se ha finalizado correctamente.");

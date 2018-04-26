@@ -18,7 +18,7 @@ int main(void) {
 	int cantidadDeDatos;
 
 	socketCli = socketCliente("8000", "127.0.0.1");
-	*texto = malloc(4 * sizeof(char));
+	texto = malloc(4 * sizeof(char));
 	strcpy(texto, "hola");
 
 	cantidadDeDatos = strlen(texto);

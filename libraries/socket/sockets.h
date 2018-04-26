@@ -32,10 +32,9 @@ typedef struct {
 //prototipos
 int socketCliente(char*, char*);
 int enviarInformacion(int, void*, int*);
-int enviarHeader(int, int);
 int socketServidor(int, char*);
-void enviarHeaderCliente();
-void enviarMensajeCliente();
+int enviarHeader(int, char*);
+int enviarMensaje(int, char*);
 void recibirMensaje(int, int);
 int recibirHeader(int);
 

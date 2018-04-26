@@ -58,20 +58,6 @@ int enviarInformacion(int socket, void *texto, int *bytesAMandar) {
 	return bytesEnviados == -1 ? -1 : 0; // devuelve -1 si hay fallo, 0 en otro caso
 }
 
-int enviarHeader(int socketCliente, int tamanioMensaje){
-	int cantidadDeDatos;
-
-	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
-	header->largo = tamanioMensaje;
-	header->id = 69;
-
-	cantidadDeDatos = sizeof(ContentHeader);
-	enviarInformacion(socketCliente, header, &cantidadDeDatos);
-	puts("Header enviado");
-
-	return 1;
-}
-
 //Servidor
 //Crear socket, devuelvo un socket que se conecto
 int socketServidor(int puerto, char* ip){
@@ -125,23 +111,33 @@ int socketServidor(int puerto, char* ip){
 	return socketConectado;
 }
 
-void enviarHeaderCliente(int miSocket, size_t tamanioMensaje){
+int enviarHeader(int socketDestino, char* mensaje){
+	int tamanioMensaje = strlen(mensaje);
+	int tamanioHeader;
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
+
 	header->largo = tamanioMensaje;
 	header->id = 69;
-	if(send(miSocket, header, sizeof(ContentHeader), 0) < 0){
+	tamanioHeader = sizeof(ContentHeader);
+
+	if(enviarInformacion(socketDestino, header, &tamanioHeader) < 0){
 		puts("Error en enviar header");
 		exit(1);
 	}
 	puts("Header enviado");
+
+	return 1;
 }
 
-void enviarMensajeCliente(int miSocket, char* mensaje){
-	if(send(miSocket, mensaje, sizeof(mensaje), 0) < 0){
+int enviarMensaje(int miSocket, char* mensaje){
+	int tamanioMensaje = strlen(mensaje);
+	if(enviarInformacion(miSocket, mensaje, &tamanioMensaje) < 0){
 		puts("Error en enviar mensaje");
 		exit(1);
 	}
 	puts("Mensaje enviado");
+
+	return 1;
 }
 
 int recibirHeader(int socketCliente){
