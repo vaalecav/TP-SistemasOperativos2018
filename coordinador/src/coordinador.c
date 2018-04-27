@@ -16,13 +16,11 @@
 #define PUERTO 8000
 #define IP "127.0.0.1"
 
+
 int main() {
 	puts("Iniciando Coordinador.");
-	size_t tamanioMensaje;
 	int miSocket;
-	miSocket = socketServidor(PUERTO,IP);
-	tamanioMensaje = recibirHeader(miSocket);
-	recibirMensaje(miSocket, tamanioMensaje);
+	miSocket = servidorConectarComponente("coordinador", "esi", PUERTO, IP);
 
 	close(miSocket);
 	puts("El Coordinador se ha finalizado correctamente.");

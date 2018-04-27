@@ -13,17 +13,20 @@
 #include "sockets.h"
 
 //Cliente
-int socketCliente(char* puerto, char* ip) {
+int socketCliente(int puerto, char* ip) {
 	int socketDelServidor;
 	struct addrinfo direccionDestino;
 	struct addrinfo *informacionServidor;
+	char* puertoDestino;
 
+	puertoDestino = malloc(sizeof(int));
 	// Definiendo el destino
 	memset(&direccionDestino, 0, sizeof(direccionDestino));
 	direccionDestino.ai_family = AF_INET;    // Permite que la maquina se encargue de verificar si usamos IPv4 o IPv6
 	direccionDestino.ai_socktype = SOCK_STREAM;  // Indica que usaremos el protocolo TCP
+	sprintf(puertoDestino, "%d", puerto);
 
-	getaddrinfo(ip, puerto, &direccionDestino, &informacionServidor);  // Carga en server_info los datos de la conexion
+	getaddrinfo(ip, puertoDestino, &direccionDestino, &informacionServidor);  // Carga en server_info los datos de la conexion
 
 	 // Creo el socket
 	 if ((socketDelServidor = socket(informacionServidor->ai_family, informacionServidor->ai_socktype, informacionServidor->ai_protocol)) == -1) {
@@ -40,22 +43,6 @@ int socketCliente(char* puerto, char* ip) {
 	 freeaddrinfo(informacionServidor);  // No lo necesitamos mas
 
 	 return socketDelServidor;
-}
-
-int enviarInformacion(int socket, void *texto, int *bytesAMandar) {
-	int totalEnviados = 0; // cuántos bytes se mandan ahora
-	int bytesRestantes = *bytesAMandar; // cuántos se han quedado pendientes de antes, lo asigno a una variable local
-
-	int bytesEnviados;
-	while (totalEnviados < *bytesAMandar) {
-		bytesEnviados = send(socket, texto + totalEnviados, bytesRestantes, 0);
-		if (bytesEnviados == -1) { break; }
-		totalEnviados += bytesEnviados;
-		bytesRestantes -= bytesEnviados;
-	}
-
-	*bytesAMandar = totalEnviados; // devuelve aquí la cantidad que se termino por mandar, se deberían haber mandado todos
-	return bytesEnviados == -1 ? -1 : 0; // devuelve -1 si hay fallo, 0 en otro caso
 }
 
 //Servidor
@@ -111,6 +98,22 @@ int socketServidor(int puerto, char* ip){
 	return socketConectado;
 }
 
+int enviarInformacion(int socket, void *texto, int *bytesAMandar) {
+	int totalEnviados = 0; // cuántos bytes se mandan ahora
+	int bytesRestantes = *bytesAMandar; // cuántos se han quedado pendientes de antes, lo asigno a una variable local
+
+	int bytesEnviados;
+	while (totalEnviados < *bytesAMandar) {
+		bytesEnviados = send(socket, texto + totalEnviados, bytesRestantes, 0);
+		if (bytesEnviados == -1) { break; }
+		totalEnviados += bytesEnviados;
+		bytesRestantes -= bytesEnviados;
+	}
+
+	*bytesAMandar = totalEnviados; // devuelve aquí la cantidad que se termino por mandar, se deberían haber mandado todos
+	return bytesEnviados == -1 ? -1 : 0; // devuelve -1 si hay fallo, 0 en otro caso
+}
+
 int enviarHeader(int socketDestino, char* mensaje){
 	int tamanioMensaje = strlen(mensaje);
 	int tamanioHeader;
@@ -156,11 +159,6 @@ int recibirHeader(int socketEmisor){
 		exit(1);
 	}
 
-	if (write(socketEmisor, "Mensaje recibido", 16) < 0){
-		puts("Error write socket");
-		exit(1);
-	}
-
 	// Tambien tiene que ver que hacer con el ID (todavia no esta hecho) chequeo si es ese id
 	largo = header->largo;
 	printf("Recibi el header que tiene el largo: %d\n", header->largo);
@@ -169,30 +167,34 @@ int recibirHeader(int socketEmisor){
 	return largo;
 }
 
-void recibirMensaje(int socketEmisor, int tamanioMensaje){
-	char *buffer;
+void recibirMensaje(int socketEmisor, int tamanioMensaje, char** bufferMensaje){
 	int recibido;
 
-	buffer = (char*) malloc(tamanioMensaje + 1);
-
-	recibido = recv(socketEmisor, buffer, tamanioMensaje, 0);
+	recibido = recv(socketEmisor, *bufferMensaje, tamanioMensaje, 0);
 	if(recibido < 0){
 		puts("Error en recibir mensaje");
 		exit(1);
 	} else if (recibido == 0){
 		puts("Socket Emisor desconectado");
 		close(socketEmisor);
-		free(buffer);
+		free(*bufferMensaje);
 		exit(1);
 	}
+	(*bufferMensaje) [tamanioMensaje] = '\0';
+	printf("El mensaje recibido *recibirMensaje* es: %s\n", *bufferMensaje);
+}
 
-	buffer[tamanioMensaje] = '\0';
-	printf("El mensaje recibido es: %s\n", buffer);
+int servidorConectarComponente(char* servidor, char* componente, int puertoServidor, char* ipServidor){
+	int miSocket;
+	char buffer[3 * sizeof(char)];
+	char *bufferMensaje = buffer;
+	miSocket = socketServidor(puertoServidor,ipServidor);
+	recibirMensaje(miSocket, 2 * sizeof(char), &bufferMensaje);
 
-	free(buffer);
-
-	if (write(socketEmisor, "Mensaje recibido", 16) < 0) {
-		puts("Error write socket");
+	if (strcmp(bufferMensaje, "OK") != 0) {
+		printf("Error conectando %s con %s\n", servidor, componente);
+		close(miSocket);
 		exit(1);
 	}
+	return miSocket;
 }

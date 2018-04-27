@@ -30,12 +30,13 @@ typedef struct {
 } __attribute__((packed)) ContentHeader;
 
 //prototipos
-int socketCliente(char*, char*);
+int socketCliente(int, char*);
 int enviarInformacion(int, void*, int*);
 int socketServidor(int, char*);
 int enviarHeader(int, char*);
 int enviarMensaje(int, char*);
-void recibirMensaje(int, int);
+void recibirMensaje(int, int, char**);
 int recibirHeader(int);
+int servidorConectarComponente(char*, char*, int, char*);
 
 #endif /* SOCKETS_H_ */
