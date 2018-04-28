@@ -19,10 +19,12 @@
 
 int main() {
 	puts("Iniciando Coordinador.");
-	int miSocket;
-	miSocket = servidorConectarComponente("coordinador", "esi", PUERTO, IP);
+	int socketEscucha, socketEsi;
 
-	close(miSocket);
+	socketEsi = servidorConectarComponente(&socketEscucha, "coordinador", "esi", PUERTO, IP);
+
+	close(socketEscucha);
+	close(socketEsi);
 	puts("El Coordinador se ha finalizado correctamente.");
 	return 0;
 }

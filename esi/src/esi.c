@@ -17,27 +17,14 @@
 #define PUERTO_PLANIFICADOR 8001
 #define IP_PLANIFICADOR "127.0.0.2"
 
-int conectarCoordinador(){
-	int socketCli;
-	socketCli = socketCliente(PUERTO_COORDINADOR, IP_COORDINADOR);
-	enviarMensaje(socketCli, "esi");
-	return 1;
-}
 
 int main() {
 	puts("Iniciando ESI.");
-	int socketCli;
-	char* texto;
+	int socketCoordinador;
 
-	socketCli = socketCliente(PUERTO_COORDINADOR, IP_COORDINADOR);
-	texto = malloc(2 * sizeof(char));
-	strcpy(texto, "OK");
+	socketCoordinador = clienteConectarComponente("ESI", "coordinador", PUERTO_COORDINADOR, IP_COORDINADOR);
 
-	enviarMensaje(socketCli, texto);
-
-	printf("Se mandaron %d bytes\n", strlen(texto));
-	close(socketCli);
-	free(texto);
+	close(socketCoordinador);
 	puts("El ESI se ha finalizado correctamente.");
 	return 0;
 }

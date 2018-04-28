@@ -13,7 +13,7 @@
 #include "sockets.h"
 
 //Cliente
-int socketCliente(int puerto, char* ip) {
+int conectarClienteA(int puerto, char* ip) {
 	int socketDelServidor;
 	struct addrinfo direccionDestino;
 	struct addrinfo *informacionServidor;
@@ -49,8 +49,7 @@ int socketCliente(int puerto, char* ip) {
 //Crear socket, devuelvo un socket que se conecto
 int socketServidor(int puerto, char* ip){
 	struct sockaddr_in server;
-	struct sockaddr_in conexion;
-	int miSocket, socketConectado;
+	int miSocket;
 	//Funcion que crea el socket.
 	miSocket = socket(AF_INET,SOCK_STREAM,0);
 	//comprobacion de errores del socket
@@ -74,6 +73,12 @@ int socketServidor(int puerto, char* ip){
 	}
 	puts("Bind realizado");
 
+	return miSocket;
+}
+
+int aceptarConexion(int miSocket) {
+	int socketConectado;
+	struct sockaddr_in conexion;
 
 	//Listen
 	//Escucho, y comprobacion errores
@@ -82,7 +87,6 @@ int socketServidor(int puerto, char* ip){
 		exit(1);
 	}
 	puts("Escuchando nuevas conexiones...");
-
 
 	//Aceptar conexion
 	//Ciclo de accept, bloquea el proceso hasta que cliente se concete
@@ -134,13 +138,7 @@ int enviarHeader(int socketDestino, char* mensaje){
 
 int enviarMensaje(int miSocket, char* mensaje){
 	int tamanioMensaje = strlen(mensaje);
-	if(enviarInformacion(miSocket, mensaje, &tamanioMensaje) < 0){
-		puts("Error en enviar mensaje");
-		exit(1);
-	}
-	puts("Mensaje enviado");
-
-	return 1;
+	return enviarInformacion(miSocket, mensaje, &tamanioMensaje);
 }
 
 int recibirHeader(int socketEmisor){
@@ -184,17 +182,52 @@ void recibirMensaje(int socketEmisor, int tamanioMensaje, char** bufferMensaje){
 	printf("El mensaje recibido *recibirMensaje* es: %s\n", *bufferMensaje);
 }
 
-int servidorConectarComponente(char* servidor, char* componente, int puertoServidor, char* ipServidor){
-	int miSocket;
-	char buffer[3 * sizeof(char)];
-	char *bufferMensaje = buffer;
-	miSocket = socketServidor(puertoServidor,ipServidor);
-	recibirMensaje(miSocket, 2 * sizeof(char), &bufferMensaje);
+int servidorConectarComponente(int* socketEscucha, char* servidor, char* componente, int puertoServidor, char* ipServidor){
+	int socketConectado;
+	char *bufferMensaje, *texto;
 
-	if (strcmp(bufferMensaje, "OK") != 0) {
+	bufferMensaje = malloc(2 * sizeof(char));
+	texto = malloc(2 * sizeof(char));
+	strcpy(texto, "OK");
+
+	(*socketEscucha) = socketServidor(puertoServidor, ipServidor);
+	socketConectado = aceptarConexion((*socketEscucha));
+	recibirMensaje(socketConectado, 2 * sizeof(char), &bufferMensaje);
+
+	if (strcmp(bufferMensaje, "OK") != 0 || enviarMensaje(socketConectado, texto) < 0) {
 		printf("Error conectando %s con %s\n", servidor, componente);
-		close(miSocket);
+		close(socketConectado);
+		close((*socketEscucha));
 		exit(1);
 	}
-	return miSocket;
+
+	return socketConectado;
+}
+
+int clienteConectarComponente(char* cliente, char* componente, char* puerto, char* ip) {
+
+	int socketServ;
+	char *bufferMensaje, *texto;
+
+	bufferMensaje = malloc(2 * sizeof(char));
+	texto = malloc(2 * sizeof(char));
+	strcpy(texto, "aOK");
+
+	socketServ = conectarClienteA((int)puerto, ip);
+
+	enviarMensaje(socketServ, texto);
+	if (enviarMensaje < 0) {
+		printf("Error conectando %s con %s\n", cliente, componente);
+		close(socketServ);
+		exit(1);
+	} else {
+		recibirMensaje(socketServ, 2 * sizeof(char), &bufferMensaje);
+		if (strcmp(bufferMensaje, "OK") != 0) {
+			printf("Error conectando %s con %s\n", cliente, componente);
+			close(socketServ);
+			exit(1);
+		}
+	}
+
+	return socketServ;
 }
