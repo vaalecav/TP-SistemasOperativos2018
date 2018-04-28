@@ -19,9 +19,11 @@
 
 int main() {
 	puts("Iniciando Coordinador.");
-	int socketEscucha, socketEsi;
+	int socketEscucha, socketEsi, socketInstancia;
 
-	socketEsi = servidorConectarComponente(&socketEscucha, "coordinador", "esi", PUERTO, IP);
+	socketEscucha = socketServidor(PUERTO, IP);
+	socketInstancia = servidorConectarComponente(&socketEscucha, "coordinador", "instancia");
+	socketEsi = servidorConectarComponente(&socketEscucha, "coordinador", "esi");
 
 	close(socketEscucha);
 	close(socketEsi);

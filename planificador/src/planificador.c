@@ -12,7 +12,15 @@
 
 int main() {
 	puts("Iniciando Planificador.");
+	int socketEscucha, socketEsi;
+
+	socketEscucha = socketServidor(PUERTO, IP);
+	socketEsi = servidorConectarComponente(&socketEscucha, "planificador", "esi");
+
 	iniciarConsola();
+
+	close(socketEscucha);
+	close(socketEsi);
 	puts("El Planificador se ha finalizado correctamente.");
 	return 0;
 }

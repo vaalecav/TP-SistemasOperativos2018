@@ -115,7 +115,7 @@ int enviarInformacion(int socket, void *texto, int *bytesAMandar) {
 	}
 
 	*bytesAMandar = totalEnviados; // devuelve aquí la cantidad que se termino por mandar, se deberían haber mandado todos
-	return bytesEnviados == -1 ? -1 : 0; // devuelve -1 si hay fallo, 0 en otro caso
+	return bytesEnviados == -1 ? -1 : 0; // devuelve -1 si hay fallo, 0 si esta bien
 }
 
 int enviarHeader(int socketDestino, char* mensaje){
@@ -182,7 +182,7 @@ void recibirMensaje(int socketEmisor, int tamanioMensaje, char** bufferMensaje){
 	printf("El mensaje recibido *recibirMensaje* es: %s\n", *bufferMensaje);
 }
 
-int servidorConectarComponente(int* socketEscucha, char* servidor, char* componente, int puertoServidor, char* ipServidor){
+int servidorConectarComponente(int* socketEscucha, char* servidor, char* componente){
 	int socketConectado;
 	char *bufferMensaje, *texto;
 
@@ -190,7 +190,6 @@ int servidorConectarComponente(int* socketEscucha, char* servidor, char* compone
 	texto = malloc(2 * sizeof(char));
 	strcpy(texto, "OK");
 
-	(*socketEscucha) = socketServidor(puertoServidor, ipServidor);
 	socketConectado = aceptarConexion((*socketEscucha));
 	recibirMensaje(socketConectado, 2 * sizeof(char), &bufferMensaje);
 
@@ -201,6 +200,9 @@ int servidorConectarComponente(int* socketEscucha, char* servidor, char* compone
 		exit(1);
 	}
 
+
+	free(bufferMensaje);
+	free(texto);
 	return socketConectado;
 }
 
@@ -211,12 +213,11 @@ int clienteConectarComponente(char* cliente, char* componente, char* puerto, cha
 
 	bufferMensaje = malloc(2 * sizeof(char));
 	texto = malloc(2 * sizeof(char));
-	strcpy(texto, "aOK");
+	strcpy(texto, "OK");
 
 	socketServ = conectarClienteA((int)puerto, ip);
 
-	enviarMensaje(socketServ, texto);
-	if (enviarMensaje < 0) {
+	if (enviarMensaje(socketServ, texto) < 0) {
 		printf("Error conectando %s con %s\n", cliente, componente);
 		close(socketServ);
 		exit(1);
@@ -229,5 +230,7 @@ int clienteConectarComponente(char* cliente, char* componente, char* puerto, cha
 		}
 	}
 
+	free(bufferMensaje);
+	free(texto);
 	return socketServ;
 }
