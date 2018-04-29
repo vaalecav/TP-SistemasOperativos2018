@@ -19,15 +19,26 @@
 #define IP_PLANIFICADOR "127.0.0.2"
 
 int main() {
-/*
-	char* valor;
-	valor = malloc(255);
-	int respuesta = leerConfiguracion("IP_COORDINADOR", &valor);
-	printf("%s", valor);
-	free(valor);
-	*/
+
 	puts("Iniciando ESI.");
 	int socketCoordinador, socketPlanificador;
+	char ipCoordinador[16];
+	int puertoCoordinador;
+	char ipPlanificador[16];
+	int puertoPlanificador;
+
+	leerConfiguracion("PUERTO_COORDINADOR:%d", &puertoCoordinador);
+	leerConfiguracion("IP_COORDINADOR:%s", &ipCoordinador);
+	leerConfiguracion("PUERTO_PLANIFICADOR:%d", &puertoPlanificador);
+	leerConfiguracion("IP_PLANIFICADOR%s", &ipPlanificador);
+/*
+	printf("PUERTO_COORDINADOR: %d\n", puertoCoordinador);
+	printf("IP_COORDINADOR: %s\n", ipCoordinador);
+	printf("PUERTO_PLANIFICADOR: %d\n", puertoPlanificador);
+	printf("IP_PLANIFICADOR: %s\n", ipPlanificador);
+
+	socketCoordinador = clienteConectarComponente("ESI", "coordinador", puertoCoordinador, ipCoordinador);
+	socketPlanificador = clienteConectarComponente("ESI", "planificador", puertoPlanificador, ipPlanificador);*/
 
 	socketCoordinador = clienteConectarComponente("ESI", "coordinador", PUERTO_COORDINADOR, IP_COORDINADOR);
 	socketPlanificador = clienteConectarComponente("ESI", "planificador", PUERTO_PLANIFICADOR, IP_PLANIFICADOR);

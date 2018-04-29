@@ -15,6 +15,6 @@
 #define MAX_NODOS   256
 #define MAX_CHARS  4096
 
-int leerConfiguracion(char*, char**);
+int leerConfiguracion(char*, void*);
 
 #endif /* CONFIGURACION_CONFIGURACION_H_ */
