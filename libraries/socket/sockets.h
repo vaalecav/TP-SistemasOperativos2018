@@ -38,6 +38,6 @@ int enviarMensaje(int, char*);
 void recibirMensaje(int, int, char**);
 int recibirHeader(int);
 int servidorConectarComponente(int*, char*, char*);
-int clienteConectarComponente(char*, char*, char*, char*);
+int clienteConectarComponente(char*, char*, int, char*);
 
 #endif /* SOCKETS_H_ */

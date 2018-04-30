@@ -139,6 +139,7 @@ int enviarHeader(int socketDestino, char* mensaje){
 int enviarMensaje(int miSocket, char* mensaje){
 	int tamanioMensaje = strlen(mensaje);
 	return enviarInformacion(miSocket, mensaje, &tamanioMensaje);
+	//deberia checkear aca o tirar error?
 }
 
 int recibirHeader(int socketEmisor){
@@ -206,7 +207,7 @@ int servidorConectarComponente(int* socketEscucha, char* servidor, char* compone
 	return socketConectado;
 }
 
-int clienteConectarComponente(char* cliente, char* componente, char* puerto, char* ip) {
+int clienteConectarComponente(char* cliente, char* componente, int puerto, char* ip) {
 
 	int socketServ;
 	char *bufferMensaje, *texto;

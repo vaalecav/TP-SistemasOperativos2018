@@ -11,19 +11,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <socket/sockets.h>
-
-//constantes
-#define PUERTO 8000
-#define IP "127.0.0.1"
-
+#include <configuracion/configuracion.h>
 
 int main() {
 	puts("Iniciando Coordinador.");
-	int socketEscucha, socketEsi, socketInstancia;
+	int socketEscucha, socketEsi, socketInstancia, socketPlanificador;
 
-	socketEscucha = socketServidor(PUERTO, IP);
+	char ip[16];
+	int puerto;
+
+	//Leo puertos e ips de archivo de configuracion
+	leerConfiguracion("PUERTO:%d", &puerto);
+	leerConfiguracion("IP:%s", &ip);
+
+	socketEscucha = socketServidor(puerto, ip);
 	socketInstancia = servidorConectarComponente(&socketEscucha, "coordinador", "instancia");
 	socketEsi = servidorConectarComponente(&socketEscucha, "coordinador", "esi");
+	socketPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
 
 	close(socketEscucha);
 	close(socketEsi);

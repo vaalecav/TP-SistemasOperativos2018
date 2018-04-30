@@ -11,15 +11,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <socket/sockets.h>
-
-#define PUERTO_COORDINADOR 8000
-#define IP_COORDINADOR "127.0.0.1"
+#include <configuracion/configuracion.h>
 
 int main() {
 	puts("Iniciando Instancia.");
 	int socketCoordinador;
+	char ipCoordinador[16];
+	int puertoCoordinador;
 
-	socketCoordinador = clienteConectarComponente("instancia", "coordinador", PUERTO_COORDINADOR, IP_COORDINADOR);
+	//Leo puertos e ips de archivo de configuracion
+	leerConfiguracion("PUERTO_COORDINADOR:%d", &puertoCoordinador);
+	leerConfiguracion("IP_COORDINADOR:%s", &ipCoordinador);
+
+	socketCoordinador = clienteConectarComponente("instancia", "coordinador", puertoCoordinador, ipCoordinador);
 
 	close(socketCoordinador);
 	puts("La Instancia se ha finalizado correctamente.");
