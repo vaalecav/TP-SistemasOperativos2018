@@ -26,7 +26,7 @@ int main() {
 	leerConfiguracion("PUERTO_COORDINADOR:%d", &puertoCoordinador);
 	leerConfiguracion("IP_COORDINADOR:%s", &ipCoordinador);
 	leerConfiguracion("PUERTO_PLANIFICADOR:%d", &puertoPlanificador);
-	leerConfiguracion("IP_PLANIFICADOR%s", &ipPlanificador);
+	leerConfiguracion("IP_PLANIFICADOR:%s", &ipPlanificador);
 
 	socketCoordinador = clienteConectarComponente("ESI", "coordinador", puertoCoordinador, ipCoordinador);
 	socketPlanificador = clienteConectarComponente("ESI", "planificador", puertoPlanificador, ipPlanificador);
