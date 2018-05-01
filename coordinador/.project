@@ -3,6 +3,7 @@
 	<name>coordinador</name>
 	<comment></comment>
 	<projects>
+		<project>libraries</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

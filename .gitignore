@@ -1,3 +1,5 @@
+### C ###
+
 # Prerequisites
 *.d
 
@@ -50,4 +52,39 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-/.metadata/
+
+### Eclipse ###
+
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific (C/C++ Development Tooling)
+.cproject
+
+# sbteclipse plugin
+.target
+
+# Code Recommenders
+.recommenders/
+
+### Eclipse Patch ###
+# Eclipse Core		
+.project
+
+# Annotation Processing
+.apt_generated

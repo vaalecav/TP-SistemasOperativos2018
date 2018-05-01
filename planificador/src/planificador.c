@@ -9,10 +9,30 @@
  */
 
 #include "planificador.h"
+#include <configuracion/configuracion.h>
 
 int main() {
 	puts("Iniciando Planificador.");
+	int socketEscucha, socketEsi, socketCoordinador;
+	char ip[16];
+	int puerto;
+	char ipCoordinador[16];
+	int puertoCoordinador;
+
+	//Leo puertos e ips de archivo de configuracion
+	leerConfiguracion("PUERTO:%d", &puerto);
+	leerConfiguracion("IP:%s", &ip);
+	leerConfiguracion("PUERTO_COORDINADOR:%d", &puertoCoordinador);
+	leerConfiguracion("IP_COORDINADOR:%s", &ipCoordinador);
+
+	socketEscucha = socketServidor(puerto, ip);
+	socketCoordinador = clienteConectarComponente("planificador", "coordinador", puertoCoordinador, ipCoordinador);
+	socketEsi = servidorConectarComponente(&socketEscucha, "planificador", "esi");
+
 	iniciarConsola();
+
+	close(socketEscucha);
+	close(socketEsi);
 	puts("El Planificador se ha finalizado correctamente.");
 	return 0;
 }

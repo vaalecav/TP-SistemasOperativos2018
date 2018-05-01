@@ -10,9 +10,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <socket/sockets.h>
+#include <configuracion/configuracion.h>
 
 int main() {
 	puts("Iniciando Instancia.");
+	int socketCoordinador;
+	char ipCoordinador[16];
+	int puertoCoordinador;
+
+	//Leo puertos e ips de archivo de configuracion
+	leerConfiguracion("PUERTO_COORDINADOR:%d", &puertoCoordinador);
+	leerConfiguracion("IP_COORDINADOR:%s", &ipCoordinador);
+
+	socketCoordinador = clienteConectarComponente("instancia", "coordinador", puertoCoordinador, ipCoordinador);
+
+	close(socketCoordinador);
 	puts("La Instancia se ha finalizado correctamente.");
 	return 0;
 }
