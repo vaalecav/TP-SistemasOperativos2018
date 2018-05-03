@@ -21,8 +21,8 @@
 #include <readline/history.h>
 #include <arpa/inet.h>
 
+int MAX_CONEX;
 
-#define MAX_CONEX 10
 //estructuras
 typedef struct {
   int id;
@@ -32,7 +32,7 @@ typedef struct {
 //prototipos
 int conectarClienteA(int, char*);
 int enviarInformacion(int, void*, int*);
-int socketServidor(int, char*);
+int socketServidor(int, char*, int);
 int enviarHeader(int, char*);
 int enviarMensaje(int, char*);
 void recibirMensaje(int, int, char**);

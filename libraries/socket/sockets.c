@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include "sockets.h"
 
+
+
 //Cliente
 int conectarClienteA(int puerto, char* ip) {
 	int socketDelServidor;
@@ -47,9 +49,11 @@ int conectarClienteA(int puerto, char* ip) {
 
 //Servidor
 //Crear socket, devuelvo un socket que se conecto
-int socketServidor(int puerto, char* ip){
+int socketServidor(int puerto, char* ip, int maxConexiones){
 	struct sockaddr_in server;
 	int miSocket;
+	//asigno maximas conexiones permitidas
+	MAX_CONEX = maxConexiones;
 	//Funcion que crea el socket.
 	miSocket = socket(AF_INET,SOCK_STREAM,0);
 	//comprobacion de errores del socket

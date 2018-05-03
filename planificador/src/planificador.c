@@ -18,14 +18,16 @@ int main() {
 	int puerto;
 	char ipCoordinador[16];
 	int puertoCoordinador;
+	int maxConexiones;
 
 	//Leo puertos e ips de archivo de configuracion
 	leerConfiguracion("PUERTO:%d", &puerto);
 	leerConfiguracion("IP:%s", &ip);
+	leerConfiguracion("MAX_CONEX:%d", &maxConexiones);
 	leerConfiguracion("PUERTO_COORDINADOR:%d", &puertoCoordinador);
 	leerConfiguracion("IP_COORDINADOR:%s", &ipCoordinador);
 
-	socketEscucha = socketServidor(puerto, ip);
+	socketEscucha = socketServidor(puerto, ip, maxConexiones);
 	socketCoordinador = clienteConectarComponente("planificador", "coordinador", puertoCoordinador, ipCoordinador);
 	socketEsi = servidorConectarComponente(&socketEscucha, "planificador", "esi");
 
