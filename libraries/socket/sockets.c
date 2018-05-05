@@ -21,7 +21,7 @@ int conectarClienteA(int puerto, char* ip) {
 	struct addrinfo *informacionServidor;
 	char* puertoDestino;
 
-	puertoDestino = malloc(sizeof(int));
+	puertoDestino = malloc(sizeof(int) + 1);
 	// Definiendo el destino
 	memset(&direccionDestino, 0, sizeof(direccionDestino));
 	direccionDestino.ai_family = AF_INET;    // Permite que la maquina se encargue de verificar si usamos IPv4 o IPv6
@@ -192,7 +192,7 @@ int servidorConectarComponente(int* socketEscucha, char* servidor, char* compone
 	char *bufferMensaje, *texto;
 
 	bufferMensaje = malloc(2 * sizeof(char));
-	texto = malloc(2 * sizeof(char));
+	texto = malloc(3 * sizeof(char));
 	strcpy(texto, "OK");
 
 	socketConectado = aceptarConexion((*socketEscucha));
@@ -216,8 +216,8 @@ int clienteConectarComponente(char* cliente, char* componente, int puerto, char*
 	int socketServ;
 	char *bufferMensaje, *texto;
 
-	bufferMensaje = malloc(2 * sizeof(char));
-	texto = malloc(2 * sizeof(char));
+	bufferMensaje = malloc(3 * sizeof(char));
+	texto = malloc(3 * sizeof(char));
 	strcpy(texto, "OK");
 
 	socketServ = conectarClienteA((int)puerto, ip);

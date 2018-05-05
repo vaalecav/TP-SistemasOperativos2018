@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <socket/sockets.h>
+#include "../../libraries/socket/sockets.h"
 #include <configuracion/configuracion.h>
 
 int main() {
@@ -28,8 +28,8 @@ int main() {
 
 	socketEscucha = socketServidor(puerto, ip, maxConexiones);
 	socketInstancia = servidorConectarComponente(&socketEscucha, "coordinador", "instancia");
-	socketEsi = servidorConectarComponente(&socketEscucha, "coordinador", "esi");
 	socketPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
+	socketEsi = servidorConectarComponente(&socketEscucha, "coordinador", "esi");
 
 	close(socketEscucha);
 	close(socketEsi);
