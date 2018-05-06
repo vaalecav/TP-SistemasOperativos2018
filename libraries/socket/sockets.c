@@ -21,7 +21,7 @@ int conectarClienteA(int puerto, char* ip) {
 	struct addrinfo *informacionServidor;
 	char* puertoDestino;
 
-	puertoDestino = malloc(sizeof(int) + 1);
+		puertoDestino = malloc(sizeof(int) + 1);
 	// Definiendo el destino
 	memset(&direccionDestino, 0, sizeof(direccionDestino));
 	direccionDestino.ai_family = AF_INET;    // Permite que la maquina se encargue de verificar si usamos IPv4 o IPv6
