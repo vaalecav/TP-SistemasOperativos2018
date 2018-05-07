@@ -22,6 +22,10 @@
 #include <arpa/inet.h>
 
 int MAX_CONEX;
+enum PROTOCOLO{
+	ESI = 1,
+	INSTANCIA = 2
+};
 
 //estructuras
 typedef struct {
@@ -36,7 +40,7 @@ int socketServidor(int, char*, int);
 int enviarHeader(int, char*);
 int enviarMensaje(int, char*);
 void recibirMensaje(int, int, char**);
-int recibirHeader(int);
+ContentHeader * recibirHeader(int);
 int servidorConectarComponente(int*, char*, char*);
 int clienteConectarComponente(char*, char*, int, char*);
 
