@@ -146,10 +146,9 @@ int enviarMensaje(int miSocket, char* mensaje){
 	//deberia checkear aca o tirar error?
 }
 
-int recibirHeader(int socketEmisor){
+ContentHeader * recibirHeader(int socketEmisor){
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
 	int recibido;
-	int largo;
 
 	recibido = recv(socketEmisor, header, sizeof(ContentHeader), 0);
 	if (recibido < 0) {
@@ -161,13 +160,7 @@ int recibirHeader(int socketEmisor){
 		free(header);
 		exit(1);
 	}
-
-	// Tambien tiene que ver que hacer con el ID (todavia no esta hecho) chequeo si es ese id
-	largo = header->largo;
-	printf("Recibi el header que tiene el largo: %d\n", header->largo);
-
-	free(header);
-	return largo;
+	return header;
 }
 
 void recibirMensaje(int socketEmisor, int tamanioMensaje, char** bufferMensaje){
