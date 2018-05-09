@@ -1,4 +1,0 @@
-#Conexiones
-IP:127.0.0.1
-PUERTO:8000
-MAX_CONEX:20
