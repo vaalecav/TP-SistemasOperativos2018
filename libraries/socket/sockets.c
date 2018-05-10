@@ -21,7 +21,7 @@ int conectarClienteA(int puerto, char* ip) {
 	struct addrinfo *informacionServidor;
 	char* puertoDestino;
 
-	puertoDestino = malloc(sizeof(int));
+		puertoDestino = malloc(sizeof(int) + 1);
 	// Definiendo el destino
 	memset(&direccionDestino, 0, sizeof(direccionDestino));
 	direccionDestino.ai_family = AF_INET;    // Permite que la maquina se encargue de verificar si usamos IPv4 o IPv6
@@ -146,10 +146,9 @@ int enviarMensaje(int miSocket, char* mensaje){
 	//deberia checkear aca o tirar error?
 }
 
-int recibirHeader(int socketEmisor){
+ContentHeader * recibirHeader(int socketEmisor){
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
 	int recibido;
-	int largo;
 
 	recibido = recv(socketEmisor, header, sizeof(ContentHeader), 0);
 	if (recibido < 0) {
@@ -161,13 +160,7 @@ int recibirHeader(int socketEmisor){
 		free(header);
 		exit(1);
 	}
-
-	// Tambien tiene que ver que hacer con el ID (todavia no esta hecho) chequeo si es ese id
-	largo = header->largo;
-	printf("Recibi el header que tiene el largo: %d\n", header->largo);
-
-	free(header);
-	return largo;
+	return header;
 }
 
 void recibirMensaje(int socketEmisor, int tamanioMensaje, char** bufferMensaje){
@@ -192,7 +185,7 @@ int servidorConectarComponente(int* socketEscucha, char* servidor, char* compone
 	char *bufferMensaje, *texto;
 
 	bufferMensaje = malloc(2 * sizeof(char));
-	texto = malloc(2 * sizeof(char));
+	texto = malloc(3 * sizeof(char));
 	strcpy(texto, "OK");
 
 	socketConectado = aceptarConexion((*socketEscucha));
@@ -216,8 +209,8 @@ int clienteConectarComponente(char* cliente, char* componente, int puerto, char*
 	int socketServ;
 	char *bufferMensaje, *texto;
 
-	bufferMensaje = malloc(2 * sizeof(char));
-	texto = malloc(2 * sizeof(char));
+	bufferMensaje = malloc(3 * sizeof(char));
+	texto = malloc(3 * sizeof(char));
 	strcpy(texto, "OK");
 
 	socketServ = conectarClienteA((int)puerto, ip);
