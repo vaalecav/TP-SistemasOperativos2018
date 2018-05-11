@@ -37,7 +37,7 @@ typedef struct {
 int conectarClienteA(int, char*);
 int enviarInformacion(int, void*, int*);
 int socketServidor(int, char*, int);
-int enviarHeader(int, char*);
+int enviarHeader(int, char*, int);
 int enviarMensaje(int, char*);
 void recibirMensaje(int, int, char**);
 ContentHeader * recibirHeader(int);
