@@ -7,20 +7,51 @@
  Description : Proceso Coordinador
  ============================================================================
  */
+#include "coordinador.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <socket/sockets.h>
-#include <commons/string.h>
-#include <configuracion/configuracion.h>
-#include <pthread.h>
+void manejarInstancia(int socketInstancia) {
+	pthread_mutex_lock(&mutexListaInstancias);
+	list_add(listaInstancias, (void*) socketInstancia);
+	pthread_mutex_unlock(&mutexListaInstancias);
+}
 
-void manejarInstancia(int socketInstancia){
-	// TODO Acá se tiene que agregar a la lista de instancias el socket
+void closeInstancia(void* instancia) {
+	close(*(int*) instancia);
+}
+
+void cerrarInstancias() {
+	list_destroy_and_destroy_elements(listaInstancias, (void*) closeInstancia);
+}
+
+void asignarInstancia(char* mensaje) {
+	char algoritmo_distribucion[4];
+	void* socketInstancia;
+
+	leerConfiguracion("ALG_DISTR:%s", &algoritmo_distribucion);
+
+	pthread_mutex_lock(&mutexListaInstancias);
+	if (strcmp(algoritmo_distribucion, "EL") == 0) {
+		socketInstancia = algoritmoDistribucionEL(listaInstancias);
+	} else if (strcmp(algoritmo_distribucion, "LSU") == 0) {
+		// TODO Implementar algoritmo Least Space Used
+	} else if (strcmp(algoritmo_distribucion, "KE") == 0) {
+		// TODO Implementar Key Explicit
+	} else {
+		puts("Error al asignar instancia. Algoritmo de distribucion invalido.");
+		pthread_mutex_unlock(&mutexListaInstancias);
+		return;
+	}
+	pthread_mutex_unlock(&mutexListaInstancias);
+
+	if (socketInstancia != NULL) {
+		enviarHeader(*(int*) socketInstancia, mensaje, COORDINADOR);
+		enviarMensaje(*(int*) socketInstancia, mensaje);
+	} else {
+		puts("No hay instancias creadas a la cual asignar el mensaje.");
+	}
 }
 
 void manejarEsi(int socketEsi, int largoMensaje) {
-	// TODO Agarrar del archivo de configuracion el algoritmo de distribución
 	char* mensaje;
 	char** mensajeSplitted;
 
@@ -33,6 +64,7 @@ void manejarEsi(int socketEsi, int largoMensaje) {
 		puts("GET");
 	} else if (strcmp(mensajeSplitted[0], "SET") == 0) {
 		puts("SET");
+		asignarInstancia(mensaje);
 		// TODO Acá, de la lista de instancias, hay que elegir dependiendo del tipo que se obtiene por configuracion
 	} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
 		puts("STORE");
@@ -43,8 +75,7 @@ void manejarEsi(int socketEsi, int largoMensaje) {
 	free(mensaje);
 }
 
-void *manejarConexion(void* nuevoSocket) {
-
+void manejarConexion(void* nuevoSocket) {
 	int socketConectado = *(int*)nuevoSocket;
 	ContentHeader * header;
 
@@ -62,9 +93,6 @@ void *manejarConexion(void* nuevoSocket) {
 
 	free(header);
 	close(socketConectado);
-	puts("hola");
-
-	return manejarConexion;
 }
 
 int correrEnHilo(int socketConectado) {
@@ -88,11 +116,13 @@ int correrEnHilo(int socketConectado) {
 
 int main() {
 	puts("Iniciando Coordinador.");
-	int socketEscucha, socketEsi, socketInstancia, socketPlanificador, socketComponente;
+	int socketEscucha, socketComponente;
 
 	char ip[16];
 	int puerto;
 	int maxConexiones;
+
+	indexInstanciaEL = 0;
 
 	//Leo puertos e ips de archivo de configuracion
 	leerConfiguracion("PUERTO:%d", &puerto);
@@ -104,11 +134,13 @@ int main() {
 	close(servidorConectarComponente(&socketEscucha, "coordinador", "planificador"));
 	close(servidorConectarComponente(&socketEscucha, "coordinador", "esi"));
 
+	listaInstancias = list_create();
 	while((socketComponente = servidorConectarComponente(&socketEscucha,"",""))) {//preguntar si hace falta mandar msjes de ok x cada hilo
-		puts("inicia \n");correrEnHilo(socketComponente);
+		correrEnHilo(socketComponente);
 	}
 
 	close(socketEscucha);
+	cerrarInstancias();
 	puts("El Coordinador se ha finalizado correctamente.");
 	return 0;
 }

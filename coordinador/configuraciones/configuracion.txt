@@ -2,3 +2,9 @@
 IP:127.0.0.1
 PUERTO:8000
 MAX_CONEX:20
+
+#Algoritmo de distribucion 
+#	EL 	- Equitative Load
+#	LSU - Least Space Used
+#	KE 	- Key Explicit
+ALG_DISTR:EL

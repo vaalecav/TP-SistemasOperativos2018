@@ -1,0 +1,38 @@
+/*
+ * coordinador.h
+ *
+ *  Created on: 12 may. 2018
+ *      Author: utnso
+ */
+
+#ifndef COORDINADOR_H_
+#define COORDINADOR_H_
+
+/*
+ ============================================================================
+ Name        : coordinador.h
+ Author      : Los Simuladores
+ Version     : Alpha
+ Copyright   : Todos los derechos reservados
+ Description : Proceso Coordinador
+ ============================================================================
+ */
+
+#include <socket/sockets.h>
+#include <commons/string.h>
+#include <configuracion/configuracion.h>
+#include <pthread.h>
+#include "algoritmosDistribucion/algoritmosDistribucion.h"
+
+t_list *listaInstancias;
+pthread_mutex_t mutexListaInstancias;
+
+void manejarInstancia(int);
+void closeInstancia(void*);
+void cerrarInstancias();
+void asignarInstancia(char*);
+void manejarEsi(int, int);
+void manejarConexion(void*);
+int correrEnHilo(int);
+
+#endif /* COORDINADOR_H_ */
