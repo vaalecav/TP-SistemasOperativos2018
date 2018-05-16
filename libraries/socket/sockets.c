@@ -122,13 +122,13 @@ int enviarInformacion(int socket, void *texto, int *bytesAMandar) {
 	return bytesEnviados == -1 ? -1 : 0; // devuelve -1 si hay fallo, 0 si esta bien
 }
 
-int enviarHeader(int socketDestino, char* mensaje){
+int enviarHeader(int socketDestino, char* mensaje, int id) {
 	int tamanioMensaje = strlen(mensaje);
 	int tamanioHeader;
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
 
 	header->largo = tamanioMensaje;
-	header->id = 69;
+	header->id = id;
 	tamanioHeader = sizeof(ContentHeader);
 
 	if(enviarInformacion(socketDestino, header, &tamanioHeader) < 0){
@@ -152,7 +152,7 @@ ContentHeader * recibirHeader(int socketEmisor){
 
 	recibido = recv(socketEmisor, header, sizeof(ContentHeader), 0);
 	if (recibido < 0) {
-		puts("Error en recibir mensaje");
+		puts("Error en recibir header");
 		exit(1);
 	} else if (recibido == 0) {
 		puts("Socket emisor desconectado");

@@ -21,6 +21,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <commons/string.h>
+#include <pthread.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <socket/sockets.h>

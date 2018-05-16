@@ -11,45 +11,57 @@
 #include "planificador.h"
 #include <configuracion/configuracion.h>
 
-int main() {
+int main()
+{
 	puts("Iniciando Planificador.");
-	int socketEscucha, socketEsi, socketCoordinador;
+	fd_set descriptoresLectura;
+	int socketEscucha;
+	int socketCliente[10];
+	int numeroClientes = 0;
+	int i;
+
 	char ip[16];
 	int puerto;
-	char ipCoordinador[16];
-	int puertoCoordinador;
 	int maxConexiones;
 
 	//Leo puertos e ips de archivo de configuracion
 	leerConfiguracion("PUERTO:%d", &puerto);
 	leerConfiguracion("IP:%s", &ip);
 	leerConfiguracion("MAX_CONEX:%d", &maxConexiones);
-	leerConfiguracion("PUERTO_COORDINADOR:%d", &puertoCoordinador);
-	leerConfiguracion("IP_COORDINADOR:%s", &ipCoordinador);
 
 	socketEscucha = socketServidor(puerto, ip, maxConexiones);
-	socketCoordinador = clienteConectarComponente("planificador", "coordinador", puertoCoordinador, ipCoordinador);
-	socketEsi = servidorConectarComponente(&socketEscucha, "planificador", "esi");
+	socketCliente[0] = servidorConectarComponente(&socketEscucha, "planificador", "esi");
+	numeroClientes++;
 
-	iniciarConsola();
+	FD_ZERO (&descriptoresLectura);
+	FD_SET (socketEscucha, &descriptoresLectura);
+	for (i=0; i<numeroClientes; i++)
+	    FD_SET (socketCliente[i], &descriptoresLectura);
+
+	select (10, &descriptoresLectura, NULL, NULL, NULL);
+
+	//iniciarConsola();
 
 	close(socketEscucha);
-	close(socketEsi);
+	//close(socketCliente);
 	puts("El Planificador se ha finalizado correctamente.");
 	return 0;
 }
 
 //=======================COMANDOS DE CONSOLA====================================
 
-int cmdQuit(){
+int cmdQuit()
+{
 	done = 1;
 	return 0;
 }
 
-int cmdHelp(){
+int cmdHelp()
+{
 	register int i;
 	puts("Comando:					Descripcion:");
-	for(i=0; comandos[i].cmd; i++){
+	for (i = 0; comandos[i].cmd; i++)
+	{
 		printf("%s						%s\n", comandos[i].cmd, comandos[i].info);
 	}
 	return 0;
@@ -57,42 +69,51 @@ int cmdHelp(){
 
 //=====================FUNCIONES DE CONSOLA=====================================
 
-int existeComando(char* comando) {
+int existeComando(char* comando)
+{
 	register int i;
-	for (i = 0; comandos[i].cmd; i++) {
-		if (strcmp(comando, comandos[i].cmd) == 0) {
+	for (i = 0; comandos[i].cmd; i++)
+	{
+		if (strcmp(comando, comandos[i].cmd) == 0)
+		{
 			return i;
 		}
 	}
 	return -1;
 }
 
-char *leerComando(char *linea) {
+char *leerComando(char *linea)
+{
 	char *comando;
 	int i, j;
 	int largocmd = 0;
-	for (i = 0; i < strlen(linea); i++) {
+	for (i = 0; i < strlen(linea); i++)
+	{
 		if (linea[i] == ' ')
 			break;
 		largocmd++;
 	}
 	comando = malloc(largocmd + 1);
-	for (j = 0; j < largocmd; j++) {
+	for (j = 0; j < largocmd; j++)
+	{
 		comando[j] = linea[j];
 	}
 	comando[j++] = '\0';
 	return comando;
 }
 
-void obtenerParametros(char **parametros, char *linea) {
+void obtenerParametros(char **parametros, char *linea)
+{
 	int i, j;
-	for (i = 0; i < strlen(linea); i++) {
+	for (i = 0; i < strlen(linea); i++)
+	{
 		if (linea[i] == ' ')
 			break;
 	}
 	(*parametros) = malloc(strlen(linea) - i);
 	i++;
-	for (j = 0; i < strlen(linea); j++) {
+	for (j = 0; i < strlen(linea); j++)
+	{
 		if (linea[i] == '\0')
 			break;
 		(*parametros)[j] = linea[i];
@@ -101,55 +122,72 @@ void obtenerParametros(char **parametros, char *linea) {
 	(*parametros)[j++] = '\0';
 }
 
-COMANDO *punteroComando(int posicion){
+COMANDO *punteroComando(int posicion)
+{
 	return (&comandos[posicion]);
 }
 
-int ejecutarSinParametros(COMANDO *comando){
-	return ((*(comando->funcion)) ());
+int ejecutarSinParametros(COMANDO *comando)
+{
+	return ((*(comando->funcion))());
 }
 
-int ejecutarConParametros(char *parametros, COMANDO *comando){
-	return ((*(comando->funcion)) (parametros));
+int ejecutarConParametros(char *parametros, COMANDO *comando)
+{
+	return ((*(comando->funcion))(parametros));
 }
 
-int verificarParametros(char *linea, int posicion) {
+int verificarParametros(char *linea, int posicion)
+{
 	int i;
 	int espacios = 0;
 	char *parametros;
 	COMANDO *comando;
-	for (i = 0; i < strlen(linea); i++) {
+	for (i = 0; i < strlen(linea); i++)
+	{
 		if (linea[i] == ' ')
 			espacios++;
 	}
-	if (comandos[posicion].parametros == espacios) {
-		if (espacios == 0) {
+	if (comandos[posicion].parametros == espacios)
+	{
+		if (espacios == 0)
+		{
 			comando = punteroComando(posicion);
 			ejecutarSinParametros(comando);
-		} else {
+		}
+		else
+		{
 			obtenerParametros(&parametros, linea);
 			comando = punteroComando(posicion);
-			ejecutarConParametros(parametros,comando);
+			ejecutarConParametros(parametros, comando);
 			free(parametros);
 		}
-	} else {
-		printf("%s: La cantidad de parametros ingresados es incorrecta.\n", comandos[posicion].cmd);
+	}
+	else
+	{
+		printf("%s: La cantidad de parametros ingresados es incorrecta.\n",
+				comandos[posicion].cmd);
 	}
 	return 0;
 }
 
-void ejecutarComando(char *linea) {
+void ejecutarComando(char *linea)
+{
 	char *comando = leerComando(linea);
 	int posicion = existeComando(comando);
-	if (posicion == -1) {
+	if (posicion == -1)
+	{
 		printf("%s: El comando ingresado no existe.\n", comando);
-	} else {
+	}
+	else
+	{
 		verificarParametros(linea, posicion);
 	}
 	free(comando);
 }
 
-char *recortarLinea(char *string) {
+char *recortarLinea(char *string)
+{
 	register char *s, *t;
 	for (s = string; whitespace(*s); s++)
 		;
@@ -162,10 +200,12 @@ char *recortarLinea(char *string) {
 	return s;
 }
 
-void iniciarConsola() {
+void iniciarConsola()
+{
 	char *linea, *aux;
 	done = 0;
-	while (done == 0) {
+	while (done == 0)
+	{
 		linea = readline("user@planificador: ");
 		if (!linea)
 			break;
