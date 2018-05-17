@@ -54,7 +54,8 @@ COMANDO comandos[] = {
 		{ "status","Este comando aun no se ha desarrollado.", 1},
 		{ "deadlock","Este comando aun no se ha desarrollado.", 0},*/
 		{ "help", cmdHelp, "Imprime los comandos disponibles.", 0},
-		{ "quit", cmdQuit, "Finaliza al Planificador.", 0}
+		{ "quit", cmdQuit, "Finaliza al Planificador.", 0},
+		{ (char *)NULL, (Function *)NULL, (char *)NULL, (int *) NULL}
 };
 
 //======================VARIABLES GLOBALES======================================
