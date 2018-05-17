@@ -11,12 +11,18 @@
 #include "planificador.h"
 #include <configuracion/configuracion.h>
 
-int main()
+void remove_element(int *array, int index, int array_length)
 {
-	puts("Iniciando Planificador.");
+	int i;
+	for (i = index; i < array_length - 1; i++)
+		array[i] = array[i + 1];
+}
+
+void tratarConexiones()
+{
 	fd_set descriptoresLectura;
-	int socketEscucha;
-	int socketCliente[10];
+	int socketServer;
+	int socketCliente[100];
 	int numeroClientes = 0;
 	int i;
 
@@ -29,21 +35,60 @@ int main()
 	leerConfiguracion("IP:%s", &ip);
 	leerConfiguracion("MAX_CONEX:%d", &maxConexiones);
 
-	socketEscucha = socketServidor(puerto, ip, maxConexiones);
-	socketCliente[0] = servidorConectarComponente(&socketEscucha, "planificador", "esi");
-	numeroClientes++;
+	socketServer = socketServidor(puerto, ip, maxConexiones); //Levanto el servidor.
+	/*socketCliente[numeroClientes] = servidorConectarComponente(&socketServer, "planificador",
+	 "esi"); //Espero al primer ESI.
+	 numeroClientes++;
+	 printf("El cliente %d acaba de ingresar a nuestro servidor\n", socketCliente[0]);*/
 
-	FD_ZERO (&descriptoresLectura);
-	FD_SET (socketEscucha, &descriptoresLectura);
-	for (i=0; i<numeroClientes; i++)
-	    FD_SET (socketCliente[i], &descriptoresLectura);
+	while (1)
+	{
+		FD_ZERO(&descriptoresLectura);
+		FD_SET(socketServer, &descriptoresLectura);
+		for (i = 0; i < numeroClientes; i++)
+		{
+			FD_SET(socketCliente[i], &descriptoresLectura);
+		}
 
-	select (10, &descriptoresLectura, NULL, NULL, NULL);
+		select(100, &descriptoresLectura, NULL, NULL, NULL);
 
-	//iniciarConsola();
+		/* Se tratan los clientes */
+		for (i = 0; i < numeroClientes; i++)
+		{
+			if (FD_ISSET(socketCliente[i], &descriptoresLectura))
+			{
+				printf("El cliente %d se fue de nuestro servidor\n",
+						socketCliente[i]);
+				close(socketCliente[i]);
+				remove_element(socketCliente, i, numeroClientes);
+				numeroClientes--;
+				printf("CANTIDAD DE CLIENTES: %d\n", numeroClientes);
+				/* Hay un error en la lectura. Posiblemente el cliente ha cerrado la conexión. Hacer aquí el tratamiento. En el ejemplo, se cierra el socket y se elimina del array de socketCliente[] */
+			}
+		}
 
-	close(socketEscucha);
-	//close(socketCliente);
+		/* Se trata el socket servidor */
+		if (FD_ISSET(socketServer, &descriptoresLectura))
+		{
+			socketCliente[numeroClientes] = servidorConectarComponente(
+					&socketServer, "planificador", "esi");
+			printf("El cliente %d acaba de ingresar a nuestro servidor\n",
+					socketCliente[numeroClientes]);
+			numeroClientes++;
+			printf("CANTIDAD DE CLIENTES: %d\n", numeroClientes);
+			/* Un nuevo cliente solicita conexión. Aceptarla aquí. En el ejemplo, se acepta la conexión, se mete el descriptor en socketCliente[] y se envía al cliente su posición en el array como número de cliente. */
+		}
+	}
+
+	close(socketServer);
+	// falta cerrar los clientes!!
+}
+
+int main()
+{
+	puts("Iniciando Planificador.");
+	tratarConexiones();
+	iniciarConsola();
 	puts("El Planificador se ha finalizado correctamente.");
 	return 0;
 }
