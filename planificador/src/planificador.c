@@ -9,8 +9,29 @@
  */
 
 #include "planificador.h"
-#include <configuracion/configuracion.h>
-#include <pthread.h>
+
+int main() {
+	puts("Iniciando Planificador.");
+	pthread_t hiloConexiones;
+	if (pthread_create(&hiloConexiones, NULL, (void *) tratarConexiones,
+	NULL)) {
+
+		fprintf(stderr, "Error creando el thread\n");
+		return 1;
+	}
+	iniciarConsola();
+	if (pthread_cancel(hiloConexiones)) {
+
+		fprintf(stderr, "Error cerrando el thread\n");
+		return 2;
+
+	}
+	cerrarConexiones();
+	puts("El Planificador se ha finalizado correctamente.");
+	return 0;
+}
+
+//=====================FUNCIONES DE MANEJO DE ESI=====================================
 
 void remove_element(int *array, int index, int array_length) {
 	int i;
@@ -20,13 +41,8 @@ void remove_element(int *array, int index, int array_length) {
 
 void tratarConexiones() {
 	fd_set descriptoresLectura;
-	int socketServer;
-	int socketCliente[100];
-	int numeroClientes = 0;
 	int i;
 	struct timeval timeout;
-	timeout.tv_sec = 1;
-	timeout.tv_usec = 0;
 	int resultado;
 
 	char ip[16];
@@ -44,7 +60,9 @@ void tratarConexiones() {
 	 numeroClientes++;
 	 printf("El cliente %d acaba de ingresar a nuestro servidor\n", socketCliente[0]);*/
 
-	while (done != 1) {
+	while (1) {
+		timeout.tv_sec = 1;
+		timeout.tv_usec = 0;
 		FD_ZERO(&descriptoresLectura);
 		FD_SET(socketServer, &descriptoresLectura);
 		for (i = 0; i < numeroClientes; i++) {
@@ -53,33 +71,32 @@ void tratarConexiones() {
 
 		resultado = select(100, &descriptoresLectura, NULL, NULL, &timeout);
 
-		if (resultado != 1) {
+		if (resultado != 0) { // TODO REVISAR
 			/* Se tratan los clientes */
 			for (i = 0; i < numeroClientes; i++) {
 				if (FD_ISSET(socketCliente[i], &descriptoresLectura)) {
-					printf("El cliente %d se fue de nuestro servidor\n",
-							socketCliente[i]);
+					//printf("El cliente %d se fue de nuestro servidor\n",socketCliente[i]);
 					close(socketCliente[i]);
 					remove_element(socketCliente, i, numeroClientes);
 					numeroClientes--;
-					printf("CANTIDAD DE CLIENTES: %d\n", numeroClientes);
+					//printf("CANTIDAD DE CLIENTES: %d\n", numeroClientes);
 					/* Hay un error en la lectura. Posiblemente el cliente ha cerrado la conexión. Hacer aquí el tratamiento. En el ejemplo, se cierra el socket y se elimina del array de socketCliente[] */
 				}
 			}
-
 			/* Se trata el socket servidor */
 			if (FD_ISSET(socketServer, &descriptoresLectura)) {
 				socketCliente[numeroClientes] = servidorConectarComponente(
 						&socketServer, "planificador", "esi");
-				printf("El cliente %d acaba de ingresar a nuestro servidor\n",
-						socketCliente[numeroClientes]);
+				//printf("El cliente %d acaba de ingresar a nuestro servidor\n",socketCliente[numeroClientes]);
 				numeroClientes++;
-				printf("CANTIDAD DE CLIENTES: %d\n", numeroClientes);
+				//printf("CANTIDAD DE CLIENTES: %d\n", numeroClientes);
 				/* Un nuevo cliente solicita conexión. Aceptarla aquí. En el ejemplo, se acepta la conexión, se mete el descriptor en socketCliente[] y se envía al cliente su posición en el array como número de cliente. */
 			}
 		}
 	}
+}
 
+void cerrarConexiones() {
 	while (numeroClientes != 0) {
 		printf("El cliente %d fue finalizado por comando (quit).\n",
 				socketCliente[numeroClientes - 1]);
@@ -90,27 +107,16 @@ void tratarConexiones() {
 	close(socketServer);
 }
 
-int main() {
-	puts("Iniciando Planificador.");
-	pthread_t hiloConexiones;
-	if (pthread_create(&hiloConexiones, NULL, (void *) tratarConexiones,
-	NULL)) {
+//=======================COMANDOS DE CONSOLA====================================
 
-		fprintf(stderr, "Error creating thread\n");
-		return 1;
+int cmdListaEsi(){
+	register int i;
+	printf("CANTIDAD DE ESI CONECTADOS: %d\n", numeroClientes);
+	for(i=0; i < numeroClientes; i++){
+		printf("ESI %d en posicion %d\n", socketCliente[i], i);
 	}
-	iniciarConsola();
-	if (pthread_join(hiloConexiones, NULL)) {
-
-		fprintf(stderr, "Error joining thread\n");
-		return 2;
-
-	}
-	puts("El Planificador se ha finalizado correctamente.");
 	return 0;
 }
-
-//=======================COMANDOS DE CONSOLA====================================
 
 int cmdQuit() {
 	done = 1;
@@ -119,9 +125,10 @@ int cmdQuit() {
 
 int cmdHelp() {
 	register int i;
-	puts("Comando:					Descripcion:");
+	puts("Comando:\t\t\tDescripcion:");
 	for (i = 0; comandos[i].cmd; i++) {
-		printf("%s						%s\n", comandos[i].cmd, comandos[i].info);
+		if(strlen(comandos[i].cmd) < 5) printf("%s\t\t\t\t%s\n", comandos[i].cmd, comandos[i].info);
+		else printf("%s\t\t\t%s\n", comandos[i].cmd, comandos[i].info);
 	}
 	return 0;
 }

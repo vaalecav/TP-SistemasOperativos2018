@@ -32,7 +32,7 @@ int main()
 
 	parsearScript();
 
-	sleep(10);
+	sleep(20);
 
 	close(socketPlanificador);
 

@@ -1,22 +1,15 @@
 /*
- * planificador.h
- *
- *  Created on: 25 abr. 2018
- *      Author: utnso
- */
-
-#ifndef PLANIFICADOR_H_
-#define PLANIFICADOR_H_
-
-/*
  ============================================================================
- Name        : planificador.c
+ Name        : planificador.h
  Author      : Los Simuladores
  Version     : Alpha
  Copyright   : Todos los derechos reservados
  Description : Proceso Planificador
  ============================================================================
  */
+
+#ifndef PLANIFICADOR_H_
+#define PLANIFICADOR_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +26,7 @@
 
 //=======================COMANDOS DE CONSOLA====================================
 
-int cmdQuit(), cmdHelp(); // Son las funciones que ejecutan los comandos ingresados por consola.
+int cmdQuit(), cmdHelp(), cmdListaEsi(); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
 
@@ -55,12 +48,22 @@ COMANDO comandos[] = {
 		{ "deadlock","Este comando aun no se ha desarrollado.", 0},*/
 		{ "help", cmdHelp, "Imprime los comandos disponibles.", 0},
 		{ "quit", cmdQuit, "Finaliza al Planificador.", 0},
+		{ "listaEsi", cmdListaEsi, "Muestra la lista de ESI actual.", 0},
 		{ (char *)NULL, (Function *)NULL, (char *)NULL, (int *) NULL}
 };
 
 //======================VARIABLES GLOBALES======================================
 
 int done; // Es 0 por default. La pasamos a 1 para finalizar al Planificador.
+int socketServer;
+int socketCliente[100];
+int numeroClientes = 0;
+
+//=====================FUNCIONES DE MANEJO DE ESI===============================
+
+void remove_element(int *array, int index, int array_length);
+void tratarConexiones();
+void cerrarConexiones();
 
 //=====================FUNCIONES DE CONSOLA=====================================
 

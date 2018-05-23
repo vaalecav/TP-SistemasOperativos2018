@@ -26,7 +26,7 @@ endif
 all: instancia
 
 dependents:
-	-cd /home/utnso/Escritorio/tp-2018-1c-Los-Simuladores/libraries/Debug && $(MAKE) all
+	-cd /home/utnso/Escritorio/tp-2018-1c-Los-Simuladores/libraries/Debug && $(MAKE) clean all
 
 # Tool invocations
 instancia: $(OBJS) $(USER_OBJS) /home/utnso/Escritorio/tp-2018-1c-Los-Simuladores/libraries/Debug/liblibraries.so
