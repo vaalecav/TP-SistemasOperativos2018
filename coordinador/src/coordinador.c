@@ -135,8 +135,8 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 			enviarMensaje(socketPlanificador, mensajeSplitted[1]);
 			//mando mensaje del esi al planificador
 		} else if(estadoClave == EN_INSTANCIA_NO_BLOQUEADA){
-			bloquearClave(); //FALTA HACER BLOQUEAR CLAVE
-			enviarHeader(socketPlanificador, mensajeSplitted[1], COORDINADOR_ESI_BLOQUEO);
+			bloquearClave(); //TODO FALTA HACER BLOQUEAR CLAVE
+			enviarHeader(socketPlanificador, mensajeSplitted[1], COORDINADOR_ESI_BLOQUEAR);
 			enviarMensaje(socketPlanificador, mensajeSplitted[1]);
 		} else if(estadoClave == NO_EN_INSTANCIA){
 			enviarHeader(socketPlanificador, mensajeSplitted[1], COORDINADOR_ESI_CREADO);
