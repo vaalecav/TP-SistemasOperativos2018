@@ -130,9 +130,9 @@ int main() {
 	leerConfiguracion("MAX_CONEX:%d", &maxConexiones);
 
 	socketEscucha = socketServidor(puerto, ip, maxConexiones);
-	close(servidorConectarComponente(&socketEscucha, "coordinador", "instancia"));
-	close(servidorConectarComponente(&socketEscucha, "coordinador", "planificador"));
-	close(servidorConectarComponente(&socketEscucha, "coordinador", "esi"));
+	//close(servidorConectarComponente(&socketEscucha, "coordinador", "instancia"));
+	//close(servidorConectarComponente(&socketEscucha, "coordinador", "planificador"));
+	//close(servidorConectarComponente(&socketEscucha, "coordinador", "esi"));
 
 	listaInstancias = list_create();
 	while((socketComponente = servidorConectarComponente(&socketEscucha,"",""))) {//preguntar si hace falta mandar msjes de ok x cada hilo
