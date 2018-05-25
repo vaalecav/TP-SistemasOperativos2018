@@ -38,4 +38,14 @@ typedef struct {
 	int cantidadEntradas;
 } __attribute__((packed)) Entrada;
 
+typedef struct {
+  char* nombre;
+  int bloqueado;
+} __attribute__((packed)) Clave;
+
+typedef struct {
+  int socketComponente;
+  int socketPlanificador;
+} __attribute__((packed)) SocketHilos;
+
 #endif /* COMUNICACION_COMUNICACION_H_ */

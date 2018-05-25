@@ -9,10 +9,39 @@
  */
 #include "coordinador.h"
 
-void manejarInstancia(int socketInstancia) {
+void manejarInstancia(int socketInstancia, int largoMensaje) {
+	Instancia instanciaConectada;
+	int tamanioInformacionEntradas = sizeof(InformacionEntradas);
+	InformacionEntradas * entradasInstancia = (InformacionEntradas*) malloc(tamanioInformacionEntradas);
+
+	t_config* configuracion;
+	char* nombreInstancia;
+
+	nombreInstancia = malloc(largoMensaje + 1);
+	configuracion = config_create("./configuraciones/configuracion.txt");
+
+	//recibimos el nombre de la instancia que se conecto
+	recibirMensaje(socketInstancia, largoMensaje, &nombreInstancia);
+
+	//leo cantidad entradas y su respectivo tamanio del archivo de configuracion
+	entradasInstancia->cantidad = config_get_int_value(configuracion, "CANTIDAD_ENTRADAS");
+	entradasInstancia->tamanio = config_get_int_value(configuracion, "TAMANIO_ENTRADA");
+
+	//enviamos cantidad de entradas y su respectivo tamanio a la instancia
+	enviarInformacion(socketInstancia, entradasInstancia, &tamanioInformacionEntradas);
+
+	instanciaConectada->nombre = nombreInstancia;
+	instanciaConectada->socket = socketInstancia;
+	instanciaConectada->claves = (char **)malloc(entradasInstancia->cantidad * 40); //multiplico por maximo tamanio de clave
+
+	//agregamos a la lista de instancias
 	pthread_mutex_lock(&mutexListaInstancias);
-	list_add(listaInstancias, (void*) socketInstancia);
+	list_add(listaInstancias, (void*) instanciaConectada);
 	pthread_mutex_unlock(&mutexListaInstancias);
+
+	free(entradasInstancia);
+	free(nombreInstancia);
+	config_destroy(configuracion);
 }
 
 void closeInstancia(void* instancia) {
@@ -51,7 +80,44 @@ void asignarInstancia(char* mensaje) {
 	}
 }
 
-void manejarEsi(int socketEsi, int largoMensaje) {
+int compararClave(void* data, char*clave){
+	Instancia instancia = (Instancia*)data;
+	t_link_element *element = (instancia->claves)->head;
+	t_link_element *aux = NULL;
+		while (element != NULL) {
+			aux = element->next;
+			Clave claveInstancia = (Clave*)element->data;
+			if(strcmp(claveInstancia->nombre,clave) == 0){
+				if(claveInstancia->bloqueado){
+					return EN_INSTANCIA_BLOQUEADA; //hay una instancia que ya tiene la clave y esta bloqueada
+				}else{
+					return EN_INSTANCIA_NO_BLOQUEADA; // hay una instancia que ya tiene la clave pero no esta bloqueada
+				}
+			}
+			element = aux;
+		}
+		return NO_EN_INSTANCIA;
+}
+
+
+int claveEstaEnInstancia(char* clave){
+	//recorro lista de instancias -> recorro cada lista de claves
+	t_link_element *element = listaInstancias->head;
+	t_link_element *aux = NULL;
+	while (element != NULL) {
+		aux = element->next;
+		int resultado = compararClave(element->data, clave);
+		if(resultado == EN_INSTANCIA_BLOQUEADA){
+			return EN_INSTANCIA_BLOQUEADA; //hay una instancia que ya tiene la clave y esta bloqueada
+		}else if(resultado == EN_INSTANCIA_NO_BLOQUEADA){
+			return EN_INSTANCIA_NO_BLOQUEADA; //hay una instancia que ya tiene la clave y no esta bloqueada
+		}
+		element = aux;
+	}
+	return NO_EN_INSTANCIA;
+}
+
+void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	char* mensaje;
 	char** mensajeSplitted;
 
@@ -62,6 +128,21 @@ void manejarEsi(int socketEsi, int largoMensaje) {
 
 	if (strcmp(mensajeSplitted[0], "GET") == 0) {
 		puts("GET");
+
+		int estadoClave = claveEstaEnInstancia(mensajeSplitted[1]);
+		if(estadoClave == EN_INSTANCIA_BLOQUEADA){
+			enviarHeader(socketPlanificador, mensajeSplitted[1], COORDINADOR_ESI_BLOQUEADO); //LE ENVIO LA CLAVE
+			enviarMensaje(socketPlanificador, mensajeSplitted[1]);
+			//mando mensaje del esi al planificador
+		} else if(estadoClave == EN_INSTANCIA_NO_BLOQUEADA){
+			bloquearClave(); //FALTA HACER BLOQUEAR CLAVE
+			enviarHeader(socketPlanificador, mensajeSplitted[1], COORDINADOR_ESI_BLOQUEO);
+			enviarMensaje(socketPlanificador, mensajeSplitted[1]);
+		} else if(estadoClave == NO_EN_INSTANCIA){
+			enviarHeader(socketPlanificador, mensajeSplitted[1], COORDINADOR_ESI_CREADO);
+			enviarMensaje(socketPlanificador, mensajeSplitted[1]);
+		}
+
 	} else if (strcmp(mensajeSplitted[0], "SET") == 0) {
 		puts("SET");
 		asignarInstancia(mensaje);
@@ -73,36 +154,37 @@ void manejarEsi(int socketEsi, int largoMensaje) {
 	}
 
 	free(mensaje);
+	free(mensajeSplitted);
+	close(socketEsi);
 }
 
-void manejarConexion(void* nuevoSocket) {
-	int socketConectado = *(int*)nuevoSocket;
+void manejarConexion(void* socketsNecesarios) {
+	SocketHilos socketsConectados = *(SocketHilos*)socketsNecesarios;
 	ContentHeader * header;
 
-	header = recibirHeader(socketConectado);
+	header = recibirHeader(socketsConectados->socketComponente);
 
 	switch(header->id){
 		case INSTANCIA:
-			manejarInstancia(socketConectado);
+			manejarInstancia(socketsConectados->socketComponente, header->largo);
 			break;
 
 		case ESI:
-			manejarEsi(socketConectado, header->largo);
+			manejarEsi(socketsConectados->socketComponente, socketsConectados->socketPlanificador, header->largo);
 			break;
 	}
 
 	free(header);
-	close(socketConectado);
 }
 
-int correrEnHilo(int socketConectado) {
+int correrEnHilo(SocketHilos socketsConectados) {
 	pthread_t idHilo;
-	int *nuevoSocket;
-	nuevoSocket = malloc(sizeof(int));
-	*nuevoSocket = socketConectado;
+	SocketHilos* socketsNecesarios;
+	socketsNecesarios = malloc(sizeof(SocketHilos));
+	*socketsNecesarios = socketsConectados;
 
 	printf("Antes del Hilo\n");
-	if (pthread_create(&idHilo, NULL, (void*) manejarConexion, (void*)nuevoSocket)) {
+	if (pthread_create(&idHilo, NULL, (void*) manejarConexion, (void*)socketsNecesarios)) {
 		perror("No se pudo crear el Hilo");
 		exit(1);
 	}
@@ -116,8 +198,9 @@ int correrEnHilo(int socketConectado) {
 
 int main() {
 	puts("Iniciando Coordinador.");
-	int socketEscucha, socketComponente;
-
+	int socketEscucha, socketComponente, socketConectadoPlanificador;
+	SocketHilos socketsNecesarios;
+	t_config* configuracion;
 	char ip[16];
 	int puerto;
 	int maxConexiones;
@@ -125,21 +208,25 @@ int main() {
 	indexInstanciaEL = 0;
 
 	//Leo puertos e ips de archivo de configuracion
-	leerConfiguracion("PUERTO:%d", &puerto);
-	leerConfiguracion("IP:%s", &ip);
-	leerConfiguracion("MAX_CONEX:%d", &maxConexiones);
+	configuracion = config_create("./configuraciones/configuracion.txt");
+	puerto = config_get_int_value(configuracion, "PUERTO");
+	ip = config_get_string_value(configuracion, "IP");
+	maxConexiones = config_get_int_value(configuracion, "MAX_CONEX");
 
 	socketEscucha = socketServidor(puerto, ip, maxConexiones);
-	//close(servidorConectarComponente(&socketEscucha, "coordinador", "instancia"));
-	//close(servidorConectarComponente(&socketEscucha, "coordinador", "planificador"));
-	//close(servidorConectarComponente(&socketEscucha, "coordinador", "esi"));
+
+	socketConectadoPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
 
 	listaInstancias = list_create();
 	while((socketComponente = servidorConectarComponente(&socketEscucha,"",""))) {//preguntar si hace falta mandar msjes de ok x cada hilo
-		correrEnHilo(socketComponente);
+		socketsNecesarios->socketComponente = socketComponente;
+		socketsNecesarios->socketPlanificador = socketConectadoPlanificador;
+		correrEnHilo(socketsNecesarios);
 	}
 
 	close(socketEscucha);
+	close(socketConectadoPlanificador);
+	config_destroy(configuracion);
 	cerrarInstancias();
 	puts("El Coordinador se ha finalizado correctamente.");
 	return 0;
