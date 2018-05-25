@@ -21,7 +21,7 @@ int conectarClienteA(int puerto, char* ip) {
 	struct addrinfo *informacionServidor;
 	char* puertoDestino;
 
-		puertoDestino = malloc(sizeof(int) + 1);
+	puertoDestino = malloc(sizeof(int) + 1);
 	// Definiendo el destino
 	memset(&direccionDestino, 0, sizeof(direccionDestino));
 	direccionDestino.ai_family = AF_INET;    // Permite que la maquina se encargue de verificar si usamos IPv4 o IPv6
@@ -61,7 +61,7 @@ int socketServidor(int puerto, char* ip, int maxConexiones){
 		perror("Socket error");
 		exit(1);
 	}
-	puts("Socket creado");
+	if (DEBUG_SOCKET) puts("Socket creado");
 
 
 	memset(&server,0,sizeof(server));
@@ -75,7 +75,7 @@ int socketServidor(int puerto, char* ip, int maxConexiones){
 		perror("Bind error");
 		exit(1);
 	}
-	puts("Bind realizado");
+	if (DEBUG_SOCKET) puts("Bind realizado");
 
 	return miSocket;
 }
@@ -90,7 +90,7 @@ int aceptarConexion(int miSocket) {
 		perror("Listen error");
 		exit(1);
 	}
-	puts("Escuchando nuevas conexiones...");
+	if (DEBUG_SOCKET) puts("Escuchando nuevas conexiones...");
 
 	//Aceptar conexion
 	//Ciclo de accept, bloquea el proceso hasta que cliente se concete
@@ -101,7 +101,7 @@ int aceptarConexion(int miSocket) {
 		perror("Accept error");
 		exit(1);
 	}
-	puts("Conexion aceptada");
+	if (DEBUG_SOCKET) puts("Conexion aceptada");
 
 	return socketConectado;
 }
@@ -132,10 +132,10 @@ int enviarHeader(int socketDestino, char* mensaje, int id) {
 	tamanioHeader = sizeof(ContentHeader);
 
 	if(enviarInformacion(socketDestino, header, &tamanioHeader) < 0){
-		puts("Error en enviar header");
+		if (DEBUG_SOCKET) puts("Error en enviar header");
 		exit(1);
 	}
-	puts("Header enviado");
+	if (DEBUG_SOCKET) puts("Header enviado");
 
 	return 1;
 }
@@ -152,10 +152,10 @@ ContentHeader * recibirHeader(int socketEmisor){
 
 	recibido = recv(socketEmisor, header, sizeof(ContentHeader), 0);
 	if (recibido < 0) {
-		puts("Error en recibir header");
+		if (DEBUG_SOCKET) puts("Error en recibir header");
 		exit(1);
 	} else if (recibido == 0) {
-		puts("Socket emisor desconectado");
+		if (DEBUG_SOCKET) puts("Socket emisor desconectado");
 		close(socketEmisor);
 		free(header);
 		exit(1);
@@ -168,16 +168,16 @@ void recibirMensaje(int socketEmisor, int tamanioMensaje, char** bufferMensaje){
 
 	recibido = recv(socketEmisor, *bufferMensaje, tamanioMensaje, 0);
 	if(recibido < 0){
-		puts("Error en recibir mensaje");
+		if (DEBUG_SOCKET) puts("Error en recibir mensaje");
 		exit(1);
 	} else if (recibido == 0){
-		puts("Socket Emisor desconectado");
+		if (DEBUG_SOCKET) puts("Socket Emisor desconectado");
 		close(socketEmisor);
 		free(*bufferMensaje);
 		exit(1);
 	}
 	(*bufferMensaje) [tamanioMensaje] = '\0';
-	printf("El mensaje recibido *recibirMensaje* es: %s\n", *bufferMensaje);
+	if (DEBUG_SOCKET) printf("El mensaje recibido *recibirMensaje* es: %s\n", *bufferMensaje);
 }
 
 int servidorConectarComponente(int* socketEscucha, char* servidor, char* componente){

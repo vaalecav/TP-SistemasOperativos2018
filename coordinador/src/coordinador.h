@@ -20,6 +20,8 @@
 
 #include <socket/sockets.h>
 #include <commons/string.h>
+#include <commons/config.h>
+#include <comunicacion/comunicacion.h>
 #include <configuracion/configuracion.h>
 #include <pthread.h>
 #include "algoritmosDistribucion/algoritmosDistribucion.h"
@@ -27,12 +29,20 @@
 t_list *listaInstancias;
 pthread_mutex_t mutexListaInstancias;
 
-void manejarInstancia(int);
+enum CLAVE{
+	NO_EN_INSTANCIA = 0,
+	EN_INSTANCIA_BLOQUEADA = 1,
+	EN_INSTANCIA_NO_BLOQUEADA = 2
+};
+
+void manejarInstancia(int, int);
 void closeInstancia(void*);
 void cerrarInstancias();
 void asignarInstancia(char*);
 void manejarEsi(int, int);
 void manejarConexion(void*);
 int correrEnHilo(int);
+int claveEstaEnInstancia(char*);
+int compararClave(Instancia, char*);
 
 #endif /* COORDINADOR_H_ */

@@ -7,6 +7,7 @@
 
 #ifndef SOCKETS_H_
 #define SOCKETS_H_
+#define DEBUG_SOCKET 0
 
 #include <stdio.h>
 #include <stdlib.h>
