@@ -39,10 +39,10 @@ void manejarInstancia(int, int);
 void closeInstancia(void*);
 void cerrarInstancias();
 void asignarInstancia(char*);
-void manejarEsi(int, int);
+void manejarEsi(int, int, int);
 void manejarConexion(void*);
-int correrEnHilo(int);
+int correrEnHilo(SocketHilos);
 int claveEstaEnInstancia(char*);
-int compararClave(Instancia, char*);
+int compararClave(void*, char*);
 
 #endif /* COORDINADOR_H_ */

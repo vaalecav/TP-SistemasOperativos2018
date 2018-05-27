@@ -19,7 +19,7 @@ typedef struct {
 typedef struct {
 	int socket;
 	char* nombre;
-	char** claves;
+	t_list *claves;
 } __attribute__((packed)) Instancia;
 
 typedef struct {

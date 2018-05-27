@@ -10,10 +10,9 @@
 #include "coordinador.h"
 
 void manejarInstancia(int socketInstancia, int largoMensaje) {
-	Instancia instanciaConectada;
 	int tamanioInformacionEntradas = sizeof(InformacionEntradas);
+	Instancia *instanciaConectada = (Instancia*) malloc(sizeof(Instancia));
 	InformacionEntradas * entradasInstancia = (InformacionEntradas*) malloc(tamanioInformacionEntradas);
-
 	t_config* configuracion;
 	char* nombreInstancia;
 
@@ -81,16 +80,17 @@ void asignarInstancia(char* mensaje) {
 }
 
 int compararClave(void* data, char*clave){
-	Instancia instancia = (Instancia*)data;
+	Instancia *instancia = (Instancia*)data;
 	t_link_element *element = (instancia->claves)->head;
 	t_link_element *aux = NULL;
 		while (element != NULL) {
 			aux = element->next;
-			Clave claveInstancia = (Clave*)element->data;
+			Clave *claveInstancia = (Clave*)element->data;
 			if(strcmp(claveInstancia->nombre,clave) == 0){
 				if(claveInstancia->bloqueado){
 					return EN_INSTANCIA_BLOQUEADA; //hay una instancia que ya tiene la clave y esta bloqueada
 				}else{
+					claveInstancia->bloqueado = 1; //la bloqueo
 					return EN_INSTANCIA_NO_BLOQUEADA; // hay una instancia que ya tiene la clave pero no esta bloqueada
 				}
 			}
@@ -130,12 +130,11 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 		puts("GET");
 
 		int estadoClave = claveEstaEnInstancia(mensajeSplitted[1]);
-		if(estadoClave == EN_INSTANCIA_BLOQUEADA){
+		if(estadoClave == EN_INSTANCIA_BLOQUEADA){ //Notifico situacion al planificador
 			enviarHeader(socketPlanificador, mensajeSplitted[1], COORDINADOR_ESI_BLOQUEADO); //LE ENVIO LA CLAVE
 			enviarMensaje(socketPlanificador, mensajeSplitted[1]);
-			//mando mensaje del esi al planificador
 		} else if(estadoClave == EN_INSTANCIA_NO_BLOQUEADA){
-			bloquearClave(); //TODO FALTA HACER BLOQUEAR CLAVE
+			//clave ya se bloqueo en lista instancias
 			enviarHeader(socketPlanificador, mensajeSplitted[1], COORDINADOR_ESI_BLOQUEAR);
 			enviarMensaje(socketPlanificador, mensajeSplitted[1]);
 		} else if(estadoClave == NO_EN_INSTANCIA){
@@ -162,15 +161,15 @@ void manejarConexion(void* socketsNecesarios) {
 	SocketHilos socketsConectados = *(SocketHilos*)socketsNecesarios;
 	ContentHeader * header;
 
-	header = recibirHeader(socketsConectados->socketComponente);
+	header = recibirHeader(socketsConectados.socketComponente);
 
 	switch(header->id){
 		case INSTANCIA:
-			manejarInstancia(socketsConectados->socketComponente, header->largo);
+			manejarInstancia(socketsConectados.socketComponente, header->largo);
 			break;
 
 		case ESI:
-			manejarEsi(socketsConectados->socketComponente, socketsConectados->socketPlanificador, header->largo);
+			manejarEsi(socketsConectados.socketComponente, socketsConectados.socketPlanificador, header->largo);
 			break;
 	}
 
@@ -210,7 +209,7 @@ int main() {
 	//Leo puertos e ips de archivo de configuracion
 	configuracion = config_create("./configuraciones/configuracion.txt");
 	puerto = config_get_int_value(configuracion, "PUERTO");
-	ip = config_get_string_value(configuracion, "IP");
+	memcpy(ip, config_get_string_value(configuracion, "IP"), sizeof(ip));
 	maxConexiones = config_get_int_value(configuracion, "MAX_CONEX");
 
 	socketEscucha = socketServidor(puerto, ip, maxConexiones);
@@ -219,8 +218,8 @@ int main() {
 
 	listaInstancias = list_create();
 	while((socketComponente = servidorConectarComponente(&socketEscucha,"",""))) {//preguntar si hace falta mandar msjes de ok x cada hilo
-		socketsNecesarios->socketComponente = socketComponente;
-		socketsNecesarios->socketPlanificador = socketConectadoPlanificador;
+		socketsNecesarios.socketComponente = socketComponente;
+		socketsNecesarios.socketPlanificador = socketConectadoPlanificador;
 		correrEnHilo(socketsNecesarios);
 	}
 

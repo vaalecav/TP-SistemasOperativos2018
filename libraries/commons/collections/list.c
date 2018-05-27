@@ -99,11 +99,6 @@ void* list_find(t_list *self, bool(*condition)(void*)) {
 	return element != NULL ? element->data : NULL;
 }
 
-void* list_find_by_condition(t_list *self, bool(*condition)(void*, void*), void* param) {
-	t_link_element *element = list_find_element_by_condition(self, condition, NULL, param);
-	return element != NULL ? element : NULL;
-}
-
 void list_iterate(t_list* self, void(*closure)(void*)) {
 	t_link_element *element = self->head;
 	t_link_element *aux = NULL;
@@ -319,22 +314,6 @@ static t_link_element* list_find_element(t_list *self, bool(*condition)(void*), 
 	int position = 0;
 
 	while (element != NULL && !condition(element->data)) {
-		element = element->next;
-		position++;
-	}
-
-	if (index != NULL) {
-		*index = position;
-	}
-
-	return element;
-}
-
-static t_link_element* list_find_element_by_condition(t_list *self, bool(*condition)(void*, void*), int* index, void* param) {
-	t_link_element *element = self->head;
-	int position = 0;
-
-	while (element != NULL && !condition(element->data, param)) {
 		element = element->next;
 		position++;
 	}
