@@ -20,13 +20,14 @@
 #include <readline/history.h>
 #include <socket/sockets.h>
 #include <configuracion/configuracion.h>
+#include <semaphore.h>
 
 //===================DEFINES====================================================
 
 
 //=======================COMANDOS DE CONSOLA====================================
 
-int cmdQuit(), cmdHelp(), cmdListaEsi(); // Son las funciones que ejecutan los comandos ingresados por consola.
+int cmdQuit(), cmdHelp(), cmdListaEsi(), cmdPause(), cmdContinue(), cmdColaReady(); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
 
@@ -38,9 +39,9 @@ typedef struct COMANDO{
 } COMANDO;
 
 COMANDO comandos[] = {
-/*		{ "pausar","Este comando aun no se ha desarrollado.", 0},
-		{ "continuar","Este comando aun no se ha desarrollado.", 0},
-		{ "bloquear","Este comando aun no se ha desarrollado.", 2},
+		{ "pausar", cmdPause,"Pausa la ejecucion de ESIs.", 0},
+		{ "continuar", cmdContinue,"Reanuda la ejecucion de ESIs.", 0},
+/*		{ "bloquear","Este comando aun no se ha desarrollado.", 2},
 		{ "desbloquear","Este comando aun no se ha desarrollado.", 1},
 		{ "listar","Este comando aun no se ha desarrollado.", 1},
 		{ "kill","Este comando aun no se ha desarrollado.", 1},
@@ -49,15 +50,24 @@ COMANDO comandos[] = {
 		{ "help", cmdHelp, "Imprime los comandos disponibles.", 0},
 		{ "quit", cmdQuit, "Finaliza al Planificador.", 0},
 		{ "listaEsi", cmdListaEsi, "Muestra la lista de ESI actual.", 0},
+		{ "colaReady", cmdColaReady, "Muestra la cola de Ready actual.", 0},
 		{ (char *)NULL, (Function *)NULL, (char *)NULL, (int *) NULL}
 };
 
 //======================VARIABLES GLOBALES======================================
 
-int done; // Es 0 por default. La pasamos a 1 para finalizar al Planificador.
+int done = 0; // Es 0 por default. La pasamos a 1 para finalizar al Planificador.
+int ejecutar = 0;
 int socketServer;
 int socketCliente[100];
+int colaReady[100];
 int numeroClientes = 0;
+int sem_clientes = 1;
+
+//=====================ALGORITMO FIFO===========================================
+
+int tomarPrimero(int *array, int array_length);
+void algoritmoFifo();
 
 //=====================FUNCIONES DE MANEJO DE ESI===============================
 

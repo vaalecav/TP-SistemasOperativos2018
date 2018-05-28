@@ -10,10 +10,20 @@
 
 #include "planificador.h"
 
+sem_t mutex;
+
 int main() {
 	puts("Iniciando Planificador.");
+	sem_init(&mutex, 0, 1);
 	pthread_t hiloConexiones;
+	pthread_t algoritmo;
 	if (pthread_create(&hiloConexiones, NULL, (void *) tratarConexiones,
+	NULL)) {
+
+		fprintf(stderr, "Error creando el thread\n");
+		return 1;
+	}
+	if (pthread_create(&algoritmo, NULL, (void *) algoritmoFifo,
 	NULL)) {
 
 		fprintf(stderr, "Error creando el thread\n");
@@ -26,9 +36,52 @@ int main() {
 		return 2;
 
 	}
+	if (pthread_cancel(algoritmo)) {
+
+			fprintf(stderr, "Error cerrando el thread\n");
+			return 2;
+
+		}
 	cerrarConexiones();
+	sem_destroy(&mutex);
 	puts("El Planificador se ha finalizado correctamente.");
 	return 0;
+}
+
+//=====================ALGORITMO FIFO ================================================
+
+int tomarPrimero(int *array, int array_length) {
+	int i;
+	printf("saque el socket %d\n", array[0]);
+	int retorno = array[0];
+	for (i = 0; i < array_length - 1; i++)
+		array[i] = array[i + 1];
+	return retorno;
+}
+
+void quitarReady(int socket){
+	int i = 0;
+	while (colaReady[i] != socket){
+		i++;
+	}
+	remove_element(colaReady, i, numeroClientes);
+}
+
+void algoritmoFifo() {
+	int esiToRun;
+	while (1) {
+		if (ejecutar == 1) {
+			sem_wait(&mutex);
+			esiToRun = tomarPrimero(colaReady, numeroClientes);
+			//TODO enviar mensaje al ESI para indicarle que ejecute;
+			sleep(10);
+			//TODO recibir respuesta del ESI, vuelvo a encolarlo;
+			printf("meti el socket %d en la posicion %d\n", esiToRun, numeroClientes);
+			colaReady[numeroClientes-1] = esiToRun;
+			sem_post(&mutex);
+		} else {
+		}
+	}
 }
 
 //=====================FUNCIONES DE MANEJO DE ESI=====================================
@@ -71,12 +124,14 @@ void tratarConexiones() {
 
 		resultado = select(100, &descriptoresLectura, NULL, NULL, &timeout);
 
-		if (resultado != 0) { // TODO REVISAR
+		if (resultado != 0) {
 			/* Se tratan los clientes */
+			sem_wait(&mutex);
 			for (i = 0; i < numeroClientes; i++) {
 				if (FD_ISSET(socketCliente[i], &descriptoresLectura)) {
 					//printf("El cliente %d se fue de nuestro servidor\n",socketCliente[i]);
 					close(socketCliente[i]);
+					quitarReady(socketCliente[i]);
 					remove_element(socketCliente, i, numeroClientes);
 					numeroClientes--;
 					//printf("CANTIDAD DE CLIENTES: %d\n", numeroClientes);
@@ -87,11 +142,13 @@ void tratarConexiones() {
 			if (FD_ISSET(socketServer, &descriptoresLectura)) {
 				socketCliente[numeroClientes] = servidorConectarComponente(
 						&socketServer, "planificador", "esi");
+				colaReady[numeroClientes] = socketCliente[numeroClientes];
 				//printf("El cliente %d acaba de ingresar a nuestro servidor\n",socketCliente[numeroClientes]);
 				numeroClientes++;
 				//printf("CANTIDAD DE CLIENTES: %d\n", numeroClientes);
 				/* Un nuevo cliente solicita conexión. Aceptarla aquí. En el ejemplo, se acepta la conexión, se mete el descriptor en socketCliente[] y se envía al cliente su posición en el array como número de cliente. */
 			}
+			sem_post(&mutex);
 		}
 	}
 }
@@ -109,17 +166,39 @@ void cerrarConexiones() {
 
 //=======================COMANDOS DE CONSOLA====================================
 
-int cmdListaEsi(){
+int cmdListaEsi() {
 	register int i;
 	printf("CANTIDAD DE ESI CONECTADOS: %d\n", numeroClientes);
-	for(i=0; i < numeroClientes; i++){
+	for (i = 0; i < numeroClientes; i++) {
 		printf("ESI %d en posicion %d\n", socketCliente[i], i);
 	}
 	return 0;
 }
 
+int cmdColaReady() {
+	register int i;
+	printf("CANTIDAD DE ESI EN COLA DE READY: %d\n", numeroClientes);
+	for (i = 0; i < numeroClientes; i++) {
+		printf("ESI %d en posicion %d\n", colaReady[i], i);
+	}
+	return 0;
+}
+
+
 int cmdQuit() {
 	done = 1;
+	return 0;
+}
+
+int cmdPause() {
+	ejecutar = 0;
+	puts("Se ha pausado la ejecucion de ESIs.");
+	return 0;
+}
+
+int cmdContinue() {
+	ejecutar = 1;
+	puts("Se ha reanudado la ejecucion de ESIs.");
 	return 0;
 }
 
@@ -127,8 +206,10 @@ int cmdHelp() {
 	register int i;
 	puts("Comando:\t\t\tDescripcion:");
 	for (i = 0; comandos[i].cmd; i++) {
-		if(strlen(comandos[i].cmd) < 5) printf("%s\t\t\t\t%s\n", comandos[i].cmd, comandos[i].info);
-		else printf("%s\t\t\t%s\n", comandos[i].cmd, comandos[i].info);
+		if (strlen(comandos[i].cmd) < 5)
+			printf("%s\t\t\t\t%s\n", comandos[i].cmd, comandos[i].info);
+		else
+			printf("%s\t\t\t%s\n", comandos[i].cmd, comandos[i].info);
 	}
 	return 0;
 }

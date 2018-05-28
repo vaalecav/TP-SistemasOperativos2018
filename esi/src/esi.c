@@ -17,8 +17,7 @@
 
 void parsearScript();
 
-int main()
-{
+int main() {
 	puts("Iniciando ESI.");
 	int socketPlanificador;
 	char ipPlanificador[16];
@@ -30,9 +29,9 @@ int main()
 	socketPlanificador = clienteConectarComponente("ESI", "planificador",
 			puertoPlanificador, ipPlanificador);
 
-	parsearScript();
+	parsearScript(socketPlanificador);
 
-	sleep(20);
+	sleep(60);
 
 	close(socketPlanificador);
 
@@ -40,28 +39,27 @@ int main()
 	return 0;
 }
 
-void parsearScript()
-{
+void parsearScript(int socketPlanificador) {
 	FILE * fp;
 	char * line = NULL;
 	size_t len = 0;
 	ssize_t read;
 
 	fp = fopen("parsi/ejemplo/script.esi", "r");
-	if (fp == NULL)
-	{
+	if (fp == NULL) {
 		perror("Error al abrir el archivo");
 		exit(EXIT_FAILURE);
 	}
 
-	while ((read = getline(&line, &len, fp)) != -1)
-	{
+	// TODO esperar el mensaje del planificador ordenando ejecutar una linea
+
+	// ^ aca ^
+
+	while ((read = getline(&line, &len, fp)) != -1) {
 		t_esi_operacion parsed = parse(line);
 
-		if (parsed.valido)
-		{
-			switch (parsed.keyword)
-			{
+		if (parsed.valido) {
+			switch (parsed.keyword) {
 			case GET:
 				printf("GET\tclave: <%s>\n", parsed.argumentos.GET.clave);
 				break;
@@ -79,12 +77,15 @@ void parsearScript()
 			}
 
 			destruir_operacion(parsed);
-		}
-		else
-		{
+		} else {
 			fprintf(stderr, "La linea <%s> no es valida\n", line);
 			exit(EXIT_FAILURE);
 		}
+
+		// TODO informar al planificador que ya ejecutamos la linea y esperar la proxima orden (o hacer un break si terminamos)
+
+
+		// ^ aca ^
 	}
 
 	fclose(fp);
