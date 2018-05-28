@@ -8,7 +8,7 @@ int roundNumber(double number) {
     return (number >= 0) ? (int)(number + 0.5) : (int)(number - 0.5);
 }
 
-t_link_element* list_find_element_with_param(t_list *self, void* param, bool(*condition)(void*, void*), int* index) {
+t_link_element* list_find_element_with_param(t_list *self, void* param, int(*condition)(void*, void*), int* index) {
 	t_link_element *element = self->head;
 	int position = 0;
 
@@ -24,7 +24,7 @@ t_link_element* list_find_element_with_param(t_list *self, void* param, bool(*co
 	return element;
 }
 
-void* list_find_with_param(t_list *self, void* param, bool(*condition)(void*, void*)) {
+void* list_find_with_param(t_list *self, void* param, int(*condition)(void*, void*)) {
 	t_link_element *element = list_find_element_with_param(self, param, condition, NULL);
 	return element != NULL ? element->data : NULL;
 }

@@ -65,7 +65,7 @@ void setearValor(char* clave, char* valor, int entradasNecesarias) {
 			estructuraAdministrativa.entradasDisponibles[i] = 1;
 		}
 
-		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, entradaEsIgualAClave, clave)) != NULL) {
+		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
 			entrada = (Entrada*)entradaVoid;
 			free(entrada->valor);
 		}
@@ -107,7 +107,7 @@ void setearClave(char* clave, char* valor) {
 		}
 
 	// Verifico si ya está seteada la clave
-		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, entradaEsIgualAClave, clave)) != NULL) {
+		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
 			entrada = (Entrada*)entradaVoid;
 
 			// Si ya está bloqueada, pongo todas sus entradas como posibles para ingresar

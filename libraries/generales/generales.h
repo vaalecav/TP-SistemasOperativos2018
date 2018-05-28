@@ -13,7 +13,7 @@
 
 int min(int, int);
 int roundNumber(double);
-t_link_element* list_find_element_with_param(t_list*, void*, bool(*condition)(void*, void*), int*);
-void* list_find_with_param(t_list*, void*, bool(*condition)(void*, void*));
+t_link_element* list_find_element_with_param(t_list*, void*, int(*condition)(void*, void*), int*);
+void* list_find_with_param(t_list*, void*, int(*condition)(void*, void*));
 
 #endif /* GENERALES_GENERALES_H_ */
