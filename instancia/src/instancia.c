@@ -7,13 +7,7 @@
  Description : Proceso Instancia
  ============================================================================
  */
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <socket/sockets.h>
-#include <comunicacion/comunicacion.h>
-#include <commons/config.h>
-#include <commons/string.h>
+#include "instancia.h"
 
 int recibirInformacionEntradas(int socketEmisor, InformacionEntradas** info) {
 	int recibido;
@@ -30,22 +24,19 @@ int recibirInformacionEntradas(int socketEmisor, InformacionEntradas** info) {
 	return 1;
 }
 
-void setearValor(char* clave, char* valor, int necesarios, EstructuraAdministrativa *estructuraAdministrativa) {
+int buscarEspacioEnTabla(int entradasNecesarias) {
 	int libre = -1;
 	int cantidadSeguidos = 0;
-	void* entradaVoid;
-	int index= -1;
-	Entrada entrada;
 
-	for (int i = 0; i < estructuraAdministrativa->cantidadEntradas; i++) {
-		if (estructuraAdministrativa->entradas[i]) {
+	for (int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
+		if (estructuraAdministrativa.entradasDisponibles[i]) {
 			if (!cantidadSeguidos) {
 				libre = i;
 			}
 
 			cantidadSeguidos++;
 
-			if (cantidadSeguidos == necesarios) {
+			if (cantidadSeguidos == entradasNecesarias) {
 				break;
 			}
 		} else {
@@ -54,114 +45,90 @@ void setearValor(char* clave, char* valor, int necesarios, EstructuraAdministrat
 		}
 	}
 
-	if (libre >= 0) {
-		for (int i = libre; i < libre+necesarios; i++) {
-			estructuraAdministrativa->entradas[i] = 1;
-		}
-
-		int finValores = strlen(estructuraAdministrativa->valores);
-		int h = 0;
-		for (int i = finValores-1; i < finValores-1+strlen(valor); i++) {
-			estructuraAdministrativa->valores[i] = valor[h];
-			h++;
-		}
-
-		if ((entradaVoid = list_find_by_condition(estructuraAdministrativa->claves, entradaEsIgualAClave, clave)) != NULL) {
-			entrada = (Entrada*)entradaVoid;
-		}
-
-		entrada->clave = malloc(strlen(clave));
-		strcpy(&entrada->clave, clave);
-		entrada->primerEntrada = libre;
-		entrada->cantidadEntradas = necesarios;
-		entrada->inicioClave = finValores-1;
-		entrada->largoClave = strlen(valor);
-
-		if (entradaVoid == NULL) {
-			list_add(estructuraAdministrativa->claves, (void*)entrada);
-		}
-
-	}
+	return libre;
 }
-
-int cantidadEntradasDisponiblesContinuas(int* entradas, int cantidadEntradas) {
-	int cantidadContinuas = 0;
-	for (int i = 0; i < cantidadEntradas; i++) {
-		cantidadContinuas += (entradas[i] == 1);
-	}
-
-	return cantidadContinuas;
-}
-
-int min(int n1, int n2) { return n1 < n2 ? n1 : n2; }
 
 int entradaEsIgualAClave(void* entrada, void* clave) {
 	Entrada *ent = (Entrada*) entrada;
 	return strcmp(ent->clave, (char*)clave)	== 0;
 }
 
-void bajarValoresDeLista(t_list* entradas, int desde, int cantidadRestar) {
-	Entrada entrada;
-	t_link_element *element = entradas->head;
-	t_link_element *aux = NULL;
-	while (element != NULL) {
-		aux = element->next;
+void setearValor(char* clave, char* valor, int entradasNecesarias) {
+	void* entradaVoid;
+	Entrada *entrada;
+	int posicionParaSetear;
 
-		entrada = (Entrada*) element->data;
-		if (entrada->inicioClave > desde) {
-			entrada->inicioClave -= cantidadRestar;
+	posicionParaSetear = buscarEspacioEnTabla(entradasNecesarias);
+	if (posicionParaSetear >= 0) {
+		// Marco las entradas como ocupadas
+		for (int i = posicionParaSetear; i < posicionParaSetear + entradasNecesarias; i++) {
+			estructuraAdministrativa.entradasDisponibles[i] = 1;
 		}
 
-		element = aux;
+		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, entradaEsIgualAClave, clave)) != NULL) {
+			entrada = (Entrada*)entradaVoid;
+			free(entrada->valor);
+		}
+
+		entrada->clave = malloc(strlen(clave));
+		strcpy(entrada->clave, clave);
+		entrada->valor = malloc(strlen(valor) + 1);
+		strcpy(entrada->valor, valor);
+		entrada->primerEntrada = posicionParaSetear;
+		entrada->cantidadEntradas = entradasNecesarias;
+
+		if (entradaVoid == NULL) {
+			list_add(estructuraAdministrativa.entradas, (void*)entrada);
+		}
+
 	}
 }
 
-void setearClave(char* clave, char* valor, EstructuraAdministrativa *estructuraAdministrativa) {
+int cantidadEntradasDisponiblesContinuas() {
+	int cantidadContinuas = 0;
+	for (int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
+		cantidadContinuas += (estructuraAdministrativa.entradasDisponibles[i] == 1);
+	}
+
+	return cantidadContinuas;
+}
+
+void setearClave(char* clave, char* valor) {
 	Entrada* entrada;
 	void* entradaVoid;
-	char* aux;
 	int sePuede;
 	int entradasNecesarias;
-	int posLetra;
 
 	// Verifico si alcanzan las entradas
-		entradasNecesarias = round(sizeof(valor) / estructuraAdministrativa->tamanioEntrada);
-		if (entradasNecesarias > estructuraAdministrativa->cantidadEntradas) {
+		entradasNecesarias = roundNumber(sizeof(valor) / estructuraAdministrativa.tamanioEntrada);
+		if (entradasNecesarias > estructuraAdministrativa.cantidadEntradas) {
 			puts("La cantidad de entradas no son suficientes para el tamanio del valor pasado.");
 			return;
 		}
 
 	// Verifico si ya está seteada la clave
-		if ((entradaVoid = list_find_by_condition(estructuraAdministrativa->claves, entradaEsIgualAClave, clave)) != NULL) {
+		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, entradaEsIgualAClave, clave)) != NULL) {
 			entrada = (Entrada*)entradaVoid;
 
 			// Si ya está bloqueada, pongo todas sus entradas como posibles para ingresar
 			for (int i = entrada->primerEntrada; i < entrada->cantidadEntradas; i++) {
-				estructuraAdministrativa->entradas[i] = 0;
+				estructuraAdministrativa.entradasDisponibles[i] = 0;
 			}
-
-			// Borro la palabra de los valores
-			for (posLetra = entrada->inicioClave; posLetra < min(entrada->inicioClave + entrada->largoClave, strlen(estructuraAdministrativa->valores)); posLetra++) {
-				estructuraAdministrativa->valores[posLetra] = estructuraAdministrativa->valores[posLetra + entrada->largoClave];
-			}
-			estructuraAdministrativa->valores[posLetra] = '\0';
-			bajarValoresDeLista(estructuraAdministrativa->entradas, entrada->inicioClave, entrada->largoClave);
-
 		}
 
 	// Verifico si hay espacio continuo disponible
-		sePuede = cantidadEntradasDisponiblesContinuas(estructuraAdministrativa->entradas) >= entradasNecesarias;
+		sePuede = cantidadEntradasDisponiblesContinuas() >= entradasNecesarias;
 
 	// Seteo
 		if (sePuede) {
-			setearValor(clave, valor, entradasNecesarias, &estructuraAdministrativa);
+			setearValor(clave, valor, entradasNecesarias);
 		} else {
 			puts("ejecutar algoritmo de remplazo");
 		}
 }
 
 
-void recibirSentencia(int socketCoordinador, EstructuraAdministrativa *estructuraAdministrativa) {
+void recibirSentencia(int socketCoordinador) {
 	char* mensaje;
 	char** mensajeSplitted;
 	ContentHeader *header;
@@ -175,7 +142,7 @@ void recibirSentencia(int socketCoordinador, EstructuraAdministrativa *estructur
 		mensajeSplitted = string_split(mensaje, " ");
 		if (strcmp(mensajeSplitted[0], "SET") == 0) {
 			puts("SET");
-			setearClave(mensajeSplitted[1], mensajeSplitted[2], &estructuraAdministrativa);
+			setearClave(mensajeSplitted[1], mensajeSplitted[2]);
 		} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
 			puts("STORE");
 		} else {
@@ -189,11 +156,8 @@ void recibirSentencia(int socketCoordinador, EstructuraAdministrativa *estructur
 	free(header);
 }
 
-void limpiarEstructuraAdministrativa(EstructuraAdministrativa *estructura) {
-	list_destroy_and_destroy_elements(estructura->claves);
-	free(estructura->valores);
-	free(estructura->entradas);
-	free(estructura);
+void freeEntrada(void* Entrada) {
+	free(Entrada);
 }
 
 int main() {
@@ -204,7 +168,6 @@ int main() {
 	char* nombre;
 
 	InformacionEntradas * info;
-	EstructuraAdministrativa *estructuraAdministrativa;
 	t_config* configuracion;
 
 	// Archivo de configuracion
@@ -224,32 +187,27 @@ int main() {
 		info = (InformacionEntradas*) malloc(sizeof(InformacionEntradas));
 		while (recibirInformacionEntradas(socketCoordinador, &info) != 1);
 
-		estructuraAdministrativa = (EstructuraAdministrativa*) malloc(sizeof(EstructuraAdministrativa));
-		estructuraAdministrativa->cantidadEntradas = info->cantidad;
-		estructuraAdministrativa->tamanioEntrada = info->tamanio;
-
-		// El string de valores tendrá, a lo sumo, la cantidad de entradas * el tamanio que ocupa cada una
-		estructuraAdministrativa->valores = malloc(info->tamanio * info->cantidad + sizeof(char));
+		estructuraAdministrativa.cantidadEntradas = info->cantidad;
+		estructuraAdministrativa.tamanioEntrada = info->tamanio;
 
 		// A todas las entradas las inicio como vacías (0)
-		estructuraAdministrativa->entradas = malloc(sizeof(int) * info->cantidad);
+		estructuraAdministrativa.entradasDisponibles = malloc(sizeof(int) * info->cantidad);
 		for (int i = 0; i < info->cantidad; i++) {
-			estructuraAdministrativa->entradas[i] = 0;
+			estructuraAdministrativa.entradasDisponibles[i] = 0;
 		}
 
 		// Creo la lista de claves por primera vez
-		estructuraAdministrativa->claves = list_create();
-		estructuraAdministrativa->claves[0] = '\0';
+		estructuraAdministrativa.entradas = list_create();
 
 	// Espero las sentencias
 		while(1) {
-			recibirSentencia(socketCoordinador, &estructuraAdministrativa);
+			recibirSentencia(socketCoordinador);
 		}
 
 	// Cierro todas las cosas
 		close(socketCoordinador);
 		free(info);
-		limpiarEstructuraAdministrativa(&estructuraAdministrativa);
+		list_destroy_and_destroy_elements(estructuraAdministrativa.entradas, freeEntrada);
 		free(ipCoordinador);
 		config_destroy(configuracion);
 

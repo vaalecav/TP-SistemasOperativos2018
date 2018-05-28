@@ -24,16 +24,15 @@ typedef struct {
 
 typedef struct {
 	char *valores;
-	t_list *claves;
-	int *entradas;
+	t_list *entradas;
+	int *entradasDisponibles;
 	int cantidadEntradas;
 	int tamanioEntrada;
 } __attribute__((packed)) EstructuraAdministrativa;
 
 typedef struct {
 	char* clave;
-	int inicioClave;
-	int largoClave;
+	char* valor;
 	int primerEntrada;
 	int cantidadEntradas;
 } __attribute__((packed)) Entrada;

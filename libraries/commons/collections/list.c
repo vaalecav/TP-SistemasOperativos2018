@@ -324,3 +324,4 @@ static t_link_element* list_find_element(t_list *self, bool(*condition)(void*), 
 
 	return element;
 }
+
