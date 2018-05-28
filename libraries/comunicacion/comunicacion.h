@@ -25,7 +25,7 @@ typedef struct {
 typedef struct {
 	char *valores;
 	t_list *entradas;
-	int *entradasDisponibles;
+	int *entradasUsadas;
 	int cantidadEntradas;
 	int tamanioEntrada;
 } __attribute__((packed)) EstructuraAdministrativa;

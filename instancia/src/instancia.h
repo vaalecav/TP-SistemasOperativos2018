@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <socket/sockets.h>
 #include <comunicacion/comunicacion.h>
 #include <commons/config.h>

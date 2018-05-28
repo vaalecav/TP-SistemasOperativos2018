@@ -12,7 +12,7 @@
 int recibirInformacionEntradas(int socketEmisor, InformacionEntradas** info) {
 	int recibido;
 
-	recibido = recv(socketEmisor, info, sizeof(InformacionEntradas), 0);
+	recibido = recv(socketEmisor, *info, sizeof(InformacionEntradas), 0);
 	if (recibido < 0) {
 		return -1;
 	} else if (recibido == 0) {
@@ -29,7 +29,7 @@ int buscarEspacioEnTabla(int entradasNecesarias) {
 	int cantidadSeguidos = 0;
 
 	for (int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
-		if (estructuraAdministrativa.entradasDisponibles[i]) {
+		if (!estructuraAdministrativa.entradasUsadas[i]) {
 			if (!cantidadSeguidos) {
 				libre = i;
 			}
@@ -53,16 +53,22 @@ int entradaEsIgualAClave(void* entrada, void* clave) {
 	return strcmp(ent->clave, (char*)clave)	== 0;
 }
 
+void mostrarEntrada(void* entr) {
+	Entrada entrada = *(Entrada*)entr;
+	printf("CLAVE %s\nEntrada: %d - %d\nValor: %s\n---------------------\n", entrada.clave, entrada.primerEntrada, entrada.cantidadEntradas, entrada.valor);
+}
+
 void setearValor(char* clave, char* valor, int entradasNecesarias) {
 	void* entradaVoid;
 	Entrada *entrada;
 	int posicionParaSetear;
 
 	posicionParaSetear = buscarEspacioEnTabla(entradasNecesarias);
+
 	if (posicionParaSetear >= 0) {
 		// Marco las entradas como ocupadas
 		for (int i = posicionParaSetear; i < posicionParaSetear + entradasNecesarias; i++) {
-			estructuraAdministrativa.entradasDisponibles[i] = 1;
+			estructuraAdministrativa.entradasUsadas[i] = 1;
 		}
 
 		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
@@ -79,15 +85,19 @@ void setearValor(char* clave, char* valor, int entradasNecesarias) {
 
 		if (entradaVoid == NULL) {
 			list_add(estructuraAdministrativa.entradas, (void*)entrada);
+			list_iterate(estructuraAdministrativa.entradas, mostrarEntrada);
 		}
-
 	}
 }
 
-int cantidadEntradasDisponiblesContinuas() {
+int cantidadentradasUsadasContinuas() {
 	int cantidadContinuas = 0;
 	for (int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
-		cantidadContinuas += (estructuraAdministrativa.entradasDisponibles[i] == 1);
+		if (estructuraAdministrativa.entradasUsadas[i]) {
+			cantidadContinuas = 0;
+		} else {
+			cantidadContinuas++;
+		}
 	}
 
 	return cantidadContinuas;
@@ -100,7 +110,7 @@ void setearClave(char* clave, char* valor) {
 	int entradasNecesarias;
 
 	// Verifico si alcanzan las entradas
-		entradasNecesarias = roundNumber(sizeof(valor) / estructuraAdministrativa.tamanioEntrada);
+		entradasNecesarias = (int)(ceil((double)strlen(valor) / (double)estructuraAdministrativa.tamanioEntrada));
 		if (entradasNecesarias > estructuraAdministrativa.cantidadEntradas) {
 			puts("La cantidad de entradas no son suficientes para el tamanio del valor pasado.");
 			return;
@@ -112,12 +122,12 @@ void setearClave(char* clave, char* valor) {
 
 			// Si ya está bloqueada, pongo todas sus entradas como posibles para ingresar
 			for (int i = entrada->primerEntrada; i < entrada->cantidadEntradas; i++) {
-				estructuraAdministrativa.entradasDisponibles[i] = 0;
+				estructuraAdministrativa.entradasUsadas[i] = 0;
 			}
 		}
 
 	// Verifico si hay espacio continuo disponible
-		sePuede = cantidadEntradasDisponiblesContinuas() >= entradasNecesarias;
+		sePuede = cantidadentradasUsadasContinuas() >= entradasNecesarias;
 
 	// Seteo
 		if (sePuede) {
@@ -140,13 +150,14 @@ void recibirSentencia(int socketCoordinador) {
 		recibirMensaje(socketCoordinador, header->largo, &mensaje);
 
 		mensajeSplitted = string_split(mensaje, " ");
+
 		if (strcmp(mensajeSplitted[0], "SET") == 0) {
 			puts("SET");
 			setearClave(mensajeSplitted[1], mensajeSplitted[2]);
 		} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
 			puts("STORE");
 		} else {
-			puts("Error en el mensaje enviado al coordinador por le ESI");
+			puts("Error en el mensaje enviado al coordinador por el ESI");
 		}
 
 		free(mensaje);
@@ -185,15 +196,16 @@ int main() {
 	// Instancio todas las estructuras administrativas
 		// Espera hasta que recive la informacion de lo que será la tabla de entradas
 		info = (InformacionEntradas*) malloc(sizeof(InformacionEntradas));
-		while (recibirInformacionEntradas(socketCoordinador, &info) != 1);
+
+		recibirInformacionEntradas(socketCoordinador, &info);
 
 		estructuraAdministrativa.cantidadEntradas = info->cantidad;
 		estructuraAdministrativa.tamanioEntrada = info->tamanio;
 
 		// A todas las entradas las inicio como vacías (0)
-		estructuraAdministrativa.entradasDisponibles = malloc(sizeof(int) * info->cantidad);
+		estructuraAdministrativa.entradasUsadas = malloc(sizeof(int) * info->cantidad);
 		for (int i = 0; i < info->cantidad; i++) {
-			estructuraAdministrativa.entradasDisponibles[i] = 0;
+			estructuraAdministrativa.entradasUsadas[i] = 0;
 		}
 
 		// Creo la lista de claves por primera vez
@@ -202,6 +214,7 @@ int main() {
 	// Espero las sentencias
 		while(1) {
 			recibirSentencia(socketCoordinador);
+			puts("paso una sentencia");
 		}
 
 	// Cierro todas las cosas
