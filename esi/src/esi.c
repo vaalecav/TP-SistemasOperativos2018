@@ -31,7 +31,8 @@ int main() {
 
 	parsearScript(socketPlanificador);
 
-	sleep(60);
+	while(1);
+	sleep(20);
 
 	close(socketPlanificador);
 

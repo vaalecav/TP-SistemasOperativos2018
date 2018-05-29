@@ -52,7 +52,6 @@ int main() {
 
 int tomarPrimero(int *array, int array_length) {
 	int i;
-	printf("saque el socket %d\n", array[0]);
 	int retorno = array[0];
 	for (i = 0; i < array_length - 1; i++)
 		array[i] = array[i + 1];
@@ -73,11 +72,12 @@ void algoritmoFifo() {
 		if (ejecutar == 1) {
 			sem_wait(&mutex);
 			esiToRun = tomarPrimero(colaReady, numeroClientes);
+			numeroEnReady--;
 			//TODO enviar mensaje al ESI para indicarle que ejecute;
 			sleep(10);
 			//TODO recibir respuesta del ESI, vuelvo a encolarlo;
-			printf("meti el socket %d en la posicion %d\n", esiToRun, numeroClientes);
 			colaReady[numeroClientes-1] = esiToRun;
+			numeroEnReady++;
 			sem_post(&mutex);
 		} else {
 		}
@@ -134,6 +134,7 @@ void tratarConexiones() {
 					quitarReady(socketCliente[i]);
 					remove_element(socketCliente, i, numeroClientes);
 					numeroClientes--;
+					numeroEnReady--;
 					//printf("CANTIDAD DE CLIENTES: %d\n", numeroClientes);
 					/* Hay un error en la lectura. Posiblemente el cliente ha cerrado la conexión. Hacer aquí el tratamiento. En el ejemplo, se cierra el socket y se elimina del array de socketCliente[] */
 				}
@@ -145,6 +146,7 @@ void tratarConexiones() {
 				colaReady[numeroClientes] = socketCliente[numeroClientes];
 				//printf("El cliente %d acaba de ingresar a nuestro servidor\n",socketCliente[numeroClientes]);
 				numeroClientes++;
+				numeroEnReady++;
 				//printf("CANTIDAD DE CLIENTES: %d\n", numeroClientes);
 				/* Un nuevo cliente solicita conexión. Aceptarla aquí. En el ejemplo, se acepta la conexión, se mete el descriptor en socketCliente[] y se envía al cliente su posición en el array como número de cliente. */
 			}
@@ -177,8 +179,8 @@ int cmdListaEsi() {
 
 int cmdColaReady() {
 	register int i;
-	printf("CANTIDAD DE ESI EN COLA DE READY: %d\n", numeroClientes);
-	for (i = 0; i < numeroClientes; i++) {
+	printf("CANTIDAD DE ESI EN COLA DE READY: %d\n", numeroEnReady);
+	for (i = 0; i < numeroEnReady; i++) {
 		printf("ESI %d en posicion %d\n", colaReady[i], i);
 	}
 	return 0;

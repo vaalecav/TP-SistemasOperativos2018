@@ -62,6 +62,7 @@ int socketServer;
 int socketCliente[100];
 int colaReady[100];
 int numeroClientes = 0;
+int numeroEnReady = 0;
 int sem_clientes = 1;
 
 //=====================ALGORITMO FIFO===========================================
