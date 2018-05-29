@@ -66,6 +66,7 @@ void setearValor(char* clave, char* valor, int entradasNecesarias) {
 	posicionParaSetear = buscarEspacioEnTabla(entradasNecesarias);
 
 	if (posicionParaSetear >= 0) {
+		entrada = malloc(sizeof(Entrada));
 		// Marco las entradas como ocupadas
 		for (int i = posicionParaSetear; i < posicionParaSetear + entradasNecesarias; i++) {
 			estructuraAdministrativa.entradasUsadas[i] = 1;
@@ -74,19 +75,31 @@ void setearValor(char* clave, char* valor, int entradasNecesarias) {
 		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
 			entrada = (Entrada*)entradaVoid;
 			free(entrada->valor);
+			free(entrada->clave);
 		}
 
-		entrada->clave = malloc(strlen(clave));
+		entrada->clave = malloc(strlen(clave) + 1);
 		strcpy(entrada->clave, clave);
+		entrada->clave[strlen(clave) + 1] = '\0';
 		entrada->valor = malloc(strlen(valor) + 1);
 		strcpy(entrada->valor, valor);
+		entrada->valor[strlen(valor) + 1] = '\0';
 		entrada->primerEntrada = posicionParaSetear;
 		entrada->cantidadEntradas = entradasNecesarias;
 
 		if (entradaVoid == NULL) {
 			list_add(estructuraAdministrativa.entradas, (void*)entrada);
-			list_iterate(estructuraAdministrativa.entradas, mostrarEntrada);
 		}
+
+		/*
+		PARA DEBUGGEAR
+
+		list_iterate(estructuraAdministrativa.entradas, mostrarEntrada);
+		puts("");
+		for(int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
+			printf("Entrada %d: %s\n", i, (estructuraAdministrativa.entradasUsadas[i] ? "usada" : "libre"));
+		}
+		*/
 	}
 }
 
@@ -111,6 +124,7 @@ void setearClave(char* clave, char* valor) {
 
 	// Verifico si alcanzan las entradas
 		entradasNecesarias = (int)(ceil((double)strlen(valor) / (double)estructuraAdministrativa.tamanioEntrada));
+
 		if (entradasNecesarias > estructuraAdministrativa.cantidadEntradas) {
 			puts("La cantidad de entradas no son suficientes para el tamanio del valor pasado.");
 			return;
@@ -152,7 +166,6 @@ void recibirSentencia(int socketCoordinador) {
 		mensajeSplitted = string_split(mensaje, " ");
 
 		if (strcmp(mensajeSplitted[0], "SET") == 0) {
-			puts("SET");
 			setearClave(mensajeSplitted[1], mensajeSplitted[2]);
 		} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
 			puts("STORE");
@@ -214,7 +227,6 @@ int main() {
 	// Espero las sentencias
 		while(1) {
 			recibirSentencia(socketCoordinador);
-			puts("paso una sentencia");
 		}
 
 	// Cierro todas las cosas
