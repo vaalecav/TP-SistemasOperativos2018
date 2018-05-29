@@ -10,10 +10,12 @@
 
 #include <commons/collections/list.h>
 #include <stdlib.h>
+#include <string.h>
 
 int min(int, int);
 int roundNumber(float);
 t_link_element* list_find_element_with_param(t_list*, void*, int(*condition)(void*, void*), int*);
 void* list_find_with_param(t_list*, void*, int(*condition)(void*, void*));
+int strcmpVoid(void*, void*);
 
 #endif /* GENERALES_GENERALES_H_ */

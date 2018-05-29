@@ -31,7 +31,7 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 
 	instanciaConectada->nombre = nombreInstancia;
 	instanciaConectada->socket = socketInstancia;
-	instanciaConectada->claves = (char **)malloc(entradasInstancia->cantidad * 40); //multiplico por maximo tamanio de clave
+	instanciaConectada->claves = list_create();
 
 	//agregamos a la lista de instancias
 	pthread_mutex_lock(&mutexListaInstancias);
@@ -81,24 +81,19 @@ void asignarInstancia(char* mensaje) {
 
 int compararClave(void* data, char*clave){
 	Instancia *instancia = (Instancia*)data;
-	t_link_element *element = (instancia->claves)->head;
-	t_link_element *aux = NULL;
-		while (element != NULL) {
-			aux = element->next;
-			Clave *claveInstancia = (Clave*)element->data;
-			if(strcmp(claveInstancia->nombre,clave) == 0){
-				if(claveInstancia->bloqueado){
-					return EN_INSTANCIA_BLOQUEADA; //hay una instancia que ya tiene la clave y esta bloqueada
-				}else{
-					claveInstancia->bloqueado = 1; //la bloqueo
-					return EN_INSTANCIA_NO_BLOQUEADA; // hay una instancia que ya tiene la clave pero no esta bloqueada
-				}
-			}
-			element = aux;
-		}
-		return NO_EN_INSTANCIA;
-}
+	void* resultadoBusqueda = list_find_with_param(instancia->claves, (void*) clave, strcmpVoid);
 
+	if(resultadoBusqueda != NULL){
+		Clave *claveInstancia = (Clave*)resultadoBusqueda;
+		if(claveInstancia->bloqueado){
+			return EN_INSTANCIA_BLOQUEADA; //hay una instancia que ya tiene la clave y esta bloqueada
+		}else{
+			claveInstancia->bloqueado = 1; //la bloqueo
+			return EN_INSTANCIA_NO_BLOQUEADA; // hay una instancia que ya tiene la clave pero no esta bloqueada
+		}
+	}
+	return NO_EN_INSTANCIA;
+}
 
 int claveEstaEnInstancia(char* clave){
 	//recorro lista de instancias -> recorro cada lista de claves

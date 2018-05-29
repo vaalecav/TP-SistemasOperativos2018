@@ -24,3 +24,7 @@ void* list_find_with_param(t_list *self, void* param, int(*condition)(void*, voi
 	t_link_element *element = list_find_element_with_param(self, param, condition, NULL);
 	return element != NULL ? element->data : NULL;
 }
+
+int strcmpVoid(void *elemento1, void *elemento2){
+	return strcmp((char*)elemento1, (char*)elemento2);
+}

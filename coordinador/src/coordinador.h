@@ -22,6 +22,7 @@
 #include <commons/string.h>
 #include <commons/config.h>
 #include <comunicacion/comunicacion.h>
+#include <generales/generales.h>
 #include <configuracion/configuracion.h>
 #include <pthread.h>
 #include "algoritmosDistribucion/algoritmosDistribucion.h"
