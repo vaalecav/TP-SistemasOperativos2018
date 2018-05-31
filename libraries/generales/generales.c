@@ -4,6 +4,12 @@ int min(int n1, int n2) {
 	return n1 < n2 ? n1 : n2;
 }
 
+int divCeil(int n1, int n2) {
+   div_t output;
+   output = div(n1, n2);
+   return output.quot + (output.rem > 0 ? 1 : 0);
+}
+
 t_link_element* list_find_element_with_param(t_list *self, void* param, int(*condition)(void*, void*), int* index) {
 	t_link_element *element = self->head;
 	int position = 0;

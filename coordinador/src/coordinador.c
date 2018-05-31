@@ -75,13 +75,25 @@ void loguearOperacion(char* nombre, char* mensaje) {
 	fclose(f);
 }
 
+int tiempoRetardoFicticio() {
+	t_config* configuracion;
+	int retardo;
+
+	configuracion = config_create("./configuraciones/configuracion.txt");
+	retardo = config_get_int_value(configuracion, "RETARDO");
+	config_destroy(configuracion);
+
+	// La funcion usleep usa microsegundos (1 seg = 1000 microseg)
+	return retardo * 1000;
+}
+
 void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	char* nombre;
 	char* mensaje;
 	char** mensajeSplitted;
 	ContentHeader * header;
 
-
+	// Recibo mensajes
 	nombre = malloc(largoMensaje + 1);
 	recibirMensaje(socketEsi, largoMensaje, &nombre);
 
@@ -89,8 +101,13 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	mensaje = malloc(header->largo + 1);
 	recibirMensaje(socketEsi, header->largo, &mensaje);
 
+	// Logueo la operación
 	loguearOperacion(nombre, mensaje);
 
+	// Retraso ficticio de la ejecucion
+	usleep(tiempoRetardoFicticio());
+
+	// Ejecuto
 	mensajeSplitted = string_split(mensaje, " ");
 	if (strcmp(mensajeSplitted[0], "GET") == 0) {
 		getClave(mensajeSplitted[1], socketPlanificador);
@@ -102,6 +119,8 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 		puts("Error en el mensaje enviado al coordinador por le ESI");
 	}
 
+	// Libero memoria
+	free(header);
 	free(nombre);
 	free(mensaje);
 	free(mensajeSplitted);

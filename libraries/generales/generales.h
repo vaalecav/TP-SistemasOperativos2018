@@ -13,7 +13,7 @@
 #include <string.h>
 
 int min(int, int);
-int roundNumber(float);
+int divCeil(int, int);
 t_link_element* list_find_element_with_param(t_list*, void*, int(*condition)(void*, void*), int*);
 void* list_find_with_param(t_list*, void*, int(*condition)(void*, void*));
 int strcmpVoid(void*, void*);

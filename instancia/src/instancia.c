@@ -123,7 +123,7 @@ void setearClave(char* clave, char* valor) {
 	int entradasNecesarias;
 
 	// Verifico si alcanzan las entradas
-		entradasNecesarias = (int)(ceil((double)strlen(valor) / (double)estructuraAdministrativa.tamanioEntrada));
+		entradasNecesarias = divCeil(strlen(valor), estructuraAdministrativa.tamanioEntrada);
 
 		if (entradasNecesarias > estructuraAdministrativa.cantidadEntradas) {
 			puts("La cantidad de entradas no son suficientes para el tamanio del valor pasado.");
@@ -227,19 +227,15 @@ int main() {
 		// Creo la lista de claves por primera vez
 		estructuraAdministrativa.entradas = list_create();
 
-
-	// Cierro todas las cosas que no necesite para recibir sentencias
-		free(info);
-		free(ipCoordinador);
-		config_destroy(configuracion);
-
-
 	// Espero las sentencias
 		while(1) {
 			recibirSentencia(socketCoordinador);
 		}
 
-	// Cierro lo que falta
+	// Libero memoria
+		free(info);
+		free(ipCoordinador);
+		config_destroy(configuracion);
 		close(socketCoordinador);
 		list_destroy_and_destroy_elements(estructuraAdministrativa.entradas, freeEntrada);
 
