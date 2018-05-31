@@ -23,12 +23,15 @@
 #include <commons/config.h>
 #include <comunicacion/comunicacion.h>
 #include <generales/generales.h>
-#include <configuracion/configuracion.h>
 #include <pthread.h>
+
 #include "algoritmosDistribucion/algoritmosDistribucion.h"
+#include "GET/GET.h"
+#include "SET/SET.h"
 
 t_list *listaInstancias;
 pthread_mutex_t mutexListaInstancias;
+pthread_mutex_t mutexLog;
 
 enum CLAVE{
 	NO_EN_INSTANCIA = 0,
@@ -36,6 +39,8 @@ enum CLAVE{
 	EN_INSTANCIA_NO_BLOQUEADA = 2
 };
 
+int buscarClaveEnListaDeClaves(void*, void*);
+int buscarInstanciaConClave(void*, void*);
 void manejarInstancia(int, int);
 void closeInstancia(void*);
 void cerrarInstancias();

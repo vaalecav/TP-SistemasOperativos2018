@@ -22,9 +22,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <commons/collections/list.h>
+#include <comunicacion/comunicacion.h>
 
 int indexInstanciaEL;
 
-void* algoritmoDistribucionEL(t_list*);
+Instancia* algoritmoDistribucionEL(t_list*);
 
 #endif /* ALGORITMOSDISTRIBUCION_ALGORITMOSDISTRIBUCION_H_ */

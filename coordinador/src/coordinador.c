@@ -9,6 +9,16 @@
  */
 #include "coordinador.h"
 
+int buscarClaveEnListaDeClaves(void* structClaveVoid, void* claveVoid) {
+	Clave* structClave = (Clave*)structClaveVoid;
+	return strcmp(structClave->nombre, (char*)claveVoid) == 0;
+}
+
+int buscarInstanciaConClave(void* instanciaVoid, void* claveVoid) {
+	Instancia* instancia = (Instancia*)instanciaVoid;
+	return list_find_with_param(instancia->claves, claveVoid, buscarClaveEnListaDeClaves) != NULL;
+}
+
 void manejarInstancia(int socketInstancia, int largoMensaje) {
 	int tamanioInformacionEntradas = sizeof(InformacionEntradas);
 	Instancia *instanciaConectada = (Instancia*) malloc(sizeof(Instancia));
@@ -44,109 +54,55 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 }
 
 void closeInstancia(void* instancia) {
-	close(*(int*) instancia);
+	close(*(int*)instancia);
 }
 
 void cerrarInstancias() {
 	list_destroy_and_destroy_elements(listaInstancias, (void*) closeInstancia);
 }
 
-void asignarInstancia(char* mensaje) {
-	char algoritmo_distribucion[4];
-	void* socketInstancia;
-
-	leerConfiguracion("ALG_DISTR:%s", &algoritmo_distribucion);
-
-	pthread_mutex_lock(&mutexListaInstancias);
-	if (strcmp(algoritmo_distribucion, "EL") == 0) {
-		socketInstancia = algoritmoDistribucionEL(listaInstancias);
-	} else if (strcmp(algoritmo_distribucion, "LSU") == 0) {
-		// TODO Implementar algoritmo Least Space Used
-	} else if (strcmp(algoritmo_distribucion, "KE") == 0) {
-		// TODO Implementar Key Explicit
-	} else {
-		puts("Error al asignar instancia. Algoritmo de distribucion invalido.");
-		pthread_mutex_unlock(&mutexListaInstancias);
+void loguearOperacion(char* nombre, char* mensaje) {
+	pthread_mutex_lock(&mutexLog);
+	FILE *f = fopen("log.txt", "a");
+	if (f == NULL) {
+		puts("No se pudo loguear la operación");
+		pthread_mutex_unlock(&mutexLog);
 		return;
 	}
-	pthread_mutex_unlock(&mutexListaInstancias);
 
-	if (socketInstancia != NULL) {
-		enviarHeader(*(int*) socketInstancia, mensaje, COORDINADOR);
-		enviarMensaje(*(int*) socketInstancia, mensaje);
-	} else {
-		puts("No hay instancias creadas a la cual asignar el mensaje.");
-	}
-}
-
-int compararClave(void* data, char*clave){
-	Instancia *instancia = (Instancia*)data;
-	void* resultadoBusqueda = list_find_with_param(instancia->claves, (void*) clave, strcmpVoid);
-
-	if(resultadoBusqueda != NULL){
-		Clave *claveInstancia = (Clave*)resultadoBusqueda;
-		if(claveInstancia->bloqueado){
-			return EN_INSTANCIA_BLOQUEADA; //hay una instancia que ya tiene la clave y esta bloqueada
-		}else{
-			claveInstancia->bloqueado = 1; //la bloqueo
-			return EN_INSTANCIA_NO_BLOQUEADA; // hay una instancia que ya tiene la clave pero no esta bloqueada
-		}
-	}
-	return NO_EN_INSTANCIA;
-}
-
-int claveEstaEnInstancia(char* clave){
-	//recorro lista de instancias -> recorro cada lista de claves
-	t_link_element *element = listaInstancias->head;
-	t_link_element *aux = NULL;
-	while (element != NULL) {
-		aux = element->next;
-		int resultado = compararClave(element->data, clave);
-		if(resultado == EN_INSTANCIA_BLOQUEADA){
-			return EN_INSTANCIA_BLOQUEADA; //hay una instancia que ya tiene la clave y esta bloqueada
-		}else if(resultado == EN_INSTANCIA_NO_BLOQUEADA){
-			return EN_INSTANCIA_NO_BLOQUEADA; //hay una instancia que ya tiene la clave y no esta bloqueada
-		}
-		element = aux;
-	}
-	return NO_EN_INSTANCIA;
+	fprintf(f, "%s || %s\n", nombre, mensaje);
+	pthread_mutex_unlock(&mutexLog);
+	fclose(f);
 }
 
 void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
+	char* nombre;
 	char* mensaje;
 	char** mensajeSplitted;
+	ContentHeader * header;
 
-	mensaje = malloc(largoMensaje + 1);
-	recibirMensaje(socketEsi, largoMensaje, &mensaje);
+
+	nombre = malloc(largoMensaje + 1);
+	recibirMensaje(socketEsi, largoMensaje, &nombre);
+
+	header = recibirHeader(socketEsi);
+	mensaje = malloc(header->largo + 1);
+	recibirMensaje(socketEsi, header->largo, &mensaje);
+
+	loguearOperacion(nombre, mensaje);
 
 	mensajeSplitted = string_split(mensaje, " ");
-
 	if (strcmp(mensajeSplitted[0], "GET") == 0) {
-		puts("GET");
-
-		int estadoClave = claveEstaEnInstancia(mensajeSplitted[1]);
-		if(estadoClave == EN_INSTANCIA_BLOQUEADA){ //Notifico situacion al planificador
-			enviarHeader(socketPlanificador, mensajeSplitted[1], COORDINADOR_ESI_BLOQUEADO); //LE ENVIO LA CLAVE
-			enviarMensaje(socketPlanificador, mensajeSplitted[1]);
-		} else if(estadoClave == EN_INSTANCIA_NO_BLOQUEADA){
-			//clave ya se bloqueo en lista instancias
-			enviarHeader(socketPlanificador, mensajeSplitted[1], COORDINADOR_ESI_BLOQUEAR);
-			enviarMensaje(socketPlanificador, mensajeSplitted[1]);
-		} else if(estadoClave == NO_EN_INSTANCIA){
-			enviarHeader(socketPlanificador, mensajeSplitted[1], COORDINADOR_ESI_CREADO);
-			enviarMensaje(socketPlanificador, mensajeSplitted[1]);
-		}
-
+		getClave(mensajeSplitted[1], socketPlanificador);
 	} else if (strcmp(mensajeSplitted[0], "SET") == 0) {
-		puts("SET");
-		asignarInstancia(mensaje);
-		// TODO Acá, de la lista de instancias, hay que elegir dependiendo del tipo que se obtiene por configuracion
+		setClave(socketEsi, mensaje);
 	} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
 		puts("STORE");
 	} else {
 		puts("Error en el mensaje enviado al coordinador por le ESI");
 	}
 
+	free(nombre);
 	free(mensaje);
 	free(mensajeSplitted);
 	close(socketEsi);
@@ -195,19 +151,19 @@ int main() {
 	int socketEscucha, socketComponente, socketConectadoPlanificador;
 	SocketHilos socketsNecesarios;
 	t_config* configuracion;
-	char ip[16];
 	int puerto;
 	int maxConexiones;
+	char* ipPlanificador;
 
 	indexInstanciaEL = 0;
 
 	//Leo puertos e ips de archivo de configuracion
 	configuracion = config_create("./configuraciones/configuracion.txt");
 	puerto = config_get_int_value(configuracion, "PUERTO");
-	memcpy(ip, config_get_string_value(configuracion, "IP"), sizeof(ip));
+	ipPlanificador = config_get_string_value(configuracion, "IP");
 	maxConexiones = config_get_int_value(configuracion, "MAX_CONEX");
 
-	socketEscucha = socketServidor(puerto, ip, maxConexiones);
+	socketEscucha = socketServidor(puerto, ipPlanificador, maxConexiones);
 
 	socketConectadoPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
 
@@ -220,6 +176,7 @@ int main() {
 
 	close(socketEscucha);
 	close(socketConectadoPlanificador);
+	free(ipPlanificador);
 	config_destroy(configuracion);
 	cerrarInstancias();
 	puts("El Coordinador se ha finalizado correctamente.");

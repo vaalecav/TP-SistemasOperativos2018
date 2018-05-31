@@ -181,7 +181,7 @@ void recibirSentencia(int socketCoordinador) {
 }
 
 void freeEntrada(void* ent) {
-	Entrada entrada = (Entrada*)ent;
+	Entrada* entrada = (Entrada*)ent;
 	free(entrada->clave);
 	free(entrada->valor);
 	free(ent);

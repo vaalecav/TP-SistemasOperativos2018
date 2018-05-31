@@ -9,22 +9,22 @@
  */
 #include "algoritmosDistribucion.h"
 
-void* algoritmoDistribucionEL(t_list* listaInstancias) {
-	void* socketInstancia;
+Instancia* algoritmoDistribucionEL(t_list* listaInstancias) {
+	void* instanciaVoid;
 
-	// Agarro el socket correspondiente de la lista y sumo uno al contador
-	socketInstancia = list_get(listaInstancias, indexInstanciaEL);
-	if (socketInstancia == NULL) {
+	// Agarro la instancia correspondiente de la lista y sumo uno al contador
+	instanciaVoid = list_get(listaInstancias, indexInstanciaEL);
+	if (instanciaVoid == NULL) {
 		indexInstanciaEL = 0;
-		socketInstancia = list_get(listaInstancias, indexInstanciaEL);
+		instanciaVoid = list_get(listaInstancias, indexInstanciaEL);
 
-		if (socketInstancia == NULL) {
+		if (instanciaVoid == NULL) {
 			return NULL;
 		}
 	}
 	indexInstanciaEL++;
 
-	// Convierto a int el socket y devuelvo
-	return socketInstancia;
+	// Convierto a instancia el void* y devuelvo
+	return (Instancia*)instanciaVoid;
 
 }
