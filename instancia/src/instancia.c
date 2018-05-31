@@ -180,8 +180,11 @@ void recibirSentencia(int socketCoordinador) {
 	free(header);
 }
 
-void freeEntrada(void* Entrada) {
-	free(Entrada);
+void freeEntrada(void* ent) {
+	Entrada entrada = (Entrada*)ent;
+	free(entrada->clave);
+	free(entrada->valor);
+	free(ent);
 }
 
 int main() {
@@ -224,17 +227,21 @@ int main() {
 		// Creo la lista de claves por primera vez
 		estructuraAdministrativa.entradas = list_create();
 
+
+	// Cierro todas las cosas que no necesite para recibir sentencias
+		free(info);
+		free(ipCoordinador);
+		config_destroy(configuracion);
+
+
 	// Espero las sentencias
 		while(1) {
 			recibirSentencia(socketCoordinador);
 		}
 
-	// Cierro todas las cosas
+	// Cierro lo que falta
 		close(socketCoordinador);
-		free(info);
 		list_destroy_and_destroy_elements(estructuraAdministrativa.entradas, freeEntrada);
-		free(ipCoordinador);
-		config_destroy(configuracion);
 
 	puts("La Instancia se ha finalizado correctamente.");
 	return 0;
