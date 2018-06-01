@@ -43,7 +43,7 @@ int conectarClienteA(int puerto, char* ip) {
 
 
 	 freeaddrinfo(informacionServidor);  // No lo necesitamos mas
-
+	 free(puertoDestino);
 	 return socketDelServidor;
 }
 
@@ -133,10 +133,12 @@ int enviarHeader(int socketDestino, char* mensaje, int id) {
 
 	if(enviarInformacion(socketDestino, header, &tamanioHeader) < 0){
 		if (DEBUG_SOCKET) puts("Error en enviar header");
+		free(header);
 		exit(1);
 	}
 	if (DEBUG_SOCKET) puts("Header enviado");
 
+	free(header);
 	return 1;
 }
 

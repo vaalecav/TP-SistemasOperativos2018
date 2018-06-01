@@ -80,10 +80,10 @@ void setearValor(char* clave, char* valor, int entradasNecesarias) {
 
 		entrada->clave = malloc(strlen(clave) + 1);
 		strcpy(entrada->clave, clave);
-		entrada->clave[strlen(clave) + 1] = '\0';
+		entrada->clave[strlen(clave)] = '\0';
 		entrada->valor = malloc(strlen(valor) + 1);
 		strcpy(entrada->valor, valor);
-		entrada->valor[strlen(valor) + 1] = '\0';
+		entrada->valor[strlen(valor)] = '\0';
 		entrada->primerEntrada = posicionParaSetear;
 		entrada->cantidadEntradas = entradasNecesarias;
 
@@ -174,6 +174,9 @@ void recibirSentencia(int socketCoordinador) {
 		}
 
 		free(mensaje);
+		free(mensajeSplitted[0]);
+		free(mensajeSplitted[1]);
+		free(mensajeSplitted[2]);
 		free(mensajeSplitted);
 	}
 
@@ -233,8 +236,8 @@ int main() {
 		}
 
 	// Libero memoria
+
 		free(info);
-		free(ipCoordinador);
 		config_destroy(configuracion);
 		close(socketCoordinador);
 		list_destroy_and_destroy_elements(estructuraAdministrativa.entradas, freeEntrada);
