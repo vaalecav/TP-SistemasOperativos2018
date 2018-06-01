@@ -225,6 +225,9 @@ void recibirSentencia(int socketCoordinador) {
 		}
 
 		free(mensaje);
+		free(mensajeSplitted[0]);
+		free(mensajeSplitted[1]);
+		free(mensajeSplitted[2]);
 		free(mensajeSplitted);
 	}
 
@@ -280,8 +283,8 @@ int main() {
 		}
 
 	// Libero memoria
+
 		free(info);
-		free(ipCoordinador);
 		config_destroy(configuracion);
 		close(socketCoordinador);
 		list_destroy_and_destroy_elements(estructuraAdministrativa.entradas, freeEntrada);
