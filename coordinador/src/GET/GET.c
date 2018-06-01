@@ -63,12 +63,14 @@ void getClave(char* key, int socketPlanificador) {
 			// Se tiene que verificar si la instancia no está caída
 			if (sePuedeComunicarConLaInstancia(instancia)) {
 				clave = (Clave*)claveVoid;
-
+				pthread_mutex_lock(&mutexListaInstancias);
 				if (clave->bloqueado) {
 					respuestaGET = COORDINADOR_ESI_BLOQUEADO;
 				} else {
 					respuestaGET = COORDINADOR_ESI_BLOQUEAR;
+					clave->bloqueado = 1;
 				}
+				pthread_mutex_unlock(&mutexListaInstancias);
 			} else {
 				respuestaGET = COORDINADOR_INSTANCIA_CAIDA;
 			}
