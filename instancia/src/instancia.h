@@ -28,6 +28,6 @@
 #include <generales/generales.h>
 
 EstructuraAdministrativa estructuraAdministrativa;
-
+int indexCirc;
 
 #endif /* INSTANCIA_H_ */

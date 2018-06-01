@@ -9,6 +9,13 @@
  */
 #include "instancia.h"
 
+void freeEntrada(void* ent) {
+	Entrada* entrada = (Entrada*)ent;
+	free(entrada->clave);
+	free(entrada->valor);
+	free(ent);
+}
+
 int recibirInformacionEntradas(int socketEmisor, InformacionEntradas** info) {
 	int recibido;
 
@@ -80,10 +87,10 @@ void setearValor(char* clave, char* valor, int entradasNecesarias) {
 
 		entrada->clave = malloc(strlen(clave) + 1);
 		strcpy(entrada->clave, clave);
-		entrada->clave[strlen(clave) + 1] = '\0';
+		entrada->clave[strlen(clave)] = '\0';
 		entrada->valor = malloc(strlen(valor) + 1);
 		strcpy(entrada->valor, valor);
-		entrada->valor[strlen(valor) + 1] = '\0';
+		entrada->valor[strlen(valor)] = '\0';
 		entrada->primerEntrada = posicionParaSetear;
 		entrada->cantidadEntradas = entradasNecesarias;
 
@@ -99,27 +106,73 @@ void setearValor(char* clave, char* valor, int entradasNecesarias) {
 		for(int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
 			printf("Entrada %d: %s\n", i, (estructuraAdministrativa.entradasUsadas[i] ? "usada" : "libre"));
 		}
+		puts("");
+		puts("=====================");
+		puts("");
 		*/
 	}
 }
 
-int cantidadentradasUsadasContinuas() {
+int cantidadEntradasPosiblesContinuas() {
+	int cantidadContinuasMax = 0;
 	int cantidadContinuas = 0;
 	for (int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
 		if (estructuraAdministrativa.entradasUsadas[i]) {
+			cantidadContinuasMax = max(cantidadContinuasMax, cantidadContinuas);
 			cantidadContinuas = 0;
 		} else {
 			cantidadContinuas++;
 		}
 	}
 
-	return cantidadContinuas;
+	cantidadContinuasMax = max(cantidadContinuasMax, cantidadContinuas);
+	return cantidadContinuasMax;
+}
+
+int tieneElIndexYEsAtomico(void* entradaVoid, void* indexVoid) {
+	Entrada* entrada = (Entrada*)entradaVoid;
+	int index = *(int*)indexVoid;
+
+	return entrada->primerEntrada == index && entrada->cantidadEntradas == 1;
+}
+
+void ejecutarAlgoritmoDeRemplazo() {
+	t_config* configuracion;
+	char* algoritmo;
+	void* entradaVoid;
+	Entrada* entrada;
+
+	configuracion = config_create("./configuraciones/configuracion.txt");
+	algoritmo = config_get_string_value(configuracion, "ALG_REMP");
+
+	if (strcmp(algoritmo, "CIRC") == 0) {
+		// Elimino el item de la lista que tenga el index y sea atómico
+		entradaVoid = list_remove_by_condition_with_param(estructuraAdministrativa.entradas, (void*)(&indexCirc), tieneElIndexYEsAtomico);
+
+		// Aumento el index
+		indexCirc++;
+	} else if (strcmp(algoritmo, "LRU") == 0) {
+		// TODO Algoritmo de remplazo LRU
+	} else if (strcmp(algoritmo, "BSU") == 0) {
+		// TODO Algoritmo de remplazo BSU
+	}
+
+	if (entradaVoid != NULL) {
+		entrada = (Entrada*)entradaVoid;
+
+		// Pongo en la tabla de entradas que el espacio está libre
+		estructuraAdministrativa.entradasUsadas[entrada->primerEntrada] = 0;
+
+		// Libero el espacio que la entrada ocupaba
+		freeEntrada(entradaVoid);
+	}
+
+	config_destroy(configuracion);
 }
 
 void setearClave(char* clave, char* valor) {
 	Entrada* entrada;
 	void* entradaVoid;
-	int sePuede;
 	int entradasNecesarias;
 
 	// Verifico si alcanzan las entradas
@@ -141,14 +194,12 @@ void setearClave(char* clave, char* valor) {
 		}
 
 	// Verifico si hay espacio continuo disponible
-		sePuede = cantidadentradasUsadasContinuas() >= entradasNecesarias;
-
-	// Seteo
-		if (sePuede) {
-			setearValor(clave, valor, entradasNecesarias);
-		} else {
-			puts("ejecutar algoritmo de remplazo");
+		while (cantidadEntradasPosiblesContinuas() < entradasNecesarias) {
+			ejecutarAlgoritmoDeRemplazo();
 		}
+
+	// Setteo porque hay lugar
+		setearValor(clave, valor, entradasNecesarias);
 }
 
 
@@ -180,13 +231,6 @@ void recibirSentencia(int socketCoordinador) {
 	free(header);
 }
 
-void freeEntrada(void* ent) {
-	Entrada* entrada = (Entrada*)ent;
-	free(entrada->clave);
-	free(entrada->valor);
-	free(ent);
-}
-
 int main() {
 	puts("Iniciando Instancia.");
 	int socketCoordinador;
@@ -202,6 +246,9 @@ int main() {
 		puertoCoordinador = config_get_int_value(configuracion, "PUERTO_COORDINADOR");
 		ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
 		nombre = config_get_string_value(configuracion, "NOMBRE");
+
+	// Instancio las cosas necesarias para los algoritmos de remplazo
+		indexCirc = 0;
 
 	// Conexion con el coordinador
 		socketCoordinador = clienteConectarComponente("instancia", "coordinador", puertoCoordinador, ipCoordinador);
