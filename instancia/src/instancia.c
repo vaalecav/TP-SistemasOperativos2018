@@ -16,6 +16,20 @@ void freeEntrada(void* ent) {
 	free(ent);
 }
 
+void cerrarInstancia(int sig) {
+    terminar = 1;
+
+	// Libero memoria
+		puts("Libero memoria");
+		free(info);
+		config_destroy(configuracion);
+		close(socketCoordinador);
+		list_destroy_and_destroy_elements(estructuraAdministrativa.entradas, freeEntrada);
+		puts("Libero toda la memoria");
+
+	exit(1);
+}
+
 int recibirInformacionEntradas(int socketEmisor, InformacionEntradas** info) {
 	int recibido;
 
@@ -137,12 +151,10 @@ int tieneElIndexYEsAtomico(void* entradaVoid, void* indexVoid) {
 }
 
 void ejecutarAlgoritmoDeRemplazo() {
-	t_config* configuracion;
 	char* algoritmo;
 	void* entradaVoid;
 	Entrada* entrada;
 
-	configuracion = config_create("./configuraciones/configuracion.txt");
 	algoritmo = config_get_string_value(configuracion, "ALG_REMP");
 
 	if (strcmp(algoritmo, "CIRC") == 0) {
@@ -166,8 +178,6 @@ void ejecutarAlgoritmoDeRemplazo() {
 		// Libero el espacio que la entrada ocupaba
 		freeEntrada(entradaVoid);
 	}
-
-	config_destroy(configuracion);
 }
 
 void setearClave(char* clave, char* valor) {
@@ -203,7 +213,7 @@ void setearClave(char* clave, char* valor) {
 }
 
 
-void recibirSentencia(int socketCoordinador) {
+void recibirSentencia() {
 	char* mensaje;
 	char** mensajeSplitted;
 	ContentHeader *header;
@@ -236,16 +246,21 @@ void recibirSentencia(int socketCoordinador) {
 
 int main() {
 	puts("Iniciando Instancia.");
-	int socketCoordinador;
 	char* ipCoordinador;
 	int puertoCoordinador;
 	char* nombre;
 
-	InformacionEntradas * info;
-	t_config* configuracion;
+	// Instancio las cosas necesarias para saber cuando se cierra la entrada
+		terminar = 0;
+		signal(SIGTSTP, &cerrarInstancia);
 
 	// Archivo de configuracion
-		configuracion = config_create("./configuraciones/configuracion.txt");
+		// Para correr desde Eclipse
+		//configuracion = config_create("./configuraciones/configuracion.txt");
+
+		// Para correr desde consola
+		configuracion = config_create("../configuraciones/configuracion.txt");
+
 		puertoCoordinador = config_get_int_value(configuracion, "PUERTO_COORDINADOR");
 		ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
 		nombre = config_get_string_value(configuracion, "NOMBRE");
@@ -278,16 +293,10 @@ int main() {
 		estructuraAdministrativa.entradas = list_create();
 
 	// Espero las sentencias
-		while(1) {
-			recibirSentencia(socketCoordinador);
+		while(!terminar) {
+			recibirSentencia();
 		}
 
-	// Libero memoria
-
-		free(info);
-		config_destroy(configuracion);
-		close(socketCoordinador);
-		list_destroy_and_destroy_elements(estructuraAdministrativa.entradas, freeEntrada);
 
 	puts("La Instancia se ha finalizado correctamente.");
 	return 0;

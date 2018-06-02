@@ -26,8 +26,15 @@
 #include <commons/config.h>
 #include <commons/string.h>
 #include <generales/generales.h>
+#include <signal.h>
 
 EstructuraAdministrativa estructuraAdministrativa;
 int indexCirc;
+int terminar;
+
+// Los  mantengo globales para poder liberarles la memoria
+InformacionEntradas * info;
+t_config* configuracion;
+int socketCoordinador;
 
 #endif /* INSTANCIA_H_ */
