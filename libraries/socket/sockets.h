@@ -26,7 +26,8 @@ int MAX_CONEX;
 enum PROTOCOLO{
 	ESI = 1,
 	INSTANCIA = 2,
-	COORDINADOR = 3
+	COORDINADOR = 3,
+	PLANIFICADOR = 4
 };
 
 //estructuras

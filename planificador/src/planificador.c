@@ -68,14 +68,23 @@ void quitarReady(int socket){
 
 void algoritmoFifo() {
 	int esiToRun;
+	char* mensaje;
 	while (1) {
 		if (ejecutar == 1) {
 			sem_wait(&mutex);
 			esiToRun = tomarPrimero(colaReady, numeroClientes);
 			numeroEnReady--;
 			//TODO enviar mensaje al ESI para indicarle que ejecute;
+
+			mensaje="ejecutar";
+			enviarHeader(esiToRun, mensaje, PLANIFICADOR);
+			enviarMensaje(esiToRun, mensaje);
+
 			sleep(10);
 			//TODO recibir respuesta del ESI, vuelvo a encolarlo;
+
+
+
 			colaReady[numeroClientes-1] = esiToRun;
 			numeroEnReady++;
 			sem_post(&mutex);
