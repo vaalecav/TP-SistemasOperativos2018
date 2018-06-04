@@ -4,20 +4,20 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../configuracion/configuracion.c 
+../src/algoritmosDistribucion/algoritmosDistribucion.c 
 
 OBJS += \
-./configuracion/configuracion.o 
+./src/algoritmosDistribucion/algoritmosDistribucion.o 
 
 C_DEPS += \
-./configuracion/configuracion.d 
+./src/algoritmosDistribucion/algoritmosDistribucion.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-configuracion/%.o: ../configuracion/%.c
+src/algoritmosDistribucion/%.o: ../src/algoritmosDistribucion/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C Compiler'
-	gcc -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	gcc -I"/home/utnso/tp-2018-1c-Los-Simuladores/libraries" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

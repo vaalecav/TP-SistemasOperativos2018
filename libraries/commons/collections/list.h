@@ -163,7 +163,6 @@
 	* @DESC: Retorna el primer valor encontrado, el cual haga que condition devuelva != 0
 	*/
 	void *list_find(t_list *, bool(*closure)(void*));
-
 	/**
 	* @NAME: list_size
 	* @DESC: Retorna el tamaño de la lista
