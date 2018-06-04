@@ -9,7 +9,7 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include src/algoritmosDistribucion/subdir.mk
--include src/SET/subdir.mk
+-include src/SET_STORE/subdir.mk
 -include src/GET/subdir.mk
 -include src/subdir.mk
 -include subdir.mk

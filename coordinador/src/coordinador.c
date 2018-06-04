@@ -112,9 +112,9 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	if (strcmp(mensajeSplitted[0], "GET") == 0) {
 		getClave(mensajeSplitted[1], socketPlanificador, socketEsi);
 	} else if (strcmp(mensajeSplitted[0], "SET") == 0) {
-		setClave(socketEsi, mensaje);
+		ejecutarSentencia(socketEsi, mensaje);
 	} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
-		puts("STORE");
+		ejecutarSentencia(socketEsi, mensaje);
 	} else {
 		puts("Error en el mensaje enviado al coordinador por le ESI");
 	}
