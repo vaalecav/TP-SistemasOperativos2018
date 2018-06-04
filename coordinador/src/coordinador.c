@@ -184,7 +184,7 @@ int main() {
 
 	socketEscucha = socketServidor(puerto, ipPlanificador, maxConexiones);
 
-	//socketConectadoPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
+	socketConectadoPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
 
 	listaInstancias = list_create();
 	while((socketComponente = servidorConectarComponente(&socketEscucha,"",""))) {//preguntar si hace falta mandar msjes de ok x cada hilo
