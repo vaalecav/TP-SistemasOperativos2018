@@ -26,7 +26,7 @@
 
 #include "algoritmosDistribucion/algoritmosDistribucion.h"
 #include "GET/GET.h"
-#include "SET/SET.h"
+#include "SET_STORE/SET_STORE.h"
 
 t_list *listaInstancias;
 pthread_mutex_t mutexListaInstancias;
