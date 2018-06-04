@@ -15,6 +15,7 @@ C_DEPS :=
 SUBDIRS := \
 commons \
 commons/collections \
+commons/parsi \
 configuracion \
 generales \
 socket \

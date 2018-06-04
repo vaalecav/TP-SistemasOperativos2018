@@ -13,7 +13,7 @@
 #include <socket/sockets.h>
 #include <configuracion/configuracion.h>
 #include <configuracion/configuracion.h>
-#include <parsi/parser.h>
+#include <commons/parsi/parser.h>
 
 void parsearScript();
 

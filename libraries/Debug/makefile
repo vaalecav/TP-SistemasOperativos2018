@@ -11,6 +11,7 @@ RM := rm -rf
 -include socket/subdir.mk
 -include generales/subdir.mk
 -include configuracion/subdir.mk
+-include commons/parsi/subdir.mk
 -include commons/collections/subdir.mk
 -include commons/subdir.mk
 -include subdir.mk
