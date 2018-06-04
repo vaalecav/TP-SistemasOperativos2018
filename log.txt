@@ -43,3 +43,50 @@ Entrada: 4 - 1
 Valor: e
 ---------------------
 
+[TRACE] 19:32:44:675 Instancia/(4143:4143): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 19:32:44:713 Instancia/(4143:4143): Se recibió una sentencia: SET 0 a
+[TRACE] 19:32:44:714 Instancia/(4143:4143): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 19:32:44:714 Instancia/(4143:4143): Se recibió una sentencia: SET 1 b
+[TRACE] 19:32:44:714 Instancia/(4143:4143): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 19:32:44:714 Instancia/(4143:4143): Se recibió una sentencia: SET 2 c
+[TRACE] 19:32:44:715 Instancia/(4143:4143): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 19:32:44:715 Instancia/(4143:4143): Se recibió una sentencia: STORE 2
+[TRACE] 19:43:58:761 Instancia/(4772:4772): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 19:43:58:810 Instancia/(4772:4772): Se recibió una sentencia: SET 0 a
+[TRACE] 19:43:58:811 Instancia/(4772:4772): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 19:43:58:811 Instancia/(4772:4772): Se recibió una sentencia: SET 1 b
+[TRACE] 19:43:58:811 Instancia/(4772:4772): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 19:43:58:811 Instancia/(4772:4772): Se recibió una sentencia: SET 2 c
+[TRACE] 19:43:58:811 Instancia/(4772:4772): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 19:43:58:812 Instancia/(4772:4772): Se recibió una sentencia: STORE 2
+[TRACE] 19:43:58:812 Instancia/(4772:4772): Se recibió una sentencia: STORE 0
+[TRACE] 19:45:00:526 Instancia/(5097:5097): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 19:45:00:565 Instancia/(5097:5097): Se recibió una sentencia: SET 0 a
+[TRACE] 19:45:00:565 Instancia/(5097:5097): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 19:45:00:565 Instancia/(5097:5097): Se recibió una sentencia: SET 1 b
+[TRACE] 19:45:00:565 Instancia/(5097:5097): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 19:45:00:565 Instancia/(5097:5097): Se recibió una sentencia: SET 2 c
+[TRACE] 19:45:00:566 Instancia/(5097:5097): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 19:45:00:566 Instancia/(5097:5097): Se recibió una sentencia: STORE 2
+[TRACE] 19:45:00:566 Instancia/(5097:5097): Se recibió una sentencia: STORE 0
+[TRACE] 19:46:42:723 Instancia/(5272:5272): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 19:46:42:761 Instancia/(5272:5272): Se recibió una sentencia: SET 0 a
+[TRACE] 19:46:42:761 Instancia/(5272:5272): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 19:46:42:762 Instancia/(5272:5272): Se recibió una sentencia: SET 1 b
+[TRACE] 19:46:42:763 Instancia/(5272:5272): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 19:46:42:764 Instancia/(5272:5272): Se recibió una sentencia: STORE 2
+[ERROR] 19:46:42:766 Instancia/(5272:5272): No existe la entrada setteada en la instancia
+[TRACE] 19:46:42:767 Instancia/(5272:5272): Se recibió una sentencia: SET 2 l
+[TRACE] 19:46:42:768 Instancia/(5272:5272): Setteo 2: l, en la entrada 2 con un largo de entradas 1
+[TRACE] 19:46:42:769 Instancia/(5272:5272): Se recibió una sentencia: STORE 2
+[TRACE] 19:47:17:438 Instancia/(5333:5333): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 19:47:17:479 Instancia/(5333:5333): Se recibió una sentencia: SET 0 a
+[TRACE] 19:47:17:479 Instancia/(5333:5333): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 19:47:17:479 Instancia/(5333:5333): Se recibió una sentencia: SET 1 b
+[TRACE] 19:47:17:479 Instancia/(5333:5333): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 19:47:17:480 Instancia/(5333:5333): Se recibió una sentencia: STORE 2
+[ERROR] 19:47:17:480 Instancia/(5333:5333): No se puede acceder al archivo de la clave para hacer store del valor
+[TRACE] 19:47:17:480 Instancia/(5333:5333): Se recibió una sentencia: SET 2 l
+[TRACE] 19:47:17:480 Instancia/(5333:5333): Setteo 2: l, en la entrada 2 con un largo de entradas 1
+[TRACE] 19:47:17:480 Instancia/(5333:5333): Se recibió una sentencia: STORE 2
+[ERROR] 19:47:17:480 Instancia/(5333:5333): No se puede acceder al archivo de la clave para hacer store del valor
