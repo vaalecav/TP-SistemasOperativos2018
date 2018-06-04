@@ -1,0 +1,45 @@
+[TRACE] 09:50:48:328 Instancia/(8528:8528): Se instanció la estructura administrativa: Cant. entradas: 20, Tam. entrada: 100
+[TRACE] 09:54:18:40 Instancia/(8654:8654): Se instanció la estructura administrativa: Cant. entradas: 20, Tam. entrada: 100
+[TRACE] 10:34:56:325 Instancia/(9783:9783): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 10:34:56:411 Instancia/(9783:9783): Se recibió una sentencia: SET 0 a
+[TRACE] 10:34:56:412 Instancia/(9783:9783): Se recibió una sentencia: SET 1 b
+[TRACE] 10:34:56:413 Instancia/(9783:9783): Se recibió una sentencia: SET 2 c
+[TRACE] 10:34:56:413 Instancia/(9783:9783): Se recibió una sentencia: SET 3 d
+[TRACE] 10:34:56:414 Instancia/(9783:9783): Se recibió una sentencia: SET 4 e
+[TRACE] 10:46:00:892 Instancia/(10274:10274): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 10:46:00:929 Instancia/(10274:10274): Se recibió una sentencia: SET 0 a
+[TRACE] 10:46:00:934 Instancia/(10274:10274): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 10:46:00:934 Instancia/(10274:10274): Se recibió una sentencia: SET 1 b
+[TRACE] 10:46:00:934 Instancia/(10274:10274): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 10:46:00:950 Instancia/(10274:10274): Se recibió una sentencia: SET 2 c
+[TRACE] 10:46:00:988 Instancia/(10274:10274): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 10:46:00:0 Instancia/(10274:10274): Se recibió una sentencia: SET 3 d
+[TRACE] 10:46:01:7 Instancia/(10274:10274): Setteo 3: d, en la entrada 3 con un largo de entradas 1
+[TRACE] 10:46:01:18 Instancia/(10274:10274): Se recibió una sentencia: SET 4 e
+[TRACE] 10:46:01:22 Instancia/(10274:10274): Setteo 4: e, en la entrada 4 con un largo de entradas 1
+[TRACE] 10:46:09:869 Instancia/(10274:10274): Se cerró la instancia, la tabla de entradas quedó:
+[TRACE] 10:46:09:872 Instancia/(10274:10274): CLAVE 0
+Entrada: 0 - 1
+Valor: a
+---------------------
+
+[TRACE] 10:46:09:873 Instancia/(10274:10274): CLAVE 1
+Entrada: 1 - 1
+Valor: b
+---------------------
+
+[TRACE] 10:46:09:873 Instancia/(10274:10274): CLAVE 2
+Entrada: 2 - 1
+Valor: c
+---------------------
+
+[TRACE] 10:46:09:873 Instancia/(10274:10274): CLAVE 3
+Entrada: 3 - 1
+Valor: d
+---------------------
+
+[TRACE] 10:46:09:874 Instancia/(10274:10274): CLAVE 4
+Entrada: 4 - 1
+Valor: e
+---------------------
+

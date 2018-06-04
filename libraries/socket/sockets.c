@@ -21,7 +21,7 @@ int conectarClienteA(int puerto, char* ip) {
 	struct addrinfo *informacionServidor;
 	char* puertoDestino;
 
-		puertoDestino = malloc(sizeof(int) + 1);
+	puertoDestino = malloc(sizeof(int) + 1);
 	// Definiendo el destino
 	memset(&direccionDestino, 0, sizeof(direccionDestino));
 	direccionDestino.ai_family = AF_INET;    // Permite que la maquina se encargue de verificar si usamos IPv4 o IPv6
@@ -43,7 +43,7 @@ int conectarClienteA(int puerto, char* ip) {
 
 
 	 freeaddrinfo(informacionServidor);  // No lo necesitamos mas
-
+	 free(puertoDestino);
 	 return socketDelServidor;
 }
 
@@ -133,10 +133,12 @@ int enviarHeader(int socketDestino, char* mensaje, int id) {
 
 	if(enviarInformacion(socketDestino, header, &tamanioHeader) < 0){
 		if (DEBUG_SOCKET) puts("Error en enviar header");
+		free(header);
 		exit(1);
 	}
 	if (DEBUG_SOCKET) puts("Header enviado");
 
+	free(header);
 	return 1;
 }
 
