@@ -143,37 +143,6 @@ void setearValor(char* clave, char* valor, int entradasNecesarias) {
 	}
 }
 
-void storeClave(char* clave) {
-	void* entradaVoid;
-	Entrada* entrada;
-	char* pto_montaje;
-	char* nombreArchivo;
-	FILE* archivo;
-
-	if ((archivo = fopen(nombreArchivo, "w"))) {
-		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
-			entrada = (Entrada*)entradaVoid;
-			pto_montaje = config_get_string_value(configuracion, "PUNTO_MONTAJE");
-			nombreArchivo = malloc(strlen(pto_montaje) + strlen(clave) + 1);
-			strcpy(nombreArchivo, pto_montaje);
-			strcat(nombreArchivo, clave);
-			nombreArchivo[strlen(pto_montaje) + strlen(clave)] = '\0';
-
-			fprintf(archivo, "%s", entrada->valor);
-		} else {
-			logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_ERROR);
-			log_error(logInstancia, "No existe la entrada setteada en la instancia");
-			log_destroy(logInstancia);
-		}
-
-		fclose(archivo);
-	} else {
-		logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_ERROR);
-		log_error(logInstancia, "No se puede acceder al archivo de la clave para hacer store del valor");
-		log_destroy(logInstancia);
-	}
-}
-
 int cantidadEntradasPosiblesContinuas() {
 	int cantidadContinuasMax = 0;
 	int cantidadContinuas = 0;
@@ -275,6 +244,36 @@ void setearClave(char* clave, char* valor) {
 		setearValor(clave, valor, entradasNecesarias);
 }
 
+void storeClave(char* clave) {
+	void* entradaVoid;
+	Entrada* entrada;
+	char* pto_montaje;
+	char* nombreArchivo;
+	FILE* archivo;
+
+	pto_montaje = config_get_string_value(configuracion, "PUNTO_MONTAJE");
+	nombreArchivo = malloc(strlen(pto_montaje) + strlen(clave) + 1);
+	strcpy(nombreArchivo, pto_montaje);
+	strcat(nombreArchivo, clave);
+	nombreArchivo[strlen(pto_montaje) + strlen(clave)] = '\0';
+	if ((archivo = fopen(nombreArchivo, "w"))) {
+		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
+			entrada = (Entrada*)entradaVoid;
+
+			fprintf(archivo, "%s", entrada->valor);
+		} else {
+			logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_ERROR);
+			log_error(logInstancia, "No existe la entrada setteada en la instancia");
+			log_destroy(logInstancia);
+		}
+
+		fclose(archivo);
+	} else {
+		logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_ERROR);
+		log_error(logInstancia, "No se puede acceder al archivo de la clave para hacer store del valor");
+		log_destroy(logInstancia);
+	}
+}
 
 void recibirSentencia() {
 	char* mensaje;
@@ -297,7 +296,7 @@ void recibirSentencia() {
 		if (strcmp(mensajeSplitted[0], "SET") == 0) {
 			setearClave(mensajeSplitted[1], mensajeSplitted[2]);
 		} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
-			puts("STORE");
+			storeClave(mensajeSplitted[1]);
 		} else {
 			puts("Error en el mensaje enviado al coordinador por el ESI");
 		}
