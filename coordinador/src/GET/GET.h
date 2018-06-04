@@ -9,6 +9,6 @@
 #define GET_H_
 
 int sePuedeComunicarConLaInstancia();
-void getClave(char*, int);
+void getClave(char*, int, int);
 
 #endif /* GET_H_ */

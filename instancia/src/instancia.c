@@ -16,16 +16,27 @@ void freeEntrada(void* ent) {
 	free(ent);
 }
 
+void loguearEntrada(void* entr) {
+	Entrada entrada = *(Entrada*)entr;
+	logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
+	log_trace(logInstancia, "CLAVE %s\nEntrada: %d - %d\nValor: %s\n---------------------\n", entrada.clave, entrada.primerEntrada, entrada.cantidadEntradas, entrada.valor);
+	log_destroy(logInstancia);
+}
+
 void cerrarInstancia(int sig) {
     terminar = 1;
 
+	// Logueo el cierre de la instancia
+		logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
+		log_trace(logInstancia, "Se cerró la instancia, la tabla de entradas quedó:");
+		log_destroy(logInstancia);
+		list_iterate(estructuraAdministrativa.entradas, loguearEntrada);
+
 	// Libero memoria
-		puts("Libero memoria");
 		free(info);
 		config_destroy(configuracion);
 		close(socketCoordinador);
 		list_destroy_and_destroy_elements(estructuraAdministrativa.entradas, freeEntrada);
-		puts("Libero toda la memoria");
 
 	exit(1);
 }
@@ -112,6 +123,11 @@ void setearValor(char* clave, char* valor, int entradasNecesarias) {
 			list_add(estructuraAdministrativa.entradas, (void*)entrada);
 		}
 
+		// Logueo que setteo el valor
+		logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
+		log_trace(logInstancia, "Setteo %s: %s, en la entrada %d con un largo de entradas %d", entrada->clave, entrada->valor, entrada->primerEntrada, entrada->cantidadEntradas);
+		log_destroy(logInstancia);
+
 		/*
 		PARA DEBUGGEAR
 
@@ -189,6 +205,11 @@ void setearClave(char* clave, char* valor) {
 		entradasNecesarias = divCeil(strlen(valor), estructuraAdministrativa.tamanioEntrada);
 
 		if (entradasNecesarias > estructuraAdministrativa.cantidadEntradas) {
+			// Logueo el error
+			logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
+			log_error(logInstancia, "El valor no entra en la tabla de entradas");
+			log_destroy(logInstancia);
+
 			puts("La cantidad de entradas no son suficientes para el tamanio del valor pasado.");
 			return;
 		}
@@ -196,6 +217,11 @@ void setearClave(char* clave, char* valor) {
 	// Verifico si ya está seteada la clave
 		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
 			entrada = (Entrada*)entradaVoid;
+
+			// Logueo que la entrada ya existe
+			logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
+			log_trace(logInstancia, "La clave ya está seteada en la instancia");
+			log_destroy(logInstancia);
 
 			// Si ya está bloqueada, pongo todas sus entradas como posibles para ingresar
 			for (int i = entrada->primerEntrada; i < entrada->cantidadEntradas; i++) {
@@ -205,6 +231,12 @@ void setearClave(char* clave, char* valor) {
 
 	// Verifico si hay espacio continuo disponible
 		while (cantidadEntradasPosiblesContinuas() < entradasNecesarias) {
+
+			// Logueo que ejecuto el algoritmo de remplazo
+			logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
+			log_trace(logInstancia, "Ejecuto algoritmo de remplazo");
+			log_destroy(logInstancia);
+
 			ejecutarAlgoritmoDeRemplazo();
 		}
 
@@ -223,6 +255,11 @@ void recibirSentencia() {
 	if (header->id == COORDINADOR) {
 		mensaje = malloc(header->largo + 1);
 		recibirMensaje(socketCoordinador, header->largo, &mensaje);
+
+		// Logueo que se recibio una sentencia
+		logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
+		log_trace(logInstancia, "Se recibió una sentencia: %s", mensaje);
+		log_destroy(logInstancia);
 
 		mensajeSplitted = string_split(mensaje, " ");
 
@@ -255,11 +292,7 @@ int main() {
 		signal(SIGTSTP, &cerrarInstancia);
 
 	// Archivo de configuracion
-		// Para correr desde Eclipse
-		//configuracion = config_create("./configuraciones/configuracion.txt");
-
-		// Para correr desde consola
-		configuracion = config_create("../configuraciones/configuracion.txt");
+		configuracion = config_create(ARCHIVO_CONFIGURACION);
 
 		puertoCoordinador = config_get_int_value(configuracion, "PUERTO_COORDINADOR");
 		ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
@@ -291,6 +324,11 @@ int main() {
 
 		// Creo la lista de claves por primera vez
 		estructuraAdministrativa.entradas = list_create();
+
+		// Logueo la operacion de la estructura administrativa
+		logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
+		log_trace(logInstancia, "Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=%d; Tam. entrada=%d;", estructuraAdministrativa.cantidadEntradas, estructuraAdministrativa.tamanioEntrada);
+		log_destroy(logInstancia);
 
 	// Espero las sentencias
 		while(!terminar) {

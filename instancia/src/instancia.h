@@ -22,11 +22,12 @@
 #include <stdlib.h>
 #include <math.h>
 #include <socket/sockets.h>
-#include <comunicacion/comunicacion.h>
 #include <commons/config.h>
 #include <commons/string.h>
+#include <commons/log.h>
 #include <generales/generales.h>
 #include <signal.h>
+#include <stdbool.h>
 
 EstructuraAdministrativa estructuraAdministrativa;
 int indexCirc;
@@ -36,5 +37,6 @@ int terminar;
 InformacionEntradas * info;
 t_config* configuracion;
 int socketCoordinador;
+t_log* logInstancia;
 
 #endif /* INSTANCIA_H_ */

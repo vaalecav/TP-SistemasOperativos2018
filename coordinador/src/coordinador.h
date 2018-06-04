@@ -21,7 +21,6 @@
 #include <socket/sockets.h>
 #include <commons/string.h>
 #include <commons/config.h>
-#include <comunicacion/comunicacion.h>
 #include <generales/generales.h>
 #include <pthread.h>
 

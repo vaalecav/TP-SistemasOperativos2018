@@ -40,7 +40,7 @@ void asignarClaveAInstancia(char* key) {
 	list_add(instancia->claves, clave);
 }
 
-void getClave(char* key, int socketPlanificador) {
+void getClave(char* key, int socketPlanificador, int socketEsi) {
 	Clave* clave;
 	void* claveVoid;
 	Instancia* instancia;
@@ -72,14 +72,16 @@ void getClave(char* key, int socketPlanificador) {
 				}
 				pthread_mutex_unlock(&mutexListaInstancias);
 			} else {
-				respuestaGET = COORDINADOR_INSTANCIA_CAIDA;
+				enviarHeader(socketPlanificador, key, COORDINADOR_INSTANCIA_CAIDA);
+				enviarMensaje(socketPlanificador, key);
+				return;
 			}
 		} else {
 			asignarClaveAInstancia(key);
 			respuestaGET = COORDINADOR_ESI_CREADO;
 		}
 
-		enviarHeader(socketPlanificador, key, respuestaGET);
-		enviarMensaje(socketPlanificador, key);
+		enviarHeader(socketEsi, key, respuestaGET);
+		enviarMensaje(socketEsi, key);
 
 }

@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <commons/collections/list.h>
-#include <comunicacion/comunicacion.h>
+#include <generales/generales.h>
 
 int indexInstanciaEL;
 

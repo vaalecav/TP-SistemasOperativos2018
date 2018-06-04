@@ -43,6 +43,28 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 	instanciaConectada->socket = socketInstancia;
 	instanciaConectada->claves = list_create();
 
+	//  PARA PROBAR EL COORDINADOR CON LA INSTANCIA
+				char mensaje[7];
+				strcpy(mensaje, "SET 0 a");
+				enviarHeader(socketInstancia, mensaje, COORDINADOR);
+				enviarMensaje(socketInstancia,  mensaje);
+
+				strcpy(mensaje, "SET 1 b");
+				enviarHeader(socketInstancia, mensaje, COORDINADOR);
+				enviarMensaje(socketInstancia,  mensaje);
+
+				strcpy(mensaje, "SET 2 c");
+				enviarHeader(socketInstancia, mensaje, COORDINADOR);
+				enviarMensaje(socketInstancia,  mensaje);
+
+				strcpy(mensaje, "SET 3 d");
+				enviarHeader(socketInstancia, mensaje, COORDINADOR);
+				enviarMensaje(socketInstancia,  mensaje);
+
+				strcpy(mensaje, "SET 4 e");
+				enviarHeader(socketInstancia, mensaje, COORDINADOR);
+				enviarMensaje(socketInstancia,  mensaje);
+
 	//agregamos a la lista de instancias
 	pthread_mutex_lock(&mutexListaInstancias);
 	list_add(listaInstancias, (void*) instanciaConectada);
@@ -110,7 +132,7 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	// Ejecuto
 	mensajeSplitted = string_split(mensaje, " ");
 	if (strcmp(mensajeSplitted[0], "GET") == 0) {
-		getClave(mensajeSplitted[1], socketPlanificador);
+		getClave(mensajeSplitted[1], socketPlanificador, socketEsi);
 	} else if (strcmp(mensajeSplitted[0], "SET") == 0) {
 		setClave(socketEsi, mensaje);
 	} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
@@ -184,7 +206,7 @@ int main() {
 
 	socketEscucha = socketServidor(puerto, ipPlanificador, maxConexiones);
 
-	socketConectadoPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
+	//socketConectadoPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
 
 	listaInstancias = list_create();
 	while((socketComponente = servidorConectarComponente(&socketEscucha,"",""))) {//preguntar si hace falta mandar msjes de ok x cada hilo

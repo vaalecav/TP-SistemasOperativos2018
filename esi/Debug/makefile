@@ -26,7 +26,7 @@ endif
 all: esi
 
 dependents:
-	-cd /home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug && $(MAKE) clean all
+	-cd /home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug && $(MAKE) all
 
 # Tool invocations
 esi: $(OBJS) $(USER_OBJS) /home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug/liblibraries.so
