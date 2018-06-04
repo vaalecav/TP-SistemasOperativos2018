@@ -26,13 +26,13 @@ endif
 all: esi
 
 dependents:
-	-cd /home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug && $(MAKE) all
+	-cd /home/utnso/Escritorio/tp-2018-1c-Los-Simuladores/libraries/Debug && $(MAKE) all
 
 # Tool invocations
-esi: $(OBJS) $(USER_OBJS) /home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug/liblibraries.so
+esi: $(OBJS) $(USER_OBJS) /home/utnso/Escritorio/tp-2018-1c-Los-Simuladores/libraries/Debug/liblibraries.so
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C Linker'
-	gcc -L"/home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug" -o "esi" $(OBJS) $(USER_OBJS) $(LIBS)
+	gcc -L"/home/utnso/Escritorio/tp-2018-1c-Los-Simuladores/libraries/Debug" -o "esi" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -42,6 +42,6 @@ clean:
 	-@echo ' '
 
 .PHONY: all clean dependents
-/home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug/liblibraries.so:
+/home/utnso/Escritorio/tp-2018-1c-Los-Simuladores/libraries/Debug/liblibraries.so:
 
 -include ../makefile.targets
