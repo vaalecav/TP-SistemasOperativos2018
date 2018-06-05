@@ -51,21 +51,22 @@ int filasArchivo() {
     return(lines);
 }
 
-int main() {
+int main(char* path) {
 	puts("Iniciando ESI.");
 	int socketPlanificador;
-	char ipPlanificador[16];
+	char* ipPlanificador;
 	int puertoPlanificador;
 
 	//Leo puertos e ips de archivo de configuracion
-	leerConfiguracion("PUERTO_PLANIFICADOR:%d", &puertoPlanificador);
-	leerConfiguracion("IP_PLANIFICADOR:%s", &ipPlanificador);
-	socketPlanificador = clienteConectarComponente("ESI", "planificador",
-			puertoPlanificador, ipPlanificador);
+	configuracion = config_create("./configuraciones/configuracion.txt");
+	ipPlanificador = config_get_string_value(configuracion, "IP_PLANIFICADOR");
+	puertoPlanificador = config_get_string_value(configuracion, "PUERTO_PLANIFICADOR");
+
+	socketPlanificador = clienteConectarComponente("ESI", "planificador", puertoPlanificador, ipPlanificador);
 
 	int maxFilas = filasArchivo();
 
-	parsearScript(socketPlanificador, maxFilas);
+	parsearScript(socketPlanificador, maxFilas, path);
 
 	close(socketPlanificador);
 
@@ -73,16 +74,27 @@ int main() {
 	return 0;
 }
 
-void parsearScript(int socketPlanificador, int maxFilas) {
+void parsearScript(int socketPlanificador, int maxFilas, char* path) {
 	FILE * fp;
 	char * line = NULL;
 	size_t len = 0;
 	ssize_t read;
-	ContentHeader *header;
+	ContentHeader *headerPlanificador, *headerCoordinador;
 	char* mensaje;
 	int filasLeidas = 0;
+	char* ipCoordinador;
+	int puertoCoordinador;
 
-	fp = fopen("parsi/ejemplo/script.esi", "r");
+	char* mensajeCoordinador;
+	int socketCoordinador;
+	char* respuestaCoordinador;
+
+	//leo puertos e ip del coordinador
+	ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
+	puertoCoordinador = config_get_string_value(configuracion, "PUERTO_COORDINADOR");
+
+
+	fp = fopen(path, "r");
 	if (fp == NULL) {
 		perror("Error al abrir el archivo");
 		exit(EXIT_FAILURE);
@@ -91,7 +103,7 @@ void parsearScript(int socketPlanificador, int maxFilas) {
 	while (filasLeidas < maxFilas) {
 
 		// TODO esperar el mensaje del planificador ordenando ejecutar una linea
-		header = recibirHeader(socketPlanificador);
+		headerPlanificador = recibirHeader(socketPlanificador);
 		mensaje = malloc((header->largo) + 1);
 
 		recibirMensaje(socketPlanificador, header->largo, &mensaje);
@@ -102,22 +114,38 @@ void parsearScript(int socketPlanificador, int maxFilas) {
 				if (parsed.valido) {
 					switch (parsed.keyword) {
 					case GET:
-						printf("GET\tclave: <%s>\n",
-								parsed.argumentos.GET.clave);
+						mensajeCoordinador = malloc(strlen("GET ") + strlen(parsed.argumentos.GET.clave) +1);
+						mensajeCoordinador = strcpy("GET ");
+						strcat(mensajeCoordinador, parsed.argumentos.GET.clave);
+						mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.GET.clave)] = '/0';
 						break;
 					case SET:
-						printf("SET\tclave: <%s>\tvalor: <%s>\n",
-								parsed.argumentos.SET.clave,
-								parsed.argumentos.SET.valor);
+						mensajeCoordinador = malloc(strlen("SET ") + strlen(parsed.argumentos.SET.clave + strlen(parsed.argumentos.SET.valor)) +1);
+						mensajeCoordinador = strcpy("SET ");
+						strcat(mensajeCoordinador, parsed.argumentos.SET.clave);
+						strcat(mensajeCoordinador, " ");
+						strcat(mensajeCoordinador, parsed.argumentos.SET.valor);
+						mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.SET.clave) + strlen(parsed.argumentos.SET.valor)] = '/0';
 						break;
 					case STORE:
-						printf("STORE\tclave: <%s>\n",
-								parsed.argumentos.STORE.clave);
+						mensajeCoordinador = malloc(strlen("STORE ") + strlen(parsed.argumentos.STORE.clave) +1);
+						mensajeCoordinador = strcpy("STORE ");
+						strcat(mensajeCoordinador, parsed.argumentos.STORE.clave);
+						mensajeCoordinador[strlen("STORE ") + strlen(parsed.argumentos.STORE.clave)] = '/0';
 						break;
 					default:
 						fprintf(stderr, "No pude interpretar <%s>\n", line);
 						exit(EXIT_FAILURE);
 					}
+
+					socketCoordinador = clienteConectarComponente("ESI", "coordinador", puertoCoordinador, ipCoordinador);
+					enviarHeader(socketCoordinador, mensajeCoordinador, ESI);
+					enviarMensaje(socketCoordinador, mensajeCoordinador);
+
+					headerCoordinador = recibirHeader(socketCoordinador);
+					respuestaCoordinador = malloc(headerCoordinador->largo + 1);
+					recibirMensaje(socketCoordinador, respuestaCoordinador);
+
 
 					filasLeidas++;
 					destruir_operacion(parsed);
