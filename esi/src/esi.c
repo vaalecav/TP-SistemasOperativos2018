@@ -8,16 +8,7 @@
  ============================================================================
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <socket/sockets.h>
-#include <configuracion/configuracion.h>
-#include <configuracion/configuracion.h>
-#include <commons/parsi/parser.h>
-
-void parsearScript();
-
-#define SIZE 1024
+#include "esi.h"
 
 int filasArchivo() {
     const char filename[] = "parsi/ejemplo/script.esi";
@@ -51,24 +42,25 @@ int filasArchivo() {
     return(lines);
 }
 
-int main(char* path) {
+int main(int argc, char **argv){
 	puts("Iniciando ESI.");
 	int socketPlanificador;
 	char* ipPlanificador;
 	int puertoPlanificador;
 
 	//Leo puertos e ips de archivo de configuracion
-	configuracion = config_create("./configuraciones/configuracion.txt");
+	configuracion = config_create(ARCHIVO_CONFIGURACION);
 	ipPlanificador = config_get_string_value(configuracion, "IP_PLANIFICADOR");
-	puertoPlanificador = config_get_string_value(configuracion, "PUERTO_PLANIFICADOR");
+	puertoPlanificador = config_get_int_value(configuracion, "PUERTO_PLANIFICADOR");
 
 	socketPlanificador = clienteConectarComponente("ESI", "planificador", puertoPlanificador, ipPlanificador);
 
 	int maxFilas = filasArchivo();
 
-	parsearScript(socketPlanificador, maxFilas, path);
+	parsearScript(socketPlanificador, maxFilas, argv[1]);
 
 	close(socketPlanificador);
+	config_destroy(configuracion);
 
 	puts("El ESI se ha finalizado correctamente.");
 	return 0;
@@ -91,7 +83,7 @@ void parsearScript(int socketPlanificador, int maxFilas, char* path) {
 
 	//leo puertos e ip del coordinador
 	ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
-	puertoCoordinador = config_get_string_value(configuracion, "PUERTO_COORDINADOR");
+	puertoCoordinador = config_get_int_value(configuracion, "PUERTO_COORDINADOR");
 
 
 	fp = fopen(path, "r");
@@ -101,37 +93,35 @@ void parsearScript(int socketPlanificador, int maxFilas, char* path) {
 	}
 
 	while (filasLeidas < maxFilas) {
-
-		// TODO esperar el mensaje del planificador ordenando ejecutar una linea
 		headerPlanificador = recibirHeader(socketPlanificador);
-		mensaje = malloc((header->largo) + 1);
+		mensaje = malloc((headerPlanificador->largo) + 1);
+		recibirMensaje(socketPlanificador, headerPlanificador->largo, &mensaje);
 
-		recibirMensaje(socketPlanificador, header->largo, &mensaje);
-		if (header->id == PLANIFICADOR) {
+		if (headerPlanificador->id == PLANIFICADOR) {
 			if ((read = getline(&line, &len, fp)) != -1) {
 				t_esi_operacion parsed = parse(line);
 
 				if (parsed.valido) {
 					switch (parsed.keyword) {
 					case GET:
-						mensajeCoordinador = malloc(strlen("GET ") + strlen(parsed.argumentos.GET.clave) +1);
-						mensajeCoordinador = strcpy("GET ");
+						mensajeCoordinador = malloc(strlen("GET ") + strlen(parsed.argumentos.GET.clave) + 1);
+						strcpy(mensajeCoordinador, "GET ");
 						strcat(mensajeCoordinador, parsed.argumentos.GET.clave);
-						mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.GET.clave)] = '/0';
+						mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.GET.clave)] = '\0';
 						break;
 					case SET:
 						mensajeCoordinador = malloc(strlen("SET ") + strlen(parsed.argumentos.SET.clave + strlen(parsed.argumentos.SET.valor)) +1);
-						mensajeCoordinador = strcpy("SET ");
+						strcpy(mensajeCoordinador, "SET ");
 						strcat(mensajeCoordinador, parsed.argumentos.SET.clave);
 						strcat(mensajeCoordinador, " ");
 						strcat(mensajeCoordinador, parsed.argumentos.SET.valor);
-						mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.SET.clave) + strlen(parsed.argumentos.SET.valor)] = '/0';
+						mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.SET.clave) + strlen(parsed.argumentos.SET.valor)] = '\0';
 						break;
 					case STORE:
 						mensajeCoordinador = malloc(strlen("STORE ") + strlen(parsed.argumentos.STORE.clave) +1);
-						mensajeCoordinador = strcpy("STORE ");
+						strcpy(mensajeCoordinador, "STORE ");
 						strcat(mensajeCoordinador, parsed.argumentos.STORE.clave);
-						mensajeCoordinador[strlen("STORE ") + strlen(parsed.argumentos.STORE.clave)] = '/0';
+						mensajeCoordinador[strlen("STORE ") + strlen(parsed.argumentos.STORE.clave)] = '0';
 						break;
 					default:
 						fprintf(stderr, "No pude interpretar <%s>\n", line);
@@ -144,7 +134,7 @@ void parsearScript(int socketPlanificador, int maxFilas, char* path) {
 
 					headerCoordinador = recibirHeader(socketCoordinador);
 					respuestaCoordinador = malloc(headerCoordinador->largo + 1);
-					recibirMensaje(socketCoordinador, respuestaCoordinador);
+					recibirMensaje(socketCoordinador, headerCoordinador->largo, &respuestaCoordinador);
 
 
 					filasLeidas++;

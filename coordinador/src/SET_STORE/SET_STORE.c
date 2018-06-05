@@ -17,6 +17,7 @@ void ejecutarSentencia(int socketEsi, char* mensaje) {
 
 	// Valido que la clave no exceda el máximo
 		if (esSET(mensajeSplitted[0]) && strlen(mensajeSplitted[1]) > 40) {
+			puts("Error, la clave excede el tamaño máximo de 40 caracteres");
 			avisarAEsi(socketEsi, mensajeSplitted[1], COORDINADOR_ESI_ERROR_TAMANIO_CLAVE);
 			free(mensajeSplitted);
 			return;
@@ -28,6 +29,7 @@ void ejecutarSentencia(int socketEsi, char* mensaje) {
 
 		if (instanciaVoid == NULL) {
 			pthread_mutex_unlock(&mutexListaInstancias);
+			puts("Error, la clave solicitada no existe");
 			avisarAEsi(socketEsi, mensajeSplitted[1], COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
 			free(mensajeSplitted);
 			return;
@@ -42,8 +44,9 @@ void ejecutarSentencia(int socketEsi, char* mensaje) {
 		clave = (Clave*)claveVoid;
 
 		if (!clave->bloqueado) {
-			avisarAEsi(socketEsi, mensajeSplitted[1], COORDINADOR_ESI_ERROR_CLAVE_DESBLOQUEADA);
 			pthread_mutex_unlock(&mutexListaInstancias);
+			puts("Error, la clave que intenta acceder no se encuentra tomada");
+			avisarAEsi(socketEsi, mensajeSplitted[1], COORDINADOR_ESI_ERROR_CLAVE_DESBLOQUEADA);
 			free(mensajeSplitted);
 			return;
 		}
