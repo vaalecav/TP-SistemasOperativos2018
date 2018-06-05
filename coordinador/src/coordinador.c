@@ -41,6 +41,7 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 
 	instanciaConectada->nombre = nombreInstancia;
 	instanciaConectada->socket = socketInstancia;
+	instanciaConectada->caida = 0;
 	instanciaConectada->claves = list_create();
 
 	//agregamos a la lista de instancias
@@ -127,6 +128,25 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	close(socketEsi);
 }
 
+void manejarDesconexion(int socketInstancia, int largoMensaje){
+	char* nombreInstancia = malloc(largoMensaje + 1);
+	recibirMensaje(socketInstancia, largoMensaje, &nombreInstancia);
+	Instancia* instancia = malloc(sizeof(Instancia));
+
+	//busco instancia
+	pthread_mutex_lock(&mutexListaInstancias);
+	instancia = list_find_with_param(listaInstancias, nombreInstancia, strcmp);
+
+	if(instancia == NULL){
+		puts("Error en encontrar instancia desconectada");
+	}
+	instancia->caida = 1;
+
+	pthread_mutex_unlock(&mutexListaInstancias);
+
+	return;
+}
+
 void manejarConexion(void* socketsNecesarios) {
 	SocketHilos socketsConectados = *(SocketHilos*)socketsNecesarios;
 	ContentHeader * header;
@@ -141,6 +161,9 @@ void manejarConexion(void* socketsNecesarios) {
 		case ESI:
 			manejarEsi(socketsConectados.socketComponente, socketsConectados.socketPlanificador, header->largo);
 			break;
+
+		case INSTANCIA_COORDINADOR_DESCONECTADA:
+			manejarDesconexion(socketsConectados.socketComponente, header->largo);
 	}
 
 	free(header);

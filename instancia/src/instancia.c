@@ -25,12 +25,18 @@ void loguearEntrada(void* entr) {
 
 void cerrarInstancia(int sig) {
     terminar = 1;
+    char* nombre;
 
 	// Logueo el cierre de la instancia
 		logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
 		log_trace(logInstancia, "Se cerró la instancia, la tabla de entradas quedó:");
 		log_destroy(logInstancia);
 		list_iterate(estructuraAdministrativa.entradas, loguearEntrada);
+
+		nombre = config_get_string_value(configuracion, "NOMBRE");
+		//Se lo comunico al coordinador
+		enviarHeader(socketCoordinador, nombre, INSTANCIA_COORDINADOR_DESCONECTADA);
+		enviarMensaje(socketCoordinador, nombre);
 
 	// Libero memoria
 		free(info);
