@@ -21,8 +21,11 @@
 #define SIZE 1024
 
 t_config* configuracion;
+t_log* logESI;
+int socketPlanificador;
 
-void parsearScript(int, int, char*);
+void liberarMemoria();
+void parsearScript(char*, int);
 int filasArchivo();
 
 

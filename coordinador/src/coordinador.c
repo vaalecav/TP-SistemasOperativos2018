@@ -164,6 +164,18 @@ void manejarConexion(void* socketsNecesarios) {
 
 		case INSTANCIA_COORDINADOR_DESCONECTADA:
 			manejarDesconexion(socketsConectados.socketComponente, header->largo);
+			break;
+
+		case INSTANCIA_SENTENCIA_OK:
+			break;
+
+		case INSTANCIA_ERROR:
+			// Son casos no contemplados
+			break;
+
+		case INSTANCIA_CLAVE_NO_IDENTIFICADA:
+			// TODO ¿a quién hay que avisarle?
+			break;
 	}
 
 	free(header);
