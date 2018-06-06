@@ -13,6 +13,34 @@
 int main() {
 	// Declaraciones Iniciales //
 	puts("Iniciando Planificador.");
+	pthread_t hiloConexiones;
+
+	// Inicio el hilo que maneja las Conexiones //
+	if (pthread_create(&hiloConexiones, NULL, (void *) tratarConexiones,
+	NULL)) {
+		fprintf(stderr, "Error creando el thread.\n");
+		return 1;
+	}
+
+	// Inicio la Consola del Planificador //
+	iniciarConsola();
+
+	// Espero a que finalize el hilo que maneja las Conexiones //
+	if (pthread_join(hiloConexiones, NULL)) {
+		fprintf(stderr, "Error joining thread\n");
+		return 2;
+
+	}
+
+	// Finalizo correctamente al Planificador //
+	cerrarPlanificador();
+	puts("El Planificador se ha finalizado correctamente.");
+
+	return 0;
+}
+
+void tratarConexiones() {
+	// Declaraciones Iniciales //
 	char* ip;
 	int puerto;
 	int maxConex;
@@ -24,27 +52,102 @@ int main() {
 	ip = config_get_string_value(configuracion, "IP");
 	maxConex = config_get_int_value(configuracion, "MAX_CONEX");
 
+	// Nuevas Declaraciones //
+	fd_set descriptoresLectura;
+	int socketCliente[maxConex];
+	int numeroClientes = 0;
+	int i;
+	struct timeval timeout;
+	int nextIdEsi = 1;
+
 	// Levanto el Servidor //
 	socketServer = socketServidor(puerto, ip, maxConex);
 
-	// Conecto un ESI //
-	int socketEsi = servidorConectarComponente(&socketServer, "planificador",
-			"esi");
-	close(socketEsi);
+	// Bucle del select() //
+	while (done == 0) {
+		timeout.tv_sec = 1;
+		timeout.tv_usec = 0;
 
-	// Inicio la Consola del Planificador //
-	iniciarConsola();
+		/* Se inicializa descriptoresLectura */
+		FD_ZERO(&descriptoresLectura);
 
-	// Finalizo correctamente al Planificador //
-	cerrarPlanificador(socketServer);
-	puts("El Planificador se ha finalizado correctamente.");
+		/* Se añade para select() el socket servidor */
+		FD_SET(socketServer, &descriptoresLectura);
 
-	return 0;
+		/* Se añaden para select() los sockets con los clientes ya conectados */
+		for (i = 0; i < numeroClientes; i++)
+			FD_SET(socketCliente[i], &descriptoresLectura);
+
+		/* Espera indefinida hasta que alguno de los descriptores tenga algo
+		 que decir: un nuevo cliente o un cliente ya conectado que envía un
+		 mensaje */
+		select(100, &descriptoresLectura, NULL, NULL, &timeout);
+
+		/* Se comprueba si algún cliente ya conectado ha enviado algo */
+		for (i = 0; i < numeroClientes; i++) {
+			if (FD_ISSET(socketCliente[i], &descriptoresLectura)) {
+				/* Se indica que el cliente ha cerrado la conexión */
+				close(socketCliente[i]);
+				remove_element(socketCliente, i, numeroClientes);
+				numeroClientes--;
+			}
+		}
+
+		/* Se comprueba si algún cliente nuevo desea conectarse y se le
+		 admite */
+		if (FD_ISSET(socketServer, &descriptoresLectura)) {
+			/* Acepta la conexión con el cliente, guardándola en el array */
+			socketCliente[numeroClientes] = servidorConectarComponente(
+					&socketServer, "planificador", "esi");
+			numeroClientes++;
+
+			/* Si se ha superado el maximo de clientes, se cierra la conexión,
+			 se deja como estaba y se vuelve. */
+			if (numeroClientes > maxConex) {
+				close(socketCliente[numeroClientes - 1]);
+				numeroClientes--;
+				puts("Rechaze a un ESI porque llegue a tope");
+				// TODO AVISARLE AL ESI QUE LO DESCONECTO;
+			} else {
+				/* Envía su número de id al cliente */
+				// TODO ENVIARLE AL ESI SU NUMERO DE ID;
+
+				// TODO RECIBIR DEL ESI SU CANTIDAD DE LINEAS;
+
+				/* Aumento el ID para el proximo ESI */
+				nextIdEsi++;
+			}
+		}
+	}
+
+	// Finalizo cualquier conexion restante //
+	while (numeroClientes > 0) {
+		printf("El cliente %d fue finalizado por comando (quit).\n",
+				socketCliente[numeroClientes - 1]);
+		close(socketCliente[numeroClientes - 1]);
+		numeroClientes--;
+	}
+
+	close(socketServer);
 }
 
-void cerrarPlanificador(int socketServer) {
-	close(socketServer);
+void cerrarPlanificador() {
 	config_destroy(configuracion);
+}
+
+int dameMaximo(int *tabla, int n) {
+	int i, max = 0;
+	for (i = 0; i < n; i++) {
+		if (tabla[i] > max)
+			max = tabla[i];
+	}
+	return max;
+}
+
+void remove_element(int *array, int index, int array_length) {
+	int i;
+	for (i = index; i < array_length - 1; i++)
+		array[i] = array[i + 1];
 }
 
 //=======================COMANDOS DE CONSOLA====================================

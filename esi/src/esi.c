@@ -37,6 +37,8 @@ int main() {
 	socketPlanificador = clienteConectarComponente("ESI", "planificador",
 			puertoPlanificador, ipPlanificador);
 
+	sleep(10);
+
 	// Finalizo correctamente al ESI //
 	cerrarEsi(socketPlanificador);
 	puts("El ESI se ha finalizado correctamente.");

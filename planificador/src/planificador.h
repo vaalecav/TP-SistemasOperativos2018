@@ -36,7 +36,7 @@ typedef struct ESI {
 	int id;
 	int socket;
 	int lineas;
-};
+} DATA;
 
 typedef struct COMANDO {
 	char* cmd;
@@ -65,7 +65,10 @@ t_config* configuracion; 	// Configuracion del socket servidor.
 
 //=====================FUNCIONES DE PLANIFICADOR=====================================
 
-void cerrarPlanificador(int socketServer); 	// Finaliza correctamente al Planificador.
+void cerrarPlanificador(); 	// Finaliza correctamente al Planificador.
+void remove_element(int *array, int index, int array_length); // Quita un elemento del array.
+int dameMaximo(int *tabla, int n); // Devuelve el mas alto del array.
+void tratarConexiones(); // Hilo que maneja conexiones con select().
 
 //=====================FUNCIONES DE CONSOLA=====================================
 
