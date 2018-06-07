@@ -28,7 +28,7 @@
 
 //=======================COMANDOS DE CONSOLA====================================
 
-int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(); // Son las funciones que ejecutan los comandos ingresados por consola.
+int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
 
@@ -47,6 +47,7 @@ typedef struct COMANDO {
 
 COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
 		{ "continuar", cmdContinue, "Reanuda la ejecucion de ESIs.", 0 },
+		{ "colaReady", cmdColaReady, "Imprime en pantalla la cola de Ready.", 0 },
 		/*		{ "bloquear","Este comando aun no se ha desarrollado.", 2},
 		 { "desbloquear","Este comando aun no se ha desarrollado.", 1},
 		 { "listar","Este comando aun no se ha desarrollado.", 1},
@@ -62,6 +63,9 @@ COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
 int done = 0; 				// Es 0 por default. La pasamos a 1 para finalizar al Planificador.
 int ejecutar = 0; 			// Es 0 por default. La pasamos a 1 para ejecutar ESI.
 t_config* configuracion; 	// Configuracion del socket servidor.
+t_list* colaReady;			// Lista enlazada de Ready.
+t_list* colaBloqueados;		// Lista enlazada de Bloqueados.
+t_list* colaTerminados;		// Lista enlazada de Terminados.
 
 //=====================FUNCIONES DE PLANIFICADOR=====================================
 
@@ -69,6 +73,10 @@ void cerrarPlanificador(); 	// Finaliza correctamente al Planificador.
 void remove_element(int *array, int index, int array_length); // Quita un elemento del array.
 int dameMaximo(int *tabla, int n); // Devuelve el mas alto del array.
 void tratarConexiones(); // Hilo que maneja conexiones con select().
+void borrarDeColas(int socket); // Borra de las listas enlazadas el ESI con el socket indicado.
+int compararSocket(void* esiVoid, void* indexVoid); // Funcion que compara para funcion de listas.
+void imprimirEnPantalla(void* esiVoid); // Imprime un ESI en pantalla.
+void manejoAlgoritmos(); // Hilo que maneja la ejecucion de ESIs.
 
 //=====================FUNCIONES DE CONSOLA=====================================
 

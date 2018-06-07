@@ -9,22 +9,31 @@
  */
 
 #include "planificador.h"
+
 // TODO LIST:
-// 1- Crear Listas Enlazadas de Ready, Ejecucion (?), Bloqueados y Terminados //
-// 2- Cuando se conecta un cliente, meterlo a cola de Ready. //
-// 3- Cuando se desconecta un cliente, buscarlo en Ready, Ejecucion (?) o Bloqueados //
-// 4- Cuando termina de ejecutar un cliente, desconectarlo nosotros y pasarlo a Terminados //
-// 5- Crear un hilo de ejecucion que ejecute segun el algoritmo indicado //
-// IMPORTANTE: El tipo de dato de las listas sera DATA, que es un struct de ESI //
+// 5- Cuando termina de ejecutar un cliente, desconectarlo nosotros y pasarlo a Terminados //
 // IMPORTANTE: Todavia falta hacer la funcion para recibir el largo del ESI cuando el mismo se conecta //
 
 int main() {
 	// Declaraciones Iniciales //
 	puts("Iniciando Planificador.");
 	pthread_t hiloConexiones;
+	pthread_t hiloAlgoritmos;
+
+	// Inicializo las listas enlazadas //
+	colaReady = list_create();
+	colaBloqueados = list_create();
+	colaTerminados = list_create();
 
 	// Inicio el hilo que maneja las Conexiones //
 	if (pthread_create(&hiloConexiones, NULL, (void *) tratarConexiones,
+	NULL)) {
+		fprintf(stderr, "Error creando el thread.\n");
+		return 1;
+	}
+
+	// Inicio el hilo que maneja la Ejecucion de ESIs //
+	if (pthread_create(&hiloAlgoritmos, NULL, (void *) manejoAlgoritmos,
 	NULL)) {
 		fprintf(stderr, "Error creando el thread.\n");
 		return 1;
@@ -35,9 +44,14 @@ int main() {
 
 	// Espero a que finalize el hilo que maneja las Conexiones //
 	if (pthread_join(hiloConexiones, NULL)) {
-		fprintf(stderr, "Error joining thread\n");
+		fprintf(stderr, "Error joineando thread\n");
 		return 2;
+	}
 
+	// Espero a que finalize el hilo que maneja la Ejecucion de ESIs //
+	if (pthread_join(hiloAlgoritmos, NULL)) {
+		fprintf(stderr, "Error joineando thread\n");
+		return 2;
 	}
 
 	// Finalizo correctamente al Planificador //
@@ -45,6 +59,15 @@ int main() {
 	puts("El Planificador se ha finalizado correctamente.");
 
 	return 0;
+}
+
+void manejoAlgoritmos() {
+	while (done == 0) {
+		if (ejecutar == 1) {
+			puts("Acabo de enviar una solicitud de ejecucion a un ESI (Hay que codear esto).");
+			sleep(2);
+		}
+	}
 }
 
 void tratarConexiones() {
@@ -96,6 +119,7 @@ void tratarConexiones() {
 			if (FD_ISSET(socketCliente[i], &descriptoresLectura)) {
 				/* Se indica que el cliente ha cerrado la conexión */
 				close(socketCliente[i]);
+				borrarDeColas(socketCliente[i]);
 				remove_element(socketCliente, i, numeroClientes);
 				numeroClientes--;
 			}
@@ -119,7 +143,15 @@ void tratarConexiones() {
 				/* Envía su número de id al cliente */
 				enviarHeader(socketCliente[numeroClientes - 1], "", nextIdEsi);
 
-				// TODO RECIBIR DEL ESI SU CANTIDAD DE LINEAS;
+				// TODO RECIBIR DEL ESI SU CANTIDAD DE LINEAS EN VARIABLE cantLineas!!!!
+				int cantLineas = 8;
+
+				/* Agrego al ESI a la cola de Ready */
+				DATA *nuevoEsi = (DATA*) malloc(sizeof(DATA));
+				nuevoEsi->id = nextIdEsi;
+				nuevoEsi->lineas = cantLineas;
+				nuevoEsi->socket = socketCliente[numeroClientes - 1];
+				list_add(colaReady, (void*) nuevoEsi);
 
 				/* Aumento el ID para el proximo ESI */
 				nextIdEsi++;
@@ -138,8 +170,23 @@ void tratarConexiones() {
 	close(socketServer);
 }
 
+void borrarDeColas(int socket) {
+	list_remove_by_condition_with_param(colaReady, (void*) (&socket),
+			compararSocket);
+}
+
+int compararSocket(void* esiVoid, void* indexVoid) {
+	DATA* esi = (DATA*) esiVoid;
+	int index = *(int*) indexVoid;
+
+	return esi->socket == index;
+}
+
 void cerrarPlanificador() {
 	config_destroy(configuracion);
+	list_destroy(colaReady);
+	list_destroy(colaBloqueados);
+	list_destroy(colaTerminados);
 }
 
 int dameMaximo(int *tabla, int n) {
@@ -157,7 +204,18 @@ void remove_element(int *array, int index, int array_length) {
 		array[i] = array[i + 1];
 }
 
+void imprimirEnPantalla(void* esiVoid) {
+	DATA* esi = (DATA*) esiVoid;
+	printf("ID: %d, SOCKET: %d, LARGO: %d\n", esi->id, esi->socket,
+			esi->lineas);
+}
+
 //=======================COMANDOS DE CONSOLA====================================
+
+int cmdColaReady() {
+	list_iterate(colaReady, imprimirEnPantalla);
+	return 0;
+}
 
 int cmdQuit() {
 	done = 1;
