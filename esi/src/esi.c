@@ -48,9 +48,16 @@ int filasArchivo(char* filename) {
 }
 
 int main(int argc, char **argv){
-
 	char* ipPlanificador;
 	int puertoPlanificador;
+	int socketPlanificador;
+	ContentHeader *header;
+
+	// Leo el Archivo de Configuracion //
+	configuracion = config_create(ARCHIVO_CONFIGURACION);
+	puertoPlanificador = config_get_int_value(configuracion,
+			"PUERTO_PLANIFICADOR");
+	ipPlanificador = config_get_string_value(configuracion, "IP_PLANIFICADOR");
 
 	// Inicio el log
 	logESI = log_create(ARCHIVO_LOG, "ESI", true, LOG_LEVEL_TRACE);
