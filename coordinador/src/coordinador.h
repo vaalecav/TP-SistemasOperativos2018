@@ -21,6 +21,7 @@
 #include <socket/sockets.h>
 #include <commons/string.h>
 #include <commons/config.h>
+#include <commons/log.h> // Con esta no deberia andar el t_log????
 #include <generales/generales.h>
 #include <pthread.h>
 
@@ -31,8 +32,9 @@
 t_list *listaInstancias;
 pthread_mutex_t mutexListaInstancias;
 pthread_mutex_t mutexLog;
+t_log* logCoordinador;
 
-enum CLAVE{
+enum CLAVE {
 	NO_EN_INSTANCIA = 0,
 	EN_INSTANCIA_BLOQUEADA = 1,
 	EN_INSTANCIA_NO_BLOQUEADA = 2
