@@ -25,6 +25,9 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 			// Le aviso al planificador por el error
 			avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_TAMANIO_CLAVE);
 
+			//Tambien le aviso al esi para que no se quede esperando
+			avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_TAMANIO_CLAVE);
+
 			// Libero memoria
 			free(mensajeSplitted[0]);
 			free(mensajeSplitted[1]);
@@ -45,6 +48,9 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 
 			// Le aviso al planificador
 			avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+
+			//Tambien le aviso al esi para que no se quede esperando
+			avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
 
 			// Libero memoria
 			free(mensajeSplitted[0]);
@@ -70,6 +76,9 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 
 			// Le aviso al planificador
 			avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_DESBLOQUEADA);
+
+			//Tambien le aviso al esi para que no se quede esperando
+			avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_CLAVE_DESBLOQUEADA);
 
 			// Libero memoria
 			free(mensajeSplitted[0]);
@@ -106,7 +115,14 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 			case INSTANCIA_CLAVE_NO_IDENTIFICADA:
 				// Cuando hay un error, le aviso al planificador
 				log_error(logCoordinador, "Clave no identificada");
+
+				//Le aviso al planificador
 				avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+
+				//Tambien le aviso al esi para que no se quede esperando
+				avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+
+
 				break;
 
 			case INSTANCIA_ERROR:
