@@ -62,10 +62,16 @@ int main() {
 }
 
 void manejoAlgoritmos() {
+	DATA * esi;
+	void * esiVoid;
 	while (done == 0) {
 		if (ejecutar == 1) {
-			puts("Acabo de enviar una solicitud de ejecucion a un ESI (Hay que codear esto).");
-			sleep(2);
+			if ((esiVoid = list_get(colaReady, 0)) == NULL) {
+				// No hay nadie para ejecutar //
+			} else {
+				esi = (DATA*) esiVoid;
+				enviarHeader(esi->socket, "", PLANIFICADOR);
+			}
 		}
 	}
 }
@@ -90,6 +96,7 @@ void tratarConexiones() {
 	int i;
 	struct timeval timeout;
 	int nextIdEsi = 1;
+	ContentHeader *header;
 
 	// Levanto el Servidor //
 	socketServer = socketServidor(puerto, ip, maxConex);
@@ -143,8 +150,9 @@ void tratarConexiones() {
 				/* Envía su número de id al cliente */
 				enviarHeader(socketCliente[numeroClientes - 1], "", nextIdEsi);
 
-				// TODO RECIBIR DEL ESI SU CANTIDAD DE LINEAS EN VARIABLE cantLineas!!!!
-				int cantLineas = 8;
+				// Recibo la cantidad de lineas del ESI //
+				header = recibirHeader(socketCliente[numeroClientes - 1]);
+				int cantLineas = header->id;
 
 				/* Agrego al ESI a la cola de Ready */
 				DATA *nuevoEsi = (DATA*) malloc(sizeof(DATA));
