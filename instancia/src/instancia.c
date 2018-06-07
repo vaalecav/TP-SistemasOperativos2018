@@ -22,11 +22,7 @@ void loguearEntrada(void* entr) {
 }
 
 void avisarAlCoordinador(int idMensaje) {
-	char* nombre;
-
-	nombre = config_get_string_value(configuracion, "NOMBRE");
-	enviarHeader(socketCoordinador, nombre, idMensaje);
-	enviarMensaje(socketCoordinador, nombre);
+	enviarHeader(socketCoordinador, "", idMensaje);
 }
 
 void cerrarInstancia(int sig) {
@@ -301,7 +297,7 @@ void recibirSentencia() {
 	char* mensaje;
 	char** mensajeSplitted;
 	ContentHeader *header;
-	int respuesta = 0;
+	int respuesta;
 
 	header = recibirHeader(socketCoordinador);
 
@@ -319,10 +315,11 @@ void recibirSentencia() {
 		} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
 			respuesta = storeClave(mensajeSplitted[1]);
 		} else {
-			puts("Error en el mensaje enviado al coordinador por el ESI");
+			respuesta = INSTANCIA_ERROR;
+			log_error(logInstancia, "Error en la sentencia");
 		}
 
-		if (respuesta) avisarAlCoordinador(respuesta);
+		avisarAlCoordinador(respuesta);
 
 		free(mensaje);
 		free(mensajeSplitted[0]);
@@ -341,7 +338,7 @@ int main() {
 	char* nombre;
 
 	// Inicio el log
-		logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
+		logInstancia = log_create(ARCHIVO_LOG, "Instancia", LOG_PRINT, LOG_LEVEL_TRACE);
 
 
 	// Instancio las cosas necesarias para saber cuando se cierra la entrada

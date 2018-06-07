@@ -25,6 +25,8 @@ Consola
 #define ARCHIVO_LOG "../../log.txt"
 */
 
+// Logs
+#define LOG_PRINT 1
 
 int min(int, int);
 int max(int, int);
