@@ -10,15 +10,17 @@
 #include "instancia.h"
 
 void freeEntrada(void* ent) {
-	Entrada* entrada = (Entrada*)ent;
+	Entrada* entrada = (Entrada*) ent;
 	free(entrada->clave);
 	free(entrada->valor);
 	free(ent);
 }
 
 void loguearEntrada(void* entr) {
-	Entrada entrada = *(Entrada*)entr;
-	log_trace(logInstancia, "Clave: %s - Valor: %s - Entrada: %d - Ocupa: %d", entrada.clave, entrada.primerEntrada, entrada.cantidadEntradas, entrada.valor);
+	Entrada entrada = *(Entrada*) entr;
+	log_trace(logInstancia, "Clave: %s - Valor: %s - Entrada: %d - Ocupa: %d",
+			entrada.clave, entrada.primerEntrada, entrada.cantidadEntradas,
+			entrada.valor);
 }
 
 void avisarAlCoordinador(int idMensaje) {
@@ -30,27 +32,31 @@ void avisarAlCoordinador(int idMensaje) {
 }
 
 void cerrarInstancia(int sig) {
-    terminar = 1;
+	terminar = 1;
 
 	// Logueo el cierre de la instancia
-    	char* entradasUsadas = malloc(estructuraAdministrativa.cantidadEntradas + 1);
-		for (int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
-			entradasUsadas[i] = (char)estructuraAdministrativa.entradasUsadas[i];
-		}
-		entradasUsadas[estructuraAdministrativa.cantidadEntradas] = '\0';
+	char* entradasUsadas = malloc(
+			estructuraAdministrativa.cantidadEntradas + 1);
+	for (int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
+		entradasUsadas[i] = (char) estructuraAdministrativa.entradasUsadas[i];
+	}
+	entradasUsadas[estructuraAdministrativa.cantidadEntradas] = '\0';
 
-		log_trace(logInstancia, "Se cerró la instancia, la tabla de entradas quedó: %s", entradasUsadas);
-		list_iterate(estructuraAdministrativa.entradas, loguearEntrada);
+	log_trace(logInstancia,
+			"Se cerró la instancia, la tabla de entradas quedó: %s",
+			entradasUsadas);
+	list_iterate(estructuraAdministrativa.entradas, loguearEntrada);
 
-		//Se lo comunico al coordinador
-		avisarAlCoordinador(INSTANCIA_COORDINADOR_DESCONECTADA);
+	//Se lo comunico al coordinador
+	avisarAlCoordinador(INSTANCIA_COORDINADOR_DESCONECTADA);
 
 	// Libero memoria
-		free(info);
-		config_destroy(configuracion);
-		close(socketCoordinador);
-		list_destroy_and_destroy_elements(estructuraAdministrativa.entradas, freeEntrada);
-		log_destroy(logInstancia);
+	free(info);
+	config_destroy(configuracion);
+	close(socketCoordinador);
+	list_destroy_and_destroy_elements(estructuraAdministrativa.entradas,
+			freeEntrada);
+	log_destroy(logInstancia);
 
 	exit(1);
 }
@@ -96,12 +102,14 @@ int buscarEspacioEnTabla(int entradasNecesarias) {
 
 int entradaEsIgualAClave(void* entrada, void* clave) {
 	Entrada *ent = (Entrada*) entrada;
-	return strcmp(ent->clave, (char*)clave)	== 0;
+	return strcmp(ent->clave, (char*) clave) == 0;
 }
 
 void mostrarEntrada(void* entr) {
-	Entrada entrada = *(Entrada*)entr;
-	printf("CLAVE %s\nEntrada: %d - %d\nValor: %s\n---------------------\n", entrada.clave, entrada.primerEntrada, entrada.cantidadEntradas, entrada.valor);
+	Entrada entrada = *(Entrada*) entr;
+	printf("CLAVE %s\nEntrada: %d - %d\nValor: %s\n---------------------\n",
+			entrada.clave, entrada.primerEntrada, entrada.cantidadEntradas,
+			entrada.valor);
 }
 
 int setearValor(char* clave, char* valor, int entradasNecesarias) {
@@ -113,12 +121,14 @@ int setearValor(char* clave, char* valor, int entradasNecesarias) {
 	entrada = malloc(sizeof(Entrada));
 
 	// Marco las entradas como ocupadas
-	for (int i = posicionParaSetear; i < posicionParaSetear + entradasNecesarias; i++) {
+	for (int i = posicionParaSetear;
+			i < posicionParaSetear + entradasNecesarias; i++) {
 		estructuraAdministrativa.entradasUsadas[i] = 1;
 	}
 
-	if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
-		entrada = (Entrada*)entradaVoid;
+	if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas,
+			(void*) clave, entradaEsIgualAClave)) != NULL) {
+		entrada = (Entrada*) entradaVoid;
 		free(entrada->valor);
 		free(entrada->clave);
 	}
@@ -133,24 +143,27 @@ int setearValor(char* clave, char* valor, int entradasNecesarias) {
 	entrada->cantidadEntradas = entradasNecesarias;
 
 	if (entradaVoid == NULL) {
-		list_add(estructuraAdministrativa.entradas, (void*)entrada);
+		list_add(estructuraAdministrativa.entradas, (void*) entrada);
 	}
 
 	// Logueo que setteo el valor
-	log_trace(logInstancia, "Setteo %s: %s, en la entrada %d con un largo de entradas %d", entrada->clave, entrada->valor, entrada->primerEntrada, entrada->cantidadEntradas);
+	log_trace(logInstancia,
+			"Setteo %s: %s, en la entrada %d con un largo de entradas %d",
+			entrada->clave, entrada->valor, entrada->primerEntrada,
+			entrada->cantidadEntradas);
 
 	/*
-	PARA DEBUGGEAR
+	 PARA DEBUGGEAR
 
-	list_iterate(estructuraAdministrativa.entradas, mostrarEntrada);
-	puts("");
-	for(int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
-		printf("Entrada %d: %s\n", i, (estructuraAdministrativa.entradasUsadas[i] ? "usada" : "libre"));
-	}
-	puts("");
-	puts("=====================");
-	puts("");
-	*/
+	 list_iterate(estructuraAdministrativa.entradas, mostrarEntrada);
+	 puts("");
+	 for(int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
+	 printf("Entrada %d: %s\n", i, (estructuraAdministrativa.entradasUsadas[i] ? "usada" : "libre"));
+	 }
+	 puts("");
+	 puts("=====================");
+	 puts("");
+	 */
 
 	return INSTANCIA_SENTENCIA_OK;
 }
@@ -172,8 +185,8 @@ int cantidadEntradasPosiblesContinuas() {
 }
 
 int tieneElIndexYEsAtomico(void* entradaVoid, void* indexVoid) {
-	Entrada* entrada = (Entrada*)entradaVoid;
-	int index = *(int*)indexVoid;
+	Entrada* entrada = (Entrada*) entradaVoid;
+	int index = *(int*) indexVoid;
 
 	return entrada->primerEntrada == index && entrada->cantidadEntradas == 1;
 }
@@ -185,13 +198,14 @@ void ejecutarAlgoritmoDeRemplazo() {
 
 	algoritmo = config_get_string_value(configuracion, "ALG_REMP");
 
-
 	if (strcmp(algoritmo, "CIRC") == 0) {
 		// Logueo que ejecuto el algoritmo de remplazo
 		log_trace(logInstancia, "Ejecuto algoritmo de remplazo circular");
 
 		// Elimino el item de la lista que tenga el index y sea atómico
-		entradaVoid = list_remove_by_condition_with_param(estructuraAdministrativa.entradas, (void*)(&indexCirc), tieneElIndexYEsAtomico);
+		entradaVoid = list_remove_by_condition_with_param(
+				estructuraAdministrativa.entradas, (void*) (&indexCirc),
+				tieneElIndexYEsAtomico);
 
 		// Aumento el index
 		indexCirc++;
@@ -208,9 +222,9 @@ void ejecutarAlgoritmoDeRemplazo() {
 	}
 
 	if (entradaVoid != NULL) {
-		entrada = (Entrada*)entradaVoid;
+		entrada = (Entrada*) entradaVoid;
 
-		// Logueo la entrada que repmplazo
+		// Logueo la entrada que reemplazo
 		log_trace(logInstancia, "Reemplazo la entrada %s", entrada->clave);
 
 		// Pongo en la tabla de entradas que el espacio está libre (solo toma atomicas, asi que no me preocupo por desocupar las demas)
@@ -227,34 +241,37 @@ int setearClave(char* clave, char* valor) {
 	int entradasNecesarias;
 
 	// Verifico si alcanzan las entradas
-		entradasNecesarias = divCeil(strlen(valor), estructuraAdministrativa.tamanioEntrada);
+	entradasNecesarias = divCeil(strlen(valor),
+			estructuraAdministrativa.tamanioEntrada);
 
-		if (entradasNecesarias > estructuraAdministrativa.cantidadEntradas) {
-			// Logueo el error
-			log_error(logInstancia, "El valor no entra en la tabla de entradas");
-			return INSTANCIA_ERROR;
-		}
+	if (entradasNecesarias > estructuraAdministrativa.cantidadEntradas) {
+		// Logueo el error
+		log_error(logInstancia, "El valor no entra en la tabla de entradas");
+		return INSTANCIA_ERROR;
+	}
 
 	// Verifico si ya está seteada la clave
-		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
-			entrada = (Entrada*)entradaVoid;
+	if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas,
+			(void*) clave, entradaEsIgualAClave)) != NULL) {
+		entrada = (Entrada*) entradaVoid;
 
-			// Logueo que la entrada ya existe
-			log_trace(logInstancia, "La clave ya está seteada en la instancia");
+		// Logueo que la entrada ya existe
+		log_trace(logInstancia, "La clave ya está seteada en la instancia");
 
-			// Si ya está bloqueada, pongo todas sus entradas como posibles para ingresar
-			for (int i = entrada->primerEntrada; i < entrada->cantidadEntradas; i++) {
-				estructuraAdministrativa.entradasUsadas[i] = 0;
-			}
+		// Si ya está bloqueada, pongo todas sus entradas como posibles para ingresar
+		for (int i = entrada->primerEntrada; i < entrada->cantidadEntradas;
+				i++) {
+			estructuraAdministrativa.entradasUsadas[i] = 0;
 		}
+	}
 
 	// Verifico si hay espacio continuo disponible
-		while (cantidadEntradasPosiblesContinuas() < entradasNecesarias) {
-			ejecutarAlgoritmoDeRemplazo();
-		}
+	while (cantidadEntradasPosiblesContinuas() < entradasNecesarias) {
+		ejecutarAlgoritmoDeRemplazo();
+	}
 
 	// Setteo porque hay lugar
-		return setearValor(clave, valor, entradasNecesarias);
+	return setearValor(clave, valor, entradasNecesarias);
 }
 
 int storeClave(char* clave) {
@@ -265,8 +282,10 @@ int storeClave(char* clave) {
 	FILE* archivo;
 
 	// Valido si existe la entrada
-	if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) == NULL) {
-		log_error(logInstancia, "No existe la entrada setteada en la instancia");
+	if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas,
+			(void*) clave, entradaEsIgualAClave)) == NULL) {
+		log_error(logInstancia,
+				"No existe la entrada setteada en la instancia");
 		return INSTANCIA_CLAVE_NO_IDENTIFICADA;
 	}
 
@@ -284,14 +303,16 @@ int storeClave(char* clave) {
 
 	// Imprimo el valor en el archivo
 	if ((archivo = fopen(nombreArchivo, "w"))) {
-		entrada = (Entrada*)entradaVoid;
+		entrada = (Entrada*) entradaVoid;
 		fprintf(archivo, "%s", entrada->valor);
 		fclose(archivo);
 
 		// Logueo que settee
-		log_trace(logInstancia, "Sette el valor %s de la clave %s en %s", entrada->valor, entrada->clave, nombreArchivo);
+		log_trace(logInstancia, "Sette el valor %s de la clave %s en %s",
+				entrada->valor, entrada->clave, nombreArchivo);
 	} else {
-		log_error(logInstancia, "No se puede acceder al archivo de la clave para hacer store del valor");
+		log_error(logInstancia,
+				"No se puede acceder al archivo de la clave para hacer store del valor");
 	}
 
 	return INSTANCIA_SENTENCIA_OK;
@@ -322,7 +343,8 @@ void recibirSentencia() {
 			puts("Error en el mensaje enviado al coordinador por el ESI");
 		}
 
-		if (respuesta) avisarAlCoordinador(respuesta);
+		if (respuesta)
+			avisarAlCoordinador(respuesta);
 
 		free(mensaje);
 		free(mensajeSplitted[0]);
@@ -341,55 +363,59 @@ int main() {
 	char* nombre;
 
 	// Inicio el log
-		logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
-
+	logInstancia = log_create(ARCHIVO_LOG, "Instancia", true, LOG_LEVEL_TRACE);
 
 	// Instancio las cosas necesarias para saber cuando se cierra la entrada
-		terminar = 0;
-		signal(SIGTSTP, &cerrarInstancia);
+	terminar = 0;
+	signal(SIGTSTP, &cerrarInstancia);
 
 	// Archivo de configuracion
-		configuracion = config_create(ARCHIVO_CONFIGURACION);
+	configuracion = config_create(ARCHIVO_CONFIGURACION);
 
-		puertoCoordinador = config_get_int_value(configuracion, "PUERTO_COORDINADOR");
-		ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
-		nombre = config_get_string_value(configuracion, "NOMBRE");
+	puertoCoordinador = config_get_int_value(configuracion,
+			"PUERTO_COORDINADOR");
+	ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
+	nombre = config_get_string_value(configuracion, "NOMBRE");
 
 	// Instancio las cosas necesarias para los algoritmos de remplazo
-		indexCirc = 0;
+	indexCirc = 0;
 
 	// Conexion con el coordinador
-		socketCoordinador = clienteConectarComponente("instancia", "coordinador", puertoCoordinador, ipCoordinador);
-		enviarHeader(socketCoordinador, nombre, INSTANCIA);
-		int largo = strlen(nombre);
-		enviarInformacion(socketCoordinador, nombre, &largo);
+	socketCoordinador = clienteConectarComponente("instancia", "coordinador",
+			puertoCoordinador, ipCoordinador);
+	enviarHeader(socketCoordinador, nombre, INSTANCIA);
+	int largo = strlen(nombre);
+	enviarInformacion(socketCoordinador, nombre, &largo);
 
 	// Instancio todas las estructuras administrativas
-		// Espera hasta que recive la informacion de lo que será la tabla de entradas
-		info = (InformacionEntradas*) malloc(sizeof(InformacionEntradas));
+	// Espera hasta que recibe la informacion de lo que será la tabla de entradas
+	info = (InformacionEntradas*) malloc(sizeof(InformacionEntradas));
 
-		recibirInformacionEntradas(socketCoordinador, &info);
+	recibirInformacionEntradas(socketCoordinador, &info);
 
-		estructuraAdministrativa.cantidadEntradas = info->cantidad;
-		estructuraAdministrativa.tamanioEntrada = info->tamanio;
+	estructuraAdministrativa.cantidadEntradas = info->cantidad;
+	estructuraAdministrativa.tamanioEntrada = info->tamanio;
 
-		// A todas las entradas las inicio como vacías (0)
-		estructuraAdministrativa.entradasUsadas = malloc(sizeof(int) * info->cantidad);
-		for (int i = 0; i < info->cantidad; i++) {
-			estructuraAdministrativa.entradasUsadas[i] = 0;
-		}
+	// A todas las entradas las inicio como vacías (0)
+	estructuraAdministrativa.entradasUsadas = malloc(
+			sizeof(int) * info->cantidad);
+	for (int i = 0; i < info->cantidad; i++) {
+		estructuraAdministrativa.entradasUsadas[i] = 0;
+	}
 
-		// Creo la lista de claves por primera vez
-		estructuraAdministrativa.entradas = list_create();
+	// Creo la lista de claves por primera vez
+	estructuraAdministrativa.entradas = list_create();
 
-		// Logueo la operacion de la estructura administrativa
-		log_trace(logInstancia, "Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=%d; Tam. entrada=%d;", estructuraAdministrativa.cantidadEntradas, estructuraAdministrativa.tamanioEntrada);
+	// Logueo la operacion de la estructura administrativa
+	log_trace(logInstancia,
+			"Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=%d; Tam. entrada=%d;",
+			estructuraAdministrativa.cantidadEntradas,
+			estructuraAdministrativa.tamanioEntrada);
 
 	// Espero las sentencias
-		while(!terminar) {
-			recibirSentencia();
-		}
-
+	while (!terminar) {
+		recibirSentencia();
+	}
 
 	puts("La Instancia se ha finalizado correctamente.");
 	return 0;
