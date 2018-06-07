@@ -72,6 +72,8 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 				}
 				pthread_mutex_unlock(&mutexListaInstancias);
 			} else {
+				respuestaGET = COORDINADOR_INSTANCIA_CAIDA;
+				puts("Error, la clave que intenta acceder existe en el sistema pero se encuentra en una instancia que esta desconectada");
 				enviarHeader(socketPlanificador, key, COORDINADOR_INSTANCIA_CAIDA);
 				enviarMensaje(socketPlanificador, key);
 				return;

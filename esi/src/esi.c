@@ -8,20 +8,16 @@
  ============================================================================
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <socket/sockets.h>
-#include <configuracion/configuracion.h>
-#include <configuracion/configuracion.h>
-#include <commons/parsi/parser.h>
+#include "esi.h"
 
-void parsearScript();
+void liberarMemoria() {
+	close(socketPlanificador);
+	config_destroy(configuracion);
+	log_destroy(logESI);
+}
 
-#define SIZE 1024
-
-int filasArchivo() {
-    const char filename[] = "parsi/ejemplo/script.esi";
-    FILE *in_file;
+int filasArchivo(char* filename) {
+	FILE *in_file;
     char buffer[SIZE + 1], lastchar = '\n';
     size_t bytes;
     int lines = 0;
@@ -47,82 +43,136 @@ int filasArchivo() {
     }
 
     fclose(in_file);
-    printf("Number of lines in the file is %i\n", lines);
+    log_trace(logESI, "Number of lines in the file is %i\n", lines);
     return(lines);
 }
 
-int main() {
-	puts("Iniciando ESI.");
-	int socketPlanificador;
-	char ipPlanificador[16];
+int main(int argc, char **argv){
+
+	char* ipPlanificador;
 	int puertoPlanificador;
 
+	// Inicio el log
+	logESI = log_create(ARCHIVO_LOG, "ESI", true, LOG_LEVEL_TRACE);
+
+	// Valido que haya ingresado el nombre del archivo
+	if (argc < 2) {
+		log_error(logESI, "No ingreso el nombre del archivo");
+		log_destroy(logESI);
+		exit(EXIT_FAILURE);
+	}
+
 	//Leo puertos e ips de archivo de configuracion
-	leerConfiguracion("PUERTO_PLANIFICADOR:%d", &puertoPlanificador);
-	leerConfiguracion("IP_PLANIFICADOR:%s", &ipPlanificador);
-	socketPlanificador = clienteConectarComponente("ESI", "planificador",
-			puertoPlanificador, ipPlanificador);
+	configuracion = config_create(ARCHIVO_CONFIGURACION);
+	ipPlanificador = config_get_string_value(configuracion, "IP_PLANIFICADOR");
+	puertoPlanificador = config_get_int_value(configuracion, "PUERTO_PLANIFICADOR");
 
-	int maxFilas = filasArchivo();
+	// Me conecto con el planificador
+	socketPlanificador = clienteConectarComponente("ESI", "planificador", puertoPlanificador, ipPlanificador);
 
-	parsearScript(socketPlanificador, maxFilas);
+	int maxFilas = filasArchivo(argv[1]);
+	parsearScript(argv[1], maxFilas);
 
-	close(socketPlanificador);
+	// Libero memoria
+	liberarMemoria();
 
-	puts("El ESI se ha finalizado correctamente.");
 	return 0;
 }
 
-void parsearScript(int socketPlanificador, int maxFilas) {
+void parsearScript(char* path, int maxFilas) {
 	FILE * fp;
 	char * line = NULL;
 	size_t len = 0;
 	ssize_t read;
-	ContentHeader *header;
+	ContentHeader *headerPlanificador, *headerCoordinador;
 	char* mensaje;
 	int filasLeidas = 0;
+	char* ipCoordinador;
+	int puertoCoordinador;
 
-	fp = fopen("parsi/ejemplo/script.esi", "r");
-	if (fp == NULL) {
-		perror("Error al abrir el archivo");
+	char* mensajeCoordinador;
+	int socketCoordinador;
+	char* respuestaCoordinador;
+
+	//leo puertos e ip del coordinador
+	ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
+	puertoCoordinador = config_get_int_value(configuracion, "PUERTO_COORDINADOR");
+
+	// Valido que el archivo exista
+	if ((fp = fopen(path, "r")) == NULL) {
+		log_error(logESI, "El archivo no existe o es inaccesible");
+		liberarMemoria();
 		exit(EXIT_FAILURE);
 	}
 
 	while (filasLeidas < maxFilas) {
+		// Espero un mensaje del planificador
+		headerPlanificador = recibirHeader(socketPlanificador);
 
-		// TODO esperar el mensaje del planificador ordenando ejecutar una linea
-		header = recibirHeader(socketPlanificador);
-		mensaje = malloc((header->largo) + 1);
+		// TODO ¿tiene que recibir este mensaje?
+		mensaje = malloc((headerPlanificador->largo) + 1);
+		recibirMensaje(socketPlanificador, headerPlanificador->largo, &mensaje);
 
-		recibirMensaje(socketPlanificador, header->largo, &mensaje);
-		if (header->id == PLANIFICADOR) {
+		// Cuando el planificador me habla avanzo
+		if (headerPlanificador->id == PLANIFICADOR) {
+			// Loggeo que me habló el planificador
+			log_trace(logESI, "Recibí una señal de avanzar del coordinador");
+
 			if ((read = getline(&line, &len, fp)) != -1) {
 				t_esi_operacion parsed = parse(line);
 
 				if (parsed.valido) {
 					switch (parsed.keyword) {
-					case GET:
-						printf("GET\tclave: <%s>\n",
-								parsed.argumentos.GET.clave);
-						break;
-					case SET:
-						printf("SET\tclave: <%s>\tvalor: <%s>\n",
-								parsed.argumentos.SET.clave,
-								parsed.argumentos.SET.valor);
-						break;
-					case STORE:
-						printf("STORE\tclave: <%s>\n",
-								parsed.argumentos.STORE.clave);
-						break;
-					default:
-						fprintf(stderr, "No pude interpretar <%s>\n", line);
-						exit(EXIT_FAILURE);
+						case GET:
+							mensajeCoordinador = malloc(strlen("GET ") + strlen(parsed.argumentos.GET.clave) + 1);
+							strcpy(mensajeCoordinador, "GET ");
+							strcat(mensajeCoordinador, parsed.argumentos.GET.clave);
+							mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.GET.clave)] = '\0';
+							break;
+
+						case SET:
+							mensajeCoordinador = malloc(strlen("SET ") + strlen(parsed.argumentos.SET.clave + strlen(parsed.argumentos.SET.valor)) +1);
+							strcpy(mensajeCoordinador, "SET ");
+							strcat(mensajeCoordinador, parsed.argumentos.SET.clave);
+							strcat(mensajeCoordinador, " ");
+							strcat(mensajeCoordinador, parsed.argumentos.SET.valor);
+							mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.SET.clave) + strlen(parsed.argumentos.SET.valor)] = '\0';
+							break;
+
+						case STORE:
+							mensajeCoordinador = malloc(strlen("STORE ") + strlen(parsed.argumentos.STORE.clave) +1);
+							strcpy(mensajeCoordinador, "STORE ");
+							strcat(mensajeCoordinador, parsed.argumentos.STORE.clave);
+							mensajeCoordinador[strlen("STORE ") + strlen(parsed.argumentos.STORE.clave)] = '0';
+							break;
+
+						default:
+							log_error(logESI, "No pude interpretar <%s>\n", line);
+							liberarMemoria();
+							exit(EXIT_FAILURE);
 					}
+
+					// Logueo el mensaje que le voy a mandar al coordinador
+					log_trace(logESI, "Le comunico al coordinador la sentencia <%s>", mensajeCoordinador);
+
+					// Le hablo al coordinador
+					socketCoordinador = clienteConectarComponente("ESI", "coordinador", puertoCoordinador, ipCoordinador);
+					enviarHeader(socketCoordinador, mensajeCoordinador, ESI);
+					enviarMensaje(socketCoordinador, mensajeCoordinador);
+
+					// Espero una respuesta del coordinador
+					headerCoordinador = recibirHeader(socketCoordinador);
+					respuestaCoordinador = malloc(headerCoordinador->largo + 1);
+					recibirMensaje(socketCoordinador, headerCoordinador->largo, &respuestaCoordinador);
+
+					// Logueo la respuesta del coordinador
+					log_trace(logESI, "El coordinador me respondio: %s", respuestaCoordinador);
 
 					filasLeidas++;
 					destruir_operacion(parsed);
 				} else {
-					fprintf(stderr, "La linea <%s> no es valida\n", line);
+					log_error(logESI, "La linea <%s> no es valida\n", line);
+					liberarMemoria();
 					exit(EXIT_FAILURE);
 				}
 			} else {
