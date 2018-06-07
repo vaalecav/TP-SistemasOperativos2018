@@ -80,6 +80,7 @@ void manejoAlgoritmos(); // Hilo que maneja la ejecucion de ESIs.
 
 //=====================FUNCIONES DE CONSOLA=====================================
 
+
 void iniciarConsola(); 												// Ejecuta la consola.
 void ejecutarComando(char *linea);									// Manda a ejecutar un comando.
 void obtenerParametros(char **parametros, char *linea);				// Separa los parametros de la linea original.

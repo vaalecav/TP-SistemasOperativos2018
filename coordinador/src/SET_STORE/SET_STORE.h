@@ -8,8 +8,8 @@
 #ifndef SET_STORE_H_
 #define SET_STORE_H_
 
-void ejecutarSentencia(int, char*);
-void avisarAEsi(int, char*, int);
+void ejecutarSentencia(int, int, char*, char*);
+void avisarA(int, char*, int);
 int esSET(char*);
 int esSTORE(char*);
 

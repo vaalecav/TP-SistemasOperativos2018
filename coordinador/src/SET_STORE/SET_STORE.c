@@ -1,14 +1,16 @@
 #include "SET_STORE.h"
 #include "../coordinador.h"
 
-void avisarAEsi(int socketEsi, char* key, int error) {
-	enviarHeader(socketEsi, key, error);
-	enviarMensaje(socketEsi, key);
+void avisarA(int socketAvisar, char* mensaje, int error) {
+	enviarHeader(socketAvisar, mensaje, error);
+
+	if (strlen(mensaje) > 1) enviarMensaje(socketAvisar, mensaje);
 }
 
-void ejecutarSentencia(int socketEsi, char* mensaje) {
+void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, char* nombreESI) {
 	void* instanciaVoid;
 	Instancia* instancia;
+	ContentHeader * header;
 
 	void* claveVoid;
 	Clave* clave;
@@ -17,7 +19,16 @@ void ejecutarSentencia(int socketEsi, char* mensaje) {
 
 	// Valido que la clave no exceda el máximo
 		if (esSET(mensajeSplitted[0]) && strlen(mensajeSplitted[1]) > 40) {
-			avisarAEsi(socketEsi, mensajeSplitted[1], COORDINADOR_ESI_ERROR_TAMANIO_CLAVE);
+			// Logueo el error
+			log_error(logCoordinador, "Error, la clave excede el tamaño máximo de 40 caracteres");
+
+			// Le aviso al planificador por el error
+			avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_TAMANIO_CLAVE);
+
+			// Libero memoria
+			free(mensajeSplitted[0]);
+			free(mensajeSplitted[1]);
+			free(mensajeSplitted[2]);
 			free(mensajeSplitted);
 			return;
 		}
@@ -28,7 +39,17 @@ void ejecutarSentencia(int socketEsi, char* mensaje) {
 
 		if (instanciaVoid == NULL) {
 			pthread_mutex_unlock(&mutexListaInstancias);
-			avisarAEsi(socketEsi, mensajeSplitted[1], COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+
+			// Logueo el error
+			log_error(logCoordinador, "Clave no identificada");
+
+			// Le aviso al planificador
+			avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+
+			// Libero memoria
+			free(mensajeSplitted[0]);
+			free(mensajeSplitted[1]);
+			free(mensajeSplitted[2]);
 			free(mensajeSplitted);
 			return;
 		}
@@ -42,8 +63,18 @@ void ejecutarSentencia(int socketEsi, char* mensaje) {
 		clave = (Clave*)claveVoid;
 
 		if (!clave->bloqueado) {
-			avisarAEsi(socketEsi, mensajeSplitted[1], COORDINADOR_ESI_ERROR_CLAVE_DESBLOQUEADA);
 			pthread_mutex_unlock(&mutexListaInstancias);
+
+			// Logueo el error
+			log_error(logCoordinador, "La clave que intenta acceder no se encuentra tomada");
+
+			// Le aviso al planificador
+			avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_DESBLOQUEADA);
+
+			// Libero memoria
+			free(mensajeSplitted[0]);
+			free(mensajeSplitted[1]);
+			free(mensajeSplitted[2]);
 			free(mensajeSplitted);
 			return;
 		}
@@ -51,6 +82,9 @@ void ejecutarSentencia(int socketEsi, char* mensaje) {
 		if (esSTORE(mensajeSplitted[0])) {
 			// Si es STORE, tengo que desbloquear la clave
 			clave->bloqueado = 0;
+
+			// Logueo -\_('.')_/-
+			log_trace(logCoordinador, "Desbloqueo la clave %s", clave->nombre);
 		}
 
 		pthread_mutex_unlock(&mutexListaInstancias);
@@ -58,7 +92,34 @@ void ejecutarSentencia(int socketEsi, char* mensaje) {
 	// Si llega hasta acá es porque es válido, le mando el mensaje a la instancia
 		enviarHeader(instancia->socket, mensaje, COORDINADOR);
 		enviarMensaje(instancia->socket, mensaje);
+
+	// Espero la respuesta de la instancia
+		header = recibirHeader(instancia->socket);
+
+		switch(header->id) {
+			case INSTANCIA_SENTENCIA_OK:
+				// Si está OK, le aviso al ESI
+				log_trace(logCoordinador, "La sentencia se ejecutó correctamente");
+				avisarA(socketEsi, "", INSTANCIA_SENTENCIA_OK);
+				break;
+
+			case INSTANCIA_CLAVE_NO_IDENTIFICADA:
+				// Cuando hay un error, le aviso al planificador
+				log_error(logCoordinador, "Clave no identificada");
+				avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+				break;
+
+			case INSTANCIA_ERROR:
+				log_error(logCoordinador, "Error no contemplado");
+				break;
+		}
+
+	// Libero memoria
+		free(mensajeSplitted[0]);
+		free(mensajeSplitted[1]);
+		free(mensajeSplitted[2]);
 		free(mensajeSplitted);
+		free(header);
 }
 
 int esSET(char* sentencia) {
