@@ -11,6 +11,7 @@ void asignarClaveAInstancia(char* key) {
 	t_config* configuracion;
 	Instancia* instancia;
 
+	//Creo la clave
 	Clave* clave;
 	clave = malloc(sizeof(Clave));
 	clave->bloqueado = 1;
@@ -18,23 +19,29 @@ void asignarClaveAInstancia(char* key) {
 	strcpy(clave->nombre, key);
 	clave->nombre[strlen(key)] = '\0';
 
-	configuracion = config_create("./configuraciones/configuracion.txt");
+	// Leo del archivo de configuracion
+	configuracion = config_create(ARCHIVO_CONFIGURACION);
 	algoritmo_distribucion = config_get_string_value(configuracion, "ALG_DISTR");
 
+	// Selecciono algoritmo de distribucion de instancias
 	pthread_mutex_lock(&mutexListaInstancias);
 	if (strcmp(algoritmo_distribucion, "EL") == 0) {
+		log_trace(logCoordinador, "Utilizo algoritmo de distribucion de instancias EL");
 		instancia = algoritmoDistribucionEL(listaInstancias);
 	} else if (strcmp(algoritmo_distribucion, "LSU") == 0) {
+		log_trace(logCoordinador, "Utilizo algoritmo de distribucion de instancias LSU");
 		// TODO Implementar algoritmo Least Space Used
 	} else if (strcmp(algoritmo_distribucion, "KE") == 0) {
+		log_trace(logCoordinador, "Utilizo algoritmo de distribucion de instancias KE");
 		// TODO Implementar Key Explicit
 	} else {
-		puts("Error al asignar instancia. Algoritmo de distribucion invalido.");
+		log_error(logCoordinador, "Algoritmo de distribucion invalido.");
 		pthread_mutex_unlock(&mutexListaInstancias);
 		return;
 	}
 	pthread_mutex_unlock(&mutexListaInstancias);
 
+	// Libero memoria
 	free(algoritmo_distribucion);
 	config_destroy(configuracion);
 	list_add(instancia->claves, clave);
@@ -64,25 +71,42 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 			if (sePuedeComunicarConLaInstancia(instancia)) {
 				clave = (Clave*)claveVoid;
 				pthread_mutex_lock(&mutexListaInstancias);
+
+				// Se fija si la clave se encuentra bloqueada
 				if (clave->bloqueado) {
+					log_trace(logCoordinador, "La clave se encuentra bloqueada");
 					respuestaGET = COORDINADOR_ESI_BLOQUEADO;
 				} else {
+					// No esta bloqueada, entonces la bloqueo
+					log_trace(logCoordinador, "La clave no se encuentra bloqueada, se bloquea");
 					respuestaGET = COORDINADOR_ESI_BLOQUEAR;
 					clave->bloqueado = 1;
 				}
 				pthread_mutex_unlock(&mutexListaInstancias);
 			} else {
+				// Instancia está caída
 				respuestaGET = COORDINADOR_INSTANCIA_CAIDA;
-				puts("Error, la clave que intenta acceder existe en el sistema pero se encuentra en una instancia que esta desconectada");
+				log_error(logCoordinador, "La clave que intenta acceder existe en el sistema pero se encuentra en una instancia que esta desconectada");
+
+				//Le aviso al planificador
 				enviarHeader(socketPlanificador, key, COORDINADOR_INSTANCIA_CAIDA);
 				enviarMensaje(socketPlanificador, key);
+
+				//Tambien le aviso al esi para que no se quede esperando
+				enviarHeader(socketEsi, key, respuestaGET);
+				enviarMensaje(socketEsi, key);
+
 				return;
 			}
 		} else {
+			// Le asigno la nueva clave a la instancia
 			asignarClaveAInstancia(key);
 			respuestaGET = COORDINADOR_ESI_CREADO;
+
+			log_trace(logCoordinador, "Se asigna la nueva clave a la instancia");
 		}
 
+		// Le aviso al ESI
 		enviarHeader(socketEsi, key, respuestaGET);
 		enviarMensaje(socketEsi, key);
 
