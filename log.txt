@@ -90,3 +90,247 @@ Valor: e
 [TRACE] 19:47:17:480 Instancia/(5333:5333): Setteo 2: l, en la entrada 2 con un largo de entradas 1
 [TRACE] 19:47:17:480 Instancia/(5333:5333): Se recibió una sentencia: STORE 2
 [ERROR] 19:47:17:480 Instancia/(5333:5333): No se puede acceder al archivo de la clave para hacer store del valor
+[TRACE] 17:33:32:16 Coordinador/(7326:7326): Se conectó el planificador: Puerto=8000; Ip Planificador=162360368; Máximas conexiones=20
+[TRACE] 17:42:18:757 Coordinador/(7674:7674): Se conectó el planificador: Puerto=8000; Ip Planificador=145144888; Máximas conexiones=20
+[TRACE] 17:45:29:664 Coordinador/(7674:7674): Se conectó un componente
+[TRACE] 17:45:29:664 Coordinador/(7674:7674): Hilo asignado
+[TRACE] 17:45:29:702 Coordinador/(7674:7911): Se conectó la instancia de nombre: -1228929880
+[TRACE] 17:48:07:103 Coordinador/(8127:8127): Se conectó el planificador: Puerto=8000; Ip Planificador=147336240; Máximas conexiones=20
+[TRACE] 17:48:16:139 Coordinador/(8127:8127): Se conectó un componente
+[TRACE] 17:48:16:139 Coordinador/(8127:8127): Hilo asignado
+[TRACE] 17:48:16:177 Coordinador/(8127:8151): Se conectó la instancia de nombre: -1229978456
+[TRACE] 17:48:16:178 Coordinador/(8127:8151): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 17:48:16:178 Instancia/(8146:8146): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 17:48:16:178 Coordinador/(8127:8151): Se maneja una instancia
+[TRACE] 17:48:16:218 Instancia/(8146:8146): Se recibió una sentencia: SET 0 a
+[TRACE] 17:48:16:219 Instancia/(8146:8146): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 17:48:16:219 Instancia/(8146:8146): Se recibió una sentencia: SET 1 b
+[TRACE] 17:48:16:219 Instancia/(8146:8146): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 17:48:16:219 Instancia/(8146:8146): Se recibió una sentencia: SET 2 c
+[TRACE] 17:48:16:219 Instancia/(8146:8146): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 17:48:16:220 Instancia/(8146:8146): Se recibió una sentencia: STORE 1
+[TRACE] 17:48:16:223 Instancia/(8146:8146): Sette el valor b de la clave 1 en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 17:48:16:224 Instancia/(8146:8146): Se recibió una sentencia: STORE 0
+[TRACE] 17:48:16:229 Instancia/(8146:8146): Sette el valor a de la clave 0 en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 17:50:50:147 Coordinador/(8250:8250): Se conectó el planificador: Puerto=8000; Ip Planificador=159038520; Máximas conexiones=20
+[TRACE] 17:51:13:817 Coordinador/(8250:8250): Se conectó un componente
+[TRACE] 17:51:13:817 Coordinador/(8250:8250): Hilo asignado
+[TRACE] 17:51:13:858 Coordinador/(8250:8273): Se conectó la instancia de nombre: -1228929880
+[TRACE] 17:52:20:391 Coordinador/(8295:8295): Se conectó el planificador: Puerto=8000; Ip Planificador=150670392; Máximas conexiones=20
+[TRACE] 17:56:14:881 Coordinador/(8295:8295): Se conectó un componente
+[TRACE] 17:56:14:893 Coordinador/(8295:8295): Hilo asignado
+[TRACE] 17:56:15:11 Coordinador/(8295:8639): Se conectó la instancia de nombre: -1228929880
+[TRACE] 17:56:18:741 Instancia/(8634:8634): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=0; Tam. entrada=0;
+[TRACE] 17:59:22:400 Coordinador/(8899:8899): Se conectó el planificador: Puerto=8000; Ip Planificador=146463800; Máximas conexiones=20
+[TRACE] 17:59:32:513 Coordinador/(8899:8899): Se conectó un componente
+[TRACE] 17:59:32:514 Coordinador/(8899:8899): Hilo asignado
+[TRACE] 17:59:32:554 Coordinador/(8899:8923): Se conectó la instancia de nombre: -1228929880
+[TRACE] 17:59:55:686 Instancia/(8922:8922): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=151792648; Tam. entrada=10;
+[TRACE] 18:06:02:581 Coordinador/(9078:9078): Se conectó el planificador: Puerto=8000; Ip Planificador=149417016; Máximas conexiones=20
+[TRACE] 18:06:08:123 Coordinador/(9078:9078): Se conectó un componente
+[TRACE] 18:06:08:124 Coordinador/(9078:9078): Hilo asignado
+[WARNING] 18:06:08:125 Coordinador/(9078:9080): Largo mensaje: 10
+[TRACE] 18:06:08:162 Coordinador/(9078:9080): Se conectó la instancia de nombre: -1228929880
+[TRACE] 18:06:37:190 Instancia/(9079:9079): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=135912456; Tam. entrada=10;
+[TRACE] 18:07:55:644 Coordinador/(9150:9150): Se conectó el planificador: Puerto=8000; Ip Planificador=161762360; Máximas conexiones=20
+[TRACE] 18:08:05:78 Coordinador/(9150:9150): Se conectó un componente
+[TRACE] 18:08:05:79 Coordinador/(9150:9150): Hilo asignado
+[TRACE] 18:08:05:120 Coordinador/(9150:9172): Se conectó la instancia de nombre: -1228929880
+[TRACE] 18:08:05:120 Coordinador/(9150:9172): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 18:08:05:121 Instancia/(9171:9171): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 18:08:05:121 Coordinador/(9150:9172): Se maneja una instancia
+[TRACE] 18:08:05:159 Instancia/(9171:9171): Se recibió una sentencia: SET 0 a
+[TRACE] 18:08:05:159 Instancia/(9171:9171): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 18:08:05:159 Instancia/(9171:9171): Se recibió una sentencia: SET 1 b
+[TRACE] 18:08:05:159 Instancia/(9171:9171): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 18:08:05:159 Instancia/(9171:9171): Se recibió una sentencia: SET 2 c
+[TRACE] 18:08:05:159 Instancia/(9171:9171): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 18:08:05:159 Instancia/(9171:9171): Se recibió una sentencia: STORE 1
+[TRACE] 18:08:05:166 Instancia/(9171:9171): Hago store de la clave 1 del valor b en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 18:08:05:170 Instancia/(9171:9171): Se recibió una sentencia: STORE 0
+[TRACE] 18:08:05:170 Instancia/(9171:9171): Hago store de la clave 0 del valor a en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 18:08:55:874 Instancia/(9171:9171): Se cerró la instancia, la tabla de entradas quedó: 
+[TRACE] 18:08:55:876 Instancia/(9171:9171): Clave: 0 - Valor: (null) - Entrada: 1 - Ocupa: 164883680
+[TRACE] 18:11:41:376 Coordinador/(9150:9150): Se conectó un componente
+[TRACE] 18:11:41:376 Coordinador/(9150:9150): Hilo asignado
+[TRACE] 18:11:41:414 Coordinador/(9150:9311): Se conectó la instancia de nombre: -1228924968
+[TRACE] 18:11:41:414 Instancia/(9310:9310): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 18:11:41:414 Coordinador/(9150:9311): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 18:11:41:415 Coordinador/(9150:9311): Se maneja una instancia
+[TRACE] 18:11:41:454 Instancia/(9310:9310): Se recibió una sentencia: SET 0 a
+[TRACE] 18:11:41:454 Instancia/(9310:9310): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 18:11:41:454 Instancia/(9310:9310): Se recibió una sentencia: SET 1 b
+[TRACE] 18:11:41:454 Instancia/(9310:9310): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 18:11:41:454 Instancia/(9310:9310): Se recibió una sentencia: SET 2 c
+[TRACE] 18:11:41:454 Instancia/(9310:9310): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 18:11:41:454 Instancia/(9310:9310): Se recibió una sentencia: STORE 1
+[TRACE] 18:11:41:460 Instancia/(9310:9310): Hago store de la clave 1 del valor b en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 18:11:41:460 Instancia/(9310:9310): Se recibió una sentencia: STORE 0
+[TRACE] 18:11:41:460 Instancia/(9310:9310): Hago store de la clave 0 del valor a en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 18:11:44:497 Instancia/(9310:9310): Se cerró la instancia, la tabla de entradas quedó: 
+[TRACE] 18:11:44:497 Instancia/(9310:9310): Clave: 0 - Valor: (null) - Entrada: 1 - Ocupa: 148659424
+[TRACE] 18:15:06:324 Coordinador/(9150:9150): Se conectó un componente
+[TRACE] 18:15:06:324 Coordinador/(9150:9150): Hilo asignado
+[TRACE] 18:15:06:362 Coordinador/(9150:9401): Se conectó la instancia de nombre: -1228924952
+[TRACE] 18:15:06:362 Instancia/(9400:9400): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 18:15:06:363 Coordinador/(9150:9401): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 18:15:06:363 Coordinador/(9150:9401): Se maneja una instancia
+[TRACE] 18:15:06:402 Instancia/(9400:9400): Se recibió una sentencia: SET 0 a
+[TRACE] 18:15:06:402 Instancia/(9400:9400): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 18:15:06:402 Instancia/(9400:9400): Se recibió una sentencia: SET 1 b
+[TRACE] 18:15:06:402 Instancia/(9400:9400): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 18:15:06:402 Instancia/(9400:9400): Se recibió una sentencia: SET 2 c
+[TRACE] 18:15:06:402 Instancia/(9400:9400): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 18:15:06:402 Instancia/(9400:9400): Se recibió una sentencia: STORE 1
+[TRACE] 18:15:06:403 Instancia/(9400:9400): Hago store de la clave 1 del valor b en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 18:15:06:404 Instancia/(9400:9400): Se recibió una sentencia: STORE 0
+[TRACE] 18:15:06:405 Instancia/(9400:9400): Hago store de la clave 0 del valor a en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 18:15:08:448 Instancia/(9400:9400): Se cerró la instancia, la tabla de entradas quedó: ��k�8#ió una sent
+[TRACE] 18:15:08:448 Instancia/(9400:9400): Clave: 0 - Valor: (null) - Entrada: 1 - Ocupa: 136531168
+[TRACE] 18:17:49:682 Coordinador/(9150:9150): Se conectó un componente
+[TRACE] 18:17:49:683 Coordinador/(9150:9150): Hilo asignado
+[TRACE] 18:17:49:722 Coordinador/(9150:9481): Se conectó la instancia de nombre: -1228924936
+[TRACE] 18:17:49:722 Instancia/(9480:9480): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 18:17:49:723 Coordinador/(9150:9481): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 18:17:49:723 Coordinador/(9150:9481): Se maneja una instancia
+[TRACE] 18:17:49:761 Instancia/(9480:9480): Se recibió una sentencia: SET 0 a
+[TRACE] 18:17:49:762 Instancia/(9480:9480): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 18:17:49:762 Instancia/(9480:9480): Se recibió una sentencia: SET 1 b
+[TRACE] 18:17:49:762 Instancia/(9480:9480): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 18:17:49:762 Instancia/(9480:9480): Se recibió una sentencia: SET 2 c
+[TRACE] 18:17:49:762 Instancia/(9480:9480): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 18:17:49:762 Instancia/(9480:9480): Se recibió una sentencia: STORE 1
+[TRACE] 18:17:49:762 Instancia/(9480:9480): Hago store de la clave 1 del valor b en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 18:17:49:764 Instancia/(9480:9480): Se recibió una sentencia: STORE 0
+[TRACE] 18:17:49:764 Instancia/(9480:9480): Hago store de la clave 0 del valor a en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 18:17:51:592 Instancia/(9480:9480): Se cerró la instancia, la tabla de entradas quedó: 
+[TRACE] 18:17:51:592 Instancia/(9480:9480): Clave: 0 - Valor: (null) - Entrada: 1 - Ocupa: 165485792
+[TRACE] 18:18:21:709 Coordinador/(9150:9150): Se conectó un componente
+[TRACE] 18:18:21:709 Coordinador/(9150:9150): Hilo asignado
+[TRACE] 18:18:21:746 Coordinador/(9150:9513): Se conectó la instancia de nombre: -1228924520
+[TRACE] 18:18:21:746 Instancia/(9512:9512): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 18:18:21:746 Coordinador/(9150:9513): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 18:18:21:747 Coordinador/(9150:9513): Se maneja una instancia
+[TRACE] 18:18:21:786 Instancia/(9512:9512): Se recibió una sentencia: SET 0 a
+[TRACE] 18:18:21:786 Instancia/(9512:9512): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 18:18:21:786 Instancia/(9512:9512): Se recibió una sentencia: SET 1 b
+[TRACE] 18:18:21:786 Instancia/(9512:9512): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 18:18:21:786 Instancia/(9512:9512): Se recibió una sentencia: SET 2 c
+[TRACE] 18:18:21:786 Instancia/(9512:9512): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 18:18:21:786 Instancia/(9512:9512): Se recibió una sentencia: STORE 1
+[TRACE] 18:18:21:786 Instancia/(9512:9512): Hago store de la clave 1 del valor b en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 18:18:21:788 Instancia/(9512:9512): Se recibió una sentencia: STORE 0
+[TRACE] 18:18:21:788 Instancia/(9512:9512): Hago store de la clave 0 del valor a en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 18:18:23:352 Instancia/(9512:9512): Se cerró la instancia, la tabla de entradas quedó: 
+[TRACE] 18:18:23:352 Instancia/(9512:9512): Clave: 0 - Valor: (null) - Entrada: 1 - Ocupa: 160939232
+[TRACE] 18:24:29:522 Coordinador/(10003:10003): Se conectó el planificador: Puerto=8000; Ip Planificador=160574520; Máximas conexiones=20
+[TRACE] 18:24:38:509 Coordinador/(10003:10003): Se conectó un componente
+[TRACE] 18:24:38:510 Coordinador/(10003:10003): Hilo asignado
+[TRACE] 18:24:38:550 Coordinador/(10003:10027): Se conectó la instancia de nombre: -1228929880
+[TRACE] 18:24:38:550 Instancia/(10026:10026): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 18:24:38:550 Coordinador/(10003:10027): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 18:24:38:550 Coordinador/(10003:10027): Se maneja una instancia
+[TRACE] 18:24:38:590 Instancia/(10026:10026): Se recibió una sentencia: SET 0 a
+[TRACE] 18:24:38:591 Instancia/(10026:10026): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 18:24:38:591 Instancia/(10026:10026): Se recibió una sentencia: SET 1 b
+[TRACE] 18:24:38:591 Instancia/(10026:10026): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 18:24:38:591 Instancia/(10026:10026): Se recibió una sentencia: SET 2 c
+[TRACE] 18:24:38:591 Instancia/(10026:10026): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 18:24:38:591 Instancia/(10026:10026): Se recibió una sentencia: STORE 1
+[TRACE] 18:24:38:591 Instancia/(10026:10026): Hago store de la clave 1 del valor b en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 18:24:38:593 Instancia/(10026:10026): Se recibió una sentencia: STORE 0
+[TRACE] 18:24:38:593 Instancia/(10026:10026): Hago store de la clave 0 del valor a en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 18:24:39:980 Instancia/(10026:10026): Se cerró la instancia, la tabla de entradas quedó: 11100000000000000000
+[TRACE] 18:24:39:981 Instancia/(10026:10026): Clave: 0 - Valor: (null) - Entrada: 1 - Ocupa: 134950112
+[TRACE] 18:26:50:639 Coordinador/(10003:10003): Se conectó un componente
+[TRACE] 18:26:50:639 Coordinador/(10003:10003): Hilo asignado
+[TRACE] 18:26:50:679 Coordinador/(10003:10098): Se conectó la instancia de nombre: -1228924968
+[TRACE] 18:26:50:679 Coordinador/(10003:10098): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 18:26:50:679 Coordinador/(10003:10098): Se maneja una instancia
+[TRACE] 18:26:50:684 Instancia/(10097:10097): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 18:26:50:717 Instancia/(10097:10097): Se recibió una sentencia: SET 0 a
+[TRACE] 18:26:50:717 Instancia/(10097:10097): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 18:26:50:717 Instancia/(10097:10097): Se recibió una sentencia: SET 1 b
+[TRACE] 18:26:50:717 Instancia/(10097:10097): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 18:26:50:718 Instancia/(10097:10097): Se recibió una sentencia: SET 2 c
+[TRACE] 18:26:50:718 Instancia/(10097:10097): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 18:26:50:718 Instancia/(10097:10097): Se recibió una sentencia: STORE 1
+[TRACE] 18:26:50:718 Instancia/(10097:10097): Hago store de la clave 1 del valor b en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 18:26:50:720 Instancia/(10097:10097): Se recibió una sentencia: STORE 0
+[TRACE] 18:26:50:720 Instancia/(10097:10097): Hago store de la clave 0 del valor a en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 18:26:52:635 Instancia/(10097:10097): Se cerró la instancia, la tabla de entradas quedó: 11100000000000000000
+[TRACE] 18:26:52:642 Instancia/(10097:10097): Clave: 0 - Valor: (null) - Entrada: 1 - Ocupa: 155749600
+[TRACE] 18:28:39:801 Coordinador/(10279:10279): Se conectó el planificador: Puerto=8000; Ip Planificador=145456184; Máximas conexiones=20
+[TRACE] 18:28:49:917 Coordinador/(10279:10279): Se conectó un componente
+[TRACE] 18:28:49:918 Coordinador/(10279:10279): Hilo asignado
+[TRACE] 18:28:49:958 Coordinador/(10279:10301): Se conectó la instancia de nombre: -1228929880
+[TRACE] 18:28:49:958 Instancia/(10300:10300): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 18:28:49:958 Coordinador/(10279:10301): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 18:28:49:958 Coordinador/(10279:10301): Se maneja una instancia
+[TRACE] 18:28:49:997 Instancia/(10300:10300): Se recibió una sentencia: SET 0 a
+[TRACE] 18:28:49:997 Instancia/(10300:10300): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 18:28:49:998 Instancia/(10300:10300): Se recibió una sentencia: SET 1 b
+[TRACE] 18:28:49:998 Instancia/(10300:10300): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 18:28:49:998 Instancia/(10300:10300): Se recibió una sentencia: SET 2 c
+[TRACE] 18:28:49:998 Instancia/(10300:10300): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 18:28:49:998 Instancia/(10300:10300): Se recibió una sentencia: STORE 1
+[TRACE] 18:28:49:998 Instancia/(10300:10300): Hago store de la clave 1 del valor b en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 18:28:49:998 Instancia/(10300:10300): Se recibió una sentencia: STORE 0
+[TRACE] 18:28:49:0 Instancia/(10300:10300): Hago store de la clave 0 del valor a en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 18:29:16:541 Instancia/(10300:10300): Se cerró la instancia, la tabla de entradas quedó: 11100000000000000000
+[TRACE] 18:29:16:541 Instancia/(10300:10300): Clave: 0 - Valor: (null) - Entrada: 1 - Ocupa: 155221216
+[TRACE] 18:30:41:270 Coordinador/(10279:10279): Se conectó un componente
+[TRACE] 18:30:41:271 Coordinador/(10279:10279): Hilo asignado
+[TRACE] 18:30:41:309 Coordinador/(10279:10351): Se conectó la instancia de nombre: -1228924968
+[TRACE] 18:30:41:309 Instancia/(10350:10350): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 18:30:41:309 Coordinador/(10279:10351): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 18:30:41:310 Coordinador/(10279:10351): Se maneja una instancia
+[TRACE] 18:30:41:350 Instancia/(10350:10350): Se recibió una sentencia: SET 0 a
+[TRACE] 18:30:41:350 Instancia/(10350:10350): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 18:30:41:350 Instancia/(10350:10350): Se recibió una sentencia: SET 1 b
+[TRACE] 18:30:41:350 Instancia/(10350:10350): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 18:30:41:350 Instancia/(10350:10350): Se recibió una sentencia: SET 2 c
+[TRACE] 18:30:41:350 Instancia/(10350:10350): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 18:30:41:350 Instancia/(10350:10350): Se recibió una sentencia: STORE 1
+[TRACE] 18:30:41:350 Instancia/(10350:10350): Hago store de la clave 1 del valor b en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 18:30:41:352 Instancia/(10350:10350): Se recibió una sentencia: STORE 0
+[TRACE] 18:30:41:352 Instancia/(10350:10350): Hago store de la clave 0 del valor a en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 18:30:56:23 Instancia/(10350:10350): Se cerró la instancia, la tabla de entradas quedó: 11100000000000000000
+[TRACE] 18:30:56:23 Instancia/(10350:10350): Clave: 0 - Valor: (null) - Entrada: 1 - Ocupa: 142847200
+[TRACE] 18:33:33:759 Coordinador/(10279:10279): Se conectó un componente
+[TRACE] 18:33:33:759 Coordinador/(10279:10279): Hilo asignado
+[TRACE] 18:33:33:797 Coordinador/(10279:10450): Se conectó la instancia de nombre: -1228924952
+[TRACE] 18:33:33:798 Coordinador/(10279:10450): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 18:33:33:798 Coordinador/(10279:10450): Se maneja una instancia
+[TRACE] 18:33:33:800 Instancia/(10449:10449): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 18:33:33:837 Instancia/(10449:10449): Se recibió una sentencia: SET 0 a
+[TRACE] 18:33:33:837 Instancia/(10449:10449): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 18:33:33:838 Instancia/(10449:10449): Se recibió una sentencia: SET 1 b
+[TRACE] 18:33:33:838 Instancia/(10449:10449): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 18:33:33:838 Instancia/(10449:10449): Se recibió una sentencia: SET 2 c
+[TRACE] 18:33:33:838 Instancia/(10449:10449): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 18:33:33:838 Instancia/(10449:10449): Se recibió una sentencia: STORE 1
+[TRACE] 18:33:33:838 Instancia/(10449:10449): Hago store de la clave 1 del valor b en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 18:33:33:840 Instancia/(10449:10449): Se recibió una sentencia: STORE 0
+[TRACE] 18:33:33:841 Instancia/(10449:10449): Hago store de la clave 0 del valor a en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 18:33:37:308 Instancia/(10449:10449): Se cerró la instancia, la tabla de entradas quedó: 11100000000000000000
+[TRACE] 18:36:12:655 Coordinador/(10279:10279): Se conectó un componente
+[TRACE] 18:36:12:656 Coordinador/(10279:10279): Hilo asignado
+[TRACE] 18:36:12:693 Coordinador/(10279:10529): Se conectó la instancia de nombre: -1228924936
+[TRACE] 18:36:12:694 Instancia/(10528:10528): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 18:36:12:694 Coordinador/(10279:10529): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 18:36:12:694 Coordinador/(10279:10529): Se maneja una instancia
+[TRACE] 18:36:12:733 Instancia/(10528:10528): Se recibió una sentencia: SET 0 a
+[TRACE] 18:36:12:734 Instancia/(10528:10528): Setteo 0: a, en la entrada 0 con un largo de entradas 1
+[TRACE] 18:36:12:734 Instancia/(10528:10528): Se recibió una sentencia: SET 1 b
+[TRACE] 18:36:12:734 Instancia/(10528:10528): Setteo 1: b, en la entrada 1 con un largo de entradas 1
+[TRACE] 18:36:12:734 Instancia/(10528:10528): Se recibió una sentencia: SET 2 c
+[TRACE] 18:36:12:734 Instancia/(10528:10528): Setteo 2: c, en la entrada 2 con un largo de entradas 1
+[TRACE] 18:36:12:734 Instancia/(10528:10528): Se recibió una sentencia: STORE 1
+[TRACE] 18:36:12:744 Instancia/(10528:10528): Hago store de la clave 1 del valor b en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/1
+[TRACE] 18:36:12:745 Instancia/(10528:10528): Se recibió una sentencia: STORE 0
+[TRACE] 18:36:12:750 Instancia/(10528:10528): Hago store de la clave 0 del valor a en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/0
+[TRACE] 18:36:15:931 Instancia/(10528:10528): Se cerró la instancia, la tabla de entradas quedó: 11100000000000000000
+[TRACE] 18:36:15:931 Instancia/(10528:10528): Clave: 0 - Valor: a - Entrada: 0 - Ocupa: 1
+[TRACE] 18:36:15:931 Instancia/(10528:10528): Clave: 1 - Valor: b - Entrada: 1 - Ocupa: 1
+[TRACE] 18:36:15:931 Instancia/(10528:10528): Clave: 2 - Valor: c - Entrada: 2 - Ocupa: 1

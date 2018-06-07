@@ -27,7 +27,7 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 	char* nombreInstancia;
 
 	nombreInstancia = malloc(largoMensaje + 1);
-	configuracion = config_create("./configuraciones/configuracion.txt");
+	configuracion = config_create(ARCHIVO_CONFIGURACION);
 
 	//recibimos el nombre de la instancia que se conecto
 	recibirMensaje(socketInstancia, largoMensaje, &nombreInstancia);
@@ -92,7 +92,7 @@ int tiempoRetardoFicticio() {
 	t_config* configuracion;
 	int retardo;
 
-	configuracion = config_create("./configuraciones/configuracion.txt");
+	configuracion = config_create(ARCHIVO_CONFIGURACION);
 	retardo = config_get_int_value(configuracion, "RETARDO");
 	config_destroy(configuracion);
 
@@ -230,7 +230,7 @@ int main() {
 		logCoordinador = log_create(ARCHIVO_LOG, "Coordinador", LOG_PRINT, LOG_LEVEL_TRACE);
 
 	// Leo puertos e ips de archivo de configuracion
-		configuracion = config_create("./configuraciones/configuracion.txt");
+		configuracion = config_create(ARCHIVO_CONFIGURACION);
 		puerto = config_get_int_value(configuracion, "PUERTO");
 		ipPlanificador = config_get_string_value(configuracion, "IP");
 		maxConexiones = config_get_int_value(configuracion, "MAX_CONEX");

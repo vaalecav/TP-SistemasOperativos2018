@@ -18,7 +18,12 @@ void freeEntrada(void* ent) {
 
 void loguearEntrada(void* entr) {
 	Entrada entrada = *(Entrada*)entr;
-	log_trace(logInstancia, "Clave: %s - Valor: %s - Entrada: %d - Ocupa: %d", entrada.clave, entrada.primerEntrada, entrada.cantidadEntradas, entrada.valor);
+	log_trace(logInstancia, "Clave: %s - Valor: %s - Entrada: %d - Ocupa: %d", entrada.clave, entrada.valor, entrada.primerEntrada, entrada.cantidadEntradas);
+}
+
+void mostrarEntrada(void* entr) {
+	Entrada entrada = *(Entrada*)entr;
+	printf("CLAVE %s\nEntrada: %d - %d\nValor: %s\n---------------------\n", entrada.clave, entrada.primerEntrada, entrada.cantidadEntradas, entrada.valor);
 }
 
 void avisarAlCoordinador(int idMensaje) {
@@ -26,12 +31,13 @@ void avisarAlCoordinador(int idMensaje) {
 }
 
 void cerrarInstancia(int sig) {
+	char* entradasUsadas;
     terminar = 1;
 
 	// Logueo el cierre de la instancia
-    	char* entradasUsadas = malloc(estructuraAdministrativa.cantidadEntradas + 1);
+    	entradasUsadas = malloc(estructuraAdministrativa.cantidadEntradas + 1);
 		for (int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
-			entradasUsadas[i] = (char)estructuraAdministrativa.entradasUsadas[i];
+			entradasUsadas[i] = '0' + estructuraAdministrativa.entradasUsadas[i];
 		}
 		entradasUsadas[estructuraAdministrativa.cantidadEntradas] = '\0';
 
@@ -51,10 +57,10 @@ void cerrarInstancia(int sig) {
 	exit(1);
 }
 
-int recibirInformacionEntradas(int socketEmisor, InformacionEntradas** info) {
+int recibirInformacionEntradas(int socketEmisor, InformacionEntradas* info) {
 	int recibido;
 
-	recibido = recv(socketEmisor, *info, sizeof(InformacionEntradas), 0);
+	recibido = recv(socketEmisor, info, sizeof(InformacionEntradas), 0);
 	if (recibido < 0) {
 		return -1;
 	} else if (recibido == 0) {
@@ -93,11 +99,6 @@ int buscarEspacioEnTabla(int entradasNecesarias) {
 int entradaEsIgualAClave(void* entrada, void* clave) {
 	Entrada *ent = (Entrada*) entrada;
 	return strcmp(ent->clave, (char*)clave)	== 0;
-}
-
-void mostrarEntrada(void* entr) {
-	Entrada entrada = *(Entrada*)entr;
-	printf("CLAVE %s\nEntrada: %d - %d\nValor: %s\n---------------------\n", entrada.clave, entrada.primerEntrada, entrada.cantidadEntradas, entrada.valor);
 }
 
 int setearValor(char* clave, char* valor, int entradasNecesarias) {
@@ -285,7 +286,7 @@ int storeClave(char* clave) {
 		fclose(archivo);
 
 		// Logueo que settee
-		log_trace(logInstancia, "Sette el valor %s de la clave %s en %s", entrada->valor, entrada->clave, nombreArchivo);
+		log_trace(logInstancia, "Hago store de la clave %s del valor %s en %s", entrada->clave, entrada->valor, nombreArchivo);
 	} else {
 		log_error(logInstancia, "No se puede acceder al archivo de la clave para hacer store del valor");
 	}
@@ -365,7 +366,7 @@ int main() {
 		// Espera hasta que recive la informacion de lo que será la tabla de entradas
 		info = (InformacionEntradas*) malloc(sizeof(InformacionEntradas));
 
-		recibirInformacionEntradas(socketCoordinador, &info);
+		recibirInformacionEntradas(socketCoordinador, info);
 
 		estructuraAdministrativa.cantidadEntradas = info->cantidad;
 		estructuraAdministrativa.tamanioEntrada = info->tamanio;
