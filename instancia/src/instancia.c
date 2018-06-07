@@ -38,7 +38,7 @@ void cerrarInstancia(int sig) {
 		log_trace(logInstancia, "Se cerró la instancia, la tabla de entradas quedó: %s", entradasUsadas);
 		list_iterate(estructuraAdministrativa.entradas, loguearEntrada);
 
-		// Se lo comunico al coordinador
+	// Se lo comunico al coordinador
 		avisarAlCoordinador(INSTANCIA_COORDINADOR_DESCONECTADA);
 
 	// Libero memoria
