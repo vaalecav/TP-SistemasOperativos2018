@@ -26,6 +26,7 @@ int main() {
 	char* ipPlanificador;
 	int puertoPlanificador;
 	int socketPlanificador;
+	ContentHeader *header;
 
 	// Leo el Archivo de Configuracion //
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
@@ -37,7 +38,15 @@ int main() {
 	socketPlanificador = clienteConectarComponente("ESI", "planificador",
 			puertoPlanificador, ipPlanificador);
 
-	sleep(10);
+	// Recibo Header del Planificador. Si es 0, no hay lugar para mas ESI. Si es > 0, es mi ID //
+	header = recibirHeader(socketPlanificador);
+
+	if (header->id > 0) {
+		printf("Mi id de ESI es: %d\n", header->id);
+		sleep(10);
+	} else {
+		puts("El Planificador no puede recibir mas conexiones.");
+	}
 
 	// Finalizo correctamente al ESI //
 	cerrarEsi(socketPlanificador);

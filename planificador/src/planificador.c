@@ -9,6 +9,14 @@
  */
 
 #include "planificador.h"
+// TODO LIST:
+// 1- Crear Listas Enlazadas de Ready, Ejecucion (?), Bloqueados y Terminados //
+// 2- Cuando se conecta un cliente, meterlo a cola de Ready. //
+// 3- Cuando se desconecta un cliente, buscarlo en Ready, Ejecucion (?) o Bloqueados //
+// 4- Cuando termina de ejecutar un cliente, desconectarlo nosotros y pasarlo a Terminados //
+// 5- Crear un hilo de ejecucion que ejecute segun el algoritmo indicado //
+// IMPORTANTE: El tipo de dato de las listas sera DATA, que es un struct de ESI //
+// IMPORTANTE: Todavia falta hacer la funcion para recibir el largo del ESI cuando el mismo se conecta //
 
 int main() {
 	// Declaraciones Iniciales //
@@ -104,13 +112,12 @@ void tratarConexiones() {
 			/* Si se ha superado el maximo de clientes, se cierra la conexión,
 			 se deja como estaba y se vuelve. */
 			if (numeroClientes > maxConex) {
+				enviarHeader(socketCliente[numeroClientes - 1], "", 0);
 				close(socketCliente[numeroClientes - 1]);
 				numeroClientes--;
-				puts("Rechaze a un ESI porque llegue a tope");
-				// TODO AVISARLE AL ESI QUE LO DESCONECTO;
 			} else {
 				/* Envía su número de id al cliente */
-				// TODO ENVIARLE AL ESI SU NUMERO DE ID;
+				enviarHeader(socketCliente[numeroClientes - 1], "", nextIdEsi);
 
 				// TODO RECIBIR DEL ESI SU CANTIDAD DE LINEAS;
 
