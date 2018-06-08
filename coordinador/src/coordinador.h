@@ -26,8 +26,6 @@
 #include <pthread.h>
 
 #include "algoritmosDistribucion/algoritmosDistribucion.h"
-#include "GET/GET.h"
-#include "SET_STORE/SET_STORE.h"
 
 t_list *listaInstancias;
 pthread_mutex_t mutexListaInstancias;
@@ -51,5 +49,15 @@ void manejarConexion(void*);
 int correrEnHilo(SocketHilos);
 int claveEstaEnInstancia(char*);
 int compararClave(void*, char*);
+
+// GET
+int sePuedeComunicarConLaInstancia();
+void getClave(char*, int, int);
+
+// SET y STORE
+void ejecutarSentencia(int, int, char*, char*);
+void avisarA(int, char*, int);
+int esSET(char*);
+int esSTORE(char*);
 
 #endif /* COORDINADOR_H_ */

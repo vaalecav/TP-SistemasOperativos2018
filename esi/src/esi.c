@@ -53,6 +53,8 @@ int main(int argc, char **argv){
 	int socketPlanificador;
 	ContentHeader *header;
 
+	char* path = argv[1];
+
 	// Leo el Archivo de Configuracion //
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
 	puertoPlanificador = config_get_int_value(configuracion,
@@ -77,8 +79,8 @@ int main(int argc, char **argv){
 	// Me conecto con el planificador
 	socketPlanificador = clienteConectarComponente("ESI", "planificador", puertoPlanificador, ipPlanificador);
 
-	int maxFilas = filasArchivo(argv[1]);
-	parsearScript(argv[1], maxFilas);
+	int maxFilas = filasArchivo(path);
+	parsearScript(path, maxFilas);
 
 	// Libero memoria
 	liberarMemoria();
@@ -100,14 +102,16 @@ void parsearScript(char* path, int maxFilas) {
 	char* mensajeCoordinador;
 	int socketCoordinador;
 	char* respuestaCoordinador;
+	char* nombre;
 
 	//leo puertos e ip del coordinador
 	ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
 	puertoCoordinador = config_get_int_value(configuracion, "PUERTO_COORDINADOR");
+	nombre = config_get_string_value(configuracion, "NOMBRE");
 
 	// Valido que el archivo exista
 	if ((fp = fopen(path, "r")) == NULL) {
-		log_error(logESI, "El archivo no existe o es inaccesible");
+		log_error(logESI, "El archivo '%s' no existe o es inaccesible", path);
 		liberarMemoria();
 		exit(EXIT_FAILURE);
 	}
@@ -115,10 +119,6 @@ void parsearScript(char* path, int maxFilas) {
 	while (filasLeidas < maxFilas) {
 		// Espero un mensaje del planificador
 		headerPlanificador = recibirHeader(socketPlanificador);
-
-		// TODO ¿tiene que recibir este mensaje?
-		mensaje = malloc((headerPlanificador->largo) + 1);
-		recibirMensaje(socketPlanificador, headerPlanificador->largo, &mensaje);
 
 		// Cuando el planificador me habla avanzo
 		if (headerPlanificador->id == PLANIFICADOR) {
@@ -138,19 +138,19 @@ void parsearScript(char* path, int maxFilas) {
 							break;
 
 						case SET:
-							mensajeCoordinador = malloc(strlen("SET ") + strlen(parsed.argumentos.SET.clave + strlen(parsed.argumentos.SET.valor)) +1);
+							mensajeCoordinador = malloc(strlen("SET ") + strlen(parsed.argumentos.SET.clave) + 1 + strlen(parsed.argumentos.SET.valor) + 1);
 							strcpy(mensajeCoordinador, "SET ");
 							strcat(mensajeCoordinador, parsed.argumentos.SET.clave);
 							strcat(mensajeCoordinador, " ");
 							strcat(mensajeCoordinador, parsed.argumentos.SET.valor);
-							mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.SET.clave) + strlen(parsed.argumentos.SET.valor)] = '\0';
+							mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.SET.clave) + 1 + strlen(parsed.argumentos.SET.valor)] = '\0';
 							break;
 
 						case STORE:
 							mensajeCoordinador = malloc(strlen("STORE ") + strlen(parsed.argumentos.STORE.clave) +1);
 							strcpy(mensajeCoordinador, "STORE ");
 							strcat(mensajeCoordinador, parsed.argumentos.STORE.clave);
-							mensajeCoordinador[strlen("STORE ") + strlen(parsed.argumentos.STORE.clave)] = '0';
+							mensajeCoordinador[strlen("STORE ") + strlen(parsed.argumentos.STORE.clave)] = '\0';
 							break;
 
 						default:
@@ -162,18 +162,29 @@ void parsearScript(char* path, int maxFilas) {
 					// Logueo el mensaje que le voy a mandar al coordinador
 					log_trace(logESI, "Le comunico al coordinador la sentencia <%s>", mensajeCoordinador);
 
-					// Le hablo al coordinador
+					// Me conecto con el coordinador
 					socketCoordinador = clienteConectarComponente("ESI", "coordinador", puertoCoordinador, ipCoordinador);
+
+					// Le mando el nombre
+					enviarHeader(socketCoordinador, nombre, ESI);
+					enviarMensaje(socketCoordinador, nombre);
+
+					// Le mando la sentencia
 					enviarHeader(socketCoordinador, mensajeCoordinador, ESI);
 					enviarMensaje(socketCoordinador, mensajeCoordinador);
+					free(mensajeCoordinador);
 
 					// Espero una respuesta del coordinador
 					headerCoordinador = recibirHeader(socketCoordinador);
-					respuestaCoordinador = malloc(headerCoordinador->largo + 1);
-					recibirMensaje(socketCoordinador, headerCoordinador->largo, &respuestaCoordinador);
 
 					// Logueo la respuesta del coordinador
-					log_trace(logESI, "El coordinador me respondio: %s", respuestaCoordinador);
+					int respuesta = headerCoordinador->id;
+					if (respuesta == INSTANCIA_SENTENCIA_OK || respuesta == COORDINADOR_ESI_BLOQUEAR || respuesta == COORDINADOR_ESI_CREADO) {
+						log_trace(logESI, "El coordinador me respondió que salió todo OK");
+					} else {
+						// TODO ¿acá debería abortar o no le importa y espera que lo aborte el planificador?
+						log_error(logESI, "El coordinador me respondió que hubo un error: %s", PROTOCOLO_MENSAJE[respuesta]);
+					}
 
 					filasLeidas++;
 					destruir_operacion(parsed);

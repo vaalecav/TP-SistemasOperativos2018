@@ -1,0 +1,204 @@
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCop
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCop
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaC
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCop
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaC
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCop
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaC
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCop
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaC
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi PorqueMess
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi SeLoMeress
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi PorqueMessi
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi SeLoMeressi
+ESI_1 || STORE futbol:messi
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi PorqueMessi
+ESI_1 || SET futbol:messi SeLoMeressi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || STORE futbol:ansaldi
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi PorqueMessi
+ESI_1 || SET futbol:messi SeLoMeressi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || STORE futbol:ansaldi
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi PorqueMessi
+ESI_1 || SET futbol:messi SeLoMeressi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || GET futbol:ansaldi
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi PorqueMessi
+ESI_1 || SET futbol:messi SeLoMeressi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || STORE futbol:ansaldi
+ESI_1 || SET futbol:ansaldi booobo
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi PorqueMessi
+ESI_1 || SET futbol:messi SeLoMeressi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || STORE futbol:ansaldi
+ESI_1 || SET futbol:ansaldi booobo
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || SET futbol:messi TraemeLaCo
+ESI_1 || SET futbol:messi PorqueMessi
+ESI_1 || SET futbol:messi SeLoMeressi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || STORE futbol:ansaldi
+ESI_1 || SET futbol:ansaldi booobo
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || STORE futbol:ansaldi
+ESI_1 || SET futbol:ansaldi booobo
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || STORE futbol:ansaldi
+ESI_1 || SET futbol:ansaldi booobo
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || STORE futbol:ansaldi
+ESI_1 || SET futbol:ansaldi booobo
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || STORE futbol:messi
+ESI_1 || STORE futbol:ansaldi
+ESI_1 || SET futbol:ansaldi booobo
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:ansaldi
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:ansaldi
+ESI_1 || GET futbol:ansaldi
+ESI_1 || SET futbol:ansaldi TraeVodka
+ESI_1 || GET futbol:ansaldi
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi

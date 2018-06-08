@@ -9,8 +9,6 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include src/algoritmosDistribucion/subdir.mk
--include src/SET_STORE/subdir.mk
--include src/GET/subdir.mk
 -include src/subdir.mk
 -include subdir.mk
 -include objects.mk
@@ -29,7 +27,7 @@ endif
 all: coordinador
 
 dependents:
-	-cd /home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug && $(MAKE) clean all
+	-cd /home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug && $(MAKE) all
 
 # Tool invocations
 coordinador: $(OBJS) $(USER_OBJS) /home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug/liblibraries.so

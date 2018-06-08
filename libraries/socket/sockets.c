@@ -186,7 +186,7 @@ int servidorConectarComponente(int* socketEscucha, char* servidor, char* compone
 	int socketConectado;
 	char *bufferMensaje, *texto;
 
-	bufferMensaje = malloc(2 * sizeof(char));
+	bufferMensaje = malloc(3);
 	texto = malloc(3 * sizeof(char));
 	strcpy(texto, "OK");
 
