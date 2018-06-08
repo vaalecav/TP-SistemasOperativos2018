@@ -8,21 +8,46 @@
  ============================================================================
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <socket/sockets.h>
-#include <configuracion/configuracion.h>
-#include <configuracion/configuracion.h>
-#include <commons/parsi/parser.h>
-#include <commons/config.h>
-#include <generales/generales.h>
+#include "esi.h"
 
-t_config* configuracion;
-void cerrarEsi(int socketPlanificador);
+void liberarMemoria() {
+	close(socketPlanificador);
+	config_destroy(configuracion);
+	log_destroy(logESI);
+}
 
-int main() {
-	// Declaraciones Iniciales //
-	puts("Iniciando ESI.");
+int filasArchivo(char* filename) {
+	FILE *in_file;
+    char buffer[SIZE + 1], lastchar = '\n';
+    size_t bytes;
+    int lines = 0;
+
+    if (NULL == (in_file = fopen(filename, "r"))) {
+        perror(filename);
+        return EXIT_FAILURE;
+    }
+
+    while ((bytes = fread(buffer, 1, sizeof(buffer) - 1, in_file))) {
+        lastchar = buffer[bytes - 1];
+        for (char *c = buffer; (c = memchr(c, '\n', bytes - (c - buffer))); c++) {
+            lines++;
+        }
+    }
+    if (lastchar != '\n') {
+        lines++;  /* Count the last line even if it lacks a newline */
+    }
+    if (ferror(in_file)) {
+        perror(filename);
+        fclose(in_file);
+        return EXIT_FAILURE;
+    }
+
+    fclose(in_file);
+    log_trace(logESI, "Number of lines in the file is %i\n", lines);
+    return(lines);
+}
+
+int main(int argc, char **argv){
 	char* ipPlanificador;
 	int puertoPlanificador;
 
@@ -33,9 +58,8 @@ int main() {
 	puertoPlanificador = config_get_int_value(configuracion, "PUERTO_PLANIFICADOR");
 	ipPlanificador = config_get_string_value(configuracion, "IP_PLANIFICADOR");
 
-	// Levanto la conexion con el Planificador //
-	socketPlanificador = clienteConectarComponente("ESI", "planificador",
-			puertoPlanificador, ipPlanificador);
+	// Inicio el log
+	logESI = log_create(ARCHIVO_LOG, "ESI", true, LOG_LEVEL_TRACE);
 
 	// Valido que haya ingresado el nombre del archivo
 	if (argc < 2) {
