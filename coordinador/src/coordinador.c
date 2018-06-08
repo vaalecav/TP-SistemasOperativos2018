@@ -33,7 +33,7 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 	recibirMensaje(socketInstancia, largoMensaje, &nombreInstancia);
 
 	// Logueo la informacion recibida
-	log_trace(logCoordinador, "Se conectó la instancia de nombre: %d", nombreInstancia);
+	log_trace(logCoordinador, "Se conectó la instancia de nombre: %s", nombreInstancia);
 
 	//leo cantidad entradas y su respectivo tamanio del archivo de configuracion
 	entradasInstancia->cantidad = config_get_int_value(configuracion, "CANTIDAD_ENTRADAS");
@@ -74,15 +74,16 @@ void loguearOperacion(char* nombre, char* mensaje) {
 	FILE *f = fopen("log.txt", "a");
 	if (f == NULL) {
 		pthread_mutex_unlock(&mutexLog);
-
 		// Logueamos que no se pudo loguear la operacion
 		log_error(logCoordinador, "No se pudo loguear la operación");
 		return;
 	}
-
-	fprintf(f, "%s || %s\n", nombre, mensaje);
-	pthread_mutex_unlock(&mutexLog);
+	//printf("%s , %s \n" , nombre, mensaje);
+	//fprintf(f, "%s || %s\n", nombre, mensaje);
+	//TODO ARREGLR FPRINTF SEGMENTATION FAULT
 	fclose(f);
+	pthread_mutex_unlock(&mutexLog);
+
 
 	// Logueo que loguié
 	log_trace(logCoordinador, "Se pudo loguear: %s || %s", nombre, mensaje);
@@ -106,10 +107,12 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	char** mensajeSplitted;
 	ContentHeader * header;
 
-	// Recibo mensajes
+	// Recibo nombre esi
 	nombre = malloc(largoMensaje + 1);
 	recibirMensaje(socketEsi, largoMensaje, &nombre);
 
+	// Recibo mensaje del esi
+	header = (ContentHeader*) malloc(sizeof(ContentHeader));
 	header = recibirHeader(socketEsi);
 	mensaje = malloc(header->largo + 1);
 	recibirMensaje(socketEsi, header->largo, &mensaje);
@@ -118,7 +121,7 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	loguearOperacion(nombre, mensaje);
 
 	// Logueo el mensaje
-	log_trace(logCoordinador, "Recibimos el mensaje: Nombre = %d; Mensaje = %d", nombre, mensaje);
+	log_trace(logCoordinador, "Recibimos el mensaje: Nombre = %s; Mensaje = %s", nombre, mensaje);
 
 	// Retraso ficticio de la ejecucion
 	int retardo = tiempoRetardoFicticio();
@@ -134,7 +137,7 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 		ejecutarSentencia(socketEsi, socketPlanificador, mensaje, nombre);
 		log_trace(logCoordinador, "Se ejecuto un %s", mensajeSplitted[0]);
 
-		free(mensajeSplitted[2]);
+		if (strcmp(mensajeSplitted[0], "SET") == 0) free(mensajeSplitted[2]);
 	} else {
 		log_error(logCoordinador, "Error en el mensaje enviado por el ESI");
 	}
@@ -201,11 +204,12 @@ void manejarConexion(void* socketsNecesarios) {
 int correrEnHilo(SocketHilos socketsConectados) {
 	pthread_t idHilo;
 	SocketHilos* socketsNecesarios;
-	socketsNecesarios = malloc(sizeof(SocketHilos));
+	socketsNecesarios = (SocketHilos*) malloc(sizeof(SocketHilos));
 	*socketsNecesarios = socketsConectados;
 
 	if (pthread_create(&idHilo, NULL, (void*)manejarConexion, (void*)socketsNecesarios)) {
 		log_error(logCoordinador, "No se pudo crear el hilo");
+		free(socketsNecesarios);
 		return 0;
 	}
 
@@ -239,7 +243,7 @@ int main() {
 		socketEscucha = socketServidor(puerto, ipPlanificador, maxConexiones);
 
 	// Se conecta el planificador
-		socketConectadoPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
+		//socketConectadoPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
 
 	// Logueo la conexion
 		log_trace(logCoordinador, "Se conectó el planificador: Puerto=%d; Ip Planificador=%d; Máximas conexiones=%d", puerto, ipPlanificador, maxConexiones);

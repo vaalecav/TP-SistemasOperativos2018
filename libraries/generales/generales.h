@@ -15,16 +15,16 @@
 #include <commons/collections/list.h>
 
 /*
-Eclipse
+Eclipse*/
 #define ARCHIVO_CONFIGURACION "./configuraciones/configuracion.txt"
 #define ARCHIVO_LOG "../log.txt"
-*/
+
 /*
 Consola
-*/
+
 #define ARCHIVO_CONFIGURACION "../configuraciones/configuracion.txt"
 #define ARCHIVO_LOG "../../log.txt"
-
+*/
 // Logs
 #define LOG_PRINT 1
 

@@ -1,5 +1,5 @@
 #Conexiones
-IP=127.0.0.1
+IP=192.168.0.17
 PUERTO=8000
 MAX_CONEX=20
 #

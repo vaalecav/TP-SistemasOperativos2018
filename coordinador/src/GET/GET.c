@@ -42,7 +42,6 @@ void asignarClaveAInstancia(char* key) {
 	pthread_mutex_unlock(&mutexListaInstancias);
 
 	// Libero memoria
-	free(algoritmo_distribucion);
 	config_destroy(configuracion);
 	list_add(instancia->claves, clave);
 }
