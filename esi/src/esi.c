@@ -50,8 +50,6 @@ int filasArchivo(char* filename) {
 int main(int argc, char **argv){
 	char* ipPlanificador;
 	int puertoPlanificador;
-	int socketPlanificador;
-	ContentHeader *header;
 
 	char* path = argv[1];
 
@@ -94,14 +92,12 @@ void parsearScript(char* path, int maxFilas) {
 	size_t len = 0;
 	ssize_t read;
 	ContentHeader *headerPlanificador, *headerCoordinador;
-	char* mensaje;
 	int filasLeidas = 0;
 	char* ipCoordinador;
 	int puertoCoordinador;
 
 	char* mensajeCoordinador;
 	int socketCoordinador;
-	char* respuestaCoordinador;
 	char* nombre;
 
 	//leo puertos e ip del coordinador
@@ -178,15 +174,22 @@ void parsearScript(char* path, int maxFilas) {
 					headerCoordinador = recibirHeader(socketCoordinador);
 
 					// Logueo la respuesta del coordinador
-					int respuesta = headerCoordinador->id;
-					if (respuesta == INSTANCIA_SENTENCIA_OK || respuesta == COORDINADOR_ESI_BLOQUEAR || respuesta == COORDINADOR_ESI_CREADO) {
-						log_trace(logESI, "El coordinador me respondió que salió todo OK");
-					} else {
-						// TODO ¿acá debería abortar o no le importa y espera que lo aborte el planificador?
-						log_error(logESI, "El coordinador me respondió que hubo un error: %s", PROTOCOLO_MENSAJE[respuesta]);
+					switch (headerCoordinador->id) {
+						case INSTANCIA_SENTENCIA_OK:
+						case COORDINADOR_ESI_BLOQUEAR:
+						case COORDINADOR_ESI_CREADO:
+
+							log_trace(logESI, "El coordinador me respondió que salió todo OK");
+							break;
+
+						default:
+							log_error(logESI, "El coordinador me respondió que hubo un error: %s", PROTOCOLO_MENSAJE[headerCoordinador->id]);
+							// TODO ¿acá debería abortar o no le importa y espera que lo aborte el planificador?
+							break;
 					}
 
 					filasLeidas++;
+					free(headerCoordinador);
 					destruir_operacion(parsed);
 				} else {
 					log_error(logESI, "La linea <%s> no es valida\n", line);
