@@ -356,18 +356,19 @@ int main() {
 					}
 					pthread_mutex_unlock(&mutexListaInstancias);
 
-					// Si hay un error, le tengo que avisar al coordinador
+					// Si hay un error, le tengo que avisar
 					if (respuestaGET == COORDINADOR_ESI_BLOQUEADO) {
-						avisarA(socketPlanificador, key, COORDINADOR_ESI_BLOQUEADO);
+						avisarA(socketPlanificador, "", COORDINADOR_ESI_BLOQUEADO);
+						avisarA(socketEsi, "", COORDINADOR_ESI_BLOQUEADO);
 					}
 				} else {
 					// Instancia está caída
 					respuestaGET = COORDINADOR_INSTANCIA_CAIDA;
 					log_error(logCoordinador, "La clave que intenta acceder existe en el sistema pero se encuentra en una instancia que esta desconectada");
 
-					//Le aviso al planificador del error
-					enviarHeader(socketPlanificador, key, COORDINADOR_INSTANCIA_CAIDA);
-					enviarMensaje(socketPlanificador, key);
+					//Le aviso al planificador y esi del error
+					avisarA(socketPlanificador, "", COORDINADOR_INSTANCIA_CAIDA);
+					avisarA(socketEsi, "", COORDINADOR_INSTANCIA_CAIDA);
 				}
 			} else {
 				// Le asigno la nueva clave a la instancia
@@ -378,9 +379,10 @@ int main() {
 			}
 
 			// Le aviso al ESI
-			enviarHeader(socketEsi, key, respuestaGET);
-			enviarMensaje(socketEsi, key);
+			avisarA(socketEsi, "", respuestaGET);
 
+			// Le aviso al Planificador
+			avisarA(socketPlanificador, "", respuestaGET);
 	}
 
 // Cosas para el SET y para el STORE
@@ -406,7 +408,7 @@ int main() {
 				log_error(logCoordinador, "Error, la clave excede el tamaño máximo de 40 caracteres");
 
 				// Le aviso al planificador por el error
-				avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_TAMANIO_CLAVE);
+				avisarA(socketPlanificador, "", COORDINADOR_ESI_ERROR_TAMANIO_CLAVE);
 
 				//Tambien le aviso al esi para que no se quede esperando
 				avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_TAMANIO_CLAVE);
@@ -430,7 +432,7 @@ int main() {
 				log_error(logCoordinador, "Clave no identificada");
 
 				// Le aviso al planificador
-				avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+				avisarA(socketPlanificador, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
 
 				//Tambien le aviso al esi para que no se quede esperando
 				avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
@@ -458,7 +460,7 @@ int main() {
 				log_error(logCoordinador, "La clave que intenta acceder no se encuentra tomada");
 
 				// Le aviso al planificador
-				avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_NO_TOMADA);
+				avisarA(socketPlanificador, "", COORDINADOR_ESI_ERROR_CLAVE_NO_TOMADA);
 
 				//Tambien le aviso al esi para que no se quede esperando
 				avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_CLAVE_NO_TOMADA);
@@ -490,9 +492,10 @@ int main() {
 
 			switch(header->id) {
 				case INSTANCIA_SENTENCIA_OK:
-					// Si está OK, le aviso al ESI
+					// Si está OK, le aviso al ESI y al planificador
 					log_trace(logCoordinador, "La sentencia se ejecutó correctamente");
 					avisarA(socketEsi, "", INSTANCIA_SENTENCIA_OK);
+					avisarA(socketPlanificador, "", INSTANCIA_SENTENCIA_OK);
 					break;
 
 				case INSTANCIA_CLAVE_NO_IDENTIFICADA:
@@ -500,11 +503,10 @@ int main() {
 					log_error(logCoordinador, "Clave no identificada");
 
 					//Le aviso al planificador
-					avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+					avisarA(socketPlanificador, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
 
 					//Tambien le aviso al esi para que no se quede esperando
 					avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
-
 
 					break;
 

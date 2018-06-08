@@ -53,10 +53,9 @@ int main(int argc, char **argv){
 
 	char* path = argv[1];
 
-	// Leo el Archivo de Configuracion //
+	// Leo el Archivo de Configuracion
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
-	puertoPlanificador = config_get_int_value(configuracion,
-			"PUERTO_PLANIFICADOR");
+	puertoPlanificador = config_get_int_value(configuracion, "PUERTO_PLANIFICADOR");
 	ipPlanificador = config_get_string_value(configuracion, "IP_PLANIFICADOR");
 
 	// Inicio el log
@@ -66,13 +65,9 @@ int main(int argc, char **argv){
 	if (argc < 2) {
 		log_error(logESI, "No ingreso el nombre del archivo");
 		log_destroy(logESI);
+		config_destroy(configuracion);
 		exit(EXIT_FAILURE);
 	}
-
-	//Leo puertos e ips de archivo de configuracion
-	configuracion = config_create(ARCHIVO_CONFIGURACION);
-	ipPlanificador = config_get_string_value(configuracion, "IP_PLANIFICADOR");
-	puertoPlanificador = config_get_int_value(configuracion, "PUERTO_PLANIFICADOR");
 
 	// Me conecto con el planificador
 	socketPlanificador = clienteConectarComponente("ESI", "planificador", puertoPlanificador, ipPlanificador);
@@ -82,6 +77,7 @@ int main(int argc, char **argv){
 
 	// Libero memoria
 	liberarMemoria();
+	config_destroy(configuracion);
 
 	return 0;
 }
@@ -93,9 +89,10 @@ void parsearScript(char* path, int maxFilas) {
 	ssize_t read;
 	ContentHeader *headerPlanificador, *headerCoordinador;
 	int filasLeidas = 0;
+	int abortarEsi = 0;
+
 	char* ipCoordinador;
 	int puertoCoordinador;
-
 	char* mensajeCoordinador;
 	int socketCoordinador;
 	char* nombre;
@@ -112,7 +109,7 @@ void parsearScript(char* path, int maxFilas) {
 		exit(EXIT_FAILURE);
 	}
 
-	while (filasLeidas < maxFilas) {
+	while (filasLeidas < maxFilas || !abortarEsi) {
 		// Espero un mensaje del planificador
 		headerPlanificador = recibirHeader(socketPlanificador);
 
@@ -182,8 +179,14 @@ void parsearScript(char* path, int maxFilas) {
 							log_trace(logESI, "El coordinador me respondió que salió todo OK");
 							break;
 
+						case COORDINADOR_ESI_BLOQUEADO:
+							//Como se bloquea en la linea actual, no sigo avanzando y vuelvo a intentar esta linea
+							fseek (fp, -1*strlen(line), SEEK_CUR );
+							break;
+
 						default:
 							log_error(logESI, "El coordinador me respondió que hubo un error: %s", PROTOCOLO_MENSAJE[headerCoordinador->id]);
+							abortarEsi = 1;
 							// TODO ¿acá debería abortar o no le importa y espera que lo aborte el planificador?
 							break;
 					}
@@ -197,12 +200,12 @@ void parsearScript(char* path, int maxFilas) {
 					exit(EXIT_FAILURE);
 				}
 			} else {
+				log_error(logESI, "No se pudo leer la linea del script");
 				break;
 			}
 		}
-
 	}
 	fclose(fp);
-	if (line)
-	free(line);
+	liberarMemoria();
+	if (line) free(line);
 }
