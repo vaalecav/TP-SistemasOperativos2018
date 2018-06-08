@@ -66,6 +66,8 @@ t_config* configuracion; 	// Configuracion del socket servidor.
 t_list* colaReady;			// Lista enlazada de Ready.
 t_list* colaBloqueados;		// Lista enlazada de Bloqueados.
 t_list* colaTerminados;		// Lista enlazada de Terminados.
+t_list* colaAbortados;		// Lista enlazada de Abortados.
+int socketCoordinador;		// Socket del Coordinador.
 
 //=====================FUNCIONES DE PLANIFICADOR=====================================
 
@@ -77,6 +79,7 @@ void borrarDeColas(int socket); // Borra de las listas enlazadas el ESI con el s
 int compararSocket(void* esiVoid, void* indexVoid); // Funcion que compara para funcion de listas.
 void imprimirEnPantalla(void* esiVoid); // Imprime un ESI en pantalla.
 void manejoAlgoritmos(); // Hilo que maneja la ejecucion de ESIs.
+int chequearRespuesta(int id); // Devuelve para hacer switch con la respuesta del Coordinador.
 
 //=====================FUNCIONES DE CONSOLA=====================================
 

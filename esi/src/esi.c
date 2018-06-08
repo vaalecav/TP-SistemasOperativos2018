@@ -27,6 +27,7 @@ int main() {
 	int puertoPlanificador;
 	int socketPlanificador;
 	ContentHeader *header;
+	int lineasLeidas;
 
 	// Leo el Archivo de Configuracion //
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
@@ -40,15 +41,25 @@ int main() {
 
 	// Recibo Header del Planificador. Si es 0, no hay lugar para mas ESI. Si es > 0, es mi ID //
 	header = recibirHeader(socketPlanificador);
-
 	if (header->id > 0) {
 		printf("Mi id de ESI es: %d\n", header->id);
-		sleep(10);
 	} else {
 		puts("El Planificador no puede recibir mas conexiones.");
 	}
 
-	enviarHeader(socketPlanificador, "", 2);
+	// Le envio mi cantidad de lineas al Planificador //
+	int cantLineas = 5;
+	enviarHeader(socketPlanificador, "", cantLineas);
+
+	// Leo el archivo //
+	for (lineasLeidas = 0; lineasLeidas < cantLineas; lineasLeidas++) {
+		header = recibirHeader(socketPlanificador);
+		printf("Ejecute la linea %d", lineasLeidas + 1);
+		sleep(5);
+		// Le aviso que ejecute una linea al planificador //
+		puts("wtf");
+		enviarHeader(socketPlanificador, "", ESI);
+	}
 
 	sleep(60);
 

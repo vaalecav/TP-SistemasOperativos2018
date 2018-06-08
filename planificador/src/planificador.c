@@ -10,20 +10,33 @@
 
 #include "planificador.h"
 
-// TODO LIST:
-// 5- Cuando termina de ejecutar un cliente, desconectarlo nosotros y pasarlo a Terminados //
-// IMPORTANTE: Todavia falta hacer la funcion para recibir el largo del ESI cuando el mismo se conecta //
+// TODO CERRAR CONEXIONES QUE QUEDEN >0 EN ABORTADOS Y TERMINADOS DESPUES DEL SELECT() //
+// TODO IMPLEMENTAR SEMAFOROS PARA LAS LISTAS //
+// TODO IMPLEMENTAR SJF CON Y SIN DESALOJO POR CONFIGURACION //
 
 int main() {
 	// Declaraciones Iniciales //
 	puts("Iniciando Planificador.");
 	pthread_t hiloConexiones;
 	pthread_t hiloAlgoritmos;
+	char* ipCoordinador;
+	int puertoCoordinador;
+
+	// Leo el Archivo de Configuracion //
+	configuracion = config_create(ARCHIVO_CONFIGURACION);
+	ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
+	puertoCoordinador = config_get_int_value(configuracion,
+			"PUERTO_COORDINADOR");
+
+	// Me conecto con el Coordinador //
+	socketCoordinador = clienteConectarComponente("planificador", "coordinador",
+			puertoCoordinador, ipCoordinador);
 
 	// Inicializo las listas enlazadas //
 	colaReady = list_create();
 	colaBloqueados = list_create();
 	colaTerminados = list_create();
+	colaAbortados = list_create();
 
 	// Inicio el hilo que maneja las Conexiones //
 	if (pthread_create(&hiloConexiones, NULL, (void *) tratarConexiones,
@@ -64,32 +77,96 @@ int main() {
 void manejoAlgoritmos() {
 	DATA * esi;
 	void * esiVoid;
+	ContentHeader * header;
+	int paraSwitchear;
 	while (done == 0) {
 		if (ejecutar == 1) {
-			if ((esiVoid = list_get(colaReady, 0)) == NULL) {
+			if ((esiVoid = list_remove(colaReady, 0)) == NULL) {
 				// No hay nadie para ejecutar //
+
 			} else {
+				// Le ordeno al ESI que ejecute //
 				esi = (DATA*) esiVoid;
 				enviarHeader(esi->socket, "", PLANIFICADOR);
+
+				// Espero la respuesta //
+				header = recibirHeader(socketCoordinador);
+
+				// Veo que tengo que hacer //
+				paraSwitchear = chequearRespuesta(header->id);
+				switch (paraSwitchear) {
+				case 0: // ERROR //
+					// Lo agrego a la cola de Abortados //
+					list_add(colaAbortados, (void*) esi);
+					break;
+
+				case 1: // BLOQUEO //
+					// Lo agrego a la cola de Bloqueados //
+					list_add(colaBloqueados, (void*) esi);
+					break;
+
+				case 2: // EXITO //
+					esi->lineas--;
+					switch (esi->lineas) {
+					case 0: // TERMINO EL ESI //
+						// Lo agrego a la cola de Terminados //
+						list_add(colaTerminados, (void*) esi);
+						break;
+
+					default: // LE QUEDA POR EJECUTAR //
+						// Lo agrego nuevamente a la cola de Ready//
+						list_add(colaReady, (void*) esi);
+					}
+				}
 			}
 		}
 	}
 }
 
+int chequearRespuesta(int id) {
+	int a;
+	switch (id) {
+	case COORDINADOR_ESI_ERROR_TAMANIO_CLAVE:
+		a = 0;
+		break;
+	case COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA:
+		a = 0;
+		break;
+	case COORDINADOR_ESI_ERROR_CLAVE_NO_TOMADA:
+		a = 0;
+		break;
+	case COORDINADOR_INSTANCIA_CAIDA:
+		a = 0;
+		break;
+	case COORDINADOR_ESI_BLOQUEADO:
+		a = 1;
+		break;
+	case COORDINADOR_ESI_BLOQUEAR:
+		a = 2;
+		break;
+	case COORDINADOR_ESI_CREADO:
+		a = 2;
+		break;
+	case INSTANCIA_SENTENCIA_OK:
+		a = 2;
+		break;
+	}
+	return a;
+}
+
 void tratarConexiones() {
-	// Declaraciones Iniciales //
+// Declaraciones Iniciales //
 	char* ip;
 	int puerto;
 	int maxConex;
 	int socketServer;
 
-	// Leo el Archivo de Configuracion //
-	configuracion = config_create(ARCHIVO_CONFIGURACION);
+// Leo el Archivo de Configuracion //
 	puerto = config_get_int_value(configuracion, "PUERTO");
 	ip = config_get_string_value(configuracion, "IP");
 	maxConex = config_get_int_value(configuracion, "MAX_CONEX");
 
-	// Nuevas Declaraciones //
+// Nuevas Declaraciones //
 	fd_set descriptoresLectura;
 	int socketCliente[maxConex];
 	int numeroClientes = 0;
@@ -98,10 +175,10 @@ void tratarConexiones() {
 	int nextIdEsi = 1;
 	ContentHeader *header;
 
-	// Levanto el Servidor //
+// Levanto el Servidor //
 	socketServer = socketServidor(puerto, ip, maxConex);
 
-	// Bucle del select() //
+// Bucle del select() //
 	while (done == 0) {
 		timeout.tv_sec = 1;
 		timeout.tv_usec = 0;
@@ -167,7 +244,7 @@ void tratarConexiones() {
 		}
 	}
 
-	// Finalizo cualquier conexion restante //
+// Finalizo cualquier conexion restante //
 	while (numeroClientes > 0) {
 		printf("El cliente %d fue finalizado por comando (quit).\n",
 				socketCliente[numeroClientes - 1]);
