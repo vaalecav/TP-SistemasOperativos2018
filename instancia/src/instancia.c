@@ -333,7 +333,6 @@ void recibirSentencia() {
 }
 
 int main() {
-	puts("Iniciando Instancia.");
 	char* ipCoordinador;
 	int puertoCoordinador;
 	char* nombre;
@@ -357,6 +356,8 @@ int main() {
 		indexCirc = 0;
 
 	// Conexion con el coordinador
+		log_trace(logInstancia, "Envio al coordinador el nombre de mi instancia: %s", nombre);
+
 		socketCoordinador = clienteConectarComponente("instancia", "coordinador", puertoCoordinador, ipCoordinador);
 		enviarHeader(socketCoordinador, nombre, INSTANCIA);
 		int largo = strlen(nombre);
@@ -388,7 +389,5 @@ int main() {
 			recibirSentencia();
 		}
 
-
-	puts("La Instancia se ha finalizado correctamente.");
 	return 0;
 }

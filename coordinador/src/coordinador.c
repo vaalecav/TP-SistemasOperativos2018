@@ -78,9 +78,8 @@ void loguearOperacion(char* nombre, char* mensaje) {
 		log_error(logCoordinador, "No se pudo loguear la operación");
 		return;
 	}
-	//printf("%s , %s \n" , nombre, mensaje);
-	//fprintf(f, "%s || %s\n", nombre, mensaje);
-	//TODO ARREGLR FPRINTF SEGMENTATION FAULT
+	fprintf(f, "%s || %s\n", nombre, mensaje);
+
 	fclose(f);
 	pthread_mutex_unlock(&mutexLog);
 
@@ -97,7 +96,7 @@ int tiempoRetardoFicticio() {
 	retardo = config_get_int_value(configuracion, "RETARDO");
 	config_destroy(configuracion);
 
-	// La funcion usleep usa microsegundos (1 seg = 1000 microseg)
+	// La funcion usleep usa microsegundos (1 miliseg = 1000 microseg)
 	return retardo * 1000;
 }
 
@@ -183,18 +182,18 @@ void manejarConexion(void* socketsNecesarios) {
 
 	switch (header->id) {
 		case INSTANCIA:
+			log_trace(logCoordinador, "Se conectó una instancia");
 			manejarInstancia(socketsConectados.socketComponente, header->largo);
-			log_trace(logCoordinador, "Se maneja una instancia");
 			break;
 
 		case ESI:
+			log_trace(logCoordinador, "Se conectó un ESI");
 			manejarEsi(socketsConectados.socketComponente, socketsConectados.socketPlanificador, header->largo);
-			log_trace(logCoordinador, "Se maneja un ESI");
 			break;
 
 		case INSTANCIA_COORDINADOR_DESCONECTADA:
+			log_trace(logCoordinador, "Se desconectó una instancia");
 			manejarDesconexion(socketsConectados.socketComponente, header->largo);
-			log_trace(logCoordinador, "Se maneja una instancia desconectada");
 			break;
 	}
 
@@ -243,7 +242,7 @@ int main() {
 		socketEscucha = socketServidor(puerto, ipPlanificador, maxConexiones);
 
 	// Se conecta el planificador
-		//socketConectadoPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
+		socketConectadoPlanificador = servidorConectarComponente(&socketEscucha, "coordinador", "planificador");
 
 	// Logueo la conexion
 		log_trace(logCoordinador, "Se conectó el planificador: Puerto=%d; Ip Planificador=%d; Máximas conexiones=%d", puerto, ipPlanificador, maxConexiones);
@@ -272,3 +271,260 @@ int main() {
 
 	return 0;
 }
+
+
+// Cosas para el GET
+	int sePuedeComunicarConLaInstancia() {
+		// TODO ver qué onda esto
+		return 1;
+	}
+
+	void asignarClaveAInstancia(char* key) {
+		char* algoritmo_distribucion;
+		t_config* configuracion;
+		Instancia* instancia;
+
+		//Creo la clave
+		Clave* clave;
+		clave = malloc(sizeof(Clave));
+		clave->bloqueado = 1;
+		clave->nombre = malloc(strlen(key) + 1);
+		strcpy(clave->nombre, key);
+		clave->nombre[strlen(key)] = '\0';
+
+		// Leo del archivo de configuracion
+		configuracion = config_create(ARCHIVO_CONFIGURACION);
+		algoritmo_distribucion = config_get_string_value(configuracion, "ALG_DISTR");
+
+		// Selecciono algoritmo de distribucion de instancias
+		pthread_mutex_lock(&mutexListaInstancias);
+		if (strcmp(algoritmo_distribucion, "EL") == 0) {
+			log_trace(logCoordinador, "Utilizo algoritmo de distribucion de instancias EL");
+			instancia = algoritmoDistribucionEL(listaInstancias);
+		} else if (strcmp(algoritmo_distribucion, "LSU") == 0) {
+			log_trace(logCoordinador, "Utilizo algoritmo de distribucion de instancias LSU");
+			// TODO Implementar algoritmo Least Space Used
+		} else if (strcmp(algoritmo_distribucion, "KE") == 0) {
+			log_trace(logCoordinador, "Utilizo algoritmo de distribucion de instancias KE");
+			// TODO Implementar Key Explicit
+		} else {
+			log_error(logCoordinador, "Algoritmo de distribucion invalido.");
+			pthread_mutex_unlock(&mutexListaInstancias);
+			return;
+		}
+		pthread_mutex_unlock(&mutexListaInstancias);
+
+		// Libero memoria
+		config_destroy(configuracion);
+		list_add(instancia->claves, clave);
+	}
+
+	void getClave(char* key, int socketPlanificador, int socketEsi) {
+		Clave* clave;
+		void* claveVoid;
+		Instancia* instancia;
+		void* instanciaVoid;
+		int respuestaGET;
+
+		// Busco la clave en la lista de claves
+			pthread_mutex_lock(&mutexListaInstancias);
+			instanciaVoid = list_find_with_param(listaInstancias, (void*)key, buscarInstanciaConClave);
+
+			// Si encontré una instancia, busco su clave
+			claveVoid = (instanciaVoid != NULL ? list_find_with_param(((Instancia*)instanciaVoid)->claves, (void*)key, buscarClaveEnListaDeClaves) : NULL);
+
+			pthread_mutex_unlock(&mutexListaInstancias);
+
+		// Le aviso al planificador de su estado
+			if (instanciaVoid != NULL) {
+				instancia = (Instancia*)instanciaVoid;
+
+				// Se tiene que verificar si la instancia no está caída
+				if (sePuedeComunicarConLaInstancia(instancia)) {
+					clave = (Clave*)claveVoid;
+					pthread_mutex_lock(&mutexListaInstancias);
+
+					// Se fija si la clave se encuentra bloqueada
+					if (clave->bloqueado) {
+						log_trace(logCoordinador, "La clave se encuentra bloqueada");
+						respuestaGET = COORDINADOR_ESI_BLOQUEADO;
+					} else {
+						// No esta bloqueada, entonces la bloqueo
+						log_trace(logCoordinador, "La clave no se encuentra bloqueada, se bloquea");
+						respuestaGET = COORDINADOR_ESI_BLOQUEAR;
+						clave->bloqueado = 1;
+					}
+					pthread_mutex_unlock(&mutexListaInstancias);
+
+					// Si hay un error, le tengo que avisar al coordinador
+					if (respuestaGET == COORDINADOR_ESI_BLOQUEADO) {
+						avisarA(socketPlanificador, key, COORDINADOR_ESI_BLOQUEADO);
+					}
+				} else {
+					// Instancia está caída
+					respuestaGET = COORDINADOR_INSTANCIA_CAIDA;
+					log_error(logCoordinador, "La clave que intenta acceder existe en el sistema pero se encuentra en una instancia que esta desconectada");
+
+					//Le aviso al planificador del error
+					enviarHeader(socketPlanificador, key, COORDINADOR_INSTANCIA_CAIDA);
+					enviarMensaje(socketPlanificador, key);
+				}
+			} else {
+				// Le asigno la nueva clave a la instancia
+				asignarClaveAInstancia(key);
+				respuestaGET = COORDINADOR_ESI_CREADO;
+
+				log_trace(logCoordinador, "Se asigna la nueva clave a la instancia");
+			}
+
+			// Le aviso al ESI
+			enviarHeader(socketEsi, key, respuestaGET);
+			enviarMensaje(socketEsi, key);
+
+	}
+
+// Cosas para el SET y para el STORE
+	void avisarA(int socketAvisar, char* mensaje, int error) {
+		enviarHeader(socketAvisar, mensaje, error);
+
+		if (strlen(mensaje) > 1) enviarMensaje(socketAvisar, mensaje);
+	}
+
+	void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, char* nombreESI) {
+		void* instanciaVoid;
+		Instancia* instancia;
+		ContentHeader * header;
+
+		void* claveVoid;
+		Clave* clave;
+		char** mensajeSplitted;
+		mensajeSplitted = string_split(mensaje, " ");
+
+		// Valido que la clave no exceda el máximo
+			if (esSET(mensajeSplitted[0]) && strlen(mensajeSplitted[1]) > 40) {
+				// Logueo el error
+				log_error(logCoordinador, "Error, la clave excede el tamaño máximo de 40 caracteres");
+
+				// Le aviso al planificador por el error
+				avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_TAMANIO_CLAVE);
+
+				//Tambien le aviso al esi para que no se quede esperando
+				avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_TAMANIO_CLAVE);
+
+				// Libero memoria
+				free(mensajeSplitted[0]);
+				free(mensajeSplitted[1]);
+				free(mensajeSplitted[2]);
+				free(mensajeSplitted);
+				return;
+			}
+
+		// Busco la clave en la lista de claves
+			pthread_mutex_lock(&mutexListaInstancias);
+			instanciaVoid = list_find_with_param(listaInstancias, (void*)mensajeSplitted[1], buscarInstanciaConClave);
+
+			if (instanciaVoid == NULL) {
+				pthread_mutex_unlock(&mutexListaInstancias);
+
+				// Logueo el error
+				log_error(logCoordinador, "Clave no identificada");
+
+				// Le aviso al planificador
+				avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+
+				//Tambien le aviso al esi para que no se quede esperando
+				avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+
+				// Libero memoria
+				free(mensajeSplitted[0]);
+				free(mensajeSplitted[1]);
+				free(mensajeSplitted[2]);
+				free(mensajeSplitted);
+				return;
+			}
+
+			// Si encontré una instancia, busco su clave
+			claveVoid = list_find_with_param(((Instancia*)instanciaVoid)->claves, (void*)mensajeSplitted[1], buscarClaveEnListaDeClaves);
+
+
+		// Valido que la clave esté bloqueada
+			instancia = (Instancia*)instanciaVoid;
+			clave = (Clave*)claveVoid;
+
+			if (!clave->bloqueado) {
+				pthread_mutex_unlock(&mutexListaInstancias);
+
+				// Logueo el error
+				log_error(logCoordinador, "La clave que intenta acceder no se encuentra tomada");
+
+				// Le aviso al planificador
+				avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_NO_TOMADA);
+
+				//Tambien le aviso al esi para que no se quede esperando
+				avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_CLAVE_NO_TOMADA);
+
+				// Libero memoria
+				free(mensajeSplitted[0]);
+				free(mensajeSplitted[1]);
+				free(mensajeSplitted[2]);
+				free(mensajeSplitted);
+				return;
+			}
+
+			if (esSTORE(mensajeSplitted[0])) {
+				// Si es STORE, tengo que desbloquear la clave
+				clave->bloqueado = 0;
+
+				// Logueo -\_('.')_/-
+				log_trace(logCoordinador, "Desbloqueo la clave %s", clave->nombre);
+			}
+
+			pthread_mutex_unlock(&mutexListaInstancias);
+
+		// Si llega hasta acá es porque es válido, le mando el mensaje a la instancia
+			enviarHeader(instancia->socket, mensaje, COORDINADOR);
+			enviarMensaje(instancia->socket, mensaje);
+
+		// Espero la respuesta de la instancia
+			header = recibirHeader(instancia->socket);
+
+			switch(header->id) {
+				case INSTANCIA_SENTENCIA_OK:
+					// Si está OK, le aviso al ESI
+					log_trace(logCoordinador, "La sentencia se ejecutó correctamente");
+					avisarA(socketEsi, "", INSTANCIA_SENTENCIA_OK);
+					break;
+
+				case INSTANCIA_CLAVE_NO_IDENTIFICADA:
+					// Cuando hay un error, le aviso al planificador
+					log_error(logCoordinador, "Clave no identificada");
+
+					//Le aviso al planificador
+					avisarA(socketPlanificador, nombreESI, COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+
+					//Tambien le aviso al esi para que no se quede esperando
+					avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+
+
+					break;
+
+				case INSTANCIA_ERROR:
+					log_error(logCoordinador, "Error no contemplado");
+					break;
+			}
+
+		// Libero memoria
+			free(mensajeSplitted[0]);
+			free(mensajeSplitted[1]);
+			free(mensajeSplitted[2]);
+			free(mensajeSplitted);
+			free(header);
+	}
+
+	int esSET(char* sentencia) {
+		return strcmp(sentencia, "SET") == 0;
+	}
+
+	int esSTORE(char* sentencia) {
+		return strcmp(sentencia, "STORE") == 0;
+	}
