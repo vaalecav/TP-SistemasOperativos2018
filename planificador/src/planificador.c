@@ -37,6 +37,7 @@ int main() {
 	colaBloqueados = list_create();
 	colaTerminados = list_create();
 	colaAbortados = list_create();
+	listaClaves = list_create();
 
 	// Inicio el hilo que maneja las Conexiones //
 	if (pthread_create(&hiloConexiones, NULL, (void *) tratarConexiones,
@@ -153,7 +154,11 @@ void manejoAlgoritmos() {
 					clave = malloc(sizeof(header->largo) + 1);
 					recibirMensaje(socketCoordinador, header->largo, &clave);
 
-					// TODO AGREGO LA CLAVE A LA LISTA DE CLAVES //
+					CLAVE * claveAux = (CLAVE*) malloc(sizeof(CLAVE));
+					claveAux->clave = malloc(sizeof(clave));
+					strcpy(claveAux->clave, clave);
+					claveAux->listaEsi = list_create();
+					list_add(listaClaves, (void*) claveAux);
 
 					esi->lineas--;
 					switch (esi->lineas) {
@@ -326,6 +331,8 @@ void cerrarPlanificador() {
 	list_destroy(colaReady);
 	list_destroy(colaBloqueados);
 	list_destroy(colaTerminados);
+	list_destroy(colaAbortados);
+	list_destroy(listaClaves);
 }
 
 int dameMaximo(int *tabla, int n) {
@@ -349,7 +356,19 @@ void imprimirEnPantalla(void* esiVoid) {
 			esi->lineas);
 }
 
+void imprimirEnPantallaClaves(void* claveVoid) {
+	CLAVE* clave = (CLAVE*) claveVoid;
+	printf("CLAVE: %s\n", clave->clave);
+
+	// TODO IMPRIMIR TAMBIEN LA SUBLISTA DE NUMEROS //
+}
+
 //=======================COMANDOS DE CONSOLA====================================
+
+int cmdListaClaves() {
+	list_iterate(listaClaves, imprimirEnPantallaClaves);
+	return 0;
+}
 
 int cmdColaReady() {
 	list_iterate(colaReady, imprimirEnPantalla);

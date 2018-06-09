@@ -29,9 +29,14 @@
 //=======================COMANDOS DE CONSOLA====================================
 
 int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(),
-		cmdColaBloqueados(), cmdColaTerminados(); // Son las funciones que ejecutan los comandos ingresados por consola.
+		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
+
+typedef struct CLAVE {
+	char* clave;
+	t_list *listaEsi;
+} CLAVE;
 
 typedef struct ESI {
 	int id;
@@ -47,10 +52,13 @@ typedef struct COMANDO {
 } COMANDO;
 
 COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
-		{ "continuar", cmdContinue, "Reanuda la ejecucion de ESIs.", 0 },
-		{ "colaTerminados", cmdColaTerminados, "Reanuda la ejecucion de ESIs.", 0 },
-		{ "colaBloqueados", cmdColaBloqueados, "Reanuda la ejecucion de ESIs.", 0 },
-		{"colaReady", cmdColaReady, "Imprime en pantalla la cola de Ready.", 0 },
+		{ "continuar", cmdContinue, "Reanuda la ejecucion de ESIs.", 0 }, {
+				"colaTerminados", cmdColaTerminados,
+				"Reanuda la ejecucion de ESIs.", 0 }, { "colaBloqueados",
+				cmdColaBloqueados, "Reanuda la ejecucion de ESIs.", 0 }, {
+				"colaReady", cmdColaReady,
+				"Imprime en pantalla la cola de Ready.", 0 }, { "listaClaves",
+				cmdListaClaves, "Imprime la lista de Claves.", 0 },
 		/*		{ "bloquear","Este comando aun no se ha desarrollado.", 2},
 		 { "desbloquear","Este comando aun no se ha desarrollado.", 1},
 		 { "listar","Este comando aun no se ha desarrollado.", 1},
@@ -70,6 +78,7 @@ t_list* colaReady;			// Lista enlazada de Ready.
 t_list* colaBloqueados;		// Lista enlazada de Bloqueados.
 t_list* colaTerminados;		// Lista enlazada de Terminados.
 t_list* colaAbortados;		// Lista enlazada de Abortados.
+t_list* listaClaves;		// Lista enladaza de Claves y sus Bloqueados.
 int socketCoordinador;		// Socket del Coordinador.
 
 //=====================FUNCIONES DE PLANIFICADOR=====================================
@@ -83,6 +92,7 @@ int compararSocket(void* esiVoid, void* indexVoid); // Funcion que compara para 
 void imprimirEnPantalla(void* esiVoid); // Imprime un ESI en pantalla.
 void manejoAlgoritmos(); // Hilo que maneja la ejecucion de ESIs.
 int chequearRespuesta(int id); // Devuelve para hacer switch con la respuesta del Coordinador.
+void imprimirEnPantallaClaves(void* claveVoid); // Imprime la lista de Claves.
 
 //=====================FUNCIONES DE CONSOLA=====================================
 
