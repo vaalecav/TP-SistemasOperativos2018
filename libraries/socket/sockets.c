@@ -21,7 +21,7 @@ int conectarClienteA(int puerto, char* ip) {
 	struct addrinfo *informacionServidor;
 	char* puertoDestino;
 
-	puertoDestino = malloc(sizeof(int));
+	puertoDestino = malloc(sizeof(int) + 1);
 	// Definiendo el destino
 	memset(&direccionDestino, 0, sizeof(direccionDestino));
 	direccionDestino.ai_family = AF_INET;    // Permite que la maquina se encargue de verificar si usamos IPv4 o IPv6
@@ -43,7 +43,7 @@ int conectarClienteA(int puerto, char* ip) {
 
 
 	 freeaddrinfo(informacionServidor);  // No lo necesitamos mas
-
+	 free(puertoDestino);
 	 return socketDelServidor;
 }
 
@@ -61,7 +61,7 @@ int socketServidor(int puerto, char* ip, int maxConexiones){
 		perror("Socket error");
 		exit(1);
 	}
-	puts("Socket creado");
+	if (DEBUG_SOCKET) puts("Socket creado");
 
 
 	memset(&server,0,sizeof(server));
@@ -75,7 +75,7 @@ int socketServidor(int puerto, char* ip, int maxConexiones){
 		perror("Bind error");
 		exit(1);
 	}
-	puts("Bind realizado");
+	if (DEBUG_SOCKET) puts("Bind realizado");
 
 	return miSocket;
 }
@@ -90,7 +90,7 @@ int aceptarConexion(int miSocket) {
 		perror("Listen error");
 		exit(1);
 	}
-	puts("Escuchando nuevas conexiones...");
+	if (DEBUG_SOCKET) puts("Escuchando nuevas conexiones...");
 
 	//Aceptar conexion
 	//Ciclo de accept, bloquea el proceso hasta que cliente se concete
@@ -101,7 +101,7 @@ int aceptarConexion(int miSocket) {
 		perror("Accept error");
 		exit(1);
 	}
-	puts("Conexion aceptada");
+	if (DEBUG_SOCKET) puts("Conexion aceptada");
 
 	return socketConectado;
 }
@@ -122,21 +122,23 @@ int enviarInformacion(int socket, void *texto, int *bytesAMandar) {
 	return bytesEnviados == -1 ? -1 : 0; // devuelve -1 si hay fallo, 0 si esta bien
 }
 
-int enviarHeader(int socketDestino, char* mensaje){
+int enviarHeader(int socketDestino, char* mensaje, int id) {
 	int tamanioMensaje = strlen(mensaje);
 	int tamanioHeader;
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
 
 	header->largo = tamanioMensaje;
-	header->id = 69;
+	header->id = id;
 	tamanioHeader = sizeof(ContentHeader);
 
 	if(enviarInformacion(socketDestino, header, &tamanioHeader) < 0){
-		puts("Error en enviar header");
+		if (DEBUG_SOCKET) puts("Error en enviar header");
+		free(header);
 		exit(1);
 	}
-	puts("Header enviado");
+	if (DEBUG_SOCKET) puts("Header enviado");
 
+	free(header);
 	return 1;
 }
 
@@ -146,28 +148,21 @@ int enviarMensaje(int miSocket, char* mensaje){
 	//deberia checkear aca o tirar error?
 }
 
-int recibirHeader(int socketEmisor){
+ContentHeader * recibirHeader(int socketEmisor){
 	ContentHeader * header = (ContentHeader*) malloc(sizeof(ContentHeader));
 	int recibido;
-	int largo;
 
 	recibido = recv(socketEmisor, header, sizeof(ContentHeader), 0);
 	if (recibido < 0) {
-		puts("Error en recibir mensaje");
+		if (DEBUG_SOCKET) puts("Error en recibir header");
 		exit(1);
 	} else if (recibido == 0) {
-		puts("Socket emisor desconectado");
+		if (DEBUG_SOCKET) puts("Socket emisor desconectado");
 		close(socketEmisor);
 		free(header);
 		exit(1);
 	}
-
-	// Tambien tiene que ver que hacer con el ID (todavia no esta hecho) chequeo si es ese id
-	largo = header->largo;
-	printf("Recibi el header que tiene el largo: %d\n", header->largo);
-
-	free(header);
-	return largo;
+	return header;
 }
 
 void recibirMensaje(int socketEmisor, int tamanioMensaje, char** bufferMensaje){
@@ -175,24 +170,24 @@ void recibirMensaje(int socketEmisor, int tamanioMensaje, char** bufferMensaje){
 
 	recibido = recv(socketEmisor, *bufferMensaje, tamanioMensaje, 0);
 	if(recibido < 0){
-		puts("Error en recibir mensaje");
+		if (DEBUG_SOCKET) puts("Error en recibir mensaje");
 		exit(1);
 	} else if (recibido == 0){
-		puts("Socket Emisor desconectado");
+		if (DEBUG_SOCKET) puts("Socket Emisor desconectado");
 		close(socketEmisor);
 		free(*bufferMensaje);
 		exit(1);
 	}
 	(*bufferMensaje) [tamanioMensaje] = '\0';
-	printf("El mensaje recibido *recibirMensaje* es: %s\n", *bufferMensaje);
+	if (DEBUG_SOCKET) printf("El mensaje recibido *recibirMensaje* es: %s\n", *bufferMensaje);
 }
 
 int servidorConectarComponente(int* socketEscucha, char* servidor, char* componente){
 	int socketConectado;
 	char *bufferMensaje, *texto;
 
-	bufferMensaje = malloc(2 * sizeof(char));
-	texto = malloc(2 * sizeof(char));
+	bufferMensaje = malloc(3);
+	texto = malloc(3 * sizeof(char));
 	strcpy(texto, "OK");
 
 	socketConectado = aceptarConexion((*socketEscucha));
@@ -216,8 +211,8 @@ int clienteConectarComponente(char* cliente, char* componente, int puerto, char*
 	int socketServ;
 	char *bufferMensaje, *texto;
 
-	bufferMensaje = malloc(2 * sizeof(char));
-	texto = malloc(2 * sizeof(char));
+	bufferMensaje = malloc(3 * sizeof(char));
+	texto = malloc(3 * sizeof(char));
 	strcpy(texto, "OK");
 
 	socketServ = conectarClienteA((int)puerto, ip);
