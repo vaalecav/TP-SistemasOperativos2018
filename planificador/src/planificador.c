@@ -120,7 +120,6 @@ void manejoAlgoritmos() {
 								&clave);
 						clave[header->largo] = '\0';
 
-						claveAux = (CLAVE*) malloc(sizeof(CLAVE));
 						claveAux = list_find_with_param(listaClaves,
 								(void*) clave, chequearClave);
 						list_add(claveAux->listaEsi, (void*) esi->id);
@@ -147,7 +146,6 @@ void manejoAlgoritmos() {
 								&clave);
 						clave[header->largo] = '\0';
 
-						claveAux = (CLAVE*) malloc(sizeof(CLAVE));
 						claveAux = list_find_with_param(listaClaves,
 								(void*) clave, chequearClave);
 
@@ -215,7 +213,7 @@ void manejoAlgoritmos() {
 
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
 	DATA * esi = (DATA*) esiVoid;
-	int id = (int*) idVoid;
+	int id = *((int*) idVoid);
 	return esi->id == id;
 }
 
@@ -373,13 +371,21 @@ int compararSocket(void* esiVoid, void* indexVoid) {
 	return esi->socket == index;
 }
 
+void freeClave(void* clave) {
+	CLAVE* claveLiberar = (CLAVE*)clave;
+	free(claveLiberar->clave);
+	list_destroy_and_destroy_elements(claveLiberar->listaEsi, free);
+	free(claveLiberar);
+
+}
+
 void cerrarPlanificador() {
 	config_destroy(configuracion);
 	list_destroy_and_destroy_elements(colaReady, free);
 	list_destroy_and_destroy_elements(colaBloqueados, free);
 	list_destroy_and_destroy_elements(colaTerminados, free);
 	list_destroy_and_destroy_elements(colaAbortados, free);
-	list_destroy_and_destroy_elements(listaClaves, free);
+	list_destroy_and_destroy_elements(listaClaves, freeClave);
 }
 
 int dameMaximo(int *tabla, int n) {
@@ -410,7 +416,7 @@ void imprimirEnPantallaClaves(void* claveVoid) {
 }
 
 void imprimirEnPantallaClavesAux(void* idVoid) {
-	int id = (int*) idVoid;
+	int id = *((int*) idVoid);
 	printf("ESI ID: %d\n", id);
 }
 
