@@ -88,6 +88,13 @@ void manejoAlgoritmos() {
 	while (done == 0) {
 		flagFin = 0;
 		if (ejecutar == 1) {
+
+			// Si es SJF, antes de ejecutar tiene que ordenar la cola de ready
+			if (strcmp(algoritmo, "SJF-CD") == 0
+					|| strcmp(algoritmo, "SJF-SD") == 0) {
+				list_sort(colaReady, menorCantidadDeLineas);
+			}
+
 			if ((esiVoid = list_remove(colaReady, 0)) == NULL) {
 				// No hay nadie para ejecutar //
 			} else {
@@ -196,19 +203,22 @@ void manejoAlgoritmos() {
 					free(header);
 
 					if (strcmp(algoritmo, "SJF-CD") == 0) {
-						if(flagFin == 0){
+						if (flagFin == 0) {
 							list_add(colaReady, (void*) esi);
 							flagFin = 1;
 						}
 					}
 				}
-				// TODO ACA SIN DESALOJO ORGANIZAR ACA //
-				if(strcmp(algoritmo, "SJF-CD") == 0 || strcmp(algoritmo, "SJF-SD") == 0){
-					list_sort();
-				}
 			}
 		}
 	}
+}
+
+bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
+	DATA* esi1 = (DATA*) esi1Void;
+	DATA* esi2 = (DATA*) esi2Void;
+
+	return esi1->lineas < esi2->lineas;
 }
 
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
@@ -372,7 +382,7 @@ int compararSocket(void* esiVoid, void* indexVoid) {
 }
 
 void freeClave(void* clave) {
-	CLAVE* claveLiberar = (CLAVE*)clave;
+	CLAVE* claveLiberar = (CLAVE*) clave;
 	free(claveLiberar->clave);
 	list_destroy_and_destroy_elements(claveLiberar->listaEsi, free);
 	free(claveLiberar);

@@ -96,6 +96,7 @@ void imprimirEnPantallaClaves(void* claveVoid); // Imprime la lista de Claves.
 void imprimirEnPantallaClavesAux(void* idVoid); // Imprime sublista de Claves.
 int chequearClave(void* claveVoid, void* nombreVoid); // Compara string de clave con ESI.
 int buscarEnBloqueados(void* esiVoid, void* idVoid); // Busca un ESI en bloqueados.
+bool menorCantidadDeLineas(void* esi1Void, void* esi2Void); // Para hacer un sort del SJF
 
 //=====================FUNCIONES DE CONSOLA=====================================
 
