@@ -1,0 +1,20 @@
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
+ESI_1 || SET futbol:messi TraemeLaCopa
+ESI_1 || GET futbol:messi
+ESI_1 || GET futbol:messi
