@@ -83,6 +83,7 @@ int main(int argc, char **argv) {
 
 	if (header->id == 0) {
 		log_error(logESI, "El planificador esta lleno y no me pude conectar.");
+		free(header);
 		liberarMemoria();
 		exit(EXIT_FAILURE);
 	} else {
@@ -96,6 +97,7 @@ int main(int argc, char **argv) {
 	parsearScript(path, maxFilas);
 
 	// Libero memoria
+	free(header);
 	liberarMemoria();
 
 	return 0;
@@ -247,6 +249,7 @@ void parsearScript(char* path, int maxFilas) {
 				break;
 			}
 		}
+		free(headerPlanificador);
 	}
 	fclose(fp);
 	if (line)

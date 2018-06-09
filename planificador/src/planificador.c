@@ -190,6 +190,8 @@ void manejoAlgoritmos() {
 					free(clave);
 					break;
 				}
+
+				free(header);
 			}
 		}
 	}
@@ -317,6 +319,7 @@ void tratarConexiones() {
 				// Recibo la cantidad de lineas del ESI //
 				header = recibirHeader(socketCliente[numeroClientes - 1]);
 				int cantLineas = header->id;
+				free(header);
 
 				/* Agrego al ESI a la cola de Ready */
 				DATA *nuevoEsi = (DATA*) malloc(sizeof(DATA));
@@ -356,11 +359,11 @@ int compararSocket(void* esiVoid, void* indexVoid) {
 
 void cerrarPlanificador() {
 	config_destroy(configuracion);
-	list_destroy(colaReady);
-	list_destroy(colaBloqueados);
-	list_destroy(colaTerminados);
-	list_destroy(colaAbortados);
-	list_destroy(listaClaves);
+	list_destroy_and_destroy_elements(colaReady, free);
+	list_destroy_and_destroy_elements(colaBloqueados, free);
+	list_destroy_and_destroy_elements(colaTerminados, free);
+	list_destroy_and_destroy_elements(colaAbortados, free);
+	list_destroy_and_destroy_elements(listaClaves, free);
 }
 
 int dameMaximo(int *tabla, int n) {
