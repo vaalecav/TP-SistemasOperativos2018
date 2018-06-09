@@ -77,7 +77,9 @@ int main() {
 
 void manejoAlgoritmos() {
 	DATA * esi;
+	DATA * esiAuxiliar;
 	void * esiVoid;
+	void * auxiliar;
 	ContentHeader * header;
 	int paraSwitchear;
 	char* clave;
@@ -92,6 +94,7 @@ void manejoAlgoritmos() {
 				// Le ordeno al ESI que ejecute //
 				esi = (DATA*) esiVoid;
 				enviarHeader(esi->socket, "", PLANIFICADOR);
+				CLAVE * claveAux;
 
 				// Espero la respuesta //
 				header = recibirHeader(socketCoordinador);
@@ -107,10 +110,15 @@ void manejoAlgoritmos() {
 
 				case 1: // BLOQUEO //
 					// Lo agrego a la cola de Bloqueados //
-					clave = malloc(sizeof(header->largo) + 1);
-					recibirMensaje(socketCoordinador, header->largo, &clave);
 
-					// TODO AGREGAR ESI BLOQUEADO A LA CLAVE QUE CORRESPONDE //
+					clave = malloc(header->largo + 1);
+					recibirMensaje(socketCoordinador, header->largo, &clave);
+					clave[header->largo] = '\0';
+
+					claveAux = (CLAVE*) malloc(sizeof(CLAVE));
+					claveAux = list_find_with_param(listaClaves, (void*) clave,
+							chequearClave);
+					list_add(claveAux->listaEsi, (void*) esi->id);
 
 					list_add(colaBloqueados, (void*) esi);
 					free(clave);
@@ -131,10 +139,18 @@ void manejoAlgoritmos() {
 					break;
 
 				case 3:
-					clave = malloc(sizeof(header->largo) + 1);
+					clave = malloc(header->largo + 1);
 					recibirMensaje(socketCoordinador, header->largo, &clave);
+					clave[header->largo] = '\0';
 
-					// TODO DESBLOQUEAR AL PRIMER ESI DE LA LISTA DE BLOQUEADOS POR ESA CLAVE //
+					claveAux = (CLAVE*) malloc(sizeof(CLAVE));
+					claveAux = list_find_with_param(listaClaves, (void*) clave,
+							chequearClave);
+
+					auxiliar = list_remove(claveAux->listaEsi, 0);
+
+					esiAuxiliar = (DATA*) list_remove_by_condition_with_param(colaBloqueados, auxiliar, buscarEnBloqueados);
+					list_add(colaReady, (void*) esiAuxiliar);
 
 					esi->lineas--;
 					switch (esi->lineas) {
@@ -151,15 +167,15 @@ void manejoAlgoritmos() {
 					break;
 
 				case 4:
-					clave = malloc(sizeof(header->largo) + 1);
+					clave = malloc(header->largo + 1);
 					recibirMensaje(socketCoordinador, header->largo, &clave);
-
-					CLAVE * claveAux = (CLAVE*) malloc(sizeof(CLAVE));
-					claveAux->clave = malloc(sizeof(clave));
+					clave[header->largo] = '\0';
+					claveAux = (CLAVE*) malloc(sizeof(CLAVE));
+					claveAux->clave = malloc(header->largo + 1);
 					strcpy(claveAux->clave, clave);
+					claveAux->clave[header->largo] = '\0';
 					claveAux->listaEsi = list_create();
 					list_add(listaClaves, (void*) claveAux);
-
 					esi->lineas--;
 					switch (esi->lineas) {
 					case 0: // TERMINO EL ESI //
@@ -179,6 +195,18 @@ void manejoAlgoritmos() {
 			}
 		}
 	}
+}
+
+int buscarEnBloqueados(void* esiVoid, void* idVoid){
+	DATA * esi = (DATA*) esiVoid;
+	int id = (int*) idVoid;
+	return esi->id == id;
+}
+
+int chequearClave(void* claveVoid, void* nombreVoid) {
+	CLAVE * clave = (CLAVE*) claveVoid;
+	char * nombre = (char*) nombreVoid;
+	return strcmp(clave->clave, nombre) == 0;
 }
 
 int chequearRespuesta(int id) {
@@ -362,8 +390,12 @@ void imprimirEnPantalla(void* esiVoid) {
 void imprimirEnPantallaClaves(void* claveVoid) {
 	CLAVE* clave = (CLAVE*) claveVoid;
 	printf("CLAVE: %s\n", clave->clave);
+	list_iterate(clave->listaEsi, imprimirEnPantallaClavesAux);
+}
 
-	// TODO IMPRIMIR TAMBIEN LA SUBLISTA DE NUMEROS //
+void imprimirEnPantallaClavesAux(void* idVoid) {
+	int id = (int*) idVoid;
+	printf("ESI ID: %d\n", id);
 }
 
 //=======================COMANDOS DE CONSOLA====================================
