@@ -93,6 +93,9 @@ void imprimirEnPantalla(void* esiVoid); // Imprime un ESI en pantalla.
 void manejoAlgoritmos(); // Hilo que maneja la ejecucion de ESIs.
 int chequearRespuesta(int id); // Devuelve para hacer switch con la respuesta del Coordinador.
 void imprimirEnPantallaClaves(void* claveVoid); // Imprime la lista de Claves.
+void imprimirEnPantallaClavesAux(void* idVoid); // Imprime sublista de Claves.
+int chequearClave(void* claveVoid, void* nombreVoid); // Compara string de clave con ESI.
+int buscarEnBloqueados(void* esiVoid, void* idVoid); // Busca un ESI en bloqueados.
 
 //=====================FUNCIONES DE CONSOLA=====================================
 
