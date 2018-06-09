@@ -99,7 +99,6 @@ void manejoAlgoritmos() {
 				// No hay nadie para ejecutar //
 			} else {
 				while (flagFin != 1) {
-					sleep(2);
 
 					// Le ordeno al ESI que ejecute //
 					esi = (DATA*) esiVoid;
