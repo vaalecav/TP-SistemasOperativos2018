@@ -40,4 +40,24 @@ t_config* configuracion;
 int socketCoordinador;
 t_log* logInstancia;
 
+// Manejo de Entradas
+void freeEntrada(void*);
+void loguearEntrada(void*);
+void mostrarEntrada(void*);
+int recibirInformacionEntradas(int, InformacionEntradas*);
+int cantidadEntradasPosiblesContinuas();
+int entradaEsIgualAClave(void*, void*);
+
+// Manejo de Claves
+int setearClave(char*, char*);
+int storeClave(char*);
+
+void avisarAlCoordinador(int);
+void cerrarInstancia(int);
+int buscarEspacioEnTabla(int);
+int setearValor(char*, char*, int);
+int tieneElIndexYEsAtomico(void*, void*);
+void ejecutarAlgoritmoDeRemplazo();
+void recibirSentencia();
+
 #endif /* INSTANCIA_H_ */
