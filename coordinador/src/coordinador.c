@@ -366,7 +366,6 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 	// Le aviso al planificador de su estado
 	if (instanciaVoid != NULL) {
 		instancia = (Instancia*) instanciaVoid;
-		puts("HOLA");
 		// Se tiene que verificar si la instancia no está caída
 		if (sePuedeComunicarConLaInstancia(instancia)) {
 			pthread_mutex_lock(&mutexListaInstancias);
@@ -399,25 +398,18 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 		}
 	} else {
 		// Le asigno la nueva clave a la instancia
-		puts("ROMPO");
 		asignarClaveAInstancia(key);
 		respuestaGET = COORDINADOR_ESI_CREADO;
-		puts("HOLA");
-		printf("%s", key);
 		avisarA(socketEsi, "", respuestaGET);
-		puts("AVISE AL ESI");
 		avisarA(socketPlanificador, key, respuestaGET);
 		log_trace(logCoordinador, "Se asigna la nueva clave a la instancia");
-		puts("HOLA");
 	}
 }
 
 // Cosas para el SET y para el STORE
 void avisarA(int socketAvisar, char* mensaje, int error) {
 	enviarHeader(socketAvisar, mensaje, error);
-	printf("el mensaje es %s", mensaje);
 	if (strlen(mensaje) > 1) {
-		printf("el mensaje es %s", mensaje);
 		enviarMensaje(socketAvisar, mensaje);
 	}
 }

@@ -88,21 +88,15 @@ void manejoAlgoritmos() {
 			} else {
 				sleep(5);
 
-				puts("loco");
-
 				// Le ordeno al ESI que ejecute //
 				esi = (DATA*) esiVoid;
 				enviarHeader(esi->socket, "", PLANIFICADOR);
 
-				puts("arre");
-
 				// Espero la respuesta //
 				header = recibirHeader(socketCoordinador);
 
-				printf("header %d", header->id);
 				// Veo que tengo que hacer //
 				paraSwitchear = chequearRespuesta(header->id);
-				printf("paraSwitchear %d", paraSwitchear);
 
 				switch (paraSwitchear) {
 				case 0: // ERROR //
@@ -115,7 +109,6 @@ void manejoAlgoritmos() {
 					clave = malloc(sizeof(header->largo) + 1);
 					recibirMensaje(socketCoordinador, header->largo, &clave);
 
-					printf("BLOQUEO EL ESI Y LO AGREGO A LA LISTA DE %s", clave);
 					// TODO AGREGAR ESI BLOQUEADO A LA CLAVE QUE CORRESPONDE //
 
 					list_add(colaBloqueados, (void*) esi);
@@ -140,7 +133,6 @@ void manejoAlgoritmos() {
 					clave = malloc(sizeof(header->largo) + 1);
 					recibirMensaje(socketCoordinador, header->largo, &clave);
 
-					printf("DESBLOQUEO UN ESI DE %s", clave);
 					// TODO DESBLOQUEAR AL PRIMER ESI DE LA LISTA DE BLOQUEADOS POR ESA CLAVE //
 
 					esi->lineas--;
@@ -161,7 +153,6 @@ void manejoAlgoritmos() {
 					clave = malloc(sizeof(header->largo) + 1);
 					recibirMensaje(socketCoordinador, header->largo, &clave);
 
-					printf("AGREGO %s A LA LISTA DE CLAVES", clave);
 					// TODO AGREGO LA CLAVE A LA LISTA DE CLAVES //
 
 					esi->lineas--;
