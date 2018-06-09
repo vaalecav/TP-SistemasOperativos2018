@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
 	int idEsi;
 	ContentHeader * header;
 
-	char* path = "/home/utnso/Pruebas-ESI/ESI_1"; //argv[1];
+	char* path = "/home/utnso/tp-2018-1c-Los-Simuladores/esi/pruebas/ESI_1"; //argv[1];
 	argc = 2;
 
 	// Leo el Archivo de Configuracion
