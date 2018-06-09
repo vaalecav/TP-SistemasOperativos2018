@@ -79,21 +79,31 @@ void manejoAlgoritmos() {
 	void * esiVoid;
 	ContentHeader * header;
 	int paraSwitchear;
+	char* clave;
 	while (done == 0) {
 		if (ejecutar == 1) {
 			if ((esiVoid = list_remove(colaReady, 0)) == NULL) {
 				// No hay nadie para ejecutar //
 
 			} else {
+				sleep(5);
+
+				puts("loco");
+
 				// Le ordeno al ESI que ejecute //
 				esi = (DATA*) esiVoid;
 				enviarHeader(esi->socket, "", PLANIFICADOR);
 
+				puts("arre");
+
 				// Espero la respuesta //
 				header = recibirHeader(socketCoordinador);
 
+				printf("header %d", header->id);
 				// Veo que tengo que hacer //
 				paraSwitchear = chequearRespuesta(header->id);
+				printf("paraSwitchear %d", paraSwitchear);
+
 				switch (paraSwitchear) {
 				case 0: // ERROR //
 					// Lo agrego a la cola de Abortados //
@@ -102,7 +112,14 @@ void manejoAlgoritmos() {
 
 				case 1: // BLOQUEO //
 					// Lo agrego a la cola de Bloqueados //
+					clave = malloc(sizeof(header->largo) + 1);
+					recibirMensaje(socketCoordinador, header->largo, &clave);
+
+					printf("BLOQUEO EL ESI Y LO AGREGO A LA LISTA DE %s", clave);
+					// TODO AGREGAR ESI BLOQUEADO A LA CLAVE QUE CORRESPONDE //
+
 					list_add(colaBloqueados, (void*) esi);
+					free(clave);
 					break;
 
 				case 2: // EXITO //
@@ -117,6 +134,49 @@ void manejoAlgoritmos() {
 						// Lo agrego nuevamente a la cola de Ready//
 						list_add(colaReady, (void*) esi);
 					}
+					break;
+
+				case 3:
+					clave = malloc(sizeof(header->largo) + 1);
+					recibirMensaje(socketCoordinador, header->largo, &clave);
+
+					printf("DESBLOQUEO UN ESI DE %s", clave);
+					// TODO DESBLOQUEAR AL PRIMER ESI DE LA LISTA DE BLOQUEADOS POR ESA CLAVE //
+
+					esi->lineas--;
+					switch (esi->lineas) {
+					case 0: // TERMINO EL ESI //
+						// Lo agrego a la cola de Terminados //
+						list_add(colaTerminados, (void*) esi);
+						break;
+
+					default: // LE QUEDA POR EJECUTAR //
+						// Lo agrego nuevamente a la cola de Ready//
+						list_add(colaReady, (void*) esi);
+					}
+					free(clave);
+					break;
+
+				case 4:
+					clave = malloc(sizeof(header->largo) + 1);
+					recibirMensaje(socketCoordinador, header->largo, &clave);
+
+					printf("AGREGO %s A LA LISTA DE CLAVES", clave);
+					// TODO AGREGO LA CLAVE A LA LISTA DE CLAVES //
+
+					esi->lineas--;
+					switch (esi->lineas) {
+					case 0: // TERMINO EL ESI //
+						// Lo agrego a la cola de Terminados //
+						list_add(colaTerminados, (void*) esi);
+						break;
+
+					default: // LE QUEDA POR EJECUTAR //
+						// Lo agrego nuevamente a la cola de Ready//
+						list_add(colaReady, (void*) esi);
+					}
+					free(clave);
+					break;
 				}
 			}
 		}
@@ -145,10 +205,13 @@ int chequearRespuesta(int id) {
 		a = 2;
 		break;
 	case COORDINADOR_ESI_CREADO:
+		a = 4;
+		break;
+	case INSTANCIA_SENTENCIA_OK_SET:
 		a = 2;
 		break;
-	case INSTANCIA_SENTENCIA_OK:
-		a = 2;
+	case INSTANCIA_SENTENCIA_OK_STORE:
+		a = 3;
 		break;
 	}
 	return a;
@@ -299,6 +362,16 @@ void imprimirEnPantalla(void* esiVoid) {
 
 int cmdColaReady() {
 	list_iterate(colaReady, imprimirEnPantalla);
+	return 0;
+}
+
+int cmdColaTerminados() {
+	list_iterate(colaTerminados, imprimirEnPantalla);
+	return 0;
+}
+
+int cmdColaBloqueados() {
+	list_iterate(colaBloqueados, imprimirEnPantalla);
 	return 0;
 }
 

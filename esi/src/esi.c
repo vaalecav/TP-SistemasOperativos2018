@@ -18,44 +18,49 @@ void liberarMemoria() {
 
 int filasArchivo(char* filename) {
 	FILE *in_file;
-    char buffer[SIZE + 1], lastchar = '\n';
-    size_t bytes;
-    int lines = 0;
+	char buffer[SIZE + 1], lastchar = '\n';
+	size_t bytes;
+	int lines = 0;
 
-    if (NULL == (in_file = fopen(filename, "r"))) {
-        perror(filename);
-        return EXIT_FAILURE;
-    }
+	if (NULL == (in_file = fopen(filename, "r"))) {
+		perror(filename);
+		return EXIT_FAILURE;
+	}
 
-    while ((bytes = fread(buffer, 1, sizeof(buffer) - 1, in_file))) {
-        lastchar = buffer[bytes - 1];
-        for (char *c = buffer; (c = memchr(c, '\n', bytes - (c - buffer))); c++) {
-            lines++;
-        }
-    }
-    if (lastchar != '\n') {
-        lines++;  /* Count the last line even if it lacks a newline */
-    }
-    if (ferror(in_file)) {
-        perror(filename);
-        fclose(in_file);
-        return EXIT_FAILURE;
-    }
+	while ((bytes = fread(buffer, 1, sizeof(buffer) - 1, in_file))) {
+		lastchar = buffer[bytes - 1];
+		for (char *c = buffer; (c = memchr(c, '\n', bytes - (c - buffer)));
+				c++) {
+			lines++;
+		}
+	}
+	if (lastchar != '\n') {
+		lines++; /* Count the last line even if it lacks a newline */
+	}
+	if (ferror(in_file)) {
+		perror(filename);
+		fclose(in_file);
+		return EXIT_FAILURE;
+	}
 
-    fclose(in_file);
-    log_trace(logESI, "Number of lines in the file is %i\n", lines);
-    return(lines);
+	fclose(in_file);
+	log_trace(logESI, "Number of lines in the file is %i\n", lines);
+	return (lines);
 }
 
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
 	char* ipPlanificador;
 	int puertoPlanificador;
+	int idEsi;
+	ContentHeader * header;
 
-	char* path = argv[1];
+	char* path = "/home/utnso/Pruebas-ESI/ESI_1"; //argv[1];
+	argc = 2;
 
 	// Leo el Archivo de Configuracion
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
-	puertoPlanificador = config_get_int_value(configuracion, "PUERTO_PLANIFICADOR");
+	puertoPlanificador = config_get_int_value(configuracion,
+			"PUERTO_PLANIFICADOR");
 	ipPlanificador = config_get_string_value(configuracion, "IP_PLANIFICADOR");
 
 	// Inicio el log
@@ -70,14 +75,28 @@ int main(int argc, char **argv){
 	}
 
 	// Me conecto con el planificador
-	socketPlanificador = clienteConectarComponente("ESI", "planificador", puertoPlanificador, ipPlanificador);
+	socketPlanificador = clienteConectarComponente("ESI", "planificador",
+			puertoPlanificador, ipPlanificador);
 
+	// Recibo el ID, si es 0 cancelo el ESI, si no, es mi ID. //
+	header = recibirHeader(socketPlanificador);
+
+	if (header->id == 0) {
+		log_error(logESI, "El planificador esta lleno y no me pude conectar.");
+		liberarMemoria();
+		exit(EXIT_FAILURE);
+	} else {
+		idEsi = header->id;
+	}
+
+	// Envio la cantidad de filas al planificador //
 	int maxFilas = filasArchivo(path);
+	enviarHeader(socketPlanificador, "", maxFilas);
+
 	parsearScript(path, maxFilas);
 
 	// Libero memoria
 	liberarMemoria();
-	config_destroy(configuracion);
 
 	return 0;
 }
@@ -99,7 +118,8 @@ void parsearScript(char* path, int maxFilas) {
 
 	//leo puertos e ip del coordinador
 	ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
-	puertoCoordinador = config_get_int_value(configuracion, "PUERTO_COORDINADOR");
+	puertoCoordinador = config_get_int_value(configuracion,
+			"PUERTO_COORDINADOR");
 	nombre = config_get_string_value(configuracion, "NOMBRE");
 
 	// Valido que el archivo exista
@@ -109,7 +129,7 @@ void parsearScript(char* path, int maxFilas) {
 		exit(EXIT_FAILURE);
 	}
 
-	while (filasLeidas < maxFilas || !abortarEsi) {
+	while (filasLeidas < maxFilas && !abortarEsi) {
 		// Espero un mensaje del planificador
 		headerPlanificador = recibirHeader(socketPlanificador);
 
@@ -123,40 +143,59 @@ void parsearScript(char* path, int maxFilas) {
 
 				if (parsed.valido) {
 					switch (parsed.keyword) {
-						case GET:
-							mensajeCoordinador = malloc(strlen("GET ") + strlen(parsed.argumentos.GET.clave) + 1);
-							strcpy(mensajeCoordinador, "GET ");
-							strcat(mensajeCoordinador, parsed.argumentos.GET.clave);
-							mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.GET.clave)] = '\0';
-							break;
+					case GET:
+						mensajeCoordinador = malloc(
+								strlen("GET ")
+										+ strlen(parsed.argumentos.GET.clave)
+										+ 1);
+						strcpy(mensajeCoordinador, "GET ");
+						strcat(mensajeCoordinador, parsed.argumentos.GET.clave);
+						mensajeCoordinador[strlen("GET ")
+								+ strlen(parsed.argumentos.GET.clave)] = '\0';
+						break;
 
-						case SET:
-							mensajeCoordinador = malloc(strlen("SET ") + strlen(parsed.argumentos.SET.clave) + 1 + strlen(parsed.argumentos.SET.valor) + 1);
-							strcpy(mensajeCoordinador, "SET ");
-							strcat(mensajeCoordinador, parsed.argumentos.SET.clave);
-							strcat(mensajeCoordinador, " ");
-							strcat(mensajeCoordinador, parsed.argumentos.SET.valor);
-							mensajeCoordinador[strlen("GET ") + strlen(parsed.argumentos.SET.clave) + 1 + strlen(parsed.argumentos.SET.valor)] = '\0';
-							break;
+					case SET:
+						mensajeCoordinador = malloc(
+								strlen("SET ")
+										+ strlen(parsed.argumentos.SET.clave)
+										+ 1
+										+ strlen(parsed.argumentos.SET.valor)
+										+ 1);
+						strcpy(mensajeCoordinador, "SET ");
+						strcat(mensajeCoordinador, parsed.argumentos.SET.clave);
+						strcat(mensajeCoordinador, " ");
+						strcat(mensajeCoordinador, parsed.argumentos.SET.valor);
+						mensajeCoordinador[strlen("GET ")
+								+ strlen(parsed.argumentos.SET.clave) + 1
+								+ strlen(parsed.argumentos.SET.valor)] = '\0';
+						break;
 
-						case STORE:
-							mensajeCoordinador = malloc(strlen("STORE ") + strlen(parsed.argumentos.STORE.clave) +1);
-							strcpy(mensajeCoordinador, "STORE ");
-							strcat(mensajeCoordinador, parsed.argumentos.STORE.clave);
-							mensajeCoordinador[strlen("STORE ") + strlen(parsed.argumentos.STORE.clave)] = '\0';
-							break;
+					case STORE:
+						mensajeCoordinador = malloc(
+								strlen("STORE ")
+										+ strlen(parsed.argumentos.STORE.clave)
+										+ 1);
+						strcpy(mensajeCoordinador, "STORE ");
+						strcat(mensajeCoordinador,
+								parsed.argumentos.STORE.clave);
+						mensajeCoordinador[strlen("STORE ")
+								+ strlen(parsed.argumentos.STORE.clave)] = '\0';
+						break;
 
-						default:
-							log_error(logESI, "No pude interpretar <%s>\n", line);
-							liberarMemoria();
-							exit(EXIT_FAILURE);
+					default:
+						log_error(logESI, "No pude interpretar <%s>\n", line);
+						liberarMemoria();
+						exit(EXIT_FAILURE);
 					}
 
 					// Logueo el mensaje que le voy a mandar al coordinador
-					log_trace(logESI, "Le comunico al coordinador la sentencia <%s>", mensajeCoordinador);
+					log_trace(logESI,
+							"Le comunico al coordinador la sentencia <%s>",
+							mensajeCoordinador);
 
 					// Me conecto con el coordinador
-					socketCoordinador = clienteConectarComponente("ESI", "coordinador", puertoCoordinador, ipCoordinador);
+					socketCoordinador = clienteConectarComponente("ESI",
+							"coordinador", puertoCoordinador, ipCoordinador);
 
 					// Le mando el nombre
 					enviarHeader(socketCoordinador, nombre, ESI);
@@ -172,26 +211,30 @@ void parsearScript(char* path, int maxFilas) {
 
 					// Logueo la respuesta del coordinador
 					switch (headerCoordinador->id) {
-						case INSTANCIA_SENTENCIA_OK:
-						case COORDINADOR_ESI_BLOQUEAR:
-						case COORDINADOR_ESI_CREADO:
+					case INSTANCIA_SENTENCIA_OK_SET:
+					case INSTANCIA_SENTENCIA_OK_STORE:
+					case COORDINADOR_ESI_BLOQUEAR:
+					case COORDINADOR_ESI_CREADO:
+						filasLeidas++;
+						log_trace(logESI,
+								"El coordinador me respondió que salió todo OK");
+						break;
 
-							log_trace(logESI, "El coordinador me respondió que salió todo OK");
-							break;
+					case COORDINADOR_ESI_BLOQUEADO:
+						//Como se bloquea en la linea actual, no sigo avanzando y vuelvo a intentar esta linea
+						fseek(fp, -1 * strlen(line), SEEK_CUR);
+						log_trace(logESI, "Me quede bloqueado.");
+						break;
 
-						case COORDINADOR_ESI_BLOQUEADO:
-							//Como se bloquea en la linea actual, no sigo avanzando y vuelvo a intentar esta linea
-							fseek (fp, -1*strlen(line), SEEK_CUR );
-							break;
-
-						default:
-							log_error(logESI, "El coordinador me respondió que hubo un error: %s", PROTOCOLO_MENSAJE[headerCoordinador->id]);
-							abortarEsi = 1;
-							// TODO ¿acá debería abortar o no le importa y espera que lo aborte el planificador?
-							break;
+					default:
+						log_error(logESI,
+								"El coordinador me respondió que hubo un error: %s",
+								PROTOCOLO_MENSAJE[headerCoordinador->id]);
+						abortarEsi = 1;
+						// TODO ¿acá debería abortar o no le importa y espera que lo aborte el planificador?
+						break;
 					}
 
-					filasLeidas++;
 					free(headerCoordinador);
 					destruir_operacion(parsed);
 				} else {
@@ -206,6 +249,6 @@ void parsearScript(char* path, int maxFilas) {
 		}
 	}
 	fclose(fp);
-	liberarMemoria();
-	if (line) free(line);
+	if (line)
+		free(line);
 }

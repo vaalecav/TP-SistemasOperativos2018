@@ -28,7 +28,8 @@
 
 //=======================COMANDOS DE CONSOLA====================================
 
-int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(); // Son las funciones que ejecutan los comandos ingresados por consola.
+int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(),
+		cmdColaBloqueados(), cmdColaTerminados(); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
 
@@ -46,9 +47,10 @@ typedef struct COMANDO {
 } COMANDO;
 
 COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
-		{ "continuar", cmdContinue, "Reanuda la ejecucion de ESIs.", 0 }, {
-				"colaReady", cmdColaReady,
-				"Imprime en pantalla la cola de Ready.", 0 },
+		{ "continuar", cmdContinue, "Reanuda la ejecucion de ESIs.", 0 },
+		{ "colaTerminados", cmdColaTerminados, "Reanuda la ejecucion de ESIs.", 0 },
+		{ "colaBloqueados", cmdColaBloqueados, "Reanuda la ejecucion de ESIs.", 0 },
+		{"colaReady", cmdColaReady, "Imprime en pantalla la cola de Ready.", 0 },
 		/*		{ "bloquear","Este comando aun no se ha desarrollado.", 2},
 		 { "desbloquear","Este comando aun no se ha desarrollado.", 1},
 		 { "listar","Este comando aun no se ha desarrollado.", 1},

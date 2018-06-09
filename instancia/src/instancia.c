@@ -149,7 +149,7 @@ int setearValor(char* clave, char* valor, int entradasNecesarias) {
 	puts("");
 	*/
 
-	return INSTANCIA_SENTENCIA_OK;
+	return INSTANCIA_SENTENCIA_OK_SET;
 }
 
 int cantidadEntradasPosiblesContinuas() {
@@ -291,7 +291,7 @@ int storeClave(char* clave) {
 		log_error(logInstancia, "No se puede acceder al archivo de la clave para hacer store del valor");
 	}
 
-	return INSTANCIA_SENTENCIA_OK;
+	return INSTANCIA_SENTENCIA_OK_STORE;
 }
 
 void recibirSentencia() {
