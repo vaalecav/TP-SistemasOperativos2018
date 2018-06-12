@@ -14,8 +14,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <commons/string.h>
-#include <commons/config.h>
+#include <commonsNuestras/string.h>
+#include <commonsNuestras/config.h>
 #include <generales/generales.h>
 #include <pthread.h>
 #include <readline/readline.h>

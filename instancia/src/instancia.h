@@ -22,9 +22,9 @@
 #include <stdlib.h>
 #include <math.h>
 #include <socket/sockets.h>
-#include <commons/config.h>
-#include <commons/string.h>
-#include <commons/log.h>
+#include <commonsNuestras/config.h>
+#include <commonsNuestras/string.h>
+#include <commonsNuestras/log.h>
 #include <generales/generales.h>
 #include <signal.h>
 #include <stdbool.h>
