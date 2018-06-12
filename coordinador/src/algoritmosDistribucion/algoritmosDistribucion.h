@@ -21,11 +21,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <commonsNuestras/collections/list.h>
 #include <generales/generales.h>
 
 int indexInstanciaEL;
 
 Instancia* algoritmoDistribucionEL(t_list*);
+Instancia* algoritmoDistribucionLSU(t_list*);
+Instancia* algoritmoDistribucionKE(t_list*, char* nombreClave);
 
 #endif /* ALGORITMOSDISTRIBUCION_ALGORITMOSDISTRIBUCION_H_ */
