@@ -29,10 +29,25 @@ Instancia* algoritmoDistribucionEL(t_list* listaInstancias) {
 
 }
 
+Instancia* maxEspacio(void* primerInstanciaVoid, void* segundaInstanciaVoid){
+	Instancia* primerInstancia = (Instancia*)primerInstanciaVoid;
+	Instancia* segundaInstancia = (Instancia*)segundaInstanciaVoid;
+	int entradasLibresPrimera = primerInstancia->entradasLibres;
+	int entradasLibresSegunda = segundaInstancia->entradasLibres;
+
+	if(max(entradasLibresPrimera, entradasLibresSegunda) == entradasLibresPrimera){
+		return primerInstancia;
+	}
+	return segundaInstancia;
+}
+
 Instancia* algoritmoDistribucionLSU(t_list* listaInstancias){
 	void* instanciaVoid;
 
-	return (Instancia*)instanciaVoid;
+	instanciaVoid = list_compare_elements_get(listaInstancias, maxEspacio);
+
+	Instancia* instancia = (Instancia*)instanciaVoid;
+	return instancia;
 }
 
 Instancia* algoritmoDistribucionKE(t_list* listaInstancias, char* nombreClave){
@@ -49,7 +64,7 @@ Instancia* algoritmoDistribucionKE(t_list* listaInstancias, char* nombreClave){
 
 	//obtengo la cantidad de letras que habra por instancia
 	cantidadInstancias = list_size(listaInstancias);
-	letrasPorInstancia = ceil(cantidadLetrasAbecedario / cantidadInstancias);
+	letrasPorInstancia = divCeil(cantidadLetrasAbecedario, cantidadInstancias);
 
 	while(posicionPrimerLetraClave > letrasPorInstancia){
 		posicionPrimerLetraClave -= letrasPorInstancia;

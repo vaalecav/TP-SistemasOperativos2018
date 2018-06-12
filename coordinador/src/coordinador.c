@@ -52,6 +52,7 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 	instanciaConectada->socket = socketInstancia;
 	instanciaConectada->caida = 0;
 	instanciaConectada->claves = list_create();
+	instanciaConectada->entradasLibres = entradasInstancia->cantidad;
 
 	pthread_mutex_lock(&mutexListaInstancias);
 	list_add(listaInstancias, (void*) instanciaConectada);
@@ -167,9 +168,7 @@ void manejarDesconexion(int socketInstancia, int largoMensaje) {
 			strcmpVoid);
 
 	if (instancia == NULL) {
-		log_error(logCoordinador,
-				"Error en encontrar instancia desconectada: Instrancia: %d",
-				instancia);
+		log_error(logCoordinador, "Error en encontrar instancia desconectada: Instrancia: %d", instancia);
 		pthread_mutex_unlock(&mutexListaInstancias);
 		return;
 	}
@@ -196,8 +195,7 @@ void manejarConexion(void* socketsNecesarios) {
 
 	case ESI:
 		log_trace(logCoordinador, "Se conectó un ESI");
-		manejarEsi(socketsConectados.socketComponente,
-				socketsConectados.socketPlanificador, header->largo);
+		manejarEsi(socketsConectados.socketComponente, socketsConectados.socketPlanificador, header->largo);
 		break;
 
 	case INSTANCIA_COORDINADOR_DESCONECTADA:
@@ -398,7 +396,7 @@ void avisarA(int socketAvisar, char* mensaje, int error) {
 void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, char* nombreESI) {
 	void* instanciaVoid;
 	Instancia* instancia;
-	ContentHeader * header;
+	ContentHeader *headerEstado, *headerEntradas;
 
 	void* claveVoid;
 	Clave* clave;
@@ -490,9 +488,18 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 	enviarMensaje(instancia->socket, mensaje);
 
 	// Espero la respuesta de la instancia
-	header = recibirHeader(instancia->socket);
+	headerEstado = recibirHeader(instancia->socket);
 
-	switch (header->id) {
+	// Espero cantidad de entradas libres de la instancia
+	headerEntradas = recibirHeader(instancia->socket);
+
+	//le asigno la cantidad de entradas libres a la instancia
+	pthread_mutex_lock(&mutexListaInstancias);
+	instancia->entradasLibres = headerEntradas->id;
+	pthread_mutex_unlock(&mutexListaInstancias);
+
+
+	switch (headerEstado->id) {
 	case INSTANCIA_SENTENCIA_OK_SET:
 		// Si está OK, le aviso al ESI y al planificador
 		log_trace(logCoordinador, "La sentencia se ejecutó correctamente");
@@ -526,7 +533,7 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 	free(mensajeSplitted[1]);
 	free(mensajeSplitted[2]);
 	free(mensajeSplitted);
-	free(header);
+	free(headerEstado);
 }
 
 int esSET(char* sentencia) {

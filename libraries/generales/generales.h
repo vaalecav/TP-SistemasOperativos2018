@@ -48,6 +48,7 @@ typedef struct {
 	char* nombre;
 	int caida;
 	t_list *claves;
+	int entradasLibres;
 } __attribute__((packed)) Instancia;
 
 typedef struct {
