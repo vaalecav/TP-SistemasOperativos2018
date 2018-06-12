@@ -19,9 +19,9 @@
  */
 
 #include <socket/sockets.h>
-#include <commons/string.h>
-#include <commons/config.h>
-#include <commons/log.h> // Con esta no deberia andar el t_log????
+#include <commonsNuestras/string.h>
+#include <commonsNuestras/config.h>
+#include <commonsNuestras/log.h> // Con esta no deberia andar el t_log????
 #include <generales/generales.h>
 #include <pthread.h>
 
