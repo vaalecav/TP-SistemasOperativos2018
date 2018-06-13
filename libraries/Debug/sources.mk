@@ -13,9 +13,9 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-commons \
-commons/collections \
-commons/parsi \
+commonsNuestras \
+commonsNuestras/collections \
+commonsNuestras/parsi \
 configuracion \
 generales \
 socket \

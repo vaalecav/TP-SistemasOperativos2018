@@ -8,11 +8,11 @@
 #ifndef GENERALES_GENERALES_H_
 #define GENERALES_GENERALES_H_
 
-#include <commonsNuestras/collections/list.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <commonsNuestras/collections/list.h>
+
+#include "../commonsNuestras/collections/list.h"
 
 /*
 Eclipse

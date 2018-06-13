@@ -9,13 +9,13 @@
 #define ESI_H_
 
 
+#include <commonsNuestras/config.h>
+#include <commonsNuestras/log.h>
+#include <commonsNuestras/parsi/parser.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <socket/sockets.h>
 #include <configuracion/configuracion.h>
-#include <commonsNuestras/config.h>
-#include <commonsNuestras/parsi/parser.h>
-#include <commonsNuestras/log.h>
 #include <generales/generales.h>
 
 #define SIZE 1024
