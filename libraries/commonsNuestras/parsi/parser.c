@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "../../commonsNuestras/parsi/parser.h"
 
 #define RETURN_ERROR t_esi_operacion ERROR={ .valido = false }; return ERROR
 #define GET_KEYWORD "GET"

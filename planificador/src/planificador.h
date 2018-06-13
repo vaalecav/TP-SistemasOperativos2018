@@ -11,11 +11,11 @@
 #ifndef PLANIFICADOR_H_
 #define PLANIFICADOR_H_
 
+#include <commonsNuestras/config.h>
+#include <commonsNuestras/string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <commonsNuestras/string.h>
-#include <commonsNuestras/config.h>
 #include <generales/generales.h>
 #include <pthread.h>
 #include <readline/readline.h>
