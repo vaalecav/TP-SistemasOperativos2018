@@ -14,8 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "../commonsNuestras/bitarray.h"
+
 #include <stdlib.h>
-#include "bitarray.h"
 
 /* array index for character containing bit */
 char _bit_in_char(int bit, bit_numbering_t mode){

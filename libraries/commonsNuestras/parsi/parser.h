@@ -20,7 +20,8 @@
 	#include <stdlib.h>
 	#include <stdio.h>
 	#include <stdbool.h>
-	#include <commonsNuestras/string.h>
+	
+#include "../../commonsNuestras/string.h"
 
 	typedef struct {
 		bool valido;
