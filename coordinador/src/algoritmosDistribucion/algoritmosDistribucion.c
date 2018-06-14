@@ -29,25 +29,22 @@ Instancia* algoritmoDistribucionEL(t_list* listaInstancias) {
 
 }
 
-Instancia* maxEspacio(void* primerInstanciaVoid, void* segundaInstanciaVoid){
-	Instancia* primerInstancia = (Instancia*)primerInstanciaVoid;
-	Instancia* segundaInstancia = (Instancia*)segundaInstanciaVoid;
-	int entradasLibresPrimera = primerInstancia->entradasLibres;
-	int entradasLibresSegunda = segundaInstancia->entradasLibres;
+bool mayorEspacioLibre(void* instancia1Void, void* instancia2Void){
+	Instancia* instancia1 = (Instancia*) instancia1Void;
+	Instancia* instancia2 = (Instancia*) instancia2Void;
 
-	if(max(entradasLibresPrimera, entradasLibresSegunda) == entradasLibresPrimera){
-		return primerInstancia;
-	}
-	return segundaInstancia;
+	return instancia1->entradasLibres > instancia2->entradasLibres;
 }
 
 Instancia* algoritmoDistribucionLSU(t_list* listaInstancias){
 	void* instanciaVoid;
 
-	instanciaVoid = list_compare_elements_get(listaInstancias, maxEspacio);
+	//ordeno lista de instancias por mayor cantidad de entradas libres
+	list_sort(listaInstancias, mayorEspacioLibre);
+	//obtengo la instancia que tenga mas entradas libres
+	instanciaVoid = list_get(listaInstancias, 0);
 
-	Instancia* instancia = (Instancia*)instanciaVoid;
-	return instancia;
+	return (Instancia*)instanciaVoid;
 }
 
 Instancia* algoritmoDistribucionKE(t_list* listaInstancias, char* nombreClave){

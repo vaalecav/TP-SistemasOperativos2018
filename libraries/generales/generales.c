@@ -30,21 +30,6 @@ t_link_element* list_find_element_with_param(t_list *self, void* param, int(*con
 	return element;
 }
 
-void* list_compare_elements_get(t_list *self, t_link_element(*comparator)(void *, void *)){
-	t_link_element *actual = self->head;
-	t_link_element *cursor = actual->next;
-	t_link_element *returning = NULL;
-
-	while(cursor != NULL){
-		returning = comparator(actual->data, cursor->data);
-		actual = cursor;
-		cursor = cursor->next;
-	}
-	free(actual);
-	free(cursor);
-	return returning;
-}
-
 void* list_find_with_param(t_list *self, void* param, int(*condition)(void*, void*)) {
 	t_link_element *element = list_find_element_with_param(self, param, condition, NULL);
 	return element != NULL ? element->data : NULL;
