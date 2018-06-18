@@ -13,9 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "temporal.h"
-#include "error.h"
-#include "string.h"
+#include "../commonsNuestras/temporal.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -23,6 +21,9 @@
 #include <stdlib.h>
 #include <sys/timeb.h>
 #include <string.h>
+
+#include "../commonsNuestras/error.h"
+#include "../commonsNuestras/string.h"
 
 char *temporal_get_string_time() {
 	struct tm *log_tm = malloc(sizeof(struct tm));

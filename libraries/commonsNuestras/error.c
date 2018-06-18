@@ -14,14 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "error.h"
+#include "../commonsNuestras/error.h"
 
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "string.h"
+#include "../commonsNuestras/string.h"
 
 
 void error_show(char *message, ...) {
