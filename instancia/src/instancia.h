@@ -31,7 +31,6 @@
 #include <sys/stat.h>
 
 EstructuraAdministrativa estructuraAdministrativa;
-int indexCirc;
 int terminar;
 
 // Los  mantengo globales para poder liberarles la memoria
@@ -39,6 +38,10 @@ InformacionEntradas * info;
 t_config* configuracion;
 int socketCoordinador;
 t_log* logInstancia;
+
+// Algoritmos de remplazo
+int indexCirc;
+int cantidadSentencias;
 
 // Manejo de Entradas
 void freeEntrada(void*);

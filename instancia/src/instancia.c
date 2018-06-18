@@ -128,6 +128,7 @@ int setearValor(char* clave, char* valor, int entradasNecesarias) {
 	entrada->valor[strlen(valor)] = '\0';
 	entrada->primerEntrada = posicionParaSetear;
 	entrada->cantidadEntradas = entradasNecesarias;
+	entrada->indexUltimaSentencia = cantidadSentencias;
 
 	if (entradaVoid == NULL) {
 		list_add(estructuraAdministrativa.entradas, (void*)entrada);
@@ -175,6 +176,10 @@ int tieneElIndexYEsAtomico(void* entradaVoid, void* indexVoid) {
 	return entrada->primerEntrada == index && entrada->cantidadEntradas == 1;
 }
 
+bool instanciaLRU(void* entrada1, void* entrada2) {
+	return ((Entrada*)entrada1)->indexUltimaSentencia < ((Entrada*)entrada1)->indexUltimaSentencia;
+}
+
 void ejecutarAlgoritmoDeRemplazo() {
 	char* algoritmo;
 	void* entradaVoid;
@@ -196,7 +201,26 @@ void ejecutarAlgoritmoDeRemplazo() {
 		// Logueo que ejecuto el algoritmo de remplazo
 		log_trace(logInstancia, "Ejecuto algoritmo de remplazo LRU");
 
-		// TODO Algoritmo de remplazo LRU
+		// Ordeno la lista y pongo primero al ultimo que se haya actualizado y lo elimino
+		list_sort(estructuraAdministrativa.entradas, instanciaLRU);
+
+		// Verifico que el primero sea atómico
+		int indexRemover = 0;
+		int terminarLRU = 0;
+		Entrada* entradaPrueba;
+
+		do {
+			entradaPrueba = ((Entrada*)list_get(estructuraAdministrativa.entradas, indexRemover));
+			if (entradaPrueba == NULL) {
+				entradaVoid = NULL;
+				terminarLRU = 1;
+			} else if (entradaPrueba->cantidadEntradas == 1) {
+				terminarLRU = 1;
+				entradaVoid = list_remove(estructuraAdministrativa.entradas, indexRemover);
+			}
+			indexRemover++;
+		} while (!terminarLRU);
+
 	} else if (strcmp(algoritmo, "BSU") == 0) {
 		// Logueo que ejecuto el algoritmo de remplazo
 		log_trace(logInstancia, "Ejecuto algoritmo de remplazo BSU");
@@ -282,6 +306,7 @@ int storeClave(char* clave) {
 	// Imprimo el valor en el archivo
 	if ((archivo = fopen(nombreArchivo, "w"))) {
 		entrada = (Entrada*)entradaVoid;
+		entrada->indexUltimaSentencia = cantidadSentencias;
 		fprintf(archivo, "%s", entrada->valor);
 		fclose(archivo);
 
@@ -312,8 +337,10 @@ void recibirSentencia() {
 		mensajeSplitted = string_split(mensaje, " ");
 
 		if (strcmp(mensajeSplitted[0], "SET") == 0) {
+			cantidadSentencias++;
 			respuesta = setearClave(mensajeSplitted[1], mensajeSplitted[2]);
 		} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
+			cantidadSentencias++;
 			respuesta = storeClave(mensajeSplitted[1]);
 		} else {
 			respuesta = INSTANCIA_ERROR;
@@ -354,6 +381,7 @@ int main() {
 
 	// Instancio las cosas necesarias para los algoritmos de remplazo
 		indexCirc = 0;
+		cantidadSentencias = 0;
 
 	// Conexion con el coordinador
 		log_trace(logInstancia, "Envio al coordinador el nombre de mi instancia: %s", nombre);
