@@ -185,7 +185,7 @@ void parsearScript(char* path, int idEsi, int maxFilas) {
 
 					case STORE:
 						mensajeCoordinador = malloc(
-								strlen("Sd TORE ")
+								strlen("STORE ")
 										+ strlen(parsed.argumentos.STORE.clave)
 										+ 1);
 						strcpy(mensajeCoordinador, "STORE ");
