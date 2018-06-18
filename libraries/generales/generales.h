@@ -63,6 +63,7 @@ typedef struct {
 	char* valor;
 	int primerEntrada;
 	int cantidadEntradas;
+	int indexUltimaSentencia;
 } __attribute__((packed)) Entrada;
 
 typedef struct {

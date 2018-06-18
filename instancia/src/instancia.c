@@ -177,7 +177,13 @@ int tieneElIndexYEsAtomico(void* entradaVoid, void* indexVoid) {
 }
 
 bool instanciaLRU(void* entrada1, void* entrada2) {
+	// Sobre la que hace más tiempo se hizo una sentencia
 	return ((Entrada*)entrada1)->indexUltimaSentencia < ((Entrada*)entrada1)->indexUltimaSentencia;
+}
+
+bool instanciaBSU(void* entrada1, void* entrada2) {
+	// El que más espacio ocupe
+	return strlen(((Entrada*)entrada1)->valor) > strlen(((Entrada*)entrada1)->valor);
 }
 
 void ejecutarAlgoritmoDeRemplazo() {
@@ -197,35 +203,41 @@ void ejecutarAlgoritmoDeRemplazo() {
 
 		// Aumento el index
 		indexCirc++;
-	} else if (strcmp(algoritmo, "LRU") == 0) {
-		// Logueo que ejecuto el algoritmo de remplazo
-		log_trace(logInstancia, "Ejecuto algoritmo de remplazo LRU");
+	} else if (strcmp(algoritmo, "LRU") == 0 || strcmp(algoritmo, "BSU") == 0) {
+		// LRU y BSU solo difieren en la forma que se ordena la lista
 
-		// Ordeno la lista y pongo primero al ultimo que se haya actualizado y lo elimino
-		list_sort(estructuraAdministrativa.entradas, instanciaLRU);
+		if (strcmp(algoritmo, "LRU") == 0) {
+			// Logueo que ejecuto el algoritmo de remplazo
+			log_trace(logInstancia, "Ejecuto algoritmo de remplazo LRU");
+
+			// Ordeno la lista según LRU
+			list_sort(estructuraAdministrativa.entradas, instanciaLRU);
+
+		} else if (strcmp(algoritmo, "BSU") == 0) {
+			// Logueo que ejecuto el algoritmo de remplazo
+			log_trace(logInstancia, "Ejecuto algoritmo de remplazo BSU");
+
+			// Ordeno la lista según BSU
+			list_sort(estructuraAdministrativa.entradas, instanciaBSU);
+		}
 
 		// Verifico que el primero sea atómico
 		int indexRemover = 0;
-		int terminarLRU = 0;
+		int terminarRemplazo = 0;
 		Entrada* entradaPrueba;
 
 		do {
 			entradaPrueba = ((Entrada*)list_get(estructuraAdministrativa.entradas, indexRemover));
 			if (entradaPrueba == NULL) {
 				entradaVoid = NULL;
-				terminarLRU = 1;
+				terminarRemplazo = 1;
 			} else if (entradaPrueba->cantidadEntradas == 1) {
-				terminarLRU = 1;
 				entradaVoid = list_remove(estructuraAdministrativa.entradas, indexRemover);
+				terminarRemplazo = 1;
 			}
+
 			indexRemover++;
-		} while (!terminarLRU);
-
-	} else if (strcmp(algoritmo, "BSU") == 0) {
-		// Logueo que ejecuto el algoritmo de remplazo
-		log_trace(logInstancia, "Ejecuto algoritmo de remplazo BSU");
-
-		// TODO Algoritmo de remplazo BSU
+		} while (!terminarRemplazo);
 	}
 
 	if (entradaVoid != NULL) {
