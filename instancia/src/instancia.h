@@ -29,6 +29,7 @@
 #include <signal.h>
 #include <stdbool.h>
 #include <sys/stat.h>
+#include <dirent.h>
 
 EstructuraAdministrativa estructuraAdministrativa;
 int terminar;
@@ -62,5 +63,7 @@ int setearValor(char*, char*, int);
 int tieneElIndexYEsAtomico(void*, void*);
 void ejecutarAlgoritmoDeRemplazo();
 void recibirSentencia();
+char* obtenerValorDelArchivo(const char*);
+void reincorporarInstancia();
 
 #endif /* INSTANCIA_H_ */

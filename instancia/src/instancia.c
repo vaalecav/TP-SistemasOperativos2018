@@ -30,22 +30,26 @@ void avisarAlCoordinador(int idMensaje) {
 	enviarHeader(socketCoordinador, "", idMensaje);
 }
 
-void cerrarInstancia(int sig) {
+void loguearInstancia() {
 	char* entradasUsadas;
+
+	// Obtengo la cantidad de entradas usadas como string
+	entradasUsadas = malloc(estructuraAdministrativa.cantidadEntradas + 1);
+	for (int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
+		entradasUsadas[i] = '0' + estructuraAdministrativa.entradasUsadas[i];
+	}
+	entradasUsadas[estructuraAdministrativa.cantidadEntradas] = '\0';
+
+	// Logueo la tabla de entradas
+	log_trace(logInstancia, "La tabla de entradas quedó: %s", entradasUsadas);
+	list_iterate(estructuraAdministrativa.entradas, loguearEntrada);
+}
+
+void cerrarInstancia(int sig) {
     terminar = 1;
 
 	// Logueo el cierre de la instancia
-    	entradasUsadas = malloc(estructuraAdministrativa.cantidadEntradas + 1);
-		for (int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
-			entradasUsadas[i] = '0' + estructuraAdministrativa.entradasUsadas[i];
-		}
-		entradasUsadas[estructuraAdministrativa.cantidadEntradas] = '\0';
-
-		log_trace(logInstancia, "Se cerró la instancia, la tabla de entradas quedó: %s", entradasUsadas);
-		list_iterate(estructuraAdministrativa.entradas, loguearEntrada);
-
-	// Se lo comunico al coordinador
-		avisarAlCoordinador(INSTANCIA_COORDINADOR_DESCONECTADA);
+    	loguearInstancia();
 
 	// Libero memoria
 		free(info);
@@ -371,6 +375,89 @@ void recibirSentencia() {
 	free(header);
 }
 
+char* obtenerValorDelArchivo(const char* path_archivo) {
+    char *valor;
+    long tamanio;
+    FILE *archivo;
+
+    // Abro el archivo
+    archivo = fopen(path_archivo, "r");
+    if (archivo == NULL) return NULL;
+
+    // Obtengo el tamanio del archivo para hacer el malloc
+    fseek(archivo, 0, SEEK_END);
+    tamanio = ftell(archivo);
+    fseek(archivo, 0, SEEK_SET);
+    valor = malloc(tamanio + 1);
+
+    // Leo el valor
+	fread(valor, 1, tamanio, archivo);
+	valor[tamanio] = '\0';
+
+	// Cierro el archivo
+    fclose(archivo);
+
+    return valor;
+}
+
+void reincorporarInstancia() {
+	DIR *dir;
+	struct dirent *ent;
+	int entradasNecesarias;
+	char* valor;
+	char* path_absoluto;
+	char* punto_montaje = config_get_string_value(configuracion, "PUNTO_MONTAJE");
+	int reincorporeInstancia = 0;
+
+	// Trato de abrir el directorio
+	if ((dir = opendir(punto_montaje)) == NULL) {
+		log_trace(logInstancia, "No hay nada que reincorporar");
+		return;
+	}
+
+	// Logueo que el punto de montaje existe
+	log_trace(logInstancia, "El punto de montaje <%s> existe.", punto_montaje);
+
+	// Recorro todos los archivos
+	while ((ent = readdir(dir)) != NULL) {
+		if (ent->d_type == DT_REG) {
+			// Creo el path absoluto del archivo
+			path_absoluto = malloc(strlen(punto_montaje) + strlen(ent->d_name) + 1);
+			sprintf(path_absoluto, "%s%s", punto_montaje, ent->d_name);
+			path_absoluto[strlen(punto_montaje) + strlen(ent->d_name)] = '\0';
+
+			// Obtengo el valor del archivo
+			valor = obtenerValorDelArchivo(path_absoluto);
+
+			if (valor != NULL) {
+				// Obtengo la cantidad de entradas necesarias
+				entradasNecesarias = divCeil(strlen(valor), estructuraAdministrativa.tamanioEntrada);
+
+				// Seteo el valor
+				setearValor(ent->d_name, valor, entradasNecesarias);
+
+				// Marco que la instancia se reincorporó
+				reincorporeInstancia = 1;
+
+				// Libero memoria
+				free(valor);
+			}
+
+			// Libero memoria
+			free(path_absoluto);
+		}
+	}
+
+	// Cierro el directorio
+	closedir(dir);
+
+	// Logueo la reincorporación
+	if (reincorporeInstancia) {
+		log_trace(logInstancia, "Reincorporé la instancia");
+		loguearInstancia();
+	}
+}
+
 int main() {
 	char* ipCoordinador;
 	int puertoCoordinador;
@@ -423,6 +510,9 @@ int main() {
 
 		// Logueo la operacion de la estructura administrativa
 		log_trace(logInstancia, "Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=%d; Tam. entrada=%d;", estructuraAdministrativa.cantidadEntradas, estructuraAdministrativa.tamanioEntrada);
+
+		// Si la tabla de entradas está creada, la reincorporo
+		reincorporarInstancia();
 
 	// Espero las sentencias
 		while(!terminar) {
