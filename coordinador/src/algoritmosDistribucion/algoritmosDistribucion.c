@@ -57,7 +57,7 @@ Instancia* algoritmoDistribucionKE(t_list* listaInstancias, char* nombreClave){
 
 	//obtengo ASCII de la primer letra de la clave
 	int primerLetraClave = nombreClave[0];
-	int posicionPrimerLetraClave = ultimaLetraAbecedario - primerLetraClave;
+	int posicionPrimerLetraClave = cantidadLetrasAbecedario - (ultimaLetraAbecedario - primerLetraClave);
 
 	//obtengo la cantidad de letras que habra por instancia
 	cantidadInstancias = list_size(listaInstancias);

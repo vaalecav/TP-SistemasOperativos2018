@@ -491,16 +491,15 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 	if (esSET(mensajeSplitted[0])) {
 		// Espero cantidad de entradas libres de la instancia
 		headerEntradas = recibirHeader(instancia->socket);
+
+		//le asigno la cantidad de entradas libres a la instancia
+		pthread_mutex_lock(&mutexListaInstancias);
+		instancia->entradasLibres = headerEntradas->id;
+		pthread_mutex_unlock(&mutexListaInstancias);
 	}
 
 	// Espero la respuesta de la instancia
 	headerEstado = recibirHeader(instancia->socket);
-
-	//le asigno la cantidad de entradas libres a la instancia
-	pthread_mutex_lock(&mutexListaInstancias);
-	instancia->entradasLibres = headerEntradas->id;
-	pthread_mutex_unlock(&mutexListaInstancias);
-
 
 	switch (headerEstado->id) {
 	case INSTANCIA_SENTENCIA_OK_SET:
