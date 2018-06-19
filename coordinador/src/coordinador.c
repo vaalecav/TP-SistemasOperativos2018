@@ -20,9 +20,14 @@ int buscarInstanciaConClave(void* instanciaVoid, void* claveVoid) {
 			buscarClaveEnListaDeClaves) != NULL;
 }
 
+int buscarNombreDeLaInstancia(void* instancia, void* nombre) {
+	return strcmp(((Instancia*)instancia)->nombre, (char*)nombre) == 0;
+}
+
 void manejarInstancia(int socketInstancia, int largoMensaje) {
 	int tamanioInformacionEntradas = sizeof(InformacionEntradas);
-	Instancia *instanciaConectada = (Instancia*) malloc(sizeof(Instancia));
+	Instancia *instanciaConectada;
+	void* instanciaVoid;
 	InformacionEntradas * entradasInstancia = (InformacionEntradas*) malloc(
 			tamanioInformacionEntradas);
 	t_config* configuracion;
@@ -53,14 +58,36 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 			"Enviamos a la Instancia: Cant. de Entradas = %d; Tam. de Entrada = %d",
 			entradasInstancia->cantidad, entradasInstancia->tamanio);
 
-	// Guardo la instancia en la lista
-	instanciaConectada->nombre = nombreInstancia;
-	instanciaConectada->socket = socketInstancia;
-	instanciaConectada->caida = 0;
-	instanciaConectada->claves = list_create();
-
+	// Verifico si tengo que agregar la instancia o si solo se reincorporó
 	pthread_mutex_lock(&mutexListaInstancias);
-	list_add(listaInstancias, (void*) instanciaConectada);
+
+	instanciaVoid = list_find_with_param(listaInstancias, (void*)nombreInstancia, buscarNombreDeLaInstancia);
+
+	if (instanciaVoid == NULL) {
+		instanciaConectada = (Instancia*) malloc(sizeof(Instancia));
+
+		instanciaConectada->nombre = malloc(strlen(nombreInstancia) + 1);
+		strcpy(instanciaConectada->nombre, nombreInstancia);
+		instanciaConectada->nombre[strlen(nombreInstancia)] = '\0';
+
+		instanciaConectada->socket = socketInstancia;
+		instanciaConectada->caida = 0;
+		instanciaConectada->claves = list_create();
+
+		list_add(listaInstancias, (void*) instanciaConectada);
+
+		// Logueo que llegó una instancia nueva
+		log_trace(logCoordinador, "Se ingresó la instancia nueva: %s", nombreInstancia);
+	} else {
+		// Guardo el nuevo socket
+		instanciaConectada = (Instancia*)instanciaVoid;
+		close(instanciaConectada->socket);
+		instanciaConectada->socket = socketInstancia;
+
+		// Logueo que se reincorporó una instancia
+		log_trace(logCoordinador, "Se reincorporó la instancia: %s", nombreInstancia);
+	}
+
 	pthread_mutex_unlock(&mutexListaInstancias);
 
 	// Libero memoria
@@ -69,8 +96,12 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 	config_destroy(configuracion);
 }
 
-void closeInstancia(void* instancia) {
-	close(*(int*) instancia);
+void closeInstancia(void* instanciaVoid) {
+	Instancia* instancia = (Instancia*)instanciaVoid;
+
+	free(instancia->nombre);
+	close(instancia->socket);
+	free(instancia);
 }
 
 void cerrarInstancias() {
