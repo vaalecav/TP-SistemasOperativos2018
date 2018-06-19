@@ -59,5 +59,6 @@ int setearValor(char*, char*, int);
 int tieneElIndexYEsAtomico(void*, void*);
 void ejecutarAlgoritmoDeRemplazo();
 void recibirSentencia();
+int cantidadDeEntradasLibres();
 
 #endif /* INSTANCIA_H_ */

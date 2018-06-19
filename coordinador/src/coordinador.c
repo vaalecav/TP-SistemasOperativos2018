@@ -306,6 +306,7 @@ void asignarClaveAInstancia(char* key) {
 
 	// Selecciono algoritmo de distribucion de instancias
 	pthread_mutex_lock(&mutexListaInstancias);
+	//TODO FILTRAR LISTA INSTANCIA NO CAIDAS() DEVUELVE LISTA Y HAGO ALGORITMO CON ESA
 	if (strcmp(algoritmo_distribucion, "EL") == 0) {
 		log_trace(logCoordinador, "Utilizo algoritmo de distribucion de instancias EL");
 		instancia = algoritmoDistribucionEL(listaInstancias);
@@ -487,11 +488,13 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 	enviarHeader(instancia->socket, mensaje, COORDINADOR);
 	enviarMensaje(instancia->socket, mensaje);
 
+	if (esSET(mensajeSplitted[0])) {
+		// Espero cantidad de entradas libres de la instancia
+		headerEntradas = recibirHeader(instancia->socket);
+	}
+
 	// Espero la respuesta de la instancia
 	headerEstado = recibirHeader(instancia->socket);
-
-	// Espero cantidad de entradas libres de la instancia
-	headerEntradas = recibirHeader(instancia->socket);
 
 	//le asigno la cantidad de entradas libres a la instancia
 	pthread_mutex_lock(&mutexListaInstancias);
