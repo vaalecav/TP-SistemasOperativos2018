@@ -50,7 +50,6 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 	// Guardo la instancia en la lista
 	instanciaConectada->nombre = nombreInstancia;
 	instanciaConectada->socket = socketInstancia;
-	instanciaConectada->caida = 0;
 	instanciaConectada->claves = list_create();
 	instanciaConectada->entradasLibres = entradasInstancia->cantidad;
 
@@ -158,30 +157,6 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	close(socketEsi);
 }
 
-void manejarDesconexion(int socketInstancia, int largoMensaje) {
-	char* nombreInstancia = malloc(largoMensaje + 1);
-	recibirMensaje(socketInstancia, largoMensaje, &nombreInstancia);
-	Instancia* instancia = malloc(sizeof(Instancia));
-
-	//busco instancia
-	pthread_mutex_lock(&mutexListaInstancias);
-	instancia = list_find_with_param(listaInstancias, nombreInstancia,
-			strcmpVoid);
-
-	if (instancia == NULL) {
-		log_error(logCoordinador, "Error en encontrar instancia desconectada: Instrancia: %d", instancia);
-		pthread_mutex_unlock(&mutexListaInstancias);
-		return;
-	}
-
-	// La marco como caída
-	instancia->caida = 1;
-	pthread_mutex_unlock(&mutexListaInstancias);
-
-	// Logueo la desconexión
-	log_trace(logCoordinador, "Se desconectó una instancia");
-}
-
 void manejarConexion(void* socketsNecesarios) {
 	SocketHilos socketsConectados = *(SocketHilos*) socketsNecesarios;
 	ContentHeader * header;
@@ -197,11 +172,6 @@ void manejarConexion(void* socketsNecesarios) {
 	case ESI:
 		log_trace(logCoordinador, "Se conectó un ESI");
 		manejarEsi(socketsConectados.socketComponente, socketsConectados.socketPlanificador, header->largo);
-		break;
-
-	case INSTANCIA_COORDINADOR_DESCONECTADA:
-		log_trace(logCoordinador, "Se desconectó una instancia");
-		manejarDesconexion(socketsConectados.socketComponente, header->largo);
 		break;
 	}
 
@@ -288,9 +258,9 @@ int sePuedeComunicarConLaInstancia(Instancia* instancia) {
 	return enviarHeader(instancia->socket, "", COORDINADOR);
 }
 
-bool instanciasNoCaidas(void* instanciaVoid){
+bool instanciasNoCaidas(void* instanciaVoid) {
 	Instancia* instancia = (Instancia*) instanciaVoid;
-	if(instancia->caida == 1){
+	if(sePuedeComunicarConLaInstancia(instancia) == -1){
 		//instancia se encuentra caida
 		return 0;
 	}
@@ -363,8 +333,6 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 	if (instanciaVoid != NULL) {
 		instancia = (Instancia*) instanciaVoid;
 
-		pthread_mutex_lock(&mutexListaInstancias);
-
 		// Se tiene que verificar si la instancia no está caída
 		if (sePuedeComunicarConLaInstancia(instancia) != -1) {
 			// Se fija si la clave se encuentra bloqueada
@@ -384,9 +352,6 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 			pthread_mutex_unlock(&mutexListaInstancias);
 		} else {
 			// Instancia está caída
-			instancia->caida = 1;
-			pthread_mutex_unlock(&mutexListaInstancias);
-
 			respuestaGET = COORDINADOR_INSTANCIA_CAIDA;
 			log_error(logCoordinador, "La clave que intenta acceder existe en el sistema pero se encuentra en una instancia que esta desconectada");
 			//Le aviso al planificador y esi del error
@@ -467,7 +432,6 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 	instancia = (Instancia*) instanciaVoid;
 
 	if(sePuedeComunicarConLaInstancia(instancia)== -1) {
-		instancia->caida = 1;
 		pthread_mutex_unlock(&mutexListaInstancias);
 
 		log_error(logCoordinador, "La instancia que se intenta acceder se encuentra caida.");

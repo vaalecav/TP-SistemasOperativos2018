@@ -47,7 +47,6 @@ typedef struct {
 typedef struct {
 	int socket;
 	char* nombre;
-	int caida;
 	t_list *claves;
 	int entradasLibres;
 } __attribute__((packed)) Instancia;
