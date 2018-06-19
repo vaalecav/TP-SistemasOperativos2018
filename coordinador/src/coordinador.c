@@ -64,8 +64,9 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 	config_destroy(configuracion);
 }
 
-void closeInstancia(void* instancia) {
-	close(*(int*) instancia);
+void closeInstancia(void* instanciaVoid) {
+	Instancia* instancia = (Instancia*) instanciaVoid;
+	close(instancia->socket);
 }
 
 void cerrarInstancias() {
@@ -282,8 +283,18 @@ int main() {
 }
 
 // Cosas para el GET
-int sePuedeComunicarConLaInstancia() {
-	// TODO ver qué onda esto
+//si se puede comunicar devuelve 1, si no -1
+int sePuedeComunicarConLaInstancia(Instancia* instancia) {
+	return enviarHeader(instancia->socket, "", COORDINADOR);
+}
+
+bool instanciasNoCaidas(void* instanciaVoid){
+	Instancia* instancia = (Instancia*) instanciaVoid;
+	if(instancia->caida == 1){
+		//instancia se encuentra caida
+		return 0;
+	}
+	//instancia no se encuentra caida
 	return 1;
 }
 
@@ -291,6 +302,7 @@ void asignarClaveAInstancia(char* key) {
 	char* algoritmo_distribucion;
 	t_config* configuracion;
 	Instancia* instancia;
+	t_list* listaInstanciasNoCaidas;
 
 	//Creo la clave
 	Clave* clave;
@@ -304,28 +316,30 @@ void asignarClaveAInstancia(char* key) {
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
 	algoritmo_distribucion = config_get_string_value(configuracion, "ALG_DISTR");
 
-	// Selecciono algoritmo de distribucion de instancias
 	pthread_mutex_lock(&mutexListaInstancias);
-	//TODO FILTRAR LISTA INSTANCIA NO CAIDAS() DEVUELVE LISTA Y HAGO ALGORITMO CON ESA
+	//filtro instancias que no se encuentren caidas
+	listaInstanciasNoCaidas = list_filter(listaInstancias, instanciasNoCaidas);
+	pthread_mutex_unlock(&mutexListaInstancias);
+
+	// Selecciono algoritmo de distribucion de instancias
 	if (strcmp(algoritmo_distribucion, "EL") == 0) {
 		log_trace(logCoordinador, "Utilizo algoritmo de distribucion de instancias EL");
-		instancia = algoritmoDistribucionEL(listaInstancias);
+		instancia = algoritmoDistribucionEL(listaInstanciasNoCaidas);
 	} else if (strcmp(algoritmo_distribucion, "LSU") == 0) {
 		log_trace(logCoordinador, "Utilizo algoritmo de distribucion de instancias LSU");
-		instancia = algoritmoDistribucionLSU(listaInstancias);
+		instancia = algoritmoDistribucionLSU(listaInstanciasNoCaidas);
 	} else if (strcmp(algoritmo_distribucion, "KE") == 0) {
 		log_trace(logCoordinador, "Utilizo algoritmo de distribucion de instancias KE");
-		instancia = algoritmoDistribucionKE(listaInstancias, clave->nombre);
+		instancia = algoritmoDistribucionKE(listaInstanciasNoCaidas, clave->nombre);
 	} else {
 		log_error(logCoordinador, "Algoritmo de distribucion invalido.");
-		pthread_mutex_unlock(&mutexListaInstancias);
 		return;
 	}
-	pthread_mutex_unlock(&mutexListaInstancias);
 
 	// Libero memoria
 	config_destroy(configuracion);
 	list_add(instancia->claves, clave);
+	list_destroy(listaInstanciasNoCaidas);
 }
 
 void getClave(char* key, int socketPlanificador, int socketEsi) {
@@ -348,10 +362,11 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 	// Le aviso al planificador de su estado
 	if (instanciaVoid != NULL) {
 		instancia = (Instancia*) instanciaVoid;
-		// Se tiene que verificar si la instancia no está caída
-		if (sePuedeComunicarConLaInstancia(instancia)) {
-			pthread_mutex_lock(&mutexListaInstancias);
 
+		pthread_mutex_lock(&mutexListaInstancias);
+
+		// Se tiene que verificar si la instancia no está caída
+		if (sePuedeComunicarConLaInstancia(instancia) != -1) {
 			// Se fija si la clave se encuentra bloqueada
 			if (clave->bloqueado) {
 				log_trace(logCoordinador, "La clave se encuentra bloqueada");
@@ -367,9 +382,11 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 				avisarA(socketPlanificador, "", respuestaGET);
 			}
 			pthread_mutex_unlock(&mutexListaInstancias);
-
 		} else {
 			// Instancia está caída
+			instancia->caida = 1;
+			pthread_mutex_unlock(&mutexListaInstancias);
+
 			respuestaGET = COORDINADOR_INSTANCIA_CAIDA;
 			log_error(logCoordinador, "La clave que intenta acceder existe en el sistema pero se encuentra en una instancia que esta desconectada");
 			//Le aviso al planificador y esi del error
@@ -423,7 +440,7 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 		return;
 	}
 
-	// Busco la clave en la lista de claves
+	// Busco la clave en la lista de claves, devuelvo la instancia que la tenga
 	pthread_mutex_lock(&mutexListaInstancias);
 	instanciaVoid = list_find_with_param(listaInstancias, (void*) mensajeSplitted[1], buscarInstanciaConClave);
 
@@ -447,11 +464,32 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 		return;
 	}
 
+	instancia = (Instancia*) instanciaVoid;
+
+	if(sePuedeComunicarConLaInstancia(instancia)== -1) {
+		instancia->caida = 1;
+		pthread_mutex_unlock(&mutexListaInstancias);
+
+		log_error(logCoordinador, "La instancia que se intenta acceder se encuentra caida.");
+
+		// Le aviso al planificador
+		avisarA(socketPlanificador, "", INSTANCIA_COORDINADOR_DESCONECTADA);
+
+		//Tambien le aviso al esi para que no se quede esperando
+		avisarA(socketEsi, "", INSTANCIA_COORDINADOR_DESCONECTADA);
+
+		// Libero memoria
+		free(mensajeSplitted[0]);
+		free(mensajeSplitted[1]);
+		free(mensajeSplitted[2]);
+		free(mensajeSplitted);
+		return;
+	}
+
 	// Si encontré una instancia, busco su clave
 	claveVoid = list_find_with_param(((Instancia*) instanciaVoid)->claves, (void*) mensajeSplitted[1], buscarClaveEnListaDeClaves);
 
 	// Valido que la clave esté bloqueada
-	instancia = (Instancia*) instanciaVoid;
 	clave = (Clave*) claveVoid;
 
 	if (!clave->bloqueado) {
