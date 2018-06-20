@@ -4,5 +4,4 @@
 
 USER_OBJS :=
 
-LIBS := -llibraries -lpthread -lparsi -lm
-
+LIBS := -llibraries -lpthread -lm

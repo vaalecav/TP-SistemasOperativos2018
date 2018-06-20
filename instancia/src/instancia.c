@@ -105,6 +105,16 @@ int entradaEsIgualAClave(void* entrada, void* clave) {
 	return strcmp(ent->clave, (char*)clave)	== 0;
 }
 
+int cantidadDeEntradasLibres() {
+	int entradasLibres = estructuraAdministrativa.cantidadEntradas;
+
+	for (int i = 0; i < estructuraAdministrativa.cantidadEntradas; i++) {
+		entradasLibres -= estructuraAdministrativa.entradasUsadas[i];
+	}
+
+	return entradasLibres;
+}
+
 int setearValor(char* clave, char* valor, int entradasNecesarias) {
 	void* entradaVoid;
 	Entrada *entrada;
@@ -137,6 +147,9 @@ int setearValor(char* clave, char* valor, int entradasNecesarias) {
 	if (entradaVoid == NULL) {
 		list_add(estructuraAdministrativa.entradas, (void*)entrada);
 	}
+
+	// Le aviso al coordinador la cantidad de entradas libres
+	avisarAlCoordinador(cantidadDeEntradasLibres());
 
 	// Logueo que setteo el valor
 	log_trace(logInstancia, "Setteo %s: %s, en la entrada %d con un largo de entradas %d", entrada->clave, entrada->valor, entrada->primerEntrada, entrada->cantidadEntradas);

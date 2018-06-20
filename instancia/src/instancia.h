@@ -65,5 +65,6 @@ void ejecutarAlgoritmoDeRemplazo();
 void recibirSentencia();
 char* obtenerValorDelArchivo(const char*);
 void reincorporarInstancia();
+int cantidadDeEntradasLibres();
 
 #endif /* INSTANCIA_H_ */

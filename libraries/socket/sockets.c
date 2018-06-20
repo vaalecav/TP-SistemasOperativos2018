@@ -134,7 +134,7 @@ int enviarHeader(int socketDestino, char* mensaje, int id) {
 	if(enviarInformacion(socketDestino, header, &tamanioHeader) < 0){
 		if (DEBUG_SOCKET) puts("Error en enviar header");
 		free(header);
-		exit(1);
+		return -1;
 	}
 	if (DEBUG_SOCKET) puts("Header enviado");
 
