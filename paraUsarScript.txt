@@ -1,0 +1,20 @@
+Usar: 
+
+$chmod +x /path/to/yourscript.sh
+
+si estas parado en el directorio, solamente: ./yourscript.sh
+ 
+----
+
+ejemplo:
+
+$chmod +x ./planificador.sh
+
+si los tenes en una carpeta sino:
+
+$ cd planificador
+$ chmod ./planificador.sh
+
+o
+
+$chmod +x planificador/planificador.sh

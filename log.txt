@@ -1,0 +1,1 @@
+[TRACE] 16:33:21:933 Coordinador/(22877:22877): Se conectó el planificador: Puerto=8000; Ip Planificador=137710648; Máximas conexiones=20
