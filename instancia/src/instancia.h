@@ -29,9 +29,9 @@
 #include <signal.h>
 #include <stdbool.h>
 #include <sys/stat.h>
+#include <dirent.h>
 
 EstructuraAdministrativa estructuraAdministrativa;
-int indexCirc;
 int terminar;
 
 // Los  mantengo globales para poder liberarles la memoria
@@ -39,6 +39,10 @@ InformacionEntradas * info;
 t_config* configuracion;
 int socketCoordinador;
 t_log* logInstancia;
+
+// Algoritmos de remplazo
+int indexCirc;
+int cantidadSentencias;
 
 // Manejo de Entradas
 void freeEntrada(void*);
@@ -59,6 +63,8 @@ int setearValor(char*, char*, int);
 int tieneElIndexYEsAtomico(void*, void*);
 void ejecutarAlgoritmoDeRemplazo();
 void recibirSentencia();
+char* obtenerValorDelArchivo(const char*);
+void reincorporarInstancia();
 int cantidadDeEntradasLibres();
 
 #endif /* INSTANCIA_H_ */

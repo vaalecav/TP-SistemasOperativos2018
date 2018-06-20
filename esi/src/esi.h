@@ -17,6 +17,7 @@
 #include <socket/sockets.h>
 #include <configuracion/configuracion.h>
 #include <generales/generales.h>
+#include <math.h>
 
 #define SIZE 1024
 
@@ -25,10 +26,7 @@ t_log* logESI;
 int socketPlanificador;
 
 void liberarMemoria();
-void parsearScript(char*, int);
+void parsearScript(char*, int, int);
 int filasArchivo();
-
-
-
 
 #endif /* ESI_H_ */

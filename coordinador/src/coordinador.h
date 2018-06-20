@@ -40,6 +40,7 @@ enum CLAVE {
 
 int buscarClaveEnListaDeClaves(void*, void*);
 int buscarInstanciaConClave(void*, void*);
+int buscarNombreDeLaInstancia(void*, void*);
 void manejarInstancia(int, int);
 void closeInstancia(void*);
 void cerrarInstancias();

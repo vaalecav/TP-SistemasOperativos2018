@@ -8,6 +8,8 @@
 **/Debug/libraries
 **/Debug/planificador
 
+**/log.txt
+instancia/tabla_entradas
 
 .settings/
 /.metadata/
