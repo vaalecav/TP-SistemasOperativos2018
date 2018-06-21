@@ -16,8 +16,7 @@ int buscarClaveEnListaDeClaves(void* structClaveVoid, void* claveVoid) {
 
 int buscarInstanciaConClave(void* instanciaVoid, void* claveVoid) {
 	Instancia* instancia = (Instancia*) instanciaVoid;
-	return list_find_with_param(instancia->claves, claveVoid,
-			buscarClaveEnListaDeClaves) != NULL;
+	return list_find_with_param(instancia->claves, claveVoid, buscarClaveEnListaDeClaves) != NULL;
 }
 
 int buscarNombreDeLaInstancia(void* instancia, void* nombre) {
@@ -29,6 +28,12 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 	InformacionEntradas * entradasInstancia = (InformacionEntradas*) malloc(tamanioInformacionEntradas);
 	t_config* configuracion;
 	char* nombreInstancia;
+
+	ContentHeader* headerEntradasLibres;
+	int entradasLibres;
+
+	Instancia* instanciaConectada;
+	void* instanciaVoid;
 
 	nombreInstancia = malloc(largoMensaje + 1);
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
@@ -52,6 +57,11 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 	// Verifico si tengo que agregar la instancia o si solo se reincorporó
 	pthread_mutex_lock(&mutexListaInstancias);
 
+	// Como se reincorporó, capaz ya tiene entradas usadas, por lo que recibo las libres siempre
+	headerEntradasLibres = recibirHeader(socketInstancia);
+	entradasLibres = headerEntradasLibres->id;
+	free(headerEntradasLibres);
+
 	instanciaVoid = list_find_with_param(listaInstancias, (void*)nombreInstancia, buscarNombreDeLaInstancia);
 
 	if (instanciaVoid == NULL) {
@@ -63,22 +73,24 @@ void manejarInstancia(int socketInstancia, int largoMensaje) {
 
 		instanciaConectada->socket = socketInstancia;
 		instanciaConectada->claves = list_create();
-	  instanciaConectada->entradasLibres = entradasInstancia->cantidad;
+		instanciaConectada->entradasLibres = entradasLibres;
 
 		list_add(listaInstancias, (void*) instanciaConectada);
 
 		// Logueo que llegó una instancia nueva
-		log_trace(logCoordinador, "Se ingresó la instancia nueva: %s", nombreInstancia);
+		log_trace(logCoordinador, "Se ingresó la instancia nueva <%s> con %d entradas libres", nombreInstancia, instanciaConectada->entradasLibres);
 	} else {
+
 		// Guardo el nuevo socket
 		instanciaConectada = (Instancia*)instanciaVoid;
-    
-    // TODO tiene que recibir la cantidad de entradas libres
 		close(instanciaConectada->socket);
 		instanciaConectada->socket = socketInstancia;
 
+		// Guardo las entradas libres
+		instanciaConectada->entradasLibres = entradasLibres;
+
 		// Logueo que se reincorporó una instancia
-		log_trace(logCoordinador, "Se reincorporó la instancia: %s", nombreInstancia);
+		log_trace(logCoordinador, "Se reincorporó la instancia <%s> con %d entradas libres", nombreInstancia, instanciaConectada->entradasLibres);
 	}
 
 	pthread_mutex_unlock(&mutexListaInstancias);
@@ -282,28 +294,23 @@ int main() {
 }
 
 // Cosas para el GET
-//si se puede comunicar devuelve 1, si no -1
+
 int sePuedeComunicarConLaInstancia(Instancia* instancia) {
-	return enviarHeader(instancia->socket, "", COORDINADOR);
+	// Si se puede comunicar devuelve 1, si no -1
+	return enviarHeader(instancia->socket, "", 0);
 }
 
 bool instanciasNoCaidas(void* instanciaVoid) {
-	Instancia* instancia = (Instancia*) instanciaVoid;
-	if(sePuedeComunicarConLaInstancia(instancia) == -1){
-		//instancia se encuentra caida
-		return 0;
-	}
-	//instancia no se encuentra caida
-	return 1;
+	return sePuedeComunicarConLaInstancia((Instancia*) instanciaVoid) != -1;
 }
 
-void asignarClaveAInstancia(char* key) {
+int asignarClaveAInstancia(char* key) {
 	char* algoritmo_distribucion;
 	t_config* configuracion;
 	Instancia* instancia;
 	t_list* listaInstanciasNoCaidas;
 
-	//Creo la clave
+	// Creo la clave
 	Clave* clave;
 	clave = malloc(sizeof(Clave));
 	clave->bloqueado = 1;
@@ -316,9 +323,15 @@ void asignarClaveAInstancia(char* key) {
 	algoritmo_distribucion = config_get_string_value(configuracion, "ALG_DISTR");
 
 	pthread_mutex_lock(&mutexListaInstancias);
-	//filtro instancias que no se encuentren caidas
+	// Filtro instancias que no se encuentren caidas
 	listaInstanciasNoCaidas = list_filter(listaInstancias, instanciasNoCaidas);
 	pthread_mutex_unlock(&mutexListaInstancias);
+
+	if (list_is_empty(listaInstanciasNoCaidas)) {
+		free(clave->nombre);
+		free(clave);
+		return 0;
+	}
 
 	// Selecciono algoritmo de distribucion de instancias
 	if (strcmp(algoritmo_distribucion, "EL") == 0) {
@@ -330,15 +343,14 @@ void asignarClaveAInstancia(char* key) {
 	} else if (strcmp(algoritmo_distribucion, "KE") == 0) {
 		log_trace(logCoordinador, "Utilizo algoritmo de distribucion de instancias KE");
 		instancia = algoritmoDistribucionKE(listaInstanciasNoCaidas, clave->nombre);
-	} else {
-		log_error(logCoordinador, "Algoritmo de distribucion invalido.");
-		return;
 	}
 
 	// Libero memoria
 	config_destroy(configuracion);
 	list_add(instancia->claves, clave);
 	list_destroy(listaInstanciasNoCaidas);
+
+	return 1;
 }
 
 void getClave(char* key, int socketPlanificador, int socketEsi) {
@@ -389,11 +401,16 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 		}
 	} else {
 		// Le asigno la nueva clave a la instancia
-		asignarClaveAInstancia(key);
-		respuestaGET = COORDINADOR_ESI_CREADO;
+		if (asignarClaveAInstancia(key)) {
+			respuestaGET = COORDINADOR_ESI_CREADO;
+			log_trace(logCoordinador, "Se asigna la nueva clave a la instancia");
+		} else {
+			respuestaGET = NO_HAY_INSTANCIAS;
+			log_trace(logCoordinador, "No hay instancias disponibles");
+		}
+
 		avisarA(socketEsi, "", respuestaGET);
 		avisarA(socketPlanificador, key, respuestaGET);
-		log_trace(logCoordinador, "Se asigna la nueva clave a la instancia");
 	}
 }
 

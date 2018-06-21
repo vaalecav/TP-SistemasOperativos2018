@@ -52,6 +52,7 @@ int claveEstaEnInstancia(char*);
 int compararClave(void*, char*);
 
 // GET
+int asignarClaveAInstancia(char*);
 int sePuedeComunicarConLaInstancia(Instancia*);
 void getClave(char*, int, int);
 

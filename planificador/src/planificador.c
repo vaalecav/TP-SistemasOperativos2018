@@ -247,6 +247,9 @@ int chequearRespuesta(int id) {
 	case COORDINADOR_INSTANCIA_CAIDA:
 		a = 0;
 		break;
+	case NO_HAY_INSTANCIAS:
+		a = 0;
+		break;
 	case COORDINADOR_ESI_BLOQUEADO:
 		a = 1;
 		break;

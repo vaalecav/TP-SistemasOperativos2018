@@ -527,6 +527,9 @@ int main() {
 		// Si la tabla de entradas está creada, la reincorporo
 		reincorporarInstancia();
 
+		// Le aviso al coordinador la cantidad de entradas libres
+		enviarHeader(socketCoordinador, "", cantidadDeEntradasLibres());
+
 	// Espero las sentencias
 		while(!terminar) {
 			recibirSentencia();

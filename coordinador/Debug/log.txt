@@ -1,0 +1,13 @@
+ESI 1 || GET futbol:ansaldi
+ESI 1 || GET futbol:ansaldi
+ESI 1 || GET futbol:ansaldi
+ESI 1 || GET futbol:ansaldi
+ESI 2 || GET futbol:ansaldi
+ESI 3 || GET futbol:ansaldi
+ESI 4 || GET futbol:ansaldi
+ESI 5 || GET futbol:ansaldi
+ESI 1 || GET futbol:ansaldi
+ESI 2 || GET futbol:ansaldi
+ESI 1 || GET futbol:ansaldi
+ESI 1 || SET futbol:ansaldi TraeVodka
+ESI 2 || GET futbol:ansaldi
