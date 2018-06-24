@@ -612,6 +612,9 @@ int main() {
 		// Le aviso al coordinador la cantidad de entradas libres
 		enviarHeader(socketCoordinador, "", cantidadDeEntradasLibres());
 
+	// Antes de empezar a recibir sentencias, inicio el DUMP
+		// TODO largar hilo que haga un sleep del tiempo indicado por configuración y después itere por todas las entradas haciendo guardando los valores (haciendo stores)
+
 	// Espero las sentencias
 		while(!terminar) {
 			recibirSentencia();
