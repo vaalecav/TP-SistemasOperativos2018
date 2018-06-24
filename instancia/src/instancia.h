@@ -59,7 +59,7 @@ int storeClave(char*);
 void avisarAlCoordinador(int);
 void cerrarInstancia(int);
 int buscarEspacioEnTabla(int);
-int setearValor(char*, char*, int);
+int setearValor(char*, char*, int, int);
 int tieneElIndexYEsAtomico(void*, void*);
 void ejecutarAlgoritmoDeRemplazo();
 void recibirSentencia();

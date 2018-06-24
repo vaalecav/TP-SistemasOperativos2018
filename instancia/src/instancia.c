@@ -115,13 +115,13 @@ int cantidadDeEntradasLibres() {
 	return entradasLibres;
 }
 
-int setearValor(char* clave, char* valor, int entradasNecesarias) {
+int setearValor(char* clave, char* valor, int entradasNecesarias, int posicionParaSetear) {
 	void* entradaVoid;
 	Entrada *entrada;
-	int posicionParaSetear;
 
-	posicionParaSetear = buscarEspacioEnTabla(entradasNecesarias);
-	entrada = malloc(sizeof(Entrada));
+	if (posicionParaSetear == -1) {
+		posicionParaSetear = buscarEspacioEnTabla(entradasNecesarias);
+	}
 
 	// Marco las entradas como ocupadas
 	for (int i = posicionParaSetear; i < posicionParaSetear + entradasNecesarias; i++) {
@@ -132,6 +132,8 @@ int setearValor(char* clave, char* valor, int entradasNecesarias) {
 		entrada = (Entrada*)entradaVoid;
 		free(entrada->valor);
 		free(entrada->clave);
+	} else {
+		entrada = malloc(sizeof(Entrada));
 	}
 
 	entrada->clave = malloc(strlen(clave) + 1);
@@ -275,36 +277,43 @@ int setearClave(char* clave, char* valor) {
 	Entrada* entrada;
 	void* entradaVoid;
 	int entradasNecesarias;
+	int entradaGuardar = -1;
 
 	// Verifico si alcanzan las entradas
-		entradasNecesarias = divCeil(strlen(valor), estructuraAdministrativa.tamanioEntrada);
+	entradasNecesarias = divCeil(strlen(valor), estructuraAdministrativa.tamanioEntrada);
 
-		if (entradasNecesarias > estructuraAdministrativa.cantidadEntradas) {
-			// Logueo el error
-			log_error(logInstancia, "El valor no entra en la tabla de entradas");
+	if (entradasNecesarias > estructuraAdministrativa.cantidadEntradas) {
+		// Logueo el error
+		log_error(logInstancia, "El valor no entra en la tabla de entradas");
+		return INSTANCIA_ERROR;
+	}
+
+	// Verifico si ya está seteada la clave
+	if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
+		entrada = (Entrada*)entradaVoid;
+
+		// Logueo que la entrada ya existe
+		log_trace(logInstancia, "La clave ya está seteada en la instancia");
+
+		// Verifico que la cantidad de entradas necesarias no sea mayor que la actual
+		if (entradasNecesarias > entrada->cantidadEntradas) {
 			return INSTANCIA_ERROR;
 		}
 
-	// Verifico si ya está seteada la clave
-		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
-			entrada = (Entrada*)entradaVoid;
-
-			// Logueo que la entrada ya existe
-			log_trace(logInstancia, "La clave ya está seteada en la instancia");
-
-			// Si ya está bloqueada, pongo todas sus entradas como posibles para ingresar
-			for (int i = entrada->primerEntrada; i < entrada->cantidadEntradas; i++) {
-				estructuraAdministrativa.entradasUsadas[i] = 0;
-			}
+		// Marco la entrada en la que se tiene que guardar y libero todas
+		entradaGuardar = entrada->primerEntrada;
+		for (int i = entrada->primerEntrada; i < entrada->cantidadEntradas; i++) {
+			estructuraAdministrativa.entradasUsadas[i] = 0;
 		}
-
-	// Verifico si hay espacio continuo disponible
+	} else {
+		// Si no está seteada, verifico si hay espacio continuo disponible
 		while (cantidadEntradasPosiblesContinuas() < entradasNecesarias) {
 			ejecutarAlgoritmoDeRemplazo();
 		}
+	}
 
 	// Setteo porque hay lugar
-		return setearValor(clave, valor, entradasNecesarias);
+	return setearValor(clave, valor, entradasNecesarias, entradaGuardar);
 }
 
 int storeClave(char* clave) {
@@ -447,7 +456,7 @@ void reincorporarInstancia() {
 				entradasNecesarias = divCeil(strlen(valor), estructuraAdministrativa.tamanioEntrada);
 
 				// Seteo el valor
-				setearValor(ent->d_name, valor, entradasNecesarias);
+				setearValor(ent->d_name, valor, entradasNecesarias, -1);
 
 				// Marco que la instancia se reincorporó
 				reincorporeInstancia = 1;
