@@ -40,6 +40,9 @@ t_config* configuracion;
 int socketCoordinador;
 t_log* logInstancia;
 
+// Compactacion
+int necesitaCompactacion;
+
 // Algoritmos de remplazo
 int indexCirc;
 int cantidadSentencias;
@@ -55,6 +58,10 @@ int entradaEsIgualAClave(void*, void*);
 // Manejo de Claves
 int setearClave(char*, char*);
 int storeClave(char*);
+
+// Compactación
+void compactar();
+int entradaOcupaEspacio(void*, void*);
 
 void avisarAlCoordinador(int);
 void cerrarInstancia(int);

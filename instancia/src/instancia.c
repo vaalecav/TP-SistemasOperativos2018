@@ -18,12 +18,12 @@ void freeEntrada(void* ent) {
 
 void loguearEntrada(void* entr) {
 	Entrada entrada = *(Entrada*)entr;
-	log_trace(logInstancia, "Clave: %s - Valor: %s - Entrada: %d - Ocupa: %d", entrada.clave, entrada.valor, entrada.primerEntrada, entrada.cantidadEntradas);
+	log_trace(logInstancia, "Clave: %s - Valor: %s - Entrada: %d - Ocupa: %d", entrada.clave, entrada.valor, entrada.primeraEntrada, entrada.cantidadEntradas);
 }
 
 void mostrarEntrada(void* entr) {
 	Entrada entrada = *(Entrada*)entr;
-	printf("CLAVE %s\nEntrada: %d - %d\nValor: %s\n---------------------\n", entrada.clave, entrada.primerEntrada, entrada.cantidadEntradas, entrada.valor);
+	printf("CLAVE %s\nEntrada: %d - %d\nValor: %s\n---------------------\n", entrada.clave, entrada.primeraEntrada, entrada.cantidadEntradas, entrada.valor);
 }
 
 void avisarAlCoordinador(int idMensaje) {
@@ -142,7 +142,7 @@ int setearValor(char* clave, char* valor, int entradasNecesarias, int posicionPa
 	entrada->valor = malloc(strlen(valor) + 1);
 	strcpy(entrada->valor, valor);
 	entrada->valor[strlen(valor)] = '\0';
-	entrada->primerEntrada = posicionParaSetear;
+	entrada->primeraEntrada = posicionParaSetear;
 	entrada->cantidadEntradas = entradasNecesarias;
 	entrada->indexUltimaSentencia = cantidadSentencias;
 
@@ -151,7 +151,7 @@ int setearValor(char* clave, char* valor, int entradasNecesarias, int posicionPa
 	}
 
 	// Logueo que setteo el valor
-	log_trace(logInstancia, "Setteo %s: %s, en la entrada %d con un largo de entradas %d", entrada->clave, entrada->valor, entrada->primerEntrada, entrada->cantidadEntradas);
+	log_trace(logInstancia, "Setteo %s: %s, en la entrada %d con un largo de entradas %d", entrada->clave, entrada->valor, entrada->primeraEntrada, entrada->cantidadEntradas);
 
 	/*
 	PARA DEBUGGEAR
@@ -189,7 +189,7 @@ int tieneElIndexYEsAtomico(void* entradaVoid, void* indexVoid) {
 	Entrada* entrada = (Entrada*)entradaVoid;
 	int index = *(int*)indexVoid;
 
-	return entrada->primerEntrada == index && entrada->cantidadEntradas == 1;
+	return entrada->primeraEntrada == index && entrada->cantidadEntradas == 1;
 }
 
 bool instanciaLRU(void* entrada1, void* entrada2) {
@@ -263,7 +263,7 @@ void ejecutarAlgoritmoDeRemplazo() {
 		log_trace(logInstancia, "Reemplazo la entrada %s", entrada->clave);
 
 		// Pongo en la tabla de entradas que el espacio está libre (solo toma atomicas, asi que no me preocupo por desocupar las demas)
-		estructuraAdministrativa.entradasUsadas[entrada->primerEntrada] = 0;
+		estructuraAdministrativa.entradasUsadas[entrada->primeraEntrada] = 0;
 
 		// Libero el espacio que la entrada ocupaba
 		freeEntrada(entradaVoid);
@@ -275,6 +275,9 @@ int setearClave(char* clave, char* valor) {
 	void* entradaVoid;
 	int entradasNecesarias;
 	int entradaGuardar = -1;
+
+	// En un principio, no se debería compactar
+	necesitaCompactacion = 0;
 
 	// Verifico si alcanzan las entradas
 	entradasNecesarias = divCeil(strlen(valor), estructuraAdministrativa.tamanioEntrada);
@@ -296,14 +299,20 @@ int setearClave(char* clave, char* valor) {
 		if (entradasNecesarias > entrada->cantidadEntradas) {
 			log_error(logInstancia, "El valor <%s> de la clave <%s> necesita %d entradas cuando actualmente ocupa %d", valor, clave, entradasNecesarias, entrada->cantidadEntradas);
 			return INSTANCIA_ERROR;
+
 		}
 
 		// Marco la entrada en la que se tiene que guardar y libero todas
-		entradaGuardar = entrada->primerEntrada;
-		for (int i = entrada->primerEntrada; i < entrada->cantidadEntradas; i++) {
+		entradaGuardar = entrada->primeraEntrada;
+		for (int i = entrada->primeraEntrada; i < entrada->cantidadEntradas; i++) {
 			estructuraAdministrativa.entradasUsadas[i] = 0;
 		}
 	} else {
+		if (cantidadEntradasPosiblesContinuas() < entradasNecesarias && cantidadDeEntradasLibres() >= entradasNecesarias) {
+			// Como va a tener que ejecutar el algoritmo de remplazo, y hay entradas libres como para guardarlo igualmente, compacto
+			necesitaCompactacion = 1;
+		}
+
 		// Si no está seteada, verifico si hay espacio continuo disponible
 		while (cantidadEntradasPosiblesContinuas() < entradasNecesarias) {
 			ejecutarAlgoritmoDeRemplazo();
@@ -386,6 +395,9 @@ void recibirSentencia() {
 		avisarAlCoordinador(respuesta);
 
 		if (respuesta == INSTANCIA_SENTENCIA_OK_SET) {
+			// En el caso de que haya sido un set con final feliz, le aviso si hay que compactar
+			avisarAlCoordinador(necesitaCompactacion);
+
 			// Le aviso al coordinador la cantidad de entradas libres
 			avisarAlCoordinador(cantidadDeEntradasLibres());
 		}
@@ -395,9 +407,67 @@ void recibirSentencia() {
 		free(mensajeSplitted[1]);
 		free(mensajeSplitted[2]);
 		free(mensajeSplitted);
+
+	} else if (header->id == COMPACTAR) {
+		compactar();
 	}
 
 	free(header);
+}
+
+void compactar() {
+	void *entradaVoid;
+	Entrada *entrada;
+
+	// Logueo que voy a compactar
+	log_trace(logInstancia, "Voy a compactar");
+
+	// Para compactar voy a necesitar recorrer toda la tabla de entradas
+	for (int iCompactacion = 0; iCompactacion < estructuraAdministrativa.cantidadEntradas; iCompactacion++) {
+
+		// Verifico si la entrada esta libre
+		if (estructuraAdministrativa.entradasUsadas[iCompactacion] == 0) {
+
+			// Si la entrada está libre, busco la primera que no lo esté
+			for (int iEntradaOcupada = iCompactacion; iEntradaOcupada < estructuraAdministrativa.cantidadEntradas; iEntradaOcupada++) {
+				if (estructuraAdministrativa.entradasUsadas[iEntradaOcupada] == 1) {
+
+					// Cuando encuentro una libre, obtengo la entrada que ocupa ese index
+					entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)&iEntradaOcupada, entradaOcupaEspacio);
+
+					// Este if debería dar siempre true, excepto que haya sucedido alguna inconsistencia
+					if (entradaVoid != NULL) {
+						entrada = (Entrada*)entradaVoid;
+
+						// Marco todos los espacios que ocupa la entrada como disponible
+						for (int iLiberandoEntradas = iEntradaOcupada; iLiberandoEntradas <= iEntradaOcupada + entrada->cantidadEntradas; iLiberandoEntradas++) {
+							estructuraAdministrativa.entradasUsadas[iLiberandoEntradas] = 0;
+						}
+
+						// Marco los espacios que ocupará ahora como ocupados
+						for (int iOcupandoEntradas = iCompactacion; iOcupandoEntradas <= iCompactacion + entrada->cantidadEntradas; iOcupandoEntradas++) {
+							estructuraAdministrativa.entradasUsadas[iOcupandoEntradas] = 1;
+						}
+
+						// Le actualizo donde está guardada la entrada para que sea consistente
+						entrada->primeraEntrada = iCompactacion;
+
+						// Corto el for que está buscando la entrada ocupada
+						break;
+					} else {
+						log_warning(logInstancia, "********** ERROR DE INCONSISTENCIA AL COMPACTAR **********");
+					}
+				}
+			}
+		}
+	}
+
+	// Muestro como quedó la instancia después de la compactación
+	loguearInstancia();
+}
+
+int entradaOcupaEspacio(void* entrada, void* espacio) {
+	return ((Entrada*)entrada)->primeraEntrada == *(int*)espacio;
 }
 
 char* obtenerValorDelArchivo(const char* path_archivo) {

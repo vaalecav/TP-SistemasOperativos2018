@@ -67,3 +67,38 @@ ESI 2 || SET futbol:messi SeLoMeressi
 ESI 2 || SET futbol:messi TraemeLaCopa
 ESI 2 || STORE futbol:messi
 ESI 2 || STORE futbol:ansaldi
+ESI 1 || GET futbol:ansaldi
+ESI 1 || SET futbol:ansaldi TraeVodka
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || SET futbol:messi TraemeLaCo
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || SET futbol:messi TraemeLaCo
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || SET futbol:messi TraemeLaCo
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || SET futbol:messi TraemeLaCo
+ESI 1 || SET futbol:messi PorqueMessi
+ESI 1 || SET futbol:messi SeLoMeressi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 1 || STORE futbol:ansaldi
+ESI 2 || GET futbol:ansaldi
+ESI 2 || SET futbol:ansaldi TraeVodka
+ESI 2 || GET futbol:caballero
+ESI 2 || SET futbol:caballero Burro
+ESI 2 || GET futbol:messi
+ESI 2 || SET futbol:messi TraemeLaCopa
+ESI 2 || SET futbol:messi TraemeLaCo
+ESI 2 || SET futbol:messi TraemeLaCopa
+ESI 2 || SET futbol:messi TraemeLaCo
+ESI 2 || SET futbol:messi TraemeLaCopa
+ESI 2 || SET futbol:messi TraemeLaCo
+ESI 2 || SET futbol:messi TraemeLaCopa
+ESI 2 || SET futbol:messi TraemeLaCo
+ESI 2 || SET futbol:messi PorqueMessi
+ESI 2 || SET futbol:messi SeLoMeressi
+ESI 2 || SET futbol:messi TraemeLaCopa
+ESI 2 || STORE futbol:messi
+ESI 2 || STORE futbol:ansaldi
+ESI 2 || STORE futbol:caballero

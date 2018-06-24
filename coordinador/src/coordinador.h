@@ -56,6 +56,10 @@ int asignarClaveAInstancia(char*);
 int sePuedeComunicarConLaInstancia(Instancia*);
 void getClave(char*, int, int);
 
+// Compactación
+void compactar();
+void compactarInstancia(void*);
+
 // SET y STORE
 void ejecutarSentencia(int, int, char*, char*);
 void avisarA(int, char*, int);

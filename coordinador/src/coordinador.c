@@ -430,7 +430,9 @@ void avisarA(int socketAvisar, char* mensaje, int error) {
 void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, char* nombreESI) {
 	void* instanciaVoid;
 	Instancia* instancia;
-	ContentHeader *headerEstado, *headerEntradas;
+	ContentHeader *headerEstado, *headerEntradas, *headerCompactacion;
+
+	int hayQueCompactar = 0;
 
 	void* claveVoid;
 	Clave* clave;
@@ -546,21 +548,26 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 
 	switch (headerEstado->id) {
 		case INSTANCIA_SENTENCIA_OK_SET:
-			// Solo en el caso de un exito se va a recibir la cantidad de entradas libres
-			if (esSET(mensajeSplitted[0])) {
-				// Espero cantidad de entradas libres de la instancia
-				headerEntradas = recibirHeader(instancia->socket);
 
-				//le asigno la cantidad de entradas libres a la instancia
-				pthread_mutex_lock(&mutexListaInstancias);
-				instancia->entradasLibres = headerEntradas->id;
-				pthread_mutex_unlock(&mutexListaInstancias);
-			}
+			// Espero saber si necesita compactar
+			headerCompactacion = recibirHeader(instancia->socket);
+			hayQueCompactar = headerCompactacion->id;
+			free(headerCompactacion);
+
+			// Espero cantidad de entradas libres de la instancia
+			headerEntradas = recibirHeader(instancia->socket);
+
+			pthread_mutex_lock(&mutexListaInstancias);
+			instancia->entradasLibres = headerEntradas->id;
+			pthread_mutex_unlock(&mutexListaInstancias);
+
+			free(headerEntradas);
 
 			// Si está OK, le aviso al ESI y al planificador
 			log_trace(logCoordinador, "La sentencia se ejecutó correctamente");
 			avisarA(socketEsi, "", INSTANCIA_SENTENCIA_OK_SET);
 			avisarA(socketPlanificador, "", INSTANCIA_SENTENCIA_OK_SET);
+
 			break;
 
 		case INSTANCIA_SENTENCIA_OK_STORE:
@@ -574,7 +581,7 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 			// Cuando hay un error, le aviso al planificador
 			log_error(logCoordinador, "Clave no identificada");
 
-			//Le aviso al planificador
+			// Le aviso al planificador
 			avisarA(socketPlanificador, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
 
 			//Tambien le aviso al esi para que no se quede esperando
@@ -584,10 +591,10 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 		case INSTANCIA_ERROR:
 			log_error(logCoordinador, "Error no contemplado");
 
-			//Le aviso al planificador
+			// Le aviso al planificador
 			avisarA(socketPlanificador, "", INSTANCIA_ERROR);
 
-			//Tambien le aviso al esi para que no se quede esperando
+			// Tambien le aviso al esi para que no se quede esperando
 			avisarA(socketEsi, "", INSTANCIA_ERROR);
 			break;
 	}
@@ -598,6 +605,8 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 	free(mensajeSplitted[2]);
 	free(mensajeSplitted);
 	free(headerEstado);
+
+	if (hayQueCompactar) compactar();
 }
 
 int esSET(char* sentencia) {
@@ -606,4 +615,15 @@ int esSET(char* sentencia) {
 
 int esSTORE(char* sentencia) {
 	return strcmp(sentencia, "STORE") == 0;
+}
+
+// Compactacion
+void compactar() {
+	pthread_mutex_lock(&mutexListaInstancias);
+	list_iterate(listaInstancias, compactarInstancia);
+	pthread_mutex_unlock(&mutexListaInstancias);
+}
+
+void compactarInstancia(void* instancia) {
+	enviarHeader(((Instancia*)instancia)->socket, "", COMPACTAR);
 }
