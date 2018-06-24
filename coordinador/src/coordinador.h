@@ -19,7 +19,7 @@
  */
 
 #include <commonsNuestras/config.h>
-#include <commonsNuestras/log.h> // Con esta no deberia andar el t_log????
+#include <commonsNuestras/log.h>
 #include <commonsNuestras/string.h>
 #include <socket/sockets.h>
 #include <generales/generales.h>

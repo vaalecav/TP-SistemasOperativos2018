@@ -30,6 +30,7 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <pthread.h>
 
 EstructuraAdministrativa estructuraAdministrativa;
 int terminar;
@@ -42,6 +43,9 @@ t_log* logInstancia;
 
 // Compactacion
 int necesitaCompactacion;
+
+// Dump
+pthread_mutex_t mutexDump;
 
 // Algoritmos de remplazo
 int indexCirc;

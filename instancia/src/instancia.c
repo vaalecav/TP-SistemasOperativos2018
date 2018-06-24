@@ -370,7 +370,11 @@ void recibirSentencia() {
 	ContentHeader *header;
 	int respuesta;
 
+	// Recibo el mensaje del coordinador
 	header = recibirHeader(socketCoordinador);
+
+	// Cuando me llego una sentencia no dejo que se hagan DUMPs
+	pthread_mutex_lock(&mutexDump);
 
 	if (header->id == COORDINADOR) {
 		mensaje = malloc(header->largo + 1);
@@ -413,6 +417,9 @@ void recibirSentencia() {
 	}
 
 	free(header);
+
+	// Al terminar, permito que se sigan haciendo DUMPs
+	pthread_mutex_unlock(&mutexDump);
 }
 
 void compactar() {
@@ -614,6 +621,7 @@ int main() {
 
 	// Antes de empezar a recibir sentencias, inicio el DUMP
 		// TODO largar hilo que haga un sleep del tiempo indicado por configuración y después itere por todas las entradas haciendo guardando los valores (haciendo stores)
+		// Que cuando pasa el sleep, bloquee el mutex y cuando terminé lo desbloquee (no puede hacer otras cosas mientras hace un dump)
 
 	// Espero las sentencias
 		while(!terminar) {
