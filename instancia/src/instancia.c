@@ -150,9 +150,6 @@ int setearValor(char* clave, char* valor, int entradasNecesarias, int posicionPa
 		list_add(estructuraAdministrativa.entradas, (void*)entrada);
 	}
 
-	// Le aviso al coordinador la cantidad de entradas libres
-	avisarAlCoordinador(cantidadDeEntradasLibres());
-
 	// Logueo que setteo el valor
 	log_trace(logInstancia, "Setteo %s: %s, en la entrada %d con un largo de entradas %d", entrada->clave, entrada->valor, entrada->primerEntrada, entrada->cantidadEntradas);
 
@@ -297,6 +294,7 @@ int setearClave(char* clave, char* valor) {
 
 		// Verifico que la cantidad de entradas necesarias no sea mayor que la actual
 		if (entradasNecesarias > entrada->cantidadEntradas) {
+			log_error(logInstancia, "El valor <%s> de la clave <%s> necesita %d entradas cuando actualmente ocupa %d", valor, clave, entradasNecesarias, entrada->cantidadEntradas);
 			return INSTANCIA_ERROR;
 		}
 
@@ -386,6 +384,11 @@ void recibirSentencia() {
 		}
 
 		avisarAlCoordinador(respuesta);
+
+		if (respuesta == INSTANCIA_SENTENCIA_OK_SET) {
+			// Le aviso al coordinador la cantidad de entradas libres
+			avisarAlCoordinador(cantidadDeEntradasLibres());
+		}
 
 		free(mensaje);
 		free(mensajeSplitted[0]);

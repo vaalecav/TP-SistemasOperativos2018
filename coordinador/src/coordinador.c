@@ -175,15 +175,20 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	// Ejecuto
 	mensajeSplitted = string_split(mensaje, " ");
 	if (strcmp(mensajeSplitted[0], "GET") == 0) {
+
+		// Se ejecuta un GET
 		getClave(mensajeSplitted[1], socketPlanificador, socketEsi);
 		log_trace(logCoordinador, "Se ejecuto un GET");
-	} else if (strcmp(mensajeSplitted[0], "SET") == 0
-			|| strcmp(mensajeSplitted[0], "STORE") == 0) {
+
+	} else if (strcmp(mensajeSplitted[0], "SET") == 0 || strcmp(mensajeSplitted[0], "STORE") == 0) {
+
+		// EL SET y el STORE se manejan a través del ejecutarSentencia
 		ejecutarSentencia(socketEsi, socketPlanificador, mensaje, nombre);
 		log_trace(logCoordinador, "Se ejecuto un %s", mensajeSplitted[0]);
 
-		if (strcmp(mensajeSplitted[0], "SET") == 0)
+		if (strcmp(mensajeSplitted[0], "SET") == 0) {
 			free(mensajeSplitted[2]);
+		}
 	} else {
 		log_error(logCoordinador, "Error en el mensaje enviado por el ESI");
 	}
@@ -477,7 +482,7 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 
 	instancia = (Instancia*) instanciaVoid;
 
-	if(sePuedeComunicarConLaInstancia(instancia)== -1) {
+	if(sePuedeComunicarConLaInstancia(instancia) == -1) {
 		pthread_mutex_unlock(&mutexListaInstancias);
 
 		log_error(logCoordinador, "La instancia que se intenta acceder se encuentra caida.");
@@ -536,46 +541,55 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 	enviarHeader(instancia->socket, mensaje, COORDINADOR);
 	enviarMensaje(instancia->socket, mensaje);
 
-	if (esSET(mensajeSplitted[0])) {
-		// Espero cantidad de entradas libres de la instancia
-		headerEntradas = recibirHeader(instancia->socket);
-
-		//le asigno la cantidad de entradas libres a la instancia
-		pthread_mutex_lock(&mutexListaInstancias);
-		instancia->entradasLibres = headerEntradas->id;
-		pthread_mutex_unlock(&mutexListaInstancias);
-	}
-
 	// Espero la respuesta de la instancia
 	headerEstado = recibirHeader(instancia->socket);
 
 	switch (headerEstado->id) {
-	case INSTANCIA_SENTENCIA_OK_SET:
-		// Si está OK, le aviso al ESI y al planificador
-		log_trace(logCoordinador, "La sentencia se ejecutó correctamente");
-		avisarA(socketEsi, "", INSTANCIA_SENTENCIA_OK_SET);
-		avisarA(socketPlanificador, "", INSTANCIA_SENTENCIA_OK_SET);
-		break;
-	case INSTANCIA_SENTENCIA_OK_STORE:
-		// Si está OK, le aviso al ESI y al planificador
-		log_trace(logCoordinador, "La sentencia se ejecutó correctamente");
-		avisarA(socketEsi, "", INSTANCIA_SENTENCIA_OK_STORE);
-		avisarA(socketPlanificador, mensajeSplitted[1],	INSTANCIA_SENTENCIA_OK_STORE);
-		break;
+		case INSTANCIA_SENTENCIA_OK_SET:
+			// Solo en el caso de un exito se va a recibir la cantidad de entradas libres
+			if (esSET(mensajeSplitted[0])) {
+				// Espero cantidad de entradas libres de la instancia
+				headerEntradas = recibirHeader(instancia->socket);
 
-	case INSTANCIA_CLAVE_NO_IDENTIFICADA:
-		// Cuando hay un error, le aviso al planificador
-		log_error(logCoordinador, "Clave no identificada");
+				//le asigno la cantidad de entradas libres a la instancia
+				pthread_mutex_lock(&mutexListaInstancias);
+				instancia->entradasLibres = headerEntradas->id;
+				pthread_mutex_unlock(&mutexListaInstancias);
+			}
 
-		//Le aviso al planificador
-		avisarA(socketPlanificador, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
-		//Tambien le aviso al esi para que no se quede esperando
-		avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
-		break;
+			// Si está OK, le aviso al ESI y al planificador
+			log_trace(logCoordinador, "La sentencia se ejecutó correctamente");
+			avisarA(socketEsi, "", INSTANCIA_SENTENCIA_OK_SET);
+			avisarA(socketPlanificador, "", INSTANCIA_SENTENCIA_OK_SET);
+			break;
 
-	case INSTANCIA_ERROR:
-		log_error(logCoordinador, "Error no contemplado");
-		break;
+		case INSTANCIA_SENTENCIA_OK_STORE:
+			// Si está OK, le aviso al ESI y al planificador
+			log_trace(logCoordinador, "La sentencia se ejecutó correctamente");
+			avisarA(socketEsi, "", INSTANCIA_SENTENCIA_OK_STORE);
+			avisarA(socketPlanificador, mensajeSplitted[1],	INSTANCIA_SENTENCIA_OK_STORE);
+			break;
+
+		case INSTANCIA_CLAVE_NO_IDENTIFICADA:
+			// Cuando hay un error, le aviso al planificador
+			log_error(logCoordinador, "Clave no identificada");
+
+			//Le aviso al planificador
+			avisarA(socketPlanificador, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+
+			//Tambien le aviso al esi para que no se quede esperando
+			avisarA(socketEsi, "", COORDINADOR_ESI_ERROR_CLAVE_NO_IDENTIFICADA);
+			break;
+
+		case INSTANCIA_ERROR:
+			log_error(logCoordinador, "Error no contemplado");
+
+			//Le aviso al planificador
+			avisarA(socketPlanificador, "", INSTANCIA_ERROR);
+
+			//Tambien le aviso al esi para que no se quede esperando
+			avisarA(socketEsi, "", INSTANCIA_ERROR);
+			break;
 	}
 
 	// Libero memoria
