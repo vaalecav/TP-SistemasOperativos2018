@@ -431,8 +431,6 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 	Instancia* instancia;
 	ContentHeader *headerEstado, *headerEntradas, *headerCompactacion;
 
-	int hayQueCompactar = 0;
-
 	void* claveVoid;
 	Clave* clave;
 	char** mensajeSplitted;
@@ -542,16 +540,18 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 	enviarHeader(instancia->socket, mensaje, COORDINADOR);
 	enviarMensaje(instancia->socket, mensaje);
 
+	if (esSET(mensajeSplitted[0])) {
+		// Espero saber si necesita compactar
+		headerCompactacion = recibirHeader(instancia->socket);
+		if (headerCompactacion->id == COMPACTAR) compactar();
+		free(headerCompactacion);
+	}
+
 	// Espero la respuesta de la instancia
 	headerEstado = recibirHeader(instancia->socket);
 
 	switch (headerEstado->id) {
 		case INSTANCIA_SENTENCIA_OK_SET:
-
-			// Espero saber si necesita compactar
-			headerCompactacion = recibirHeader(instancia->socket);
-			hayQueCompactar = headerCompactacion->id;
-			free(headerCompactacion);
 
 			// Espero cantidad de entradas libres de la instancia
 			headerEntradas = recibirHeader(instancia->socket);
@@ -604,8 +604,6 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 	free(mensajeSplitted[2]);
 	free(mensajeSplitted);
 	free(headerEstado);
-
-	if (hayQueCompactar) compactar();
 }
 
 int esSET(char* sentencia) {
