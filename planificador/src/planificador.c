@@ -242,7 +242,8 @@ int bloquearClaveESI(char* clave, int esi) {
 
 		// Agarro el esi si existe
 		claveParaDesbloquear = (CLAVE*) claveParaDesbloquearVoid;
-		esiEjecutar = list_find_with_param(claveParaDesbloquear->listaEsi, (void*)&esi, buscarEnBloqueados);
+		esiEjecutar = list_find_with_param(claveParaDesbloquear->listaEsi,
+				(void*) &esi, buscarEnBloqueados);
 
 		// Si existe el esi bloqueado por la clave, lo desbloqueo
 		if (esiEjecutar != NULL) {
@@ -252,12 +253,13 @@ int bloquearClaveESI(char* clave, int esi) {
 
 			return 1;
 		} else {
-			printf("La clave <%s> no se puede bloquear.", clave);
+			printf("La clave <%s> del ESI %d no se puede bloquear./n", clave,
+					esi);
 
 			return 0;
 		}
 	} else {
-		printf("La clave <%s> no se puede bloquear.", clave);
+		printf("La clave <%s> del ESI %d no se puede bloquear./n", clave, esi);
 		return 0;
 	}
 }
@@ -270,7 +272,8 @@ bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 }
 
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
-	DATA * esi = (DATA*) esiVoid;;
+	DATA * esi = (DATA*) esiVoid;
+	;
 	int id = (int*) idVoid;
 	return esi->id == id;
 }
@@ -480,15 +483,15 @@ void imprimirEnPantallaClavesAux(void* idVoid) {
 
 //=======================COMANDOS DE CONSOLA====================================
 
-int cmdDesbloquear(char* clave, int esi) {
-	if (desbloquearClaveESI(clave, esi))
+int cmdDesbloquear(char* clave) {
+	if (desbloquearClave(clave))
 		printf("Se desbloqueó la clave %s\n", clave);
 	return 0;
 }
 
-int cmdBloquear(char* clave, char* esi) {
+int cmdBloquear(char* clave, int esi) {
 	if (bloquearClaveESI(clave, esi))
-		printf("Se bloqueó la clave %s\n", clave);
+		printf("Se bloqueó la clave %s del ESI con ID %d\n", clave, esi);
 	return 0;
 }
 
