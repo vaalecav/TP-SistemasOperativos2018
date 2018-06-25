@@ -7,7 +7,7 @@ MAX_CONEX=20
 #	EL 	- Equitative Load
 #	LSU - Least Space Used
 #	KE 	- Key Explicit
-ALG_DISTR=EL
+ALG_DISTR=LSU
 #
 #Entradas Instancias
 CANTIDAD_ENTRADAS=20

@@ -19,7 +19,7 @@
  */
 
 #include <commonsNuestras/config.h>
-#include <commonsNuestras/log.h> // Con esta no deberia andar el t_log????
+#include <commonsNuestras/log.h>
 #include <commonsNuestras/string.h>
 #include <socket/sockets.h>
 #include <generales/generales.h>
@@ -40,6 +40,7 @@ enum CLAVE {
 
 int buscarClaveEnListaDeClaves(void*, void*);
 int buscarInstanciaConClave(void*, void*);
+int buscarNombreDeLaInstancia(void*, void*);
 void manejarInstancia(int, int);
 void closeInstancia(void*);
 void cerrarInstancias();
@@ -51,8 +52,13 @@ int claveEstaEnInstancia(char*);
 int compararClave(void*, char*);
 
 // GET
-int sePuedeComunicarConLaInstancia();
+int asignarClaveAInstancia(char*);
+int sePuedeComunicarConLaInstancia(Instancia*);
 void getClave(char*, int, int);
+
+// Compactación
+void compactar();
+void compactarInstancia(void*);
 
 // SET y STORE
 void ejecutarSentencia(int, int, char*, char*);

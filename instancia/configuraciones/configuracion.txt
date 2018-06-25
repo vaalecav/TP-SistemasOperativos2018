@@ -13,3 +13,6 @@ ALG_REMP=CIRC
 #
 #Punto de montaje (donde se guardan las entradas)
 PUNTO_MONTAJE=/home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/
+#
+#Dump
+#INTERVALO_DUMP=10
