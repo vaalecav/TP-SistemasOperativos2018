@@ -230,8 +230,7 @@ int correrEnHilo(SocketHilos socketsConectados) {
 	socketsNecesarios = (SocketHilos*) malloc(sizeof(SocketHilos));
 	*socketsNecesarios = socketsConectados;
 
-	if (pthread_create(&idHilo, NULL, (void*) manejarConexion,
-			(void*) socketsNecesarios)) {
+	if (pthread_create(&idHilo, NULL, (void*) manejarConexion, (void*) socketsNecesarios)) {
 		log_error(logCoordinador, "No se pudo crear el hilo");
 		free(socketsNecesarios);
 		return 0;

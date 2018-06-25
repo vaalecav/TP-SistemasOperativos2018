@@ -45,6 +45,14 @@ void loguearInstancia() {
 	list_iterate(estructuraAdministrativa.entradas, loguearEntrada);
 }
 
+void liberarMemoria(){
+	free(info);
+	config_destroy(configuracion);
+	close(socketCoordinador);
+	list_destroy_and_destroy_elements(estructuraAdministrativa.entradas, freeEntrada);
+	log_destroy(logInstancia);
+}
+
 void cerrarInstancia(int sig) {
     terminar = 1;
 
@@ -52,11 +60,7 @@ void cerrarInstancia(int sig) {
     	loguearInstancia();
 
 	// Libero memoria
-		free(info);
-		config_destroy(configuracion);
-		close(socketCoordinador);
-		list_destroy_and_destroy_elements(estructuraAdministrativa.entradas, freeEntrada);
-		log_destroy(logInstancia);
+		liberarMemoria();
 
 	exit(1);
 }
@@ -560,10 +564,43 @@ void reincorporarInstancia() {
 	}
 }
 
+void dumpEntradas(void* entradaVoid){
+	Entrada* entrada = (Entrada*) entradaVoid;
+	// No checkeo valor que devuelve ya que no aplica en este caso
+	storeClave(entrada->clave);
+}
+
+void realizarDump(int intervaloDump){
+	while(true){
+		// Hago sleep del tiempo indicado por configuración
+		sleep(intervaloDump);
+		// Bloqeo mutex y cuando termino desbloqueo (no puede hacer otras cosas mientras hace un DUMP)
+		pthread_mutex_lock(&mutexDump);
+		// Itera por todas las entradas guardando los valores
+		list_iterate(estructuraAdministrativa.entradas, dumpEntradas);
+		pthread_mutex_unlock(&mutexDump);
+	}
+
+}
+
+int correrEnHilo(int intervaloDump){
+	pthread_t idHilo;
+
+	if (pthread_create(&idHilo, NULL, (void*) realizarDump, (void*) intervaloDump)) {
+		log_error(logInstancia, "No se pudo crear el hilo");
+		return 0;
+	}
+	log_trace(logInstancia, "Hilo asignado");
+	pthread_join(idHilo, NULL);
+
+	return 1;
+}
+
 int main() {
 	char* ipCoordinador;
 	int puertoCoordinador;
 	char* nombre;
+	int intervaloDump; //en segundos
 
 	// Inicio el log
 		logInstancia = log_create(ARCHIVO_LOG, "Instancia", LOG_PRINT, LOG_LEVEL_TRACE);
@@ -579,6 +616,7 @@ int main() {
 		puertoCoordinador = config_get_int_value(configuracion, "PUERTO_COORDINADOR");
 		ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
 		nombre = config_get_string_value(configuracion, "NOMBRE");
+		intervaloDump = config_get_int_value(configuracion, "INTERVALO_DUMP");
 
 	// Instancio las cosas necesarias para los algoritmos de remplazo
 		indexCirc = 0;
@@ -619,9 +657,12 @@ int main() {
 		// Le aviso al coordinador la cantidad de entradas libres
 		enviarHeader(socketCoordinador, "", cantidadDeEntradasLibres());
 
-	// Antes de empezar a recibir sentencias, inicio el DUMP
-		// TODO largar hilo que haga un sleep del tiempo indicado por configuración y después itere por todas las entradas haciendo guardando los valores (haciendo stores)
-		// Que cuando pasa el sleep, bloquee el mutex y cuando terminé lo desbloquee (no puede hacer otras cosas mientras hace un dump)
+		// Antes de empezar a recibir sentencias, inicio el DUMP
+		//Corro el DUMP en un thread
+		if (!correrEnHilo(intervaloDump)) {
+			liberarMemoria();
+			return 0;
+		}
 
 	// Espero las sentencias
 		while(!terminar) {
