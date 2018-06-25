@@ -55,13 +55,8 @@ void liberarMemoria(){
 
 void cerrarInstancia(int sig) {
     terminar = 1;
-
-	// Logueo el cierre de la instancia
-    	loguearInstancia();
-
-	// Libero memoria
-		liberarMemoria();
-
+	loguearInstancia();
+	liberarMemoria();
 	exit(1);
 }
 
@@ -279,9 +274,7 @@ int setearClave(char* clave, char* valor) {
 	void* entradaVoid;
 	int entradasNecesarias;
 	int entradaGuardar = -1;
-
-	// En un principio, no se debería compactar
-	necesitaCompactacion = 0;
+	ContentHeader *headerCompactar;
 
 	// Verifico si alcanzan las entradas
 	entradasNecesarias = divCeil(strlen(valor), estructuraAdministrativa.tamanioEntrada);
@@ -291,9 +284,29 @@ int setearClave(char* clave, char* valor) {
 		log_error(logInstancia, "El valor no entra en la tabla de entradas");
 		return INSTANCIA_ERROR;
 	}
+	
+	entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave);
+
+	// Verifico si hay que compactar
+	if (entradaVoid == NULL && cantidadEntradasPosiblesContinuas() < entradasNecesarias && cantidadDeEntradasLibres() >= entradasNecesarias) {
+
+		// Le aviso al coordinador que hay que compactar
+		avisarAlCoordinador(COMPACTAR);
+
+		// Espero a que el coordinador me diga que compacte
+		headerCompactar = recibirHeader(socketCoordinador);
+
+		// Si el coordinador me dice que compacte, lo hago
+		if (headerCompactar->id == COMPACTAR) {
+			compactar();
+		}
+	} else {
+		// Le aviso al coordinador que no hace falta compactar
+		avisarAlCoordinador(0);
+	}
 
 	// Verifico si ya está seteada la clave
-	if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)clave, entradaEsIgualAClave)) != NULL) {
+	if (entradaVoid != NULL) {
 		entrada = (Entrada*)entradaVoid;
 
 		// Logueo que la entrada ya existe
@@ -312,11 +325,7 @@ int setearClave(char* clave, char* valor) {
 			estructuraAdministrativa.entradasUsadas[i] = 0;
 		}
 	} else {
-		if (cantidadEntradasPosiblesContinuas() < entradasNecesarias && cantidadDeEntradasLibres() >= entradasNecesarias) {
-			// Como va a tener que ejecutar el algoritmo de remplazo, y hay entradas libres como para guardarlo igualmente, compacto
-			necesitaCompactacion = 1;
-		}
-
+	
 		// Si no está seteada, verifico si hay espacio continuo disponible
 		while (cantidadEntradasPosiblesContinuas() < entradasNecesarias) {
 			ejecutarAlgoritmoDeRemplazo();
@@ -392,6 +401,11 @@ void recibirSentencia() {
 		if (strcmp(mensajeSplitted[0], "SET") == 0) {
 			cantidadSentencias++;
 			respuesta = setearClave(mensajeSplitted[1], mensajeSplitted[2]);
+
+			// Si no salió todo OK, le tengo que avisar al coordinador que no compacte
+			if (respuesta != INSTANCIA_SENTENCIA_OK_SET) {
+				avisarAlCoordinador(0);
+			}
 		} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
 			cantidadSentencias++;
 			respuesta = storeClave(mensajeSplitted[1]);
@@ -403,9 +417,6 @@ void recibirSentencia() {
 		avisarAlCoordinador(respuesta);
 
 		if (respuesta == INSTANCIA_SENTENCIA_OK_SET) {
-			// En el caso de que haya sido un set con final feliz, le aviso si hay que compactar
-			avisarAlCoordinador(necesitaCompactacion);
-
 			// Le aviso al coordinador la cantidad de entradas libres
 			avisarAlCoordinador(cantidadDeEntradasLibres());
 		}
@@ -416,8 +427,6 @@ void recibirSentencia() {
 		free(mensajeSplitted[2]);
 		free(mensajeSplitted);
 
-	} else if (header->id == COMPACTAR) {
-		compactar();
 	}
 
 	free(header);
@@ -574,13 +583,14 @@ void realizarDump(int intervaloDump){
 	while(true){
 		// Hago sleep del tiempo indicado por configuración
 		sleep(intervaloDump);
+		
 		// Bloqeo mutex y cuando termino desbloqueo (no puede hacer otras cosas mientras hace un DUMP)
 		pthread_mutex_lock(&mutexDump);
+		
 		// Itera por todas las entradas guardando los valores
 		list_iterate(estructuraAdministrativa.entradas, dumpEntradas);
 		pthread_mutex_unlock(&mutexDump);
 	}
-
 }
 
 int correrEnHilo(int intervaloDump){
@@ -657,8 +667,7 @@ int main() {
 		// Le aviso al coordinador la cantidad de entradas libres
 		enviarHeader(socketCoordinador, "", cantidadDeEntradasLibres());
 
-		// Antes de empezar a recibir sentencias, inicio el DUMP
-		//Corro el DUMP en un thread
+	// Antes de empezar a recibir sentencias, inicio el DUMP en un thread
 		if (!correrEnHilo(intervaloDump)) {
 			liberarMemoria();
 			return 0;
