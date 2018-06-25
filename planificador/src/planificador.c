@@ -449,6 +449,12 @@ void imprimirEnPantallaClavesAux(void* idVoid) {
 
 //=======================COMANDOS DE CONSOLA====================================
 
+int cmdStatus(char* clave) {
+	// falta valor e instancia que nos lo da el coordinador
+	list_iterate(colaBloqueados, imprimirEnPantalla);
+	return 0;
+}
+
 int cmdKill(int esi) {
 	if (finalizarESI(esi))
 		printf("Se ha finalizado el ESI con ID %d", esi);
