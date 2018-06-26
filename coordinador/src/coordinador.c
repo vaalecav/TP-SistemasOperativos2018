@@ -164,8 +164,7 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	loguearOperacion(nombre, mensaje);
 
 	// Logueo el mensaje
-	log_trace(logCoordinador, "Recibimos el mensaje: Nombre = %s; Mensaje = %s",
-			nombre, mensaje);
+	log_trace(logCoordinador, "Recibimos el mensaje: Nombre = %s; Mensaje = %s", nombre, mensaje);
 
 	// Retraso ficticio de la ejecucion
 	int retardo = tiempoRetardoFicticio();
@@ -177,7 +176,7 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	if (strcmp(mensajeSplitted[0], "GET") == 0) {
 
 		// Se ejecuta un GET
-		getClave(mensajeSplitted[1], socketPlanificador, socketEsi);
+		getClave(mensajeSplitted[1], socketPlanificador, socketEsi, nombre);
 		log_trace(logCoordinador, "Se ejecuto un GET");
 
 	} else if (strcmp(mensajeSplitted[0], "SET") == 0 || strcmp(mensajeSplitted[0], "STORE") == 0) {
@@ -242,6 +241,48 @@ int correrEnHilo(SocketHilos socketsConectados) {
 	return 1;
 }
 
+void manejarComandoStatus(int socketPlanificador, int largoMensaje){
+	char* nombreClave = malloc(largoMensaje +1);
+	recibirMensaje(socketPlanificador, largoMensaje, &nombreClave);
+	//TODO Busco clave y paso sus datos (valor, instancia en la que se guardaria)
+
+	free(nombreClave);
+}
+
+void desbloquearClavesDelEsi(void* instanciaVoid) {
+	Instancia* instancia = (Instancia*) instanciaVoid;
+}
+
+void manejarComandoKill(int socketPlanificador, int largoMensaje){
+	char* nombreEsi = malloc(largoMensaje +1);
+	// Recibo nombre del esi
+	recibirMensaje(socketPlanificador, largoMensaje, &nombreEsi);
+	//TODO Busco claves del esi, y las desbloqueo
+
+	free(nombreEsi);
+}
+
+void consolaPlanificador(void* socketPlanificadorVoid){
+	int socketPlanificador = *((int*)socketPlanificadorVoid);
+	ContentHeader * header;
+
+	while(true){
+		header = recibirHeader(socketPlanificador);
+		switch (header->id) {
+			case COMANDO_KILL:
+				log_trace(logCoordinador, "Se recibio kill de esi desde el planificador");
+				manejarComandoKill(socketPlanificador, header->largo);
+				break;
+
+			case COMANDO_STATUS:
+				log_trace(logCoordinador, "Se recibio status de clave desde el planificador");
+				manejarComandoStatus(socketPlanificador, header->largo);
+				break;
+			}
+		free(header);
+	}
+}
+
 int main() {
 	puts("Iniciando Coordinador.");
 	int socketEscucha, socketComponente, socketConectadoPlanificador;
@@ -270,6 +311,21 @@ int main() {
 
 	// Logueo la conexion
 	log_trace(logCoordinador, "Se conectó el planificador: Puerto=%d; Ip Planificador=%d; Máximas conexiones=%d", puerto, ipPlanificador, maxConexiones);
+
+	// Creo hilo para esperar mensajes de consola del planificador
+	pthread_t idHilo;
+	if (pthread_create(&idHilo, NULL, (void*) consolaPlanificador, (void*) socketConectadoPlanificador)) {
+		log_error(logCoordinador, "No se pudo crear el hilo para recibir mensajes del Planificador");
+		//Libero memoria
+		close(socketEscucha);
+		close(socketConectadoPlanificador);
+		free(ipPlanificador);
+		config_destroy(configuracion);
+		cerrarInstancias();
+		return 0;
+	}
+	log_trace(logCoordinador, "Hilo asignado para recibir mensajes del Planificador");
+	pthread_join(idHilo, NULL);
 
 	// Instancio la lista de instancias
 	listaInstancias = list_create();
@@ -308,7 +364,7 @@ bool instanciasNoCaidas(void* instanciaVoid) {
 	return sePuedeComunicarConLaInstancia((Instancia*) instanciaVoid) != -1;
 }
 
-int asignarClaveAInstancia(char* key) {
+int asignarClaveAInstancia(char* key, char* nombreEsi) {
 	char* algoritmo_distribucion;
 	t_config* configuracion;
 	Instancia* instancia;
@@ -321,6 +377,9 @@ int asignarClaveAInstancia(char* key) {
 	clave->nombre = malloc(strlen(key) + 1);
 	strcpy(clave->nombre, key);
 	clave->nombre[strlen(key)] = '\0';
+	strcpy(clave->nombreEsi, nombreEsi);
+	clave->nombreEsi[strlen(nombreEsi)] = '\0';
+
 
 	// Leo del archivo de configuracion
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
@@ -357,7 +416,7 @@ int asignarClaveAInstancia(char* key) {
 	return 1;
 }
 
-void getClave(char* key, int socketPlanificador, int socketEsi) {
+void getClave(char* key, int socketPlanificador, int socketEsi, char* nombreEsi) {
 	Clave* clave;
 	void* claveVoid;
 	Instancia* instancia;
@@ -366,18 +425,16 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 
 	// Busco la clave en la lista de claves
 	pthread_mutex_lock(&mutexListaInstancias);
-	instanciaVoid = list_find_with_param(listaInstancias, (void*) key,
-			buscarInstanciaConClave);
+	instanciaVoid = list_find_with_param(listaInstancias, (void*) key, buscarInstanciaConClave);
 
 	// Si encontré una instancia, busco su clave
 	claveVoid = (instanciaVoid != NULL ? list_find_with_param(((Instancia*) instanciaVoid)->claves, (void*) key, buscarClaveEnListaDeClaves) : NULL);
 
 	pthread_mutex_unlock(&mutexListaInstancias);
 	clave = (Clave*) claveVoid;
-	// Le aviso al planificador de su estado
+
 	if (instanciaVoid != NULL) {
 		instancia = (Instancia*) instanciaVoid;
-
 		// Se tiene que verificar si la instancia no está caída
 		if (sePuedeComunicarConLaInstancia(instancia) != -1) {
 			// Se fija si la clave se encuentra bloqueada
@@ -391,6 +448,8 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 				log_trace(logCoordinador, "La clave no se encuentra bloqueada, se bloquea");
 				respuestaGET = COORDINADOR_ESI_BLOQUEAR;
 				clave->bloqueado = 1;
+				// Asigno que esi la bloqueo
+				strcpy(clave->nombreEsi, nombreEsi);
 				avisarA(socketEsi, "", respuestaGET);
 				avisarA(socketPlanificador, "", respuestaGET);
 			}
@@ -405,7 +464,7 @@ void getClave(char* key, int socketPlanificador, int socketEsi) {
 		}
 	} else {
 		// Le asigno la nueva clave a la instancia
-		if (asignarClaveAInstancia(key)) {
+		if (asignarClaveAInstancia(key, nombreEsi)) {
 			respuestaGET = COORDINADOR_ESI_CREADO;
 			log_trace(logCoordinador, "Se asigna la nueva clave a la instancia");
 		} else {

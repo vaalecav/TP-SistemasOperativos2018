@@ -63,6 +63,11 @@ int entradaEsIgualAClave(void*, void*);
 int setearClave(char*, char*);
 int storeClave(char*);
 
+// Dump
+int correrEnHilo(int);
+void realizarDump(int);
+void dumpEntradas(void*);
+
 // Compactación
 void compactar();
 int entradaOcupaEspacio(void*, void*);

@@ -597,10 +597,10 @@ int correrEnHilo(int intervaloDump){
 	pthread_t idHilo;
 
 	if (pthread_create(&idHilo, NULL, (void*) realizarDump, (void*) intervaloDump)) {
-		log_error(logInstancia, "No se pudo crear el hilo");
+		log_error(logInstancia, "No se pudo crear el hilo para realizar el Dump");
 		return 0;
 	}
-	log_trace(logInstancia, "Hilo asignado");
+	log_trace(logInstancia, "Hilo asignado para realizar el Dump");
 	pthread_join(idHilo, NULL);
 
 	return 1;

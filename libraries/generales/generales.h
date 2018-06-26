@@ -68,6 +68,7 @@ typedef struct {
 
 typedef struct {
   char* nombre;
+  char* nombreEsi;
   int bloqueado;
 } __attribute__((packed)) Clave;
 
