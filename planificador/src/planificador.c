@@ -213,6 +213,24 @@ void manejoAlgoritmos() {
 	}
 }
 
+int finalizarESI(int esi) {
+	void * esiEjecutar;
+	DATA * esiBloqueada;
+
+	esiEjecutar = list_find_with_param(listaEsi, (void*) &esi,
+			buscarEnBloqueados);
+
+	if (esiEjecutar != NULL) {
+		esiBloqueada = list_remove_by_condition_with_param(colaBloqueados,
+				esiEjecutar, buscarEnBloqueados);
+		list_add(colaReady, (void*) esiBloqueada);
+		return 1;
+	} else {
+		printf("El ESI con ID %d no se pudo finalizar", esi);
+		return 0;
+	}
+}
+
 bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 	DATA* esi1 = (DATA*) esi1Void;
 	DATA* esi2 = (DATA*) esi2Void;
@@ -430,6 +448,18 @@ void imprimirEnPantallaClavesAux(void* idVoid) {
 }
 
 //=======================COMANDOS DE CONSOLA====================================
+
+int cmdStatus(char* clave) {
+	// falta valor e instancia que nos lo da el coordinador
+	list_iterate(colaBloqueados, imprimirEnPantalla);
+	return 0;
+}
+
+int cmdKill(int esi) {
+	if (finalizarESI(esi))
+		printf("Se ha finalizado el ESI con ID %d", esi);
+	return 0;
+}
 
 int cmdListaClaves() {
 	list_iterate(listaClaves, imprimirEnPantallaClaves);
