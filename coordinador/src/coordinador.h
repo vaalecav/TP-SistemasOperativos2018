@@ -52,9 +52,9 @@ int claveEstaEnInstancia(char*);
 int compararClave(void*, char*);
 
 // GET
-int asignarClaveAInstancia(char*);
+int asignarClaveAInstancia(char*, char*);
 int sePuedeComunicarConLaInstancia(Instancia*);
-void getClave(char*, int, int);
+void getClave(char*, int, int, char*);
 
 // Compactación
 void compactar();
@@ -65,5 +65,13 @@ void ejecutarSentencia(int, int, char*, char*);
 void avisarA(int, char*, int);
 int esSET(char*);
 int esSTORE(char*);
+
+// Comandos planificador
+void manejarComandoStatus(int, int);
+void manejarComandoKill(int, int);
+void consolaPlanificador(void*);
+
+
+
 
 #endif /* COORDINADOR_H_ */

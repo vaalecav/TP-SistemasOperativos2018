@@ -249,10 +249,6 @@ void manejarComandoStatus(int socketPlanificador, int largoMensaje){
 	free(nombreClave);
 }
 
-void desbloquearClavesDelEsi(void* instanciaVoid) {
-	Instancia* instancia = (Instancia*) instanciaVoid;
-}
-
 void manejarComandoKill(int socketPlanificador, int largoMensaje){
 	char* nombreEsi = malloc(largoMensaje +1);
 	// Recibo nombre del esi
