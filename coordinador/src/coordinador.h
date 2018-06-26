@@ -55,6 +55,7 @@ int compararClave(void*, char*);
 int asignarClaveAInstancia(char*, char*);
 int sePuedeComunicarConLaInstancia(Instancia*);
 void getClave(char*, int, int, char*);
+Instancia* seleccionarInstanciaAlgoritmoDistribucion(Clave*);
 
 // Compactación
 void compactar();
@@ -70,6 +71,11 @@ int esSTORE(char*);
 void manejarComandoStatus(int, int);
 void manejarComandoKill(int, int);
 void consolaPlanificador(void*);
+char* obtenerValorClaveInstancia(int, char*);
+int buscarClaveDeEsi(void*, void*);
+int buscarInstanciaConEsi(void*, void*);
+
+
 
 
 

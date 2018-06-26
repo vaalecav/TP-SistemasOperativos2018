@@ -19,6 +19,16 @@ int buscarInstanciaConClave(void* instanciaVoid, void* claveVoid) {
 	return list_find_with_param(instancia->claves, claveVoid, buscarClaveEnListaDeClaves) != NULL;
 }
 
+int buscarClaveDeEsi(void* structClaveVoid, void* nombreEsiVoid) {
+	Clave* structClave = (Clave*) structClaveVoid;
+	return strcmp(structClave->nombreEsi, (char*) nombreEsiVoid) == 0;
+}
+
+int buscarInstanciaConEsi(void* instanciaVoid, void* nombreEsiVoid) {
+	Instancia* instancia = (Instancia*) instanciaVoid;
+	return list_find_with_param(instancia->claves, nombreEsiVoid, buscarClaveDeEsi) != NULL;
+}
+
 int buscarNombreDeLaInstancia(void* instancia, void* nombre) {
 	return strcmp(((Instancia*)instancia)->nombre, (char*)nombre) == 0;
 }
@@ -334,10 +344,23 @@ void manejarComandoStatus(int socketPlanificador, int largoMensaje){
 }
 
 void manejarComandoKill(int socketPlanificador, int largoMensaje){
+	void* instanciaVoid;
+	void* claveVoid;
+	Clave* clave;
 	char* nombreEsi = malloc(largoMensaje +1);
 	// Recibo nombre del esi
 	recibirMensaje(socketPlanificador, largoMensaje, &nombreEsi);
-	//TODO Busco claves del esi, y las desbloqueo
+	// Busco instancias con claves del esi
+	pthread_mutex_lock(&mutexListaInstancias);
+	while((instanciaVoid = list_find_with_param(listaInstancias, (void*) nombreEsi, buscarInstanciaConEsi)) != NULL){
+		// Busco claves del esi en la instancia
+		while((claveVoid = list_find_with_param(((Instancia*) instanciaVoid)->claves, (void*) nombreEsi, buscarClaveDeEsi)) != NULL){
+			clave = (Clave*) claveVoid;
+			// Desbloqueo clave del esi
+			clave->bloqueado = 0;
+		}
+	}
+	pthread_mutex_unlock(&mutexListaInstancias);
 
 	free(nombreEsi);
 }
@@ -393,7 +416,7 @@ int main() {
 	log_trace(logCoordinador, "Se conectó el planificador: Puerto=%d; Ip Planificador=%d; Máximas conexiones=%d", puerto, ipPlanificador, maxConexiones);
 
 	// Creo hilo para esperar mensajes de consola del planificador
-	pthread_t idHilo;
+	/*pthread_t idHilo;
 	if (pthread_create(&idHilo, NULL, (void*) consolaPlanificador, (void*) socketConectadoPlanificador)) {
 		log_error(logCoordinador, "No se pudo crear el hilo para recibir mensajes del Planificador");
 		//Libero memoria
@@ -405,7 +428,7 @@ int main() {
 		return 0;
 	}
 	log_trace(logCoordinador, "Hilo asignado para recibir mensajes del Planificador");
-
+	*/
 	// Instancio la lista de instancias
 	listaInstancias = list_create();
 
