@@ -1530,3 +1530,850 @@
 [TRACE] 19:28:30:894 Coordinador/(7357:7949): La sentencia se ejecutó correctamente
 [TRACE] 19:28:30:895 Coordinador/(7357:7949): Se ejecuto un STORE
 [TRACE] 19:28:30:895 ESI/(7930:7930): El coordinador me respondió que salió todo OK
+[TRACE] 23:09:22:316 Coordinador/(3989:3989): Se conectó el planificador: Puerto=8000; Ip Planificador=135523376; Máximas conexiones=20
+[TRACE] 23:09:22:321 Coordinador/(3989:3989): Hilo asignado para recibir mensajes del Planificador
+[TRACE] 23:13:11:856 Coordinador/(4430:4430): Se conectó el planificador: Puerto=8000; Ip Planificador=154004528; Máximas conexiones=20
+[TRACE] 23:15:11:246 Instancia/(4757:4757): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:15:11:248 Coordinador/(4430:4430): Se conectó un componente
+[TRACE] 23:15:11:248 Coordinador/(4430:4430): Hilo asignado
+[TRACE] 23:15:11:252 Coordinador/(4430:4758): Se conectó una instancia
+[TRACE] 23:15:11:288 Coordinador/(4430:4758): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:15:11:288 Coordinador/(4430:4758): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:15:11:288 Instancia/(4757:4757): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:15:11:289 Instancia/(4757:4757): No hay nada que reincorporar
+[TRACE] 23:15:11:289 Instancia/(4757:4757): Hilo asignado para realizar el Dump
+[TRACE] 23:15:11:289 Coordinador/(4430:4758): Se ingresó la instancia nueva <Instancia1> con 4 entradas libres
+[TRACE] 23:15:49:484 ESI/(4924:4924): Number of lines in the file is 7
+
+[TRACE] 23:15:49:485 ESI/(4924:4924): Recibí una señal de avanzar del coordinador
+[TRACE] 23:15:49:485 ESI/(4924:4924): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 23:15:49:486 Coordinador/(4430:4430): Se conectó un componente
+[TRACE] 23:15:49:486 Coordinador/(4430:4430): Hilo asignado
+[TRACE] 23:15:49:486 Coordinador/(4430:4925): Se conectó un ESI
+[TRACE] 23:15:49:526 Coordinador/(4430:4925): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 23:15:49:526 Coordinador/(4430:4925): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 23:15:49:530 Coordinador/(4430:4925): Hago un retardo de 300000 microsegundos
+[TRACE] 23:18:50:614 Coordinador/(5116:5116): Se conectó el planificador: Puerto=8000; Ip Planificador=160623664; Máximas conexiones=20
+[TRACE] 23:19:09:121 Instancia/(5336:5336): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:19:09:122 Coordinador/(5116:5116): Se conectó un componente
+[TRACE] 23:19:09:122 Coordinador/(5116:5116): Hilo asignado
+[TRACE] 23:19:09:123 Coordinador/(5116:5337): Se conectó una instancia
+[TRACE] 23:19:09:160 Coordinador/(5116:5337): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:19:09:160 Coordinador/(5116:5337): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:19:09:160 Instancia/(5336:5336): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:19:09:160 Instancia/(5336:5336): No hay nada que reincorporar
+[TRACE] 23:19:09:161 Instancia/(5336:5336): Hilo asignado para realizar el Dump
+[TRACE] 23:19:09:161 Coordinador/(5116:5337): Se ingresó la instancia nueva <Instancia1> con 4 entradas libres
+[TRACE] 23:19:32:16 ESI/(5453:5453): Number of lines in the file is 7
+
+[TRACE] 23:19:32:16 ESI/(5453:5453): Recibí una señal de avanzar del coordinador
+[TRACE] 23:19:32:17 ESI/(5453:5453): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 23:19:32:17 Coordinador/(5116:5116): Se conectó un componente
+[TRACE] 23:19:32:17 Coordinador/(5116:5116): Hilo asignado
+[TRACE] 23:19:32:18 Coordinador/(5116:5454): Se conectó un ESI
+[TRACE] 23:19:32:55 Coordinador/(5116:5454): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 23:19:32:55 Coordinador/(5116:5454): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 23:19:32:55 Coordinador/(5116:5454): Hago un retardo de 300000 microsegundos
+[TRACE] 23:22:45:593 Instancia/(5336:5336): La tabla de entradas quedó: 0000
+[TRACE] 23:23:21:98 Coordinador/(5655:5655): Se conectó el planificador: Puerto=8000; Ip Planificador=163347504; Máximas conexiones=20
+[TRACE] 23:23:25:873 Instancia/(5769:5769): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:23:25:874 Coordinador/(5655:5655): Se conectó un componente
+[TRACE] 23:23:25:874 Coordinador/(5655:5655): Hilo asignado
+[TRACE] 23:23:25:879 Coordinador/(5655:5770): Se conectó una instancia
+[TRACE] 23:23:25:911 Coordinador/(5655:5770): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:23:25:912 Coordinador/(5655:5770): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:23:25:912 Instancia/(5769:5769): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:23:25:912 Instancia/(5769:5769): No hay nada que reincorporar
+[TRACE] 23:23:25:913 Instancia/(5769:5769): Hilo asignado para realizar el Dump
+[TRACE] 23:23:25:913 Coordinador/(5655:5770): Se ingresó la instancia nueva <Instancia1> con 4 entradas libres
+[TRACE] 23:23:29:780 ESI/(5772:5772): Number of lines in the file is 7
+
+[TRACE] 23:23:29:781 ESI/(5772:5772): Recibí una señal de avanzar del coordinador
+[TRACE] 23:23:29:781 ESI/(5772:5772): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 23:23:29:781 Coordinador/(5655:5655): Se conectó un componente
+[TRACE] 23:23:29:781 Coordinador/(5655:5655): Hilo asignado
+[TRACE] 23:23:29:782 Coordinador/(5655:5773): Se conectó un ESI
+[TRACE] 23:23:29:822 Coordinador/(5655:5773): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 23:23:29:822 Coordinador/(5655:5773): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 23:23:29:822 Coordinador/(5655:5773): Hago un retardo de 300000 microsegundos
+[TRACE] 23:25:22:530 Coordinador/(5823:5823): Se conectó el planificador: Puerto=8000; Ip Planificador=152435760; Máximas conexiones=20
+[TRACE] 23:25:33:39 Instancia/(5769:5769): La tabla de entradas quedó: 0000
+[TRACE] 23:25:34:21 Instancia/(5959:5959): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:25:34:22 Coordinador/(5823:5823): Se conectó un componente
+[TRACE] 23:25:34:22 Coordinador/(5823:5823): Hilo asignado
+[TRACE] 23:25:34:25 Coordinador/(5823:5960): Se conectó una instancia
+[TRACE] 23:25:34:59 Coordinador/(5823:5960): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:25:34:59 Coordinador/(5823:5960): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:25:34:60 Instancia/(5959:5959): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:25:34:60 Instancia/(5959:5959): No hay nada que reincorporar
+[TRACE] 23:25:34:60 Instancia/(5959:5959): Hilo asignado para realizar el Dump
+[TRACE] 23:25:34:60 Coordinador/(5823:5960): Se ingresó la instancia nueva <Instancia1> con 4 entradas libres
+[TRACE] 23:25:37:453 ESI/(5962:5962): Number of lines in the file is 7
+
+[TRACE] 23:25:37:454 ESI/(5962:5962): Recibí una señal de avanzar del coordinador
+[TRACE] 23:25:37:454 ESI/(5962:5962): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 23:25:37:454 Coordinador/(5823:5823): Se conectó un componente
+[TRACE] 23:25:37:454 Coordinador/(5823:5823): Hilo asignado
+[TRACE] 23:25:37:455 Coordinador/(5823:5963): Se conectó un ESI
+[TRACE] 23:25:37:494 Coordinador/(5823:5963): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 23:25:37:494 Coordinador/(5823:5963): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 23:25:37:495 Coordinador/(5823:5963): Hago un retardo de 300000 microsegundos
+[TRACE] 23:26:54:607 Coordinador/(6110:6110): Se conectó el planificador: Puerto=8000; Ip Planificador=159980592; Máximas conexiones=20
+[TRACE] 23:27:01:537 Instancia/(6220:6220): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:27:01:538 Coordinador/(6110:6110): Se conectó un componente
+[TRACE] 23:27:01:538 Coordinador/(6110:6110): Hilo asignado
+[TRACE] 23:27:01:540 Coordinador/(6110:6221): Se conectó una instancia
+[TRACE] 23:27:01:575 Coordinador/(6110:6221): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:27:01:576 Coordinador/(6110:6221): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:27:01:577 Instancia/(6220:6220): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:27:01:578 Instancia/(6220:6220): No hay nada que reincorporar
+[TRACE] 23:27:01:579 Coordinador/(6110:6221): Se ingresó la instancia nueva <Instancia1> con 4 entradas libres
+[TRACE] 23:27:01:579 Instancia/(6220:6220): Hilo asignado para realizar el Dump
+[TRACE] 23:27:05:708 ESI/(6223:6223): Number of lines in the file is 7
+
+[TRACE] 23:27:05:709 ESI/(6223:6223): Recibí una señal de avanzar del coordinador
+[TRACE] 23:27:05:709 ESI/(6223:6223): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 23:27:05:709 Coordinador/(6110:6110): Se conectó un componente
+[TRACE] 23:27:05:709 Coordinador/(6110:6110): Hilo asignado
+[TRACE] 23:27:05:710 Coordinador/(6110:6224): Se conectó un ESI
+[TRACE] 23:27:05:749 Coordinador/(6110:6224): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 23:27:05:749 Coordinador/(6110:6224): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 23:27:05:749 Coordinador/(6110:6224): Hago un retardo de 300000 microsegundos
+[TRACE] 23:28:30:460 Coordinador/(6373:6373): Se conectó el planificador: Puerto=8000; Ip Planificador=165714992; Máximas conexiones=20
+[TRACE] 23:28:37:2 Instancia/(6507:6507): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:28:37:3 Coordinador/(6373:6373): Se conectó un componente
+[TRACE] 23:28:38:3 Coordinador/(6373:6373): Hilo asignado
+[TRACE] 23:28:38:7 Coordinador/(6373:6508): Se conectó una instancia
+[TRACE] 23:28:38:43 Coordinador/(6373:6508): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:28:38:44 Coordinador/(6373:6508): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:28:38:44 Instancia/(6507:6507): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:28:38:44 Instancia/(6507:6507): No hay nada que reincorporar
+[TRACE] 23:28:38:44 Instancia/(6507:6507): Hilo asignado para realizar el Dump
+[TRACE] 23:28:38:44 Coordinador/(6373:6508): Se ingresó la instancia nueva <Instancia1> con 4 entradas libres
+[TRACE] 23:28:41:887 ESI/(6510:6510): Number of lines in the file is 7
+
+[TRACE] 23:28:41:888 ESI/(6510:6510): Recibí una señal de avanzar del coordinador
+[TRACE] 23:28:41:888 ESI/(6510:6510): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 23:28:41:895 Coordinador/(6373:6373): Se conectó un componente
+[TRACE] 23:28:41:895 Coordinador/(6373:6373): Hilo asignado
+[TRACE] 23:28:41:896 Coordinador/(6373:6511): Se conectó un ESI
+[TRACE] 23:28:41:938 Coordinador/(6373:6511): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 23:28:41:938 Coordinador/(6373:6511): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 23:28:41:938 Coordinador/(6373:6511): Hago un retardo de 300000 microsegundos
+[TRACE] 23:32:35:773 Coordinador/(6731:6731): Se conectó el planificador: Puerto=8000; Ip Planificador=164367408; Máximas conexiones=20
+[TRACE] 23:32:35:773 Coordinador/(6731:6731): Hilo asignado para recibir mensajes del Planificador
+[TRACE] 23:32:44:404 Instancia/(6848:6848): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:34:40:949 Coordinador/(6994:6994): Se conectó el planificador: Puerto=8000; Ip Planificador=141433904; Máximas conexiones=20
+[TRACE] 23:34:46:682 Instancia/(7106:7106): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:34:46:682 Coordinador/(6994:6994): Se conectó un componente
+[TRACE] 23:34:46:682 Coordinador/(6994:6994): Hilo asignado
+[TRACE] 23:34:46:683 Coordinador/(6994:7107): Se conectó una instancia
+[TRACE] 23:34:46:719 Coordinador/(6994:7107): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:34:46:719 Coordinador/(6994:7107): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:34:46:719 Instancia/(7106:7106): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:34:46:720 Instancia/(7106:7106): No hay nada que reincorporar
+[TRACE] 23:34:46:720 Instancia/(7106:7106): Hilo asignado para realizar el Dump
+[TRACE] 23:34:46:720 Coordinador/(6994:7107): Se ingresó la instancia nueva <Instancia1> con 4 entradas libres
+[TRACE] 23:34:53:988 ESI/(7197:7197): Number of lines in the file is 7
+
+[TRACE] 23:34:53:990 ESI/(7197:7197): Recibí una señal de avanzar del coordinador
+[TRACE] 23:34:53:990 ESI/(7197:7197): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 23:34:53:990 Coordinador/(6994:6994): Se conectó un componente
+[TRACE] 23:34:53:990 Coordinador/(6994:6994): Hilo asignado
+[TRACE] 23:34:53:991 Coordinador/(6994:7198): Se conectó un ESI
+[TRACE] 23:34:54:33 Coordinador/(6994:7198): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 23:34:54:34 Coordinador/(6994:7198): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 23:34:54:36 Coordinador/(6994:7198): Hago un retardo de 300000 microsegundos
+[TRACE] 23:34:54:338 Coordinador/(6994:7198): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 23:34:54:339 Coordinador/(6994:7198): Se asigna la nueva clave a la instancia
+[TRACE] 23:34:54:340 ESI/(7197:7197): El coordinador me respondió que salió todo OK
+[TRACE] 23:34:54:341 ESI/(7197:7197): Recibí una señal de avanzar del coordinador
+[TRACE] 23:34:54:341 ESI/(7197:7197): Le comunico al coordinador la sentencia <SET riquelme 10>
+[TRACE] 23:34:54:342 Coordinador/(6994:7198): Se ejecuto un GET
+[TRACE] 23:34:54:344 Coordinador/(6994:6994): Se conectó un componente
+[TRACE] 23:34:54:344 Coordinador/(6994:6994): Hilo asignado
+[TRACE] 23:34:54:344 Coordinador/(6994:7199): Se conectó un ESI
+[TRACE] 23:34:54:383 Coordinador/(6994:7199): Se pudo loguear: ESI 1 || SET riquelme 10
+[TRACE] 23:34:54:383 Coordinador/(6994:7199): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 10
+[TRACE] 23:34:54:383 Coordinador/(6994:7199): Hago un retardo de 300000 microsegundos
+[TRACE] 23:40:35:978 Coordinador/(7561:7561): Se conectó el planificador: Puerto=8000; Ip Planificador=140405808; Máximas conexiones=20
+[TRACE] 23:40:40:488 Instancia/(7565:7565): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:40:40:488 Coordinador/(7561:7561): Se conectó un componente
+[TRACE] 23:40:40:488 Coordinador/(7561:7561): Hilo asignado
+[TRACE] 23:40:40:491 Coordinador/(7561:7566): Se conectó una instancia
+[TRACE] 23:40:40:527 Coordinador/(7561:7566): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:40:40:529 Coordinador/(7561:7566): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:40:40:529 Instancia/(7565:7565): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:40:40:529 Instancia/(7565:7565): No hay nada que reincorporar
+[TRACE] 23:40:40:530 Instancia/(7565:7565): Hilo asignado para realizar el Dump
+[TRACE] 23:40:40:530 Coordinador/(7561:7566): Se ingresó la instancia nueva <Instancia1> con 4 entradas libres
+[TRACE] 23:40:42:466 ESI/(7568:7568): Number of lines in the file is 7
+
+[TRACE] 23:40:42:467 ESI/(7568:7568): Recibí una señal de avanzar del coordinador
+[TRACE] 23:40:42:467 ESI/(7568:7568): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 23:40:42:468 Coordinador/(7561:7561): Se conectó un componente
+[TRACE] 23:40:42:468 Coordinador/(7561:7561): Hilo asignado
+[TRACE] 23:40:42:468 Coordinador/(7561:7569): Se conectó un ESI
+[TRACE] 23:40:42:508 Coordinador/(7561:7569): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 23:40:42:509 Coordinador/(7561:7569): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 23:40:42:509 Coordinador/(7561:7569): Hago un retardo de 300000 microsegundos
+[TRACE] 23:40:42:811 Coordinador/(7561:7569): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 23:40:42:812 Coordinador/(7561:7569): Se asigna la nueva clave a la instancia
+[TRACE] 23:40:42:813 ESI/(7568:7568): El coordinador me respondió que salió todo OK
+[TRACE] 23:40:42:813 ESI/(7568:7568): Recibí una señal de avanzar del coordinador
+[TRACE] 23:40:42:814 ESI/(7568:7568): Le comunico al coordinador la sentencia <SET riquelme 10>
+[TRACE] 23:40:42:815 Coordinador/(7561:7569): Se ejecuto un GET
+[TRACE] 23:40:42:815 Coordinador/(7561:7561): Se conectó un componente
+[TRACE] 23:40:42:815 Coordinador/(7561:7561): Hilo asignado
+[TRACE] 23:40:42:817 Coordinador/(7561:7570): Se conectó un ESI
+[TRACE] 23:40:42:855 Coordinador/(7561:7570): Se pudo loguear: ESI 1 || SET riquelme 10
+[TRACE] 23:40:42:855 Coordinador/(7561:7570): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 10
+[TRACE] 23:40:42:855 Coordinador/(7561:7570): Hago un retardo de 300000 microsegundos
+[TRACE] 23:44:39:269 Coordinador/(7891:7891): Se conectó el planificador: Puerto=8000; Ip Planificador=146492464; Máximas conexiones=20
+[TRACE] 23:44:46:890 Instancia/(8023:8023): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:44:46:891 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:44:46:891 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:44:46:895 Coordinador/(7891:8024): Se conectó una instancia
+[TRACE] 23:44:46:932 Coordinador/(7891:8024): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:44:46:932 Coordinador/(7891:8024): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:44:46:932 Instancia/(8023:8023): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:44:46:933 Instancia/(8023:8023): No hay nada que reincorporar
+[TRACE] 23:44:46:934 Instancia/(8023:8023): Hilo asignado para realizar el Dump
+[TRACE] 23:44:46:935 Coordinador/(7891:8024): Se ingresó la instancia nueva <Instancia1> con 4 entradas libres
+[TRACE] 23:44:56:940 Instancia/(8023:8025): Hice un DUMP
+[TRACE] 23:45:06:941 Instancia/(8023:8025): Hice un DUMP
+[TRACE] 23:45:16:942 Instancia/(8023:8025): Hice un DUMP
+[TRACE] 23:45:26:943 Instancia/(8023:8025): Hice un DUMP
+[TRACE] 23:45:36:947 Instancia/(8023:8025): Hice un DUMP
+[TRACE] 23:45:46:949 Instancia/(8023:8025): Hice un DUMP
+[TRACE] 23:45:57:417 Instancia/(8047:8047): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:45:57:424 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:45:57:424 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:45:57:424 Coordinador/(7891:8048): Se conectó una instancia
+[TRACE] 23:45:57:463 Coordinador/(7891:8048): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:45:57:464 Coordinador/(7891:8048): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:45:57:464 Instancia/(8047:8047): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:45:57:464 Instancia/(8047:8047): No hay nada que reincorporar
+[TRACE] 23:45:57:464 Instancia/(8047:8047): Hilo asignado para realizar el Dump
+[TRACE] 23:45:57:465 Coordinador/(7891:8048): Se reincorporó la instancia <Instancia1> con 4 entradas libres
+[TRACE] 23:46:04:179 Instancia/(8068:8068): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:46:04:180 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:46:04:180 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:46:04:180 Coordinador/(7891:8069): Se conectó una instancia
+[TRACE] 23:46:04:219 Coordinador/(7891:8069): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:46:04:220 Coordinador/(7891:8069): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:46:04:220 Instancia/(8068:8068): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:46:04:220 Instancia/(8068:8068): No hay nada que reincorporar
+[TRACE] 23:46:04:221 Instancia/(8068:8068): Hilo asignado para realizar el Dump
+[TRACE] 23:46:04:221 Coordinador/(7891:8069): Se reincorporó la instancia <Instancia1> con 4 entradas libres
+[TRACE] 23:46:14:224 Instancia/(8068:8070): Hice un DUMP
+[TRACE] 23:46:24:225 Instancia/(8068:8070): Hice un DUMP
+[TRACE] 23:46:34:226 Instancia/(8068:8070): Hice un DUMP
+[TRACE] 23:46:44:227 Instancia/(8068:8070): Hice un DUMP
+[TRACE] 23:46:54:26 Instancia/(8086:8086): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:46:54:31 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:46:54:31 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:46:54:31 Coordinador/(7891:8087): Se conectó una instancia
+[TRACE] 23:46:54:71 Coordinador/(7891:8087): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:46:54:72 Coordinador/(7891:8087): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:46:54:72 Instancia/(8086:8086): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:46:54:73 Instancia/(8086:8086): No hay nada que reincorporar
+[TRACE] 23:46:54:73 Instancia/(8086:8086): Hilo asignado para realizar el Dump
+[TRACE] 23:46:54:73 Coordinador/(7891:8087): Se reincorporó la instancia <Instancia1> con 4 entradas libres
+[TRACE] 23:47:06:260 Instancia/(8111:8111): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:47:06:261 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:47:06:261 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:47:06:262 Coordinador/(7891:8112): Se conectó una instancia
+[TRACE] 23:47:06:299 Coordinador/(7891:8112): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:47:06:300 Coordinador/(7891:8112): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:47:06:300 Instancia/(8111:8111): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:47:06:301 Instancia/(8111:8111): No hay nada que reincorporar
+[TRACE] 23:47:06:301 Instancia/(8111:8111): Espero sentencias
+[TRACE] 23:47:06:301 Coordinador/(7891:8112): Se reincorporó la instancia <Instancia1> con 4 entradas libres
+[TRACE] 23:47:17:317 Instancia/(8134:8134): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:47:17:317 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:47:17:318 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:47:17:319 Coordinador/(7891:8135): Se conectó una instancia
+[TRACE] 23:47:17:355 Coordinador/(7891:8135): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:47:17:356 Coordinador/(7891:8135): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:47:17:356 Instancia/(8134:8134): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:47:17:356 Instancia/(8134:8134): No hay nada que reincorporar
+[TRACE] 23:47:17:356 Instancia/(8134:8134): Hilo asignado para realizar el Dump
+[TRACE] 23:47:17:356 Coordinador/(7891:8135): Se reincorporó la instancia <Instancia1> con 4 entradas libres
+[TRACE] 23:47:31:705 Instancia/(8164:8164): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 23:47:31:707 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:47:31:707 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:47:31:710 Coordinador/(7891:8165): Se conectó una instancia
+[TRACE] 23:47:31:747 Coordinador/(7891:8165): Se conectó la instancia de nombre: Instancia1
+[TRACE] 23:47:31:747 Coordinador/(7891:8165): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:47:31:748 Instancia/(8164:8164): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:47:31:748 Instancia/(8164:8164): No hay nada que reincorporar
+[TRACE] 23:47:31:748 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:47:31:748 Coordinador/(7891:8165): Se reincorporó la instancia <Instancia1> con 4 entradas libres
+[TRACE] 23:47:39:822 ESI/(8166:8166): Number of lines in the file is 7
+
+[TRACE] 23:47:39:822 ESI/(8166:8166): Recibí una señal de avanzar del coordinador
+[TRACE] 23:47:39:823 ESI/(8166:8166): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 23:47:39:824 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:47:39:824 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:47:39:824 Coordinador/(7891:8167): Se conectó un ESI
+[TRACE] 23:47:39:865 Coordinador/(7891:8167): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 23:47:39:865 Coordinador/(7891:8167): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 23:47:39:866 Coordinador/(7891:8167): Hago un retardo de 300000 microsegundos
+[TRACE] 23:47:40:169 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:47:40:170 Coordinador/(7891:8167): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 23:47:40:171 Coordinador/(7891:8167): Se asigna la nueva clave a la instancia
+[TRACE] 23:47:40:172 ESI/(8166:8166): El coordinador me respondió que salió todo OK
+[TRACE] 23:47:40:175 ESI/(8166:8166): Recibí una señal de avanzar del coordinador
+[TRACE] 23:47:40:176 ESI/(8166:8166): Le comunico al coordinador la sentencia <SET riquelme 10>
+[TRACE] 23:47:40:178 Coordinador/(7891:8167): Se ejecuto un GET
+[TRACE] 23:47:40:180 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:47:40:181 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:47:40:188 Coordinador/(7891:8168): Se conectó un ESI
+[TRACE] 23:47:40:227 Coordinador/(7891:8168): Se pudo loguear: ESI 1 || SET riquelme 10
+[TRACE] 23:47:40:227 Coordinador/(7891:8168): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 10
+[TRACE] 23:47:40:228 Coordinador/(7891:8168): Hago un retardo de 300000 microsegundos
+[TRACE] 23:47:40:530 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:47:40:530 Instancia/(8164:8164): Se recibió una sentencia: SET riquelme 10
+[TRACE] 23:47:40:531 Instancia/(8164:8164): Setteo riquelme: 10, en la entrada 0 con un largo de entradas 1
+[TRACE] 23:47:40:531 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:47:40:531 Coordinador/(7891:8168): La sentencia se ejecutó correctamente
+[TRACE] 23:47:40:536 ESI/(8166:8166): El coordinador me respondió que salió todo OK
+[TRACE] 23:47:40:537 ESI/(8166:8166): Recibí una señal de avanzar del coordinador
+[TRACE] 23:47:40:537 ESI/(8166:8166): Le comunico al coordinador la sentencia <GET palermo>
+[TRACE] 23:47:40:538 Coordinador/(7891:8168): Se ejecuto un SET
+[TRACE] 23:47:40:540 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:47:40:540 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:47:40:549 Coordinador/(7891:8169): Se conectó un ESI
+[TRACE] 23:47:40:579 Coordinador/(7891:8169): Se pudo loguear: ESI 1 || GET palermo
+[TRACE] 23:47:40:579 Coordinador/(7891:8169): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET palermo
+[TRACE] 23:47:40:580 Coordinador/(7891:8169): Hago un retardo de 300000 microsegundos
+[TRACE] 23:47:40:882 Coordinador/(7891:8169): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 23:47:40:882 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:47:40:884 Coordinador/(7891:8169): Se asigna la nueva clave a la instancia
+[TRACE] 23:47:40:885 ESI/(8166:8166): El coordinador me respondió que salió todo OK
+[TRACE] 23:47:40:885 ESI/(8166:8166): Recibí una señal de avanzar del coordinador
+[TRACE] 23:47:40:886 ESI/(8166:8166): Le comunico al coordinador la sentencia <SET palermo 9>
+[TRACE] 23:47:40:887 Coordinador/(7891:8169): Se ejecuto un GET
+[TRACE] 23:47:40:887 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:47:40:887 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:47:40:914 Coordinador/(7891:8170): Se conectó un ESI
+[TRACE] 23:47:40:952 Coordinador/(7891:8170): Se pudo loguear: ESI 1 || SET palermo 9
+[TRACE] 23:47:40:952 Coordinador/(7891:8170): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET palermo 9
+[TRACE] 23:47:40:953 Coordinador/(7891:8170): Hago un retardo de 300000 microsegundos
+[TRACE] 23:47:41:257 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:47:41:268 Instancia/(8164:8164): Se recibió una sentencia: SET palermo 9
+[TRACE] 23:47:41:269 Instancia/(8164:8164): Setteo palermo: 9, en la entrada 1 con un largo de entradas 1
+[TRACE] 23:47:41:269 Coordinador/(7891:8170): La sentencia se ejecutó correctamente
+[TRACE] 23:47:41:270 Coordinador/(7891:8170): Se ejecuto un SET
+[TRACE] 23:47:41:270 ESI/(8166:8166): El coordinador me respondió que salió todo OK
+[TRACE] 23:47:41:270 ESI/(8166:8166): Recibí una señal de avanzar del coordinador
+[TRACE] 23:47:41:270 ESI/(8166:8166): Le comunico al coordinador la sentencia <SET riquelme 1>
+[TRACE] 23:47:41:272 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:47:41:272 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:47:41:272 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:47:41:273 Coordinador/(7891:8171): Se conectó un ESI
+[TRACE] 23:47:41:312 Coordinador/(7891:8171): Se pudo loguear: ESI 1 || SET riquelme 1
+[TRACE] 23:47:41:312 Coordinador/(7891:8171): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 1
+[TRACE] 23:47:41:312 Coordinador/(7891:8171): Hago un retardo de 300000 microsegundos
+[TRACE] 23:47:41:614 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:47:41:656 Instancia/(8164:8164): Se recibió una sentencia: SET riquelme 1
+[TRACE] 23:47:41:657 Instancia/(8164:8164): La clave ya está seteada en la instancia
+[TRACE] 23:47:41:661 Instancia/(8164:8164): Setteo riquelme: 1, en la entrada 0 con un largo de entradas 1
+[TRACE] 23:47:41:661 Coordinador/(7891:8171): La sentencia se ejecutó correctamente
+[TRACE] 23:47:41:661 Coordinador/(7891:8171): Se ejecuto un SET
+[TRACE] 23:47:41:661 ESI/(8166:8166): El coordinador me respondió que salió todo OK
+[TRACE] 23:47:41:661 ESI/(8166:8166): Recibí una señal de avanzar del coordinador
+[TRACE] 23:47:41:661 ESI/(8166:8166): Le comunico al coordinador la sentencia <GET guillermo>
+[TRACE] 23:47:41:662 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:47:41:662 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:47:41:662 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:47:41:662 Coordinador/(7891:8172): Se conectó un ESI
+[TRACE] 23:47:41:699 Coordinador/(7891:8172): Se pudo loguear: ESI 1 || GET guillermo
+[TRACE] 23:47:41:699 Coordinador/(7891:8172): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET guillermo
+[TRACE] 23:47:41:699 Coordinador/(7891:8172): Hago un retardo de 300000 microsegundos
+[TRACE] 23:47:41:1 Coordinador/(7891:8172): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 23:47:41:1 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:47:41:2 Coordinador/(7891:8172): Se asigna la nueva clave a la instancia
+[TRACE] 23:47:41:2 Coordinador/(7891:8172): Se ejecuto un GET
+[TRACE] 23:47:41:3 ESI/(8166:8166): El coordinador me respondió que salió todo OK
+[TRACE] 23:47:41:3 ESI/(8166:8166): Recibí una señal de avanzar del coordinador
+[TRACE] 23:47:42:6 ESI/(8166:8166): Le comunico al coordinador la sentencia <SET guillermo 7>
+[TRACE] 23:47:42:7 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:47:42:7 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:47:42:9 Coordinador/(7891:8173): Se conectó un ESI
+[TRACE] 23:47:42:44 Coordinador/(7891:8173): Se pudo loguear: ESI 1 || SET guillermo 7
+[TRACE] 23:47:42:44 Coordinador/(7891:8173): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET guillermo 7
+[TRACE] 23:47:42:44 Coordinador/(7891:8173): Hago un retardo de 300000 microsegundos
+[TRACE] 23:47:42:346 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:47:42:347 Instancia/(8164:8164): Se recibió una sentencia: SET guillermo 7
+[TRACE] 23:47:42:350 Instancia/(8164:8164): Setteo guillermo: 7, en la entrada 2 con un largo de entradas 1
+[TRACE] 23:47:42:351 Coordinador/(7891:8173): La sentencia se ejecutó correctamente
+[TRACE] 23:47:42:352 Coordinador/(7891:8173): Se ejecuto un SET
+[TRACE] 23:47:42:354 ESI/(8166:8166): El coordinador me respondió que salió todo OK
+[TRACE] 23:47:42:376 Instancia/(8164:8164): Espero sentencias
+[TRACE] 23:49:29:433 Instancia/(8192:8192): Envio al coordinador el nombre de mi instancia: Instancia2
+[TRACE] 23:49:29:437 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:49:29:437 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:49:29:437 Coordinador/(7891:8193): Se conectó una instancia
+[TRACE] 23:49:29:477 Coordinador/(7891:8193): Se conectó la instancia de nombre: Instancia2
+[TRACE] 23:49:29:478 Coordinador/(7891:8193): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:49:29:478 Instancia/(8192:8192): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:49:29:478 Instancia/(8192:8192): No hay nada que reincorporar
+[TRACE] 23:49:29:478 Instancia/(8192:8192): Espero sentencias
+[TRACE] 23:49:29:478 Coordinador/(7891:8193): Se ingresó la instancia nueva <Instancia2> con 4 entradas libres
+[TRACE] 23:49:45:350 ESI/(8194:8194): Number of lines in the file is 7
+
+[TRACE] 23:49:45:353 ESI/(8194:8194): Recibí una señal de avanzar del coordinador
+[TRACE] 23:49:45:354 ESI/(8194:8194): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 23:49:45:354 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:49:45:354 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:49:45:354 Coordinador/(7891:8195): Se conectó un ESI
+[TRACE] 23:49:45:392 Coordinador/(7891:8195): Se pudo loguear: ESI 2 || GET riquelme
+[TRACE] 23:49:45:392 Coordinador/(7891:8195): Recibimos el mensaje: Nombre = ESI 2; Mensaje = GET riquelme
+[TRACE] 23:49:45:393 Coordinador/(7891:8195): Hago un retardo de 300000 microsegundos
+[TRACE] 23:49:45:694 Coordinador/(7891:8195): La clave se encuentra bloqueada
+[TRACE] 23:49:45:696 Coordinador/(7891:8195): Se ejecuto un GET
+[TRACE] 23:49:45:697 ESI/(8194:8194): Me quede bloqueado.
+[TRACE] 23:50:15:602 ESI/(8200:8200): Number of lines in the file is 7
+
+[TRACE] 23:50:15:602 ESI/(8200:8200): Recibí una señal de avanzar del coordinador
+[TRACE] 23:50:15:602 ESI/(8200:8200): Le comunico al coordinador la sentencia <GET ariquelme>
+[TRACE] 23:50:15:603 Coordinador/(7891:7891): Se conectó un componente
+[TRACE] 23:50:15:604 Coordinador/(7891:7891): Hilo asignado
+[TRACE] 23:50:15:607 Coordinador/(7891:8201): Se conectó un ESI
+[TRACE] 23:50:15:643 Coordinador/(7891:8201): Se pudo loguear: ESI 3 || GET ariquelme
+[TRACE] 23:50:15:644 Coordinador/(7891:8201): Recibimos el mensaje: Nombre = ESI 3; Mensaje = GET ariquelme
+[TRACE] 23:50:15:644 Coordinador/(7891:8201): Hago un retardo de 300000 microsegundos
+[TRACE] 23:54:07:809 Coordinador/(8330:8330): Se conectó el planificador: Puerto=8000; Ip Planificador=136371248; Máximas conexiones=20
+[TRACE] 23:54:58:992 Instancia/(8593:8593): Envio al coordinador el nombre de mi instancia: Instancia
+[TRACE] 23:54:58:993 Coordinador/(8330:8330): Se conectó un componente
+[TRACE] 23:54:58:993 Coordinador/(8330:8330): Hilo asignado
+[TRACE] 23:54:58:995 Coordinador/(8330:8594): Se conectó una instancia
+[TRACE] 23:54:59:31 Coordinador/(8330:8594): Se conectó la instancia de nombre: Instancia
+[TRACE] 23:54:59:31 Coordinador/(8330:8594): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 2
+[TRACE] 23:54:59:32 Instancia/(8593:8593): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=2;
+[TRACE] 23:54:59:32 Instancia/(8593:8593): No hay nada que reincorporar
+[TRACE] 23:54:59:32 Instancia/(8593:8593): Espero sentencias
+[TRACE] 23:54:59:32 Coordinador/(8330:8594): Se ingresó la instancia nueva <Instancia> con 4 entradas libres
+[TRACE] 23:55:18:178 ESI/(8700:8700): Number of lines in the file is 7
+
+[TRACE] 23:55:18:179 ESI/(8700:8700): Recibí una señal de avanzar del coordinador
+[TRACE] 23:55:18:179 ESI/(8700:8700): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 23:55:18:180 Coordinador/(8330:8330): Se conectó un componente
+[TRACE] 23:55:18:180 Coordinador/(8330:8330): Hilo asignado
+[TRACE] 23:55:18:180 Coordinador/(8330:8701): Se conectó un ESI
+[TRACE] 23:55:18:226 Coordinador/(8330:8701): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 23:55:18:226 Coordinador/(8330:8701): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 23:55:18:227 Coordinador/(8330:8701): Hago un retardo de 300000 microsegundos
+[TRACE] 23:55:18:528 Coordinador/(8330:8701): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 23:55:18:529 Coordinador/(8330:8701): Se asigna la nueva clave a la instancia
+[TRACE] 23:55:18:531 ESI/(8700:8700): El coordinador me respondió que salió todo OK
+[TRACE] 23:55:18:533 ESI/(8700:8700): Recibí una señal de avanzar del coordinador
+[TRACE] 23:55:18:533 ESI/(8700:8700): Le comunico al coordinador la sentencia <SET riquelme 10>
+[TRACE] 23:55:18:534 Coordinador/(8330:8701): Se ejecuto un GET
+[TRACE] 23:55:18:534 Coordinador/(8330:8330): Se conectó un componente
+[TRACE] 23:55:18:535 Coordinador/(8330:8330): Hilo asignado
+[TRACE] 23:55:18:536 Coordinador/(8330:8702): Se conectó un ESI
+[TRACE] 23:55:18:572 Coordinador/(8330:8702): Se pudo loguear: ESI 1 || SET riquelme 10
+[TRACE] 23:55:18:572 Coordinador/(8330:8702): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 10
+[TRACE] 23:55:18:573 Coordinador/(8330:8702): Hago un retardo de 300000 microsegundos
+[TRACE] 23:55:18:874 Instancia/(8593:8593): Se recibió una sentencia: SET riquelme 10
+[TRACE] 23:55:18:874 Instancia/(8593:8593): Setteo riquelme: 10, en la entrada 0 con un largo de entradas 1
+[TRACE] 23:55:18:874 Coordinador/(8330:8702): La sentencia se ejecutó correctamente
+[TRACE] 23:55:18:875 Coordinador/(8330:8702): Se ejecuto un SET
+[TRACE] 23:55:18:875 ESI/(8700:8700): El coordinador me respondió que salió todo OK
+[TRACE] 23:55:18:876 ESI/(8700:8700): Recibí una señal de avanzar del coordinador
+[TRACE] 23:55:18:876 ESI/(8700:8700): Le comunico al coordinador la sentencia <GET palermo>
+[TRACE] 23:55:18:876 Coordinador/(8330:8330): Se conectó un componente
+[TRACE] 23:55:18:876 Coordinador/(8330:8330): Hilo asignado
+[TRACE] 23:55:18:877 Coordinador/(8330:8703): Se conectó un ESI
+[TRACE] 23:55:18:915 Coordinador/(8330:8703): Se pudo loguear: ESI 1 || GET palermo
+[TRACE] 23:55:18:915 Coordinador/(8330:8703): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET palermo
+[TRACE] 23:55:18:915 Coordinador/(8330:8703): Hago un retardo de 300000 microsegundos
+[TRACE] 23:55:19:218 Coordinador/(8330:8703): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 23:55:19:218 Coordinador/(8330:8703): Se asigna la nueva clave a la instancia
+[TRACE] 23:55:19:220 ESI/(8700:8700): El coordinador me respondió que salió todo OK
+[TRACE] 23:55:19:221 ESI/(8700:8700): Recibí una señal de avanzar del coordinador
+[TRACE] 23:55:19:221 ESI/(8700:8700): Le comunico al coordinador la sentencia <SET palermo 9>
+[TRACE] 23:55:19:222 Coordinador/(8330:8703): Se ejecuto un GET
+[TRACE] 23:55:19:222 Coordinador/(8330:8330): Se conectó un componente
+[TRACE] 23:55:19:223 Coordinador/(8330:8330): Hilo asignado
+[TRACE] 23:55:19:224 Coordinador/(8330:8704): Se conectó un ESI
+[TRACE] 23:55:19:261 Coordinador/(8330:8704): Se pudo loguear: ESI 1 || SET palermo 9
+[TRACE] 23:55:19:261 Coordinador/(8330:8704): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET palermo 9
+[TRACE] 23:55:19:261 Coordinador/(8330:8704): Hago un retardo de 300000 microsegundos
+[TRACE] 23:55:19:562 Instancia/(8593:8593): Se recibió una sentencia: SET palermo 9
+[TRACE] 23:55:19:564 Instancia/(8593:8593): Setteo palermo: 9, en la entrada 1 con un largo de entradas 1
+[TRACE] 23:55:19:564 Coordinador/(8330:8704): La sentencia se ejecutó correctamente
+[TRACE] 23:55:19:564 Coordinador/(8330:8704): Se ejecuto un SET
+[TRACE] 23:55:19:564 ESI/(8700:8700): El coordinador me respondió que salió todo OK
+[TRACE] 23:55:19:565 ESI/(8700:8700): Recibí una señal de avanzar del coordinador
+[TRACE] 23:55:19:566 ESI/(8700:8700): Le comunico al coordinador la sentencia <SET riquelme 1>
+[TRACE] 23:55:19:567 Coordinador/(8330:8330): Se conectó un componente
+[TRACE] 23:55:19:570 Coordinador/(8330:8330): Hilo asignado
+[TRACE] 23:55:19:571 Coordinador/(8330:8705): Se conectó un ESI
+[TRACE] 23:55:19:607 Coordinador/(8330:8705): Se pudo loguear: ESI 1 || SET riquelme 1
+[TRACE] 23:55:19:607 Coordinador/(8330:8705): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 1
+[TRACE] 23:55:19:608 Coordinador/(8330:8705): Hago un retardo de 300000 microsegundos
+[TRACE] 23:55:19:949 Instancia/(8593:8593): Se recibió una sentencia: SET riquelme 1
+[TRACE] 23:55:19:952 Instancia/(8593:8593): La clave ya está seteada en la instancia
+[TRACE] 23:55:19:953 Instancia/(8593:8593): Setteo riquelme: 1, en la entrada 0 con un largo de entradas 1
+[TRACE] 23:55:19:954 Coordinador/(8330:8705): La sentencia se ejecutó correctamente
+[TRACE] 23:55:19:954 Coordinador/(8330:8705): Se ejecuto un SET
+[TRACE] 23:55:19:954 ESI/(8700:8700): El coordinador me respondió que salió todo OK
+[TRACE] 23:55:19:954 ESI/(8700:8700): Recibí una señal de avanzar del coordinador
+[TRACE] 23:55:19:954 ESI/(8700:8700): Le comunico al coordinador la sentencia <GET guillermo>
+[TRACE] 23:55:19:954 Coordinador/(8330:8330): Se conectó un componente
+[TRACE] 23:55:19:955 Coordinador/(8330:8330): Hilo asignado
+[TRACE] 23:55:19:955 Coordinador/(8330:8706): Se conectó un ESI
+[TRACE] 23:55:19:992 Coordinador/(8330:8706): Se pudo loguear: ESI 1 || GET guillermo
+[TRACE] 23:55:19:993 Coordinador/(8330:8706): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET guillermo
+[TRACE] 23:55:19:993 Coordinador/(8330:8706): Hago un retardo de 300000 microsegundos
+[TRACE] 23:55:20:294 Coordinador/(8330:8706): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 23:55:20:294 Coordinador/(8330:8706): Se asigna la nueva clave a la instancia
+[TRACE] 23:55:20:294 Coordinador/(8330:8706): Se ejecuto un GET
+[TRACE] 23:55:20:295 ESI/(8700:8700): El coordinador me respondió que salió todo OK
+[TRACE] 23:55:20:302 ESI/(8700:8700): Recibí una señal de avanzar del coordinador
+[TRACE] 23:55:20:302 ESI/(8700:8700): Le comunico al coordinador la sentencia <SET guillermo 07>
+[TRACE] 23:55:20:303 Coordinador/(8330:8330): Se conectó un componente
+[TRACE] 23:55:20:304 Coordinador/(8330:8330): Hilo asignado
+[TRACE] 23:55:20:305 Coordinador/(8330:8707): Se conectó un ESI
+[TRACE] 23:55:20:343 Coordinador/(8330:8707): Se pudo loguear: ESI 1 || SET guillermo 07
+[TRACE] 23:55:20:343 Coordinador/(8330:8707): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET guillermo 07
+[TRACE] 23:55:20:343 Coordinador/(8330:8707): Hago un retardo de 300000 microsegundos
+[TRACE] 23:55:20:646 Instancia/(8593:8593): Se recibió una sentencia: SET guillermo 07
+[TRACE] 23:55:20:646 Instancia/(8593:8593): Setteo guillermo: 07, en la entrada 2 con un largo de entradas 1
+[TRACE] 23:55:20:649 Coordinador/(8330:8707): La sentencia se ejecutó correctamente
+[TRACE] 23:55:20:649 ESI/(8700:8700): El coordinador me respondió que salió todo OK
+[TRACE] 23:55:20:655 Coordinador/(8330:8707): Se ejecuto un SET
+[TRACE] 00:01:32:315 Coordinador/(8849:8849): Se conectó el planificador: Puerto=8000; Ip Planificador=167992368; Máximas conexiones=20
+[TRACE] 00:02:02:606 Instancia/(9067:9067): Envio al coordinador el nombre de mi instancia: Instancia
+[TRACE] 00:02:02:607 Coordinador/(8849:8849): Se conectó un componente
+[TRACE] 00:02:02:608 Coordinador/(8849:8849): Hilo asignado
+[TRACE] 00:02:02:611 Coordinador/(8849:9068): Se conectó una instancia
+[TRACE] 00:02:02:647 Coordinador/(8849:9068): Se conectó la instancia de nombre: Instancia
+[TRACE] 00:02:02:647 Coordinador/(8849:9068): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 1
+[TRACE] 00:02:02:647 Instancia/(9067:9067): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=1;
+[TRACE] 00:02:02:649 Instancia/(9067:9067): No hay nada que reincorporar
+[TRACE] 00:02:02:649 Instancia/(9067:9067): Espero sentencias
+[TRACE] 00:02:02:649 Coordinador/(8849:9068): Se ingresó la instancia nueva <Instancia> con 4 entradas libres
+[TRACE] 00:02:22:322 ESI/(9175:9175): Number of lines in the file is 7
+
+[TRACE] 00:02:22:322 ESI/(9175:9175): Recibí una señal de avanzar del coordinador
+[TRACE] 00:02:22:322 ESI/(9175:9175): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 00:02:22:323 Coordinador/(8849:8849): Se conectó un componente
+[TRACE] 00:02:22:323 Coordinador/(8849:8849): Hilo asignado
+[TRACE] 00:02:22:323 Coordinador/(8849:9176): Se conectó un ESI
+[TRACE] 00:02:22:364 Coordinador/(8849:9176): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 00:02:22:365 Coordinador/(8849:9176): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 00:02:22:366 Coordinador/(8849:9176): Hago un retardo de 300000 microsegundos
+[TRACE] 00:02:22:678 Coordinador/(8849:9176): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 00:02:22:680 Coordinador/(8849:9176): Se asigna la nueva clave a la instancia
+[TRACE] 00:02:22:680 Coordinador/(8849:9176): Se ejecuto un GET
+[TRACE] 00:02:22:680 ESI/(9175:9175): El coordinador me respondió que salió todo OK
+[TRACE] 00:02:22:680 ESI/(9175:9175): Recibí una señal de avanzar del coordinador
+[TRACE] 00:02:22:682 ESI/(9175:9175): Le comunico al coordinador la sentencia <SET riquelme 10>
+[TRACE] 00:02:22:684 Coordinador/(8849:8849): Se conectó un componente
+[TRACE] 00:02:22:685 Coordinador/(8849:8849): Hilo asignado
+[TRACE] 00:02:22:686 Coordinador/(8849:9177): Se conectó un ESI
+[TRACE] 00:02:22:724 Coordinador/(8849:9177): Se pudo loguear: ESI 1 || SET riquelme 10
+[TRACE] 00:02:22:724 Coordinador/(8849:9177): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 10
+[TRACE] 00:02:22:724 Coordinador/(8849:9177): Hago un retardo de 300000 microsegundos
+[TRACE] 00:02:23:25 Instancia/(9067:9067): Se recibió una sentencia: SET riquelme 10
+[TRACE] 00:02:23:26 Instancia/(9067:9067): Setteo riquelme: 10, en la entrada 0 con un largo de entradas 2
+[TRACE] 00:02:23:26 Coordinador/(8849:9177): La sentencia se ejecutó correctamente
+[TRACE] 00:02:23:29 ESI/(9175:9175): El coordinador me respondió que salió todo OK
+[TRACE] 00:02:23:32 ESI/(9175:9175): Recibí una señal de avanzar del coordinador
+[TRACE] 00:02:23:33 ESI/(9175:9175): Le comunico al coordinador la sentencia <GET palermo>
+[TRACE] 00:02:23:35 Coordinador/(8849:9177): Se ejecuto un SET
+[TRACE] 00:02:23:39 Coordinador/(8849:8849): Se conectó un componente
+[TRACE] 00:02:23:40 Coordinador/(8849:8849): Hilo asignado
+[TRACE] 00:02:23:46 Coordinador/(8849:9178): Se conectó un ESI
+[TRACE] 00:02:23:80 Coordinador/(8849:9178): Se pudo loguear: ESI 1 || GET palermo
+[TRACE] 00:02:23:81 Coordinador/(8849:9178): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET palermo
+[TRACE] 00:02:23:81 Coordinador/(8849:9178): Hago un retardo de 300000 microsegundos
+[TRACE] 00:02:23:383 Coordinador/(8849:9178): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 00:02:23:385 Coordinador/(8849:9178): Se asigna la nueva clave a la instancia
+[TRACE] 00:02:23:386 ESI/(9175:9175): El coordinador me respondió que salió todo OK
+[TRACE] 00:02:23:387 ESI/(9175:9175): Recibí una señal de avanzar del coordinador
+[TRACE] 00:02:23:387 ESI/(9175:9175): Le comunico al coordinador la sentencia <SET palermo 9>
+[TRACE] 00:02:23:389 Coordinador/(8849:9178): Se ejecuto un GET
+[TRACE] 00:02:23:390 Coordinador/(8849:8849): Se conectó un componente
+[TRACE] 00:02:23:390 Coordinador/(8849:8849): Hilo asignado
+[TRACE] 00:02:23:390 Coordinador/(8849:9179): Se conectó un ESI
+[TRACE] 00:02:23:428 Coordinador/(8849:9179): Se pudo loguear: ESI 1 || SET palermo 9
+[TRACE] 00:02:23:428 Coordinador/(8849:9179): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET palermo 9
+[TRACE] 00:02:23:428 Coordinador/(8849:9179): Hago un retardo de 300000 microsegundos
+[TRACE] 00:02:23:735 Instancia/(9067:9067): Se recibió una sentencia: SET palermo 9
+[TRACE] 00:02:23:745 Instancia/(9067:9067): Setteo palermo: 9, en la entrada 2 con un largo de entradas 1
+[TRACE] 00:02:23:745 Coordinador/(8849:9179): La sentencia se ejecutó correctamente
+[TRACE] 00:02:23:746 Coordinador/(8849:9179): Se ejecuto un SET
+[TRACE] 00:02:23:746 ESI/(9175:9175): El coordinador me respondió que salió todo OK
+[TRACE] 00:02:23:747 ESI/(9175:9175): Recibí una señal de avanzar del coordinador
+[TRACE] 00:02:23:747 ESI/(9175:9175): Le comunico al coordinador la sentencia <SET riquelme 1>
+[TRACE] 00:02:23:750 Coordinador/(8849:8849): Se conectó un componente
+[TRACE] 00:02:23:752 Coordinador/(8849:8849): Hilo asignado
+[TRACE] 00:02:23:752 Coordinador/(8849:9180): Se conectó un ESI
+[TRACE] 00:02:23:810 Coordinador/(8849:9180): Se pudo loguear: ESI 1 || SET riquelme 1
+[TRACE] 00:02:23:810 Coordinador/(8849:9180): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 1
+[TRACE] 00:02:23:810 Coordinador/(8849:9180): Hago un retardo de 300000 microsegundos
+[TRACE] 00:02:24:157 Instancia/(9067:9067): Se recibió una sentencia: SET riquelme 1
+[TRACE] 00:02:24:160 Instancia/(9067:9067): La clave ya está seteada en la instancia
+[TRACE] 00:02:24:161 Instancia/(9067:9067): Setteo riquelme: 1, en la entrada 0 con un largo de entradas 1
+[TRACE] 00:02:24:163 Coordinador/(8849:9180): La sentencia se ejecutó correctamente
+[TRACE] 00:02:24:164 ESI/(9175:9175): El coordinador me respondió que salió todo OK
+[TRACE] 00:02:24:176 ESI/(9175:9175): Recibí una señal de avanzar del coordinador
+[TRACE] 00:02:24:182 Coordinador/(8849:9180): Se ejecuto un SET
+[TRACE] 00:02:24:184 ESI/(9175:9175): Le comunico al coordinador la sentencia <GET guillermo>
+[TRACE] 00:02:24:196 Coordinador/(8849:8849): Se conectó un componente
+[TRACE] 00:02:24:196 Coordinador/(8849:8849): Hilo asignado
+[TRACE] 00:02:24:199 Coordinador/(8849:9181): Se conectó un ESI
+[TRACE] 00:02:24:241 Coordinador/(8849:9181): Se pudo loguear: ESI 1 || GET guillermo
+[TRACE] 00:02:24:241 Coordinador/(8849:9181): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET guillermo
+[TRACE] 00:02:24:241 Coordinador/(8849:9181): Hago un retardo de 300000 microsegundos
+[TRACE] 00:02:24:545 Coordinador/(8849:9181): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 00:02:24:546 Coordinador/(8849:9181): Se asigna la nueva clave a la instancia
+[TRACE] 00:02:24:547 ESI/(9175:9175): El coordinador me respondió que salió todo OK
+[TRACE] 00:02:24:549 ESI/(9175:9175): Recibí una señal de avanzar del coordinador
+[TRACE] 00:02:24:549 ESI/(9175:9175): Le comunico al coordinador la sentencia <SET guillermo 07>
+[TRACE] 00:02:24:550 Coordinador/(8849:9181): Se ejecuto un GET
+[TRACE] 00:02:24:551 Coordinador/(8849:8849): Se conectó un componente
+[TRACE] 00:02:24:551 Coordinador/(8849:8849): Hilo asignado
+[TRACE] 00:02:24:553 Coordinador/(8849:9182): Se conectó un ESI
+[TRACE] 00:02:24:587 Coordinador/(8849:9182): Se pudo loguear: ESI 1 || SET guillermo 07
+[TRACE] 00:02:24:587 Coordinador/(8849:9182): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET guillermo 07
+[TRACE] 00:02:24:588 Coordinador/(8849:9182): Hago un retardo de 300000 microsegundos
+[TRACE] 00:02:24:889 Instancia/(9067:9067): Se recibió una sentencia: SET guillermo 07
+[TRACE] 00:02:24:889 Instancia/(9067:9067): Voy a compactar
+[TRACE] 00:02:24:889 Instancia/(9067:9067): La tabla de entradas quedó: 1110
+[TRACE] 00:02:24:889 Instancia/(9067:9067): Clave: riquelme - Valor: 1 - Entrada: 0 - Ocupa: 1
+[TRACE] 00:02:24:889 Instancia/(9067:9067): Clave: palermo - Valor: 9 - Entrada: 1 - Ocupa: 1
+[TRACE] 00:02:24:889 Instancia/(9067:9067): Ejecuto algoritmo de remplazo circular
+[TRACE] 00:02:24:889 Instancia/(9067:9067): Reemplazo la entrada riquelme
+[TRACE] 00:02:24:890 Instancia/(9067:9067): Ejecuto algoritmo de remplazo circular
+[TRACE] 00:02:24:890 Instancia/(9067:9067): Reemplazo la entrada palermo
+[TRACE] 00:02:24:890 Instancia/(9067:9067): Setteo guillermo: 07, en la entrada 0 con un largo de entradas 2
+[TRACE] 00:02:24:928 Coordinador/(8849:9182): La sentencia se ejecutó correctamente
+[TRACE] 00:02:24:948 ESI/(9175:9175): El coordinador me respondió que salió todo OK
+[TRACE] 00:02:24:957 Coordinador/(8849:9182): Se ejecuto un SET
+[TRACE] 00:04:50:843 Coordinador/(9332:9332): Se conectó el planificador: Puerto=8000; Ip Planificador=142367792; Máximas conexiones=20
+[TRACE] 00:04:56:728 Instancia/(9343:9343): Envio al coordinador el nombre de mi instancia: Instancia
+[TRACE] 00:04:56:731 Coordinador/(9332:9332): Se conectó un componente
+[TRACE] 00:04:56:732 Coordinador/(9332:9332): Hilo asignado
+[TRACE] 00:04:56:732 Coordinador/(9332:9344): Se conectó una instancia
+[TRACE] 00:04:56:771 Coordinador/(9332:9344): Se conectó la instancia de nombre: Instancia
+[TRACE] 00:04:56:771 Coordinador/(9332:9344): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 1
+[TRACE] 00:04:56:771 Instancia/(9343:9343): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=1;
+[TRACE] 00:04:56:772 Instancia/(9343:9343): No hay nada que reincorporar
+[TRACE] 00:04:56:773 Instancia/(9343:9343): Espero sentencias
+[TRACE] 00:04:56:773 Coordinador/(9332:9344): Se ingresó la instancia nueva <Instancia> con 4 entradas libres
+[TRACE] 00:05:00:123 ESI/(9345:9345): Number of lines in the file is 7
+
+[TRACE] 00:05:00:124 ESI/(9345:9345): Recibí una señal de avanzar del coordinador
+[TRACE] 00:05:00:125 ESI/(9345:9345): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 00:05:00:125 Coordinador/(9332:9332): Se conectó un componente
+[TRACE] 00:05:00:125 Coordinador/(9332:9332): Hilo asignado
+[TRACE] 00:05:00:126 Coordinador/(9332:9346): Se conectó un ESI
+[TRACE] 00:05:00:164 Coordinador/(9332:9346): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 00:05:00:165 Coordinador/(9332:9346): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 00:05:00:166 Coordinador/(9332:9346): Hago un retardo de 300000 microsegundos
+[TRACE] 00:05:00:468 Coordinador/(9332:9346): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 00:05:00:469 Coordinador/(9332:9346): Se asigna la nueva clave a la instancia
+[TRACE] 00:05:00:470 ESI/(9345:9345): El coordinador me respondió que salió todo OK
+[TRACE] 00:05:00:471 ESI/(9345:9345): Recibí una señal de avanzar del coordinador
+[TRACE] 00:05:00:473 Coordinador/(9332:9346): Se ejecuto un GET
+[TRACE] 00:05:00:474 ESI/(9345:9345): Le comunico al coordinador la sentencia <SET riquelme 10>
+[TRACE] 00:05:00:476 Coordinador/(9332:9332): Se conectó un componente
+[TRACE] 00:05:00:476 Coordinador/(9332:9332): Hilo asignado
+[TRACE] 00:05:00:477 Coordinador/(9332:9347): Se conectó un ESI
+[TRACE] 00:05:00:515 Coordinador/(9332:9347): Se pudo loguear: ESI 1 || SET riquelme 10
+[TRACE] 00:05:00:515 Coordinador/(9332:9347): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 10
+[TRACE] 00:05:00:515 Coordinador/(9332:9347): Hago un retardo de 300000 microsegundos
+[TRACE] 00:05:00:817 Instancia/(9343:9343): Se recibió una sentencia: SET riquelme 10
+[TRACE] 00:05:00:818 Instancia/(9343:9343): Setteo riquelme: 10, en la entrada 0 con un largo de entradas 2
+[TRACE] 00:05:00:819 Coordinador/(9332:9347): La sentencia se ejecutó correctamente
+[TRACE] 00:05:00:821 ESI/(9345:9345): El coordinador me respondió que salió todo OK
+[TRACE] 00:05:00:821 ESI/(9345:9345): Recibí una señal de avanzar del coordinador
+[TRACE] 00:05:00:822 ESI/(9345:9345): Le comunico al coordinador la sentencia <GET palermo>
+[TRACE] 00:05:00:823 Coordinador/(9332:9347): Se ejecuto un SET
+[TRACE] 00:05:00:824 Coordinador/(9332:9332): Se conectó un componente
+[TRACE] 00:05:00:824 Coordinador/(9332:9332): Hilo asignado
+[TRACE] 00:05:00:825 Coordinador/(9332:9348): Se conectó un ESI
+[TRACE] 00:05:00:864 Coordinador/(9332:9348): Se pudo loguear: ESI 1 || GET palermo
+[TRACE] 00:05:00:864 Coordinador/(9332:9348): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET palermo
+[TRACE] 00:05:00:864 Coordinador/(9332:9348): Hago un retardo de 300000 microsegundos
+[TRACE] 00:05:01:167 Coordinador/(9332:9348): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 00:05:01:169 Coordinador/(9332:9348): Se asigna la nueva clave a la instancia
+[TRACE] 00:05:01:170 ESI/(9345:9345): El coordinador me respondió que salió todo OK
+[TRACE] 00:05:01:172 ESI/(9345:9345): Recibí una señal de avanzar del coordinador
+[TRACE] 00:05:01:172 ESI/(9345:9345): Le comunico al coordinador la sentencia <SET palermo 9>
+[TRACE] 00:05:01:173 Coordinador/(9332:9348): Se ejecuto un GET
+[TRACE] 00:05:01:175 Coordinador/(9332:9332): Se conectó un componente
+[TRACE] 00:05:01:175 Coordinador/(9332:9332): Hilo asignado
+[TRACE] 00:05:01:178 Coordinador/(9332:9349): Se conectó un ESI
+[TRACE] 00:05:01:211 Coordinador/(9332:9349): Se pudo loguear: ESI 1 || SET palermo 9
+[TRACE] 00:05:01:211 Coordinador/(9332:9349): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET palermo 9
+[TRACE] 00:05:01:212 Coordinador/(9332:9349): Hago un retardo de 300000 microsegundos
+[TRACE] 00:05:01:513 Instancia/(9343:9343): Se recibió una sentencia: SET palermo 9
+[TRACE] 00:05:01:514 Instancia/(9343:9343): Setteo palermo: 9, en la entrada 2 con un largo de entradas 1
+[TRACE] 00:05:01:514 Coordinador/(9332:9349): La sentencia se ejecutó correctamente
+[TRACE] 00:05:01:516 Coordinador/(9332:9349): Se ejecuto un SET
+[TRACE] 00:05:01:516 ESI/(9345:9345): El coordinador me respondió que salió todo OK
+[TRACE] 00:05:01:516 ESI/(9345:9345): Recibí una señal de avanzar del coordinador
+[TRACE] 00:05:01:517 ESI/(9345:9345): Le comunico al coordinador la sentencia <SET riquelme 1>
+[TRACE] 00:05:01:518 Coordinador/(9332:9332): Se conectó un componente
+[TRACE] 00:05:01:519 Coordinador/(9332:9332): Hilo asignado
+[TRACE] 00:05:01:521 Coordinador/(9332:9350): Se conectó un ESI
+[TRACE] 00:05:01:558 Coordinador/(9332:9350): Se pudo loguear: ESI 1 || SET riquelme 1
+[TRACE] 00:05:01:558 Coordinador/(9332:9350): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 1
+[TRACE] 00:05:01:558 Coordinador/(9332:9350): Hago un retardo de 300000 microsegundos
+[TRACE] 00:05:01:912 Instancia/(9343:9343): Se recibió una sentencia: SET riquelme 1
+[TRACE] 00:05:01:913 Instancia/(9343:9343): La clave ya está seteada en la instancia
+[TRACE] 00:05:01:913 Instancia/(9343:9343): Setteo riquelme: 1, en la entrada 0 con un largo de entradas 1
+[TRACE] 00:05:01:914 Coordinador/(9332:9350): La sentencia se ejecutó correctamente
+[TRACE] 00:05:01:914 Coordinador/(9332:9350): Se ejecuto un SET
+[TRACE] 00:05:01:915 ESI/(9345:9345): El coordinador me respondió que salió todo OK
+[TRACE] 00:05:01:916 ESI/(9345:9345): Recibí una señal de avanzar del coordinador
+[TRACE] 00:05:01:916 ESI/(9345:9345): Le comunico al coordinador la sentencia <GET guillermo>
+[TRACE] 00:05:01:917 Coordinador/(9332:9332): Se conectó un componente
+[TRACE] 00:05:01:920 Coordinador/(9332:9332): Hilo asignado
+[TRACE] 00:05:01:922 Coordinador/(9332:9351): Se conectó un ESI
+[TRACE] 00:05:01:959 Coordinador/(9332:9351): Se pudo loguear: ESI 1 || GET guillermo
+[TRACE] 00:05:01:959 Coordinador/(9332:9351): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET guillermo
+[TRACE] 00:05:01:960 Coordinador/(9332:9351): Hago un retardo de 300000 microsegundos
+[TRACE] 00:05:02:270 Coordinador/(9332:9351): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 00:05:02:271 Coordinador/(9332:9351): Se asigna la nueva clave a la instancia
+[TRACE] 00:05:02:271 Coordinador/(9332:9351): Se ejecuto un GET
+[TRACE] 00:05:02:272 ESI/(9345:9345): El coordinador me respondió que salió todo OK
+[TRACE] 00:05:02:273 ESI/(9345:9345): Recibí una señal de avanzar del coordinador
+[TRACE] 00:05:02:273 ESI/(9345:9345): Le comunico al coordinador la sentencia <SET guillermo 07>
+[TRACE] 00:05:02:274 Coordinador/(9332:9332): Se conectó un componente
+[TRACE] 00:05:02:275 Coordinador/(9332:9332): Hilo asignado
+[TRACE] 00:05:02:276 Coordinador/(9332:9352): Se conectó un ESI
+[TRACE] 00:05:02:316 Coordinador/(9332:9352): Se pudo loguear: ESI 1 || SET guillermo 07
+[TRACE] 00:05:02:316 Coordinador/(9332:9352): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET guillermo 07
+[TRACE] 00:05:02:316 Coordinador/(9332:9352): Hago un retardo de 300000 microsegundos
+[TRACE] 00:05:02:620 Instancia/(9343:9343): Se recibió una sentencia: SET guillermo 07
+[TRACE] 00:05:02:622 Instancia/(9343:9343): Voy a compactar
+[TRACE] 00:05:02:622 Instancia/(9343:9343): La tabla de entradas quedó: 1110
+[TRACE] 00:05:02:622 Instancia/(9343:9343): Clave: riquelme - Valor: 1 - Entrada: 0 - Ocupa: 1
+[TRACE] 00:05:02:623 Instancia/(9343:9343): Clave: palermo - Valor: 9 - Entrada: 1 - Ocupa: 1
+[TRACE] 00:05:02:623 Instancia/(9343:9343): Ejecuto algoritmo de remplazo circular
+[TRACE] 00:05:02:623 Instancia/(9343:9343): Reemplazo la entrada riquelme
+[TRACE] 00:05:02:623 Instancia/(9343:9343): Ejecuto algoritmo de remplazo circular
+[TRACE] 00:05:02:623 Instancia/(9343:9343): Reemplazo la entrada palermo
+[TRACE] 00:05:02:623 Instancia/(9343:9343): Setteo guillermo: 07, en la entrada 0 con un largo de entradas 2
+[TRACE] 00:05:02:664 Coordinador/(9332:9352): La sentencia se ejecutó correctamente
+[TRACE] 00:05:02:665 Coordinador/(9332:9352): Se ejecuto un SET
+[TRACE] 00:05:02:665 ESI/(9345:9345): El coordinador me respondió que salió todo OK
+[TRACE] 00:06:25:711 Coordinador/(9483:9483): Se conectó el planificador: Puerto=8000; Ip Planificador=148958256; Máximas conexiones=20
+[TRACE] 00:06:31:585 Instancia/(9487:9487): Envio al coordinador el nombre de mi instancia: Instancia
+[TRACE] 00:06:31:585 Coordinador/(9483:9483): Se conectó un componente
+[TRACE] 00:06:31:586 Coordinador/(9483:9483): Hilo asignado
+[TRACE] 00:06:31:587 Coordinador/(9483:9488): Se conectó una instancia
+[TRACE] 00:06:31:623 Coordinador/(9483:9488): Se conectó la instancia de nombre: Instancia
+[TRACE] 00:06:31:624 Coordinador/(9483:9488): Enviamos a la Instancia: Cant. de Entradas = 4; Tam. de Entrada = 1
+[TRACE] 00:06:31:624 Instancia/(9487:9487): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=4; Tam. entrada=1;
+[TRACE] 00:06:31:625 Instancia/(9487:9487): No hay nada que reincorporar
+[TRACE] 00:06:31:626 Instancia/(9487:9487): Espero sentencias
+[TRACE] 00:06:31:626 Coordinador/(9483:9488): Se ingresó la instancia nueva <Instancia> con 4 entradas libres
+[TRACE] 00:06:35:238 ESI/(9489:9489): Number of lines in the file is 7
+
+[TRACE] 00:06:35:238 ESI/(9489:9489): Recibí una señal de avanzar del coordinador
+[TRACE] 00:06:35:238 ESI/(9489:9489): Le comunico al coordinador la sentencia <GET riquelme>
+[TRACE] 00:06:35:239 Coordinador/(9483:9483): Se conectó un componente
+[TRACE] 00:06:35:239 Coordinador/(9483:9483): Hilo asignado
+[TRACE] 00:06:35:240 Coordinador/(9483:9490): Se conectó un ESI
+[TRACE] 00:06:35:286 Coordinador/(9483:9490): Se pudo loguear: ESI 1 || GET riquelme
+[TRACE] 00:06:35:288 Coordinador/(9483:9490): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET riquelme
+[TRACE] 00:06:35:288 Coordinador/(9483:9490): Hago un retardo de 300000 microsegundos
+[TRACE] 00:06:35:591 Coordinador/(9483:9490): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 00:06:35:593 Coordinador/(9483:9490): Se asigna la nueva clave a la instancia
+[TRACE] 00:06:35:594 ESI/(9489:9489): El coordinador me respondió que salió todo OK
+[TRACE] 00:06:35:596 ESI/(9489:9489): Recibí una señal de avanzar del coordinador
+[TRACE] 00:06:35:596 ESI/(9489:9489): Le comunico al coordinador la sentencia <SET riquelme 10>
+[TRACE] 00:06:35:598 Coordinador/(9483:9490): Se ejecuto un GET
+[TRACE] 00:06:35:600 Coordinador/(9483:9483): Se conectó un componente
+[TRACE] 00:06:35:601 Coordinador/(9483:9483): Hilo asignado
+[TRACE] 00:06:35:602 Coordinador/(9483:9491): Se conectó un ESI
+[TRACE] 00:06:35:646 Coordinador/(9483:9491): Se pudo loguear: ESI 1 || SET riquelme 10
+[TRACE] 00:06:35:654 Coordinador/(9483:9491): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 10
+[TRACE] 00:06:35:658 Coordinador/(9483:9491): Hago un retardo de 300000 microsegundos
+[TRACE] 00:06:35:962 Instancia/(9487:9487): Se recibió una sentencia: SET riquelme 10
+[TRACE] 00:06:35:963 Instancia/(9487:9487): Setteo riquelme: 10, en la entrada 0 con un largo de entradas 2
+[TRACE] 00:06:35:965 Coordinador/(9483:9491): La sentencia se ejecutó correctamente
+[TRACE] 00:06:35:965 Coordinador/(9483:9491): Se ejecuto un SET
+[TRACE] 00:06:35:965 ESI/(9489:9489): El coordinador me respondió que salió todo OK
+[TRACE] 00:06:35:966 ESI/(9489:9489): Recibí una señal de avanzar del coordinador
+[TRACE] 00:06:35:966 ESI/(9489:9489): Le comunico al coordinador la sentencia <GET palermo>
+[TRACE] 00:06:35:968 Coordinador/(9483:9483): Se conectó un componente
+[TRACE] 00:06:35:969 Coordinador/(9483:9483): Hilo asignado
+[TRACE] 00:06:35:971 Coordinador/(9483:9492): Se conectó un ESI
+[TRACE] 00:06:36:7 Coordinador/(9483:9492): Se pudo loguear: ESI 1 || GET palermo
+[TRACE] 00:06:36:7 Coordinador/(9483:9492): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET palermo
+[TRACE] 00:06:36:8 Coordinador/(9483:9492): Hago un retardo de 300000 microsegundos
+[TRACE] 00:06:36:308 Coordinador/(9483:9492): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 00:06:36:308 Coordinador/(9483:9492): Se asigna la nueva clave a la instancia
+[TRACE] 00:06:36:308 Coordinador/(9483:9492): Se ejecuto un GET
+[TRACE] 00:06:36:308 ESI/(9489:9489): El coordinador me respondió que salió todo OK
+[TRACE] 00:06:36:309 ESI/(9489:9489): Recibí una señal de avanzar del coordinador
+[TRACE] 00:06:36:309 ESI/(9489:9489): Le comunico al coordinador la sentencia <SET palermo 9>
+[TRACE] 00:06:36:309 Coordinador/(9483:9483): Se conectó un componente
+[TRACE] 00:06:36:310 Coordinador/(9483:9483): Hilo asignado
+[TRACE] 00:06:36:310 Coordinador/(9483:9493): Se conectó un ESI
+[TRACE] 00:06:36:347 Coordinador/(9483:9493): Se pudo loguear: ESI 1 || SET palermo 9
+[TRACE] 00:06:36:347 Coordinador/(9483:9493): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET palermo 9
+[TRACE] 00:06:36:348 Coordinador/(9483:9493): Hago un retardo de 300000 microsegundos
+[TRACE] 00:06:36:664 Instancia/(9487:9487): Se recibió una sentencia: SET palermo 9
+[TRACE] 00:06:36:668 Instancia/(9487:9487): Setteo palermo: 9, en la entrada 2 con un largo de entradas 1
+[TRACE] 00:06:36:668 Coordinador/(9483:9493): La sentencia se ejecutó correctamente
+[TRACE] 00:06:36:668 ESI/(9489:9489): El coordinador me respondió que salió todo OK
+[TRACE] 00:06:36:668 ESI/(9489:9489): Recibí una señal de avanzar del coordinador
+[TRACE] 00:06:36:668 ESI/(9489:9489): Le comunico al coordinador la sentencia <SET riquelme 1>
+[TRACE] 00:06:36:669 Coordinador/(9483:9493): Se ejecuto un SET
+[TRACE] 00:06:36:669 Coordinador/(9483:9483): Se conectó un componente
+[TRACE] 00:06:36:669 Coordinador/(9483:9483): Hilo asignado
+[TRACE] 00:06:36:669 Coordinador/(9483:9495): Se conectó un ESI
+[TRACE] 00:06:36:708 Coordinador/(9483:9495): Se pudo loguear: ESI 1 || SET riquelme 1
+[TRACE] 00:06:36:708 Coordinador/(9483:9495): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET riquelme 1
+[TRACE] 00:06:36:708 Coordinador/(9483:9495): Hago un retardo de 300000 microsegundos
+[TRACE] 00:06:37:59 Instancia/(9487:9487): Se recibió una sentencia: SET riquelme 1
+[TRACE] 00:06:37:68 Instancia/(9487:9487): La clave ya está seteada en la instancia
+[TRACE] 00:06:37:68 Instancia/(9487:9487): Setteo riquelme: 1, en la entrada 0 con un largo de entradas 1
+[TRACE] 00:06:37:68 Coordinador/(9483:9495): La sentencia se ejecutó correctamente
+[TRACE] 00:06:37:69 Coordinador/(9483:9495): Se ejecuto un SET
+[TRACE] 00:06:37:69 ESI/(9489:9489): El coordinador me respondió que salió todo OK
+[TRACE] 00:06:37:69 ESI/(9489:9489): Recibí una señal de avanzar del coordinador
+[TRACE] 00:06:37:69 ESI/(9489:9489): Le comunico al coordinador la sentencia <GET guillermo>
+[TRACE] 00:06:37:70 Coordinador/(9483:9483): Se conectó un componente
+[TRACE] 00:06:37:70 Coordinador/(9483:9483): Hilo asignado
+[TRACE] 00:06:37:72 Coordinador/(9483:9496): Se conectó un ESI
+[TRACE] 00:06:37:108 Coordinador/(9483:9496): Se pudo loguear: ESI 1 || GET guillermo
+[TRACE] 00:06:37:108 Coordinador/(9483:9496): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET guillermo
+[TRACE] 00:06:37:109 Coordinador/(9483:9496): Hago un retardo de 300000 microsegundos
+[TRACE] 00:06:37:410 Coordinador/(9483:9496): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 00:06:37:412 Coordinador/(9483:9496): Se asigna la nueva clave a la instancia
+[TRACE] 00:06:37:412 Coordinador/(9483:9496): Se ejecuto un GET
+[TRACE] 00:06:37:412 ESI/(9489:9489): El coordinador me respondió que salió todo OK
+[TRACE] 00:06:37:413 ESI/(9489:9489): Recibí una señal de avanzar del coordinador
+[TRACE] 00:06:37:413 ESI/(9489:9489): Le comunico al coordinador la sentencia <SET guillermo 07>
+[TRACE] 00:06:37:414 Coordinador/(9483:9483): Se conectó un componente
+[TRACE] 00:06:37:415 Coordinador/(9483:9483): Hilo asignado
+[TRACE] 00:06:37:416 Coordinador/(9483:9497): Se conectó un ESI
+[TRACE] 00:06:37:458 Coordinador/(9483:9497): Se pudo loguear: ESI 1 || SET guillermo 07
+[TRACE] 00:06:37:458 Coordinador/(9483:9497): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET guillermo 07
+[TRACE] 00:06:37:459 Coordinador/(9483:9497): Hago un retardo de 300000 microsegundos
+[TRACE] 00:06:37:761 Instancia/(9487:9487): Se recibió una sentencia: SET guillermo 07
+[TRACE] 00:06:37:762 Instancia/(9487:9487): Voy a compactar
+[TRACE] 00:06:37:763 Instancia/(9487:9487): La tabla de entradas quedó: 1100
+[TRACE] 00:06:37:765 Instancia/(9487:9487): Clave: riquelme - Valor: 1 - Entrada: 0 - Ocupa: 1
+[TRACE] 00:06:37:765 Instancia/(9487:9487): Clave: palermo - Valor: 9 - Entrada: 1 - Ocupa: 1
+[TRACE] 00:06:37:765 Instancia/(9487:9487): Setteo guillermo: 07, en la entrada 2 con un largo de entradas 2
+[TRACE] 00:06:37:805 Coordinador/(9483:9497): La sentencia se ejecutó correctamente
+[TRACE] 00:06:37:805 Coordinador/(9483:9497): Se ejecuto un SET
+[TRACE] 00:06:37:806 ESI/(9489:9489): El coordinador me respondió que salió todo OK
+[TRACE] 00:06:43:288 Instancia/(9487:9487): La tabla de entradas quedó: 1111
+[TRACE] 00:06:43:289 Instancia/(9487:9487): Clave: riquelme - Valor: 1 - Entrada: 0 - Ocupa: 1
+[TRACE] 00:06:43:290 Instancia/(9487:9487): Clave: palermo - Valor: 9 - Entrada: 1 - Ocupa: 1
+[TRACE] 00:06:43:290 Instancia/(9487:9487): Clave: guillermo - Valor: 07 - Entrada: 2 - Ocupa: 2

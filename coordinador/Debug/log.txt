@@ -102,3 +102,50 @@ ESI 2 || SET futbol:messi TraemeLaCopa
 ESI 2 || STORE futbol:messi
 ESI 2 || STORE futbol:ansaldi
 ESI 2 || STORE futbol:caballero
+ESI 1 || GET riquelme
+ESI 1 || GET riquelme
+ESI 1 || GET riquelme
+ESI 1 || GET riquelme
+ESI 1 || GET riquelme
+ESI 1 || GET riquelme
+ESI 1 || GET riquelme
+ESI 1 || SET riquelme 10
+ESI 1 || GET riquelme
+ESI 1 || SET riquelme 10
+ESI 1 || GET riquelme
+ESI 1 || SET riquelme 10
+ESI 1 || GET palermo
+ESI 1 || SET palermo 9
+ESI 1 || SET riquelme 1
+ESI 1 || GET guillermo
+ESI 1 || SET guillermo 7
+ESI 2 || GET riquelme
+ESI 3 || GET ariquelme
+ESI 1 || GET riquelme
+ESI 1 || SET riquelme 10
+ESI 1 || GET palermo
+ESI 1 || SET palermo 9
+ESI 1 || SET riquelme 1
+ESI 1 || GET guillermo
+ESI 1 || SET guillermo 07
+ESI 1 || GET riquelme
+ESI 1 || SET riquelme 10
+ESI 1 || GET palermo
+ESI 1 || SET palermo 9
+ESI 1 || SET riquelme 1
+ESI 1 || GET guillermo
+ESI 1 || SET guillermo 07
+ESI 1 || GET riquelme
+ESI 1 || SET riquelme 10
+ESI 1 || GET palermo
+ESI 1 || SET palermo 9
+ESI 1 || SET riquelme 1
+ESI 1 || GET guillermo
+ESI 1 || SET guillermo 07
+ESI 1 || GET riquelme
+ESI 1 || SET riquelme 10
+ESI 1 || GET palermo
+ESI 1 || SET palermo 9
+ESI 1 || SET riquelme 1
+ESI 1 || GET guillermo
+ESI 1 || SET guillermo 07

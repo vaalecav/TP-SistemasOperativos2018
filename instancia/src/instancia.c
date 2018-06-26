@@ -460,12 +460,12 @@ void compactar() {
 						entrada = (Entrada*)entradaVoid;
 
 						// Marco todos los espacios que ocupa la entrada como disponible
-						for (int iLiberandoEntradas = iEntradaOcupada; iLiberandoEntradas <= iEntradaOcupada + entrada->cantidadEntradas; iLiberandoEntradas++) {
+						for (int iLiberandoEntradas = iEntradaOcupada; iLiberandoEntradas < iEntradaOcupada + entrada->cantidadEntradas; iLiberandoEntradas++) {
 							estructuraAdministrativa.entradasUsadas[iLiberandoEntradas] = 0;
 						}
 
 						// Marco los espacios que ocupará ahora como ocupados
-						for (int iOcupandoEntradas = iCompactacion; iOcupandoEntradas <= iCompactacion + entrada->cantidadEntradas; iOcupandoEntradas++) {
+						for (int iOcupandoEntradas = iCompactacion; iOcupandoEntradas < iCompactacion + entrada->cantidadEntradas; iOcupandoEntradas++) {
 							estructuraAdministrativa.entradasUsadas[iOcupandoEntradas] = 1;
 						}
 
@@ -580,7 +580,7 @@ void dumpEntradas(void* entradaVoid){
 }
 
 void realizarDump(int intervaloDump){
-	while(true){
+	while(true) {
 		// Hago sleep del tiempo indicado por configuración
 		sleep(intervaloDump);
 		
@@ -590,6 +590,8 @@ void realizarDump(int intervaloDump){
 		// Itera por todas las entradas guardando los valores
 		list_iterate(estructuraAdministrativa.entradas, dumpEntradas);
 		pthread_mutex_unlock(&mutexDump);
+
+		log_trace(logInstancia, "Hice un DUMP");
 	}
 }
 
@@ -668,12 +670,13 @@ int main() {
 		enviarHeader(socketCoordinador, "", cantidadDeEntradasLibres());
 
 	// Antes de empezar a recibir sentencias, inicio el DUMP en un thread
-		if (!correrEnHilo(intervaloDump)) {
+		/*if (!correrEnHilo(intervaloDump)) {
 			liberarMemoria();
 			return 0;
-		}
+		}*/
 
 	// Espero las sentencias
+		log_trace(logInstancia, "Espero sentencias");
 		while(!terminar) {
 			recibirSentencia();
 		}
