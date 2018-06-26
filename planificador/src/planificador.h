@@ -30,7 +30,7 @@
 
 int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(),
 		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(), cmdKill(),
-		cmdStatus(); // Son las funciones que ejecutan los comandos ingresados por consola.
+		cmdStatus(), cmdDesbloquear(), cmdBloquear(); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
 
@@ -53,20 +53,30 @@ typedef struct COMANDO {
 } COMANDO;
 
 COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
-		{ "continuar", cmdContinue, "Reanuda la ejecucion de ESIs.", 0 }, {
-				"colaTerminados", cmdColaTerminados,
-				"Imprime en pantalla la cola de Terminados.", 0 }, {
-				"colaBloqueados", cmdColaBloqueados,
-				"Imprime en pantalla la cola de Bloqueados.", 0 }, {
-				"colaReady", cmdColaReady,
-				"Imprime en pantalla la cola de Ready.", 0 }, { "listaClaves",
-				cmdListaClaves, "Imprime la lista de Claves.", 0 },
-		/*{ "bloquear","Este comando aun no se ha desarrollado.", 2},
-		 { "desbloquear","Este comando aun no se ha desarrollado.", 1},
-		 { "listar","Este comando aun no se ha desarrollado.", 1},*/
-		{ "kill", cmdKill, "Finaliza el proceso.", 1 }, { "status", cmdStatus,
-				"Conocer el estado de una clave.", 1 },
-		//{ "deadlock","Este comando aun no se ha desarrollado.", 0},
+
+{ "continuar", cmdContinue, "Reanuda la ejecucion de ESIs.", 0 },
+
+{ "colaTerminados", cmdColaTerminados,
+		"Imprime en pantalla la cola de Terminados.", 0 },
+
+{ "colaBloqueados", cmdColaBloqueados,
+		"Imprime en pantalla la cola de Bloqueados.", 0 },
+
+{ "colaReady", cmdColaReady, "Imprime en pantalla la cola de Ready.", 0 },
+
+{ "listaClaves", cmdListaClaves, "Imprime la lista de Claves.", 0 },
+
+{ "bloquear", cmdDesbloquear, "Bloquea una clave.", 2 },
+
+{ "desbloquear", cmdBloquear, "Desbloquea una clave.", 1 },
+
+// { "listar", "Este comando aun no se ha desarrollado.", 1 },
+
+// { "kill", cmdKill, "Finaliza el proceso.", 1 },
+
+{ "status", cmdStatus, "Conocer el estado de una clave.", 1 },
+
+//{ "deadlock","Este comando aun no se ha desarrollado.", 0},
 		{ "help", cmdHelp, "Imprime los comandos disponibles.", 0 }, { "quit",
 				cmdQuit, "Finaliza al Planificador.", 0 }, { (char *) NULL,
 				(Function *) NULL, (char *) NULL, (int *) NULL } };
