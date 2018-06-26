@@ -270,7 +270,7 @@ int finalizarESI(int esi) {
 	DATA * esiBloqueada;
 
 	esiEjecutar = list_find_with_param(listaEsi, (void*) &esi,
-			buscarEnBloqueados);
+			buscarEnBloqueados); //revisar porque me rompe
 
 	if (esiEjecutar != NULL) {
 		esiBloqueada = list_remove_by_condition_with_param(colaBloqueados,
@@ -695,3 +695,4 @@ void iniciarConsola() {
 			ejecutarComando(aux);
 		free(linea);
 	}
+}
