@@ -8,22 +8,23 @@
 #ifndef GENERALES_GENERALES_H_
 #define GENERALES_GENERALES_H_
 
-#include <commons/collections/list.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <commons/collections/list.h>
+
+#include "../commonsNuestras/collections/list.h"
 
 /*
 Eclipse
-*/
+
 #define ARCHIVO_CONFIGURACION "./configuraciones/configuracion.txt"
 #define ARCHIVO_LOG "../log.txt"
+*/
 /*
-Consola
+Consola*/
 #define ARCHIVO_CONFIGURACION "../configuraciones/configuracion.txt"
 #define ARCHIVO_LOG "../../log.txt"
-*/
+
 
 // Logs
 #define LOG_PRINT 1

@@ -99,6 +99,7 @@ void manejoAlgoritmos() {
 				// No hay nadie para ejecutar //
 			} else {
 				while (flagFin != 1) {
+
 					// Le ordeno al ESI que ejecute //
 					esi = (DATA*) esiVoid;
 					enviarHeader(esi->socket, "", PLANIFICADOR);
@@ -255,11 +256,29 @@ int bloquearClaveESI(char* clave, int esi) {
 		} else {
 			printf("La clave <%s> del ESI %d no se puede bloquear./n", clave,
 					esi);
-
+      
 			return 0;
-		}
-	} else {
+		  }
+  } else {
 		printf("La clave <%s> del ESI %d no se puede bloquear./n", clave, esi);
+    return 0;
+	  }
+}
+
+int finalizarESI(int esi) {
+	void * esiEjecutar;
+	DATA * esiBloqueada;
+
+	esiEjecutar = list_find_with_param(listaEsi, (void*) &esi,
+			buscarEnBloqueados);
+
+	if (esiEjecutar != NULL) {
+		esiBloqueada = list_remove_by_condition_with_param(colaBloqueados,
+				esiEjecutar, buscarEnBloqueados);
+		list_add(colaReady, (void*) esiBloqueada);
+		return 1;
+	} else {
+		printf("El ESI con ID %d no se pudo finalizar", esi);
 		return 0;
 	}
 }
@@ -492,6 +511,18 @@ int cmdDesbloquear(char* clave) {
 int cmdBloquear(char* clave, int esi) {
 	if (bloquearClaveESI(clave, esi))
 		printf("Se bloqueó la clave %s del ESI con ID %d\n", clave, esi);
+  return 0;
+}
+
+int cmdStatus(char* clave) {
+	// falta valor e instancia que nos lo da el coordinador
+	list_iterate(colaBloqueados, imprimirEnPantalla);
+	return 0;
+}
+
+int cmdKill(int esi) {
+	if (finalizarESI(esi))
+		printf("Se ha finalizado el ESI con ID %d", esi);
 	return 0;
 }
 
@@ -664,4 +695,3 @@ void iniciarConsola() {
 			ejecutarComando(aux);
 		free(linea);
 	}
-}

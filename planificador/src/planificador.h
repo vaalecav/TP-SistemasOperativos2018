@@ -11,11 +11,11 @@
 #ifndef PLANIFICADOR_H_
 #define PLANIFICADOR_H_
 
+#include <commonsNuestras/config.h>
+#include <commonsNuestras/string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <commons/string.h>
-#include <commons/config.h>
 #include <generales/generales.h>
 #include <pthread.h>
 #include <readline/readline.h>
@@ -29,8 +29,8 @@
 //=======================COMANDOS DE CONSOLA====================================
 
 int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(),
-		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(),
-		cmdDesbloquear(char*, char*), cmdBloquear(char*, char*); // Son las funciones que ejecutan los comandos ingresados por consola.
+		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(), cmdDesbloquear(char*), cmdBloquear(char*, int), cmdKill(int),
+		cmdStatus(char*); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
 
@@ -55,18 +55,19 @@ typedef struct COMANDO {
 COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
 		{ "continuar", cmdContinue, "Reanuda la ejecucion de ESIs.", 0 }, {
 				"colaTerminados", cmdColaTerminados,
-				"Reanuda la ejecucion de ESIs.", 0 }, { "colaBloqueados",
-				cmdColaBloqueados, "Reanuda la ejecucion de ESIs.", 0 }, {
+				"Imprime en pantalla la cola de Terminados.", 0 }, {
+				"colaBloqueados", cmdColaBloqueados,
+				"Imprime en pantalla la cola de Bloqueados.", 0 }, {
 				"colaReady", cmdColaReady,
 				"Imprime en pantalla la cola de Ready.", 0 }, { "listaClaves",
-				cmdListaClaves, "Imprime la lista de Claves.", 0 }, { {
-				"bloquear", cmdDesbloquear,
+				cmdListaClaves, "Imprime la lista de Claves.", 0 },
+		{ "bloquear", cmdDesbloquear,
 				"Bloquea una clave.", 2 }, "desbloquear",
 				cmdBloquear, "Desbloquea una clave.", 2 },
-		/*		{ "listar","Este comando aun no se ha desarrollado.", 1},
-		 { "kill","Este comando aun no se ha desarrollado.", 1},
-		 { "status","Este comando aun no se ha desarrollado.", 1},
-		 { "deadlock","Este comando aun no se ha desarrollado.", 0},*/
+		 // { "listar","Este comando aun no se ha desarrollado.", 1},
+		{ "kill", cmdKill, "Finaliza el proceso.", 1 }, { "status", cmdStatus,
+				"Conocer el estado de una clave.", 1 },
+		//{ "deadlock","Este comando aun no se ha desarrollado.", 0},
 		{ "help", cmdHelp, "Imprime los comandos disponibles.", 0 }, { "quit",
 				cmdQuit, "Finaliza al Planificador.", 0 }, { (char *) NULL,
 				(Function *) NULL, (char *) NULL, (int *) NULL } };

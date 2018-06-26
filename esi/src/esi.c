@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
 	int maxFilas = filasArchivo(path);
 	enviarHeader(socketPlanificador, "", maxFilas);
 
-	parsearScript(path, maxFilas);
+	parsearScript(path, idEsi, maxFilas);
 
 	// Libero memoria
 	free(header);
@@ -106,7 +106,7 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
-void parsearScript(char* path, int maxFilas) {
+void parsearScript(char* path, int idEsi, int maxFilas) {
 	FILE * fp;
 	char * line = NULL;
 	size_t len = 0;
@@ -120,16 +120,24 @@ void parsearScript(char* path, int maxFilas) {
 	char* mensajeCoordinador;
 	int socketCoordinador;
 	char* nombre;
+	int largoId;
 
 	//leo puertos e ip del coordinador
 	ipCoordinador = config_get_string_value(configuracion, "IP_COORDINADOR");
 	puertoCoordinador = config_get_int_value(configuracion,
 			"PUERTO_COORDINADOR");
-	nombre = config_get_string_value(configuracion, "NOMBRE");
+
+	// Convierto el id del esi al nombre
+	// floor(log10(abs(NUMERO))) + 1  -> te devuelve la cantidad de digitos que tiene un numero
+	largoId = floor(log10(abs(idEsi))) + 1;
+	nombre = malloc(4 + largoId + 1);
+	sprintf(nombre, "ESI %d", idEsi);
+	nombre[4 + largoId] = '\0';
 
 	// Valido que el archivo exista
 	if ((fp = fopen(path, "r")) == NULL) {
 		log_error(logESI, "El archivo '%s' no existe o es inaccesible", path);
+		free(nombre);
 		liberarMemoria();
 		exit(EXIT_FAILURE);
 	}
@@ -189,6 +197,7 @@ void parsearScript(char* path, int maxFilas) {
 
 					default:
 						log_error(logESI, "No pude interpretar <%s>\n", line);
+						free(nombre);
 						liberarMemoria();
 						exit(EXIT_FAILURE);
 					}
@@ -244,6 +253,7 @@ void parsearScript(char* path, int maxFilas) {
 					destruir_operacion(parsed);
 				} else {
 					log_error(logESI, "La linea <%s> no es valida\n", line);
+					free(nombre);
 					liberarMemoria();
 					exit(EXIT_FAILURE);
 				}

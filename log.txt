@@ -296,3 +296,4 @@
 [TRACE] 15:45:18:18 Coordinador/(12455:12519): La clave se encuentra bloqueada
 [TRACE] 15:45:18:19 Coordinador/(12455:12519): Se ejecuto un GET
 [TRACE] 15:45:18:19 ESI/(12508:12508): Me quede bloqueado.
+
