@@ -382,6 +382,9 @@ void recibirSentencia() {
 	char** mensajeSplitted;
 	ContentHeader *header;
 	int respuesta;
+	char* nombreClave;
+	void* entradaVoid;
+	Entrada* entrada;
 
 	// Recibo el mensaje del coordinador
 	header = recibirHeader(socketCoordinador);
@@ -427,6 +430,19 @@ void recibirSentencia() {
 		free(mensajeSplitted[2]);
 		free(mensajeSplitted);
 
+	} else if (header->id == COMANDO_STATUS){
+		recibirMensaje(socketCoordinador, header->largo, &nombreClave); // Recibo nombre de la clave
+		// Valido si existe la entrada con la clave
+		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)nombreClave, entradaEsIgualAClave)) == NULL) {
+			// No existe entrada entonces la clave no posee un valor, se lo comunico al coordinador
+			enviarHeader(socketCoordinador, "", COMANDO_STATUS_VALOR_CLAVE_NULL);
+		} else {
+			// Existe entrada entonces le paso el valor de la clave al coordinador
+			entrada = (Entrada*)entradaVoid;
+			enviarHeader(socketCoordinador, entrada->valor, COMANDO_STATUS_VALOR_CLAVE_OK);
+			enviarMensaje(socketCoordinador, entrada->valor);
+		}
+		free(nombreClave);
 	}
 
 	free(header);
@@ -580,7 +596,7 @@ void dumpEntradas(void* entradaVoid){
 }
 
 void realizarDump(int intervaloDump){
-	while(true) {
+	while(terminar) {
 		// Hago sleep del tiempo indicado por configuración
 		sleep(intervaloDump);
 		
@@ -603,8 +619,6 @@ int correrEnHilo(int intervaloDump){
 		return 0;
 	}
 	log_trace(logInstancia, "Hilo asignado para realizar el Dump");
-	pthread_join(idHilo, NULL);
-
 	return 1;
 }
 
@@ -670,10 +684,10 @@ int main() {
 		enviarHeader(socketCoordinador, "", cantidadDeEntradasLibres());
 
 	// Antes de empezar a recibir sentencias, inicio el DUMP en un thread
-		/*if (!correrEnHilo(intervaloDump)) {
+		if (!correrEnHilo(intervaloDump)) {
 			liberarMemoria();
 			return 0;
-		}*/
+		}
 
 	// Espero las sentencias
 		log_trace(logInstancia, "Espero sentencias");

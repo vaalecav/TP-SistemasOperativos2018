@@ -241,12 +241,96 @@ int correrEnHilo(SocketHilos socketsConectados) {
 	return 1;
 }
 
+char* obtenerValorClaveInstancia(int socketInstancia, char* nombreClave){
+	ContentHeader* header;
+	char* valorClave;
+	// Envio la clave de la cual quiero su contenido
+	enviarHeader(socketInstancia, nombreClave, COMANDO_STATUS);
+	enviarMensaje(socketInstancia, nombreClave);
+	// Recibo contenido de la instancia
+	header = recibirHeader(socketInstancia);
+
+	switch(header->id){
+		case COMANDO_STATUS_VALOR_CLAVE_OK: // Si hay un valor en esa clave
+			valorClave = malloc(header->largo + 1);
+			recibirMensaje(socketInstancia, header->largo, &valorClave);
+			valorClave[header->largo] = '\0';
+			break;
+		case COMANDO_STATUS_VALOR_CLAVE_NULL: // Si no hay un valor en esa clave
+			valorClave = NULL;
+			break;
+	}
+
+	free(header);
+	return valorClave;
+}
+
 void manejarComandoStatus(int socketPlanificador, int largoMensaje){
 	char* nombreClave = malloc(largoMensaje +1);
+	char* valorClave;
+	char* nombreInstancia;
+	Instancia* instanciaNueva = malloc(sizeof(Instancia));
+	char* nombreInstanciaNueva;
+	Instancia* instancia;
+	void* instanciaVoid;
+	Clave* clave;
+	void* claveVoid;
+
+	// Recibo nombre de la clave
 	recibirMensaje(socketPlanificador, largoMensaje, &nombreClave);
 	//TODO Busco clave y paso sus datos (valor, instancia en la que se guardaria)
 
+	// Busco la clave en la lista de instancias
+	pthread_mutex_lock(&mutexListaInstancias);
+	instanciaVoid = list_find_with_param(listaInstancias, (void*) nombreClave, buscarInstanciaConClave);
+	// Si encontré una instancia, busco la clave
+	claveVoid = (instanciaVoid != NULL ? list_find_with_param(((Instancia*) instanciaVoid)->claves, (void*) nombreClave, buscarClaveEnListaDeClaves) : NULL);
+	pthread_mutex_unlock(&mutexListaInstancias);
+
+	if(instanciaVoid != NULL){
+		instancia = (Instancia*) instanciaVoid;
+		clave = (Clave*) claveVoid;
+
+		// Obtengo nombre de la instancia que contiene la clave
+		nombreInstancia = malloc(strlen(instancia->nombre) + 1);
+		strcpy(nombreInstancia, instancia->nombre);
+		nombreInstancia[strlen(instancia->nombre)] = '\0';
+
+		// Obtengo contenido de la clave, necesito recibirlo de la instancia
+		valorClave = obtenerValorClaveInstancia(instancia->socket, clave->nombre);
+
+	} else {
+		// En caso de que la clave no se encuentre en una instancia, por ende no tiene valor
+		valorClave = NULL;
+		nombreInstancia = NULL;
+	}
+
+	// Vuelvo a calcular en que instancia ubicaria ahora a la clave
+	instanciaNueva = seleccionarInstanciaAlgoritmoDistribucion(clave);
+	// Obtengo nombre de la instancia que contendria a la clave
+	nombreInstanciaNueva = malloc(strlen(instanciaNueva->nombre) + 1);
+	strcpy(nombreInstanciaNueva, instanciaNueva->nombre);
+	nombreInstanciaNueva[strlen(instanciaNueva->nombre)] = '\0';
+
+	//Le envio uno por uno la informacion obtenida al planificador
+	// Envio valor de la clave
+	enviarHeader(socketPlanificador, valorClave, COMANDO_STATUS);
+	enviarMensaje(socketPlanificador, valorClave);
+	// Envio instancia en la que se encuentra la clave
+	enviarHeader(socketPlanificador, nombreInstancia, COMANDO_STATUS);
+	enviarMensaje(socketPlanificador, nombreInstancia);
+	// Envio instancia en la que se guardaria actualmente la clave
+	enviarHeader(socketPlanificador, nombreInstanciaNueva, COMANDO_STATUS);
+	enviarMensaje(socketPlanificador, nombreInstanciaNueva);
+
+	// Libero memoria
+	if(valorClave != NULL){
+		free(valorClave);
+	}
+	free(nombreInstancia);
+	free(nombreInstanciaNueva);
 	free(nombreClave);
+	free(instanciaNueva);
 }
 
 void manejarComandoKill(int socketPlanificador, int largoMensaje){
@@ -309,7 +393,7 @@ int main() {
 	log_trace(logCoordinador, "Se conectó el planificador: Puerto=%d; Ip Planificador=%d; Máximas conexiones=%d", puerto, ipPlanificador, maxConexiones);
 
 	// Creo hilo para esperar mensajes de consola del planificador
-	/*pthread_t idHilo;
+	pthread_t idHilo;
 	if (pthread_create(&idHilo, NULL, (void*) consolaPlanificador, (void*) socketConectadoPlanificador)) {
 		log_error(logCoordinador, "No se pudo crear el hilo para recibir mensajes del Planificador");
 		//Libero memoria
@@ -321,7 +405,6 @@ int main() {
 		return 0;
 	}
 	log_trace(logCoordinador, "Hilo asignado para recibir mensajes del Planificador");
-	pthread_join(idHilo, NULL);*/
 
 	// Instancio la lista de instancias
 	listaInstancias = list_create();
@@ -360,24 +443,11 @@ bool instanciasNoCaidas(void* instanciaVoid) {
 	return sePuedeComunicarConLaInstancia((Instancia*) instanciaVoid) != -1;
 }
 
-int asignarClaveAInstancia(char* key, char* nombreEsi) {
+Instancia* seleccionarInstanciaAlgoritmoDistribucion(Clave* clave){
 	char* algoritmo_distribucion;
 	t_config* configuracion;
 	Instancia* instancia;
 	t_list* listaInstanciasNoCaidas;
-
-	// Creo la clave
-	Clave* clave;
-	clave = malloc(sizeof(Clave));
-	clave->bloqueado = 1;
-
-	clave->nombre = malloc(strlen(key) + 1);
-	strcpy(clave->nombre, key);
-	clave->nombre[strlen(key)] = '\0';
-
-	clave->nombreEsi = malloc(strlen(nombreEsi) + 1);
-	strcpy(clave->nombreEsi, nombreEsi);
-	clave->nombreEsi[strlen(nombreEsi)] = '\0';
 
 	// Leo del archivo de configuracion
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
@@ -389,9 +459,8 @@ int asignarClaveAInstancia(char* key, char* nombreEsi) {
 	pthread_mutex_unlock(&mutexListaInstancias);
 
 	if (list_is_empty(listaInstanciasNoCaidas)) {
-		free(clave->nombre);
-		free(clave);
-		return 0;
+		log_error(logCoordinador, "No se puede seleccionar algoritmo de distribucion, todas las instancias se encuentran caidas");
+		return NULL;
 	}
 
 	// Selecciono algoritmo de distribucion de instancias
@@ -408,8 +477,37 @@ int asignarClaveAInstancia(char* key, char* nombreEsi) {
 
 	// Libero memoria
 	config_destroy(configuracion);
-	list_add(instancia->claves, clave);
 	list_destroy(listaInstanciasNoCaidas);
+
+	return instancia;
+}
+
+int asignarClaveAInstancia(char* key, char* nombreEsi) {
+	Instancia* instancia;
+	// Creo la clave
+	Clave* clave;
+	clave = malloc(sizeof(Clave));
+	clave->bloqueado = 1;
+
+	clave->nombre = malloc(strlen(key) + 1);
+	strcpy(clave->nombre, key);
+	clave->nombre[strlen(key)] = '\0';
+
+	clave->nombreEsi = malloc(strlen(nombreEsi) + 1);
+	strcpy(clave->nombreEsi, nombreEsi);
+	clave->nombreEsi[strlen(nombreEsi)] = '\0';
+
+	instancia = seleccionarInstanciaAlgoritmoDistribucion(clave);
+
+	if(instancia == NULL){
+		// Libero memoria, ya loguie antes
+		free(clave->nombre);
+		free(clave->nombreEsi);
+		free(clave);
+		return 0;
+	}
+
+	list_add(instancia->claves, clave);
 
 	return 1;
 }
