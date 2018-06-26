@@ -416,7 +416,7 @@ int main() {
 	log_trace(logCoordinador, "Se conectó el planificador: Puerto=%d; Ip Planificador=%d; Máximas conexiones=%d", puerto, ipPlanificador, maxConexiones);
 
 	// Creo hilo para esperar mensajes de consola del planificador
-	/*pthread_t idHilo;
+	pthread_t idHilo;
 	if (pthread_create(&idHilo, NULL, (void*) consolaPlanificador, (void*) socketConectadoPlanificador)) {
 		log_error(logCoordinador, "No se pudo crear el hilo para recibir mensajes del Planificador");
 		//Libero memoria
@@ -428,7 +428,7 @@ int main() {
 		return 0;
 	}
 	log_trace(logCoordinador, "Hilo asignado para recibir mensajes del Planificador");
-	*/
+
 	// Instancio la lista de instancias
 	listaInstancias = list_create();
 
