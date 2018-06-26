@@ -596,7 +596,7 @@ void dumpEntradas(void* entradaVoid){
 }
 
 void realizarDump(int intervaloDump){
-	while(terminar) {
+	while(!terminar) {
 		// Hago sleep del tiempo indicado por configuración
 		sleep(intervaloDump);
 		
