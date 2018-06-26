@@ -309,7 +309,7 @@ int main() {
 	log_trace(logCoordinador, "Se conectó el planificador: Puerto=%d; Ip Planificador=%d; Máximas conexiones=%d", puerto, ipPlanificador, maxConexiones);
 
 	// Creo hilo para esperar mensajes de consola del planificador
-	pthread_t idHilo;
+	/*pthread_t idHilo;
 	if (pthread_create(&idHilo, NULL, (void*) consolaPlanificador, (void*) socketConectadoPlanificador)) {
 		log_error(logCoordinador, "No se pudo crear el hilo para recibir mensajes del Planificador");
 		//Libero memoria
@@ -321,7 +321,7 @@ int main() {
 		return 0;
 	}
 	log_trace(logCoordinador, "Hilo asignado para recibir mensajes del Planificador");
-	pthread_join(idHilo, NULL);
+	pthread_join(idHilo, NULL);*/
 
 	// Instancio la lista de instancias
 	listaInstancias = list_create();
@@ -370,12 +370,14 @@ int asignarClaveAInstancia(char* key, char* nombreEsi) {
 	Clave* clave;
 	clave = malloc(sizeof(Clave));
 	clave->bloqueado = 1;
+
 	clave->nombre = malloc(strlen(key) + 1);
 	strcpy(clave->nombre, key);
 	clave->nombre[strlen(key)] = '\0';
+
+	clave->nombreEsi = malloc(strlen(nombreEsi) + 1);
 	strcpy(clave->nombreEsi, nombreEsi);
 	clave->nombreEsi[strlen(nombreEsi)] = '\0';
-
 
 	// Leo del archivo de configuracion
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
