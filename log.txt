@@ -1,1 +1,299 @@
-[TRACE] 16:33:21:933 Coordinador/(22877:22877): Se conectó el planificador: Puerto=8000; Ip Planificador=137710648; Máximas conexiones=20
+[TRACE] 15:17:10:144 Coordinador/(11423:11423): Se conectó el planificador: Puerto=8000; Ip Planificador=149421104; Máximas conexiones=20
+[TRACE] 15:17:19:465 Instancia/(11477:11477): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 15:17:19:474 Coordinador/(11423:11423): Se conectó un componente
+[TRACE] 15:17:19:474 Coordinador/(11423:11423): Hilo asignado
+[TRACE] 15:17:19:475 Coordinador/(11423:11482): Se conectó una instancia
+[TRACE] 15:17:19:514 Coordinador/(11423:11482): Se conectó la instancia de nombre: Instancia1
+[TRACE] 15:17:19:514 Coordinador/(11423:11482): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 15:17:19:514 Instancia/(11477:11477): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 15:17:29:4 ESI/(11511:11511): Number of lines in the file is 3
+
+[TRACE] 15:17:40:220 ESI/(11511:11511): Recibí una señal de avanzar del coordinador
+[TRACE] 15:17:40:220 ESI/(11511:11511): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:17:40:220 Coordinador/(11423:11423): Se conectó un componente
+[TRACE] 15:17:40:221 Coordinador/(11423:11423): Hilo asignado
+[TRACE] 15:17:40:221 Coordinador/(11423:11516): Se conectó un ESI
+[TRACE] 15:17:40:257 Coordinador/(11423:11516): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:17:40:258 Coordinador/(11423:11516): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:17:40:258 Coordinador/(11423:11516): Hago un retardo de 300000 microsegundos
+[TRACE] 15:17:40:558 Coordinador/(11423:11516): Utilizo algoritmo de distribucion de instancias EL
+[TRACE] 15:17:40:559 Coordinador/(11423:11516): Se asigna la nueva clave a la instancia
+[TRACE] 15:17:40:559 ESI/(11511:11511): El coordinador me respondió que salió todo OK
+[TRACE] 15:17:40:559 ESI/(11511:11511): Recibí una señal de avanzar del coordinador
+[TRACE] 15:17:40:559 ESI/(11511:11511): Le comunico al coordinador la sentencia <SET futbol:messi TraemeLaCopa>
+[TRACE] 15:17:40:560 Coordinador/(11423:11516): Se ejecuto un GET
+[TRACE] 15:17:40:560 Coordinador/(11423:11423): Se conectó un componente
+[TRACE] 15:17:40:560 Coordinador/(11423:11423): Hilo asignado
+[TRACE] 15:17:40:561 Coordinador/(11423:11517): Se conectó un ESI
+[TRACE] 15:17:40:600 Coordinador/(11423:11517): Se pudo loguear: ESI_1 || SET futbol:messi TraemeLaCopa
+[TRACE] 15:17:40:600 Coordinador/(11423:11517): Recibimos el mensaje: Nombre = ESI_1; Mensaje = SET futbol:messi TraemeLaCopa
+[TRACE] 15:17:40:601 Coordinador/(11423:11517): Hago un retardo de 300000 microsegundos
+[TRACE] 15:17:40:903 Instancia/(11477:11477): Se recibió una sentencia: SET futbol:messi TraemeLaCopa
+[TRACE] 15:17:40:903 Instancia/(11477:11477): Setteo futbol:messi: TraemeLaCopa, en la entrada 0 con un largo de entradas 1
+[TRACE] 15:17:40:903 Coordinador/(11423:11517): La sentencia se ejecutó correctamente
+[TRACE] 15:17:40:904 Coordinador/(11423:11517): Se ejecuto un SET
+[TRACE] 15:17:40:904 ESI/(11511:11511): El coordinador me respondió que salió todo OK
+[TRACE] 15:17:40:904 ESI/(11511:11511): Recibí una señal de avanzar del coordinador
+[TRACE] 15:17:40:904 ESI/(11511:11511): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:17:40:905 Coordinador/(11423:11423): Se conectó un componente
+[TRACE] 15:17:40:906 Coordinador/(11423:11423): Hilo asignado
+[TRACE] 15:17:40:906 Coordinador/(11423:11518): Se conectó un ESI
+[TRACE] 15:17:40:945 Coordinador/(11423:11518): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:17:40:946 Coordinador/(11423:11518): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:17:40:946 Coordinador/(11423:11518): Hago un retardo de 300000 microsegundos
+[TRACE] 15:17:41:247 Coordinador/(11423:11518): La clave se encuentra bloqueada
+[TRACE] 15:17:41:247 Coordinador/(11423:11518): Se ejecuto un GET
+[TRACE] 15:17:41:247 ESI/(11511:11511): Me quede bloqueado.
+[TRACE] 15:21:44:897 Coordinador/(11638:11638): Se conectó el planificador: Puerto=8000; Ip Planificador=156654640; Máximas conexiones=20
+[TRACE] 15:21:51:298 Instancia/(11689:11689): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 15:21:51:302 Coordinador/(11638:11638): Se conectó un componente
+[TRACE] 15:21:51:302 Coordinador/(11638:11638): Hilo asignado
+[TRACE] 15:21:51:302 Coordinador/(11638:11694): Se conectó una instancia
+[TRACE] 15:21:51:342 Coordinador/(11638:11694): Se conectó la instancia de nombre: Instancia1
+[TRACE] 15:21:51:342 Coordinador/(11638:11694): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 15:21:51:342 Instancia/(11689:11689): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 15:22:06:66 ESI/(11707:11707): Number of lines in the file is 3
+
+[TRACE] 15:22:24:552 ESI/(11707:11707): Recibí una señal de avanzar del coordinador
+[TRACE] 15:22:24:552 ESI/(11707:11707): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:22:24:552 Coordinador/(11638:11638): Se conectó un componente
+[TRACE] 15:22:24:552 Coordinador/(11638:11638): Hilo asignado
+[TRACE] 15:22:24:552 Coordinador/(11638:11712): Se conectó un ESI
+[TRACE] 15:22:24:590 Coordinador/(11638:11712): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:22:24:590 Coordinador/(11638:11712): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:22:24:591 Coordinador/(11638:11712): Hago un retardo de 300000 microsegundos
+[TRACE] 15:22:24:892 Coordinador/(11638:11712): Utilizo algoritmo de distribucion de instancias EL
+[TRACE] 15:22:24:892 Coordinador/(11638:11712): Se asigna la nueva clave a la instancia
+[TRACE] 15:22:24:893 ESI/(11707:11707): El coordinador me respondió que salió todo OK
+[TRACE] 15:22:24:893 ESI/(11707:11707): Recibí una señal de avanzar del coordinador
+[TRACE] 15:22:24:893 ESI/(11707:11707): Le comunico al coordinador la sentencia <SET futbol:messi TraemeLaCopa>
+[TRACE] 15:22:24:894 Coordinador/(11638:11712): Se ejecuto un GET
+[TRACE] 15:22:24:894 Coordinador/(11638:11638): Se conectó un componente
+[TRACE] 15:22:24:894 Coordinador/(11638:11638): Hilo asignado
+[TRACE] 15:22:24:895 Coordinador/(11638:11713): Se conectó un ESI
+[TRACE] 15:22:24:934 Coordinador/(11638:11713): Se pudo loguear: ESI_1 || SET futbol:messi TraemeLaCopa
+[TRACE] 15:22:24:934 Coordinador/(11638:11713): Recibimos el mensaje: Nombre = ESI_1; Mensaje = SET futbol:messi TraemeLaCopa
+[TRACE] 15:22:24:934 Coordinador/(11638:11713): Hago un retardo de 300000 microsegundos
+[TRACE] 15:22:25:238 Instancia/(11689:11689): Se recibió una sentencia: SET futbol:messi TraemeLaCopa
+[TRACE] 15:22:25:238 Instancia/(11689:11689): Setteo futbol:messi: TraemeLaCopa, en la entrada 0 con un largo de entradas 1
+[TRACE] 15:22:25:239 Coordinador/(11638:11713): La sentencia se ejecutó correctamente
+[TRACE] 15:22:25:239 Coordinador/(11638:11713): Se ejecuto un SET
+[TRACE] 15:22:25:239 ESI/(11707:11707): El coordinador me respondió que salió todo OK
+[TRACE] 15:22:25:239 ESI/(11707:11707): Recibí una señal de avanzar del coordinador
+[TRACE] 15:22:25:243 ESI/(11707:11707): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:22:25:244 Coordinador/(11638:11638): Se conectó un componente
+[TRACE] 15:22:25:244 Coordinador/(11638:11638): Hilo asignado
+[TRACE] 15:22:25:252 Coordinador/(11638:11714): Se conectó un ESI
+[TRACE] 15:22:25:282 Coordinador/(11638:11714): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:22:25:282 Coordinador/(11638:11714): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:22:25:282 Coordinador/(11638:11714): Hago un retardo de 300000 microsegundos
+[TRACE] 15:22:25:585 Coordinador/(11638:11714): La clave se encuentra bloqueada
+[TRACE] 15:22:25:586 Coordinador/(11638:11714): Se ejecuto un GET
+[TRACE] 15:22:25:586 ESI/(11707:11707): Me quede bloqueado.
+[TRACE] 15:24:18:562 Coordinador/(11752:11752): Se conectó el planificador: Puerto=8000; Ip Planificador=136567856; Máximas conexiones=20
+[TRACE] 15:24:24:111 Instancia/(11803:11803): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 15:24:24:120 Coordinador/(11752:11752): Se conectó un componente
+[TRACE] 15:24:24:120 Coordinador/(11752:11752): Hilo asignado
+[TRACE] 15:24:24:120 Coordinador/(11752:11808): Se conectó una instancia
+[TRACE] 15:24:24:158 Coordinador/(11752:11808): Se conectó la instancia de nombre: Instancia1
+[TRACE] 15:24:24:158 Coordinador/(11752:11808): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 15:24:24:158 Instancia/(11803:11803): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 15:24:30:384 ESI/(11820:11820): Number of lines in the file is 3
+
+[TRACE] 15:24:39:639 ESI/(11820:11820): Recibí una señal de avanzar del coordinador
+[TRACE] 15:24:39:640 ESI/(11820:11820): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:24:39:640 Coordinador/(11752:11752): Se conectó un componente
+[TRACE] 15:24:39:640 Coordinador/(11752:11752): Hilo asignado
+[TRACE] 15:24:39:640 Coordinador/(11752:11825): Se conectó un ESI
+[TRACE] 15:24:39:677 Coordinador/(11752:11825): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:24:39:677 Coordinador/(11752:11825): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:24:39:677 Coordinador/(11752:11825): Hago un retardo de 300000 microsegundos
+[TRACE] 15:24:39:978 Coordinador/(11752:11825): Utilizo algoritmo de distribucion de instancias EL
+[TRACE] 15:24:39:979 Coordinador/(11752:11825): Se asigna la nueva clave a la instancia
+[TRACE] 15:24:39:979 ESI/(11820:11820): El coordinador me respondió que salió todo OK
+[TRACE] 15:24:39:980 ESI/(11820:11820): Recibí una señal de avanzar del coordinador
+[TRACE] 15:24:39:980 ESI/(11820:11820): Le comunico al coordinador la sentencia <SET futbol:messi TraemeLaCopa>
+[TRACE] 15:24:39:980 Coordinador/(11752:11825): Se ejecuto un GET
+[TRACE] 15:24:39:980 Coordinador/(11752:11752): Se conectó un componente
+[TRACE] 15:24:39:980 Coordinador/(11752:11752): Hilo asignado
+[TRACE] 15:24:39:986 Coordinador/(11752:11826): Se conectó un ESI
+[TRACE] 15:24:40:18 Coordinador/(11752:11826): Se pudo loguear: ESI_1 || SET futbol:messi TraemeLaCopa
+[TRACE] 15:24:40:18 Coordinador/(11752:11826): Recibimos el mensaje: Nombre = ESI_1; Mensaje = SET futbol:messi TraemeLaCopa
+[TRACE] 15:24:40:18 Coordinador/(11752:11826): Hago un retardo de 300000 microsegundos
+[TRACE] 15:24:40:319 Instancia/(11803:11803): Se recibió una sentencia: SET futbol:messi TraemeLaCopa
+[TRACE] 15:24:40:319 Instancia/(11803:11803): Setteo futbol:messi: TraemeLaCopa, en la entrada 0 con un largo de entradas 1
+[TRACE] 15:24:40:319 Coordinador/(11752:11826): La sentencia se ejecutó correctamente
+[TRACE] 15:24:40:320 Coordinador/(11752:11826): Se ejecuto un SET
+[TRACE] 15:24:40:320 ESI/(11820:11820): El coordinador me respondió que salió todo OK
+[TRACE] 15:24:40:320 ESI/(11820:11820): Recibí una señal de avanzar del coordinador
+[TRACE] 15:24:40:321 ESI/(11820:11820): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:24:40:322 Coordinador/(11752:11752): Se conectó un componente
+[TRACE] 15:24:40:322 Coordinador/(11752:11752): Hilo asignado
+[TRACE] 15:24:40:327 Coordinador/(11752:11827): Se conectó un ESI
+[TRACE] 15:24:40:361 Coordinador/(11752:11827): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:24:40:362 Coordinador/(11752:11827): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:24:40:362 Coordinador/(11752:11827): Hago un retardo de 300000 microsegundos
+[TRACE] 15:24:40:662 Coordinador/(11752:11827): La clave se encuentra bloqueada
+[TRACE] 15:24:40:663 Coordinador/(11752:11827): Se ejecuto un GET
+[TRACE] 15:24:40:663 ESI/(11820:11820): Me quede bloqueado.
+[TRACE] 15:27:14:286 Coordinador/(11871:11871): Se conectó el planificador: Puerto=8000; Ip Planificador=135683120; Máximas conexiones=20
+[TRACE] 15:27:20:277 Instancia/(11922:11922): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 15:27:20:282 Coordinador/(11871:11871): Se conectó un componente
+[TRACE] 15:27:20:282 Coordinador/(11871:11871): Hilo asignado
+[TRACE] 15:27:20:283 Coordinador/(11871:11927): Se conectó una instancia
+[TRACE] 15:27:20:321 Coordinador/(11871:11927): Se conectó la instancia de nombre: Instancia1
+[TRACE] 15:27:20:322 Coordinador/(11871:11927): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 15:27:20:322 Instancia/(11922:11922): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 15:27:28:589 ESI/(11938:11938): Number of lines in the file is 3
+
+[TRACE] 15:27:39:955 ESI/(11938:11938): Recibí una señal de avanzar del coordinador
+[TRACE] 15:27:39:955 ESI/(11938:11938): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:27:39:955 Coordinador/(11871:11871): Se conectó un componente
+[TRACE] 15:27:39:955 Coordinador/(11871:11871): Hilo asignado
+[TRACE] 15:27:39:955 Coordinador/(11871:11945): Se conectó un ESI
+[TRACE] 15:27:39:993 Coordinador/(11871:11945): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:27:39:994 Coordinador/(11871:11945): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:27:39:994 Coordinador/(11871:11945): Hago un retardo de 300000 microsegundos
+[TRACE] 15:27:40:294 Coordinador/(11871:11945): Utilizo algoritmo de distribucion de instancias EL
+[TRACE] 15:27:40:295 Coordinador/(11871:11945): Se asigna la nueva clave a la instancia
+[TRACE] 15:27:40:295 ESI/(11938:11938): El coordinador me respondió que salió todo OK
+[TRACE] 15:27:40:295 ESI/(11938:11938): Recibí una señal de avanzar del coordinador
+[TRACE] 15:27:40:295 ESI/(11938:11938): Le comunico al coordinador la sentencia <SET futbol:messi TraemeLaCopa>
+[TRACE] 15:27:40:296 Coordinador/(11871:11945): Se ejecuto un GET
+[TRACE] 15:27:40:296 Coordinador/(11871:11871): Se conectó un componente
+[TRACE] 15:27:40:296 Coordinador/(11871:11871): Hilo asignado
+[TRACE] 15:27:40:296 Coordinador/(11871:11946): Se conectó un ESI
+[TRACE] 15:27:40:333 Coordinador/(11871:11946): Se pudo loguear: ESI_1 || SET futbol:messi TraemeLaCopa
+[TRACE] 15:27:40:334 Coordinador/(11871:11946): Recibimos el mensaje: Nombre = ESI_1; Mensaje = SET futbol:messi TraemeLaCopa
+[TRACE] 15:27:40:334 Coordinador/(11871:11946): Hago un retardo de 300000 microsegundos
+[TRACE] 15:27:40:635 Instancia/(11922:11922): Se recibió una sentencia: SET futbol:messi TraemeLaCopa
+[TRACE] 15:27:40:636 Instancia/(11922:11922): Setteo futbol:messi: TraemeLaCopa, en la entrada 0 con un largo de entradas 1
+[TRACE] 15:27:40:636 Coordinador/(11871:11946): La sentencia se ejecutó correctamente
+[TRACE] 15:27:40:637 Coordinador/(11871:11946): Se ejecuto un SET
+[TRACE] 15:27:40:637 ESI/(11938:11938): El coordinador me respondió que salió todo OK
+[TRACE] 15:27:40:638 ESI/(11938:11938): Recibí una señal de avanzar del coordinador
+[TRACE] 15:27:40:638 ESI/(11938:11938): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:27:40:639 Coordinador/(11871:11871): Se conectó un componente
+[TRACE] 15:27:40:639 Coordinador/(11871:11871): Hilo asignado
+[TRACE] 15:27:40:641 Coordinador/(11871:11947): Se conectó un ESI
+[TRACE] 15:27:40:677 Coordinador/(11871:11947): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:27:40:678 Coordinador/(11871:11947): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:27:40:678 Coordinador/(11871:11947): Hago un retardo de 300000 microsegundos
+[TRACE] 15:27:40:979 Coordinador/(11871:11947): La clave se encuentra bloqueada
+[TRACE] 15:27:40:980 Coordinador/(11871:11947): Se ejecuto un GET
+[TRACE] 15:27:40:980 ESI/(11938:11938): Me quede bloqueado.
+[TRACE] 15:32:36:775 Coordinador/(12039:12039): Se conectó el planificador: Puerto=8000; Ip Planificador=152763440; Máximas conexiones=20
+[TRACE] 15:32:53:197 Instancia/(12092:12092): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 15:32:53:198 Coordinador/(12039:12039): Se conectó un componente
+[TRACE] 15:32:53:198 Coordinador/(12039:12039): Hilo asignado
+[TRACE] 15:32:53:198 Coordinador/(12039:12097): Se conectó una instancia
+[TRACE] 15:32:53:238 Coordinador/(12039:12097): Se conectó la instancia de nombre: Instancia1
+[TRACE] 15:32:53:238 Coordinador/(12039:12097): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 15:32:53:238 Instancia/(12092:12092): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 15:33:09:488 ESI/(12107:12107): Number of lines in the file is 3
+
+[TRACE] 15:33:40:984 ESI/(12107:12107): Recibí una señal de avanzar del coordinador
+[TRACE] 15:33:40:984 ESI/(12107:12107): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:33:40:984 Coordinador/(12039:12039): Se conectó un componente
+[TRACE] 15:33:40:984 Coordinador/(12039:12039): Hilo asignado
+[TRACE] 15:33:40:984 Coordinador/(12039:12114): Se conectó un ESI
+[TRACE] 15:33:41:22 Coordinador/(12039:12114): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:33:41:22 Coordinador/(12039:12114): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:33:41:22 Coordinador/(12039:12114): Hago un retardo de 300000 microsegundos
+[TRACE] 15:33:41:323 Coordinador/(12039:12114): Utilizo algoritmo de distribucion de instancias EL
+[TRACE] 15:33:41:323 Coordinador/(12039:12114): Se asigna la nueva clave a la instancia
+[TRACE] 15:33:41:323 ESI/(12107:12107): El coordinador me respondió que salió todo OK
+[TRACE] 15:33:41:324 ESI/(12107:12107): Recibí una señal de avanzar del coordinador
+[TRACE] 15:33:41:324 ESI/(12107:12107): Le comunico al coordinador la sentencia <SET futbol:messi TraemeLaCopa>
+[TRACE] 15:33:41:325 Coordinador/(12039:12114): Se ejecuto un GET
+[TRACE] 15:33:41:325 Coordinador/(12039:12039): Se conectó un componente
+[TRACE] 15:33:41:325 Coordinador/(12039:12039): Hilo asignado
+[TRACE] 15:33:41:326 Coordinador/(12039:12115): Se conectó un ESI
+[TRACE] 15:33:41:366 Coordinador/(12039:12115): Se pudo loguear: ESI_1 || SET futbol:messi TraemeLaCopa
+[TRACE] 15:33:41:366 Coordinador/(12039:12115): Recibimos el mensaje: Nombre = ESI_1; Mensaje = SET futbol:messi TraemeLaCopa
+[TRACE] 15:33:41:367 Coordinador/(12039:12115): Hago un retardo de 300000 microsegundos
+[TRACE] 15:33:41:668 Instancia/(12092:12092): Se recibió una sentencia: SET futbol:messi TraemeLaCopa
+[TRACE] 15:33:41:668 Instancia/(12092:12092): Setteo futbol:messi: TraemeLaCopa, en la entrada 0 con un largo de entradas 1
+[TRACE] 15:33:41:669 Coordinador/(12039:12115): La sentencia se ejecutó correctamente
+[TRACE] 15:33:41:669 Coordinador/(12039:12115): Se ejecuto un SET
+[TRACE] 15:33:41:669 ESI/(12107:12107): El coordinador me respondió que salió todo OK
+[TRACE] 15:33:41:670 ESI/(12107:12107): Recibí una señal de avanzar del coordinador
+[TRACE] 15:33:41:670 ESI/(12107:12107): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:33:41:671 Coordinador/(12039:12039): Se conectó un componente
+[TRACE] 15:33:41:671 Coordinador/(12039:12039): Hilo asignado
+[TRACE] 15:33:41:671 Coordinador/(12039:12116): Se conectó un ESI
+[TRACE] 15:33:41:709 Coordinador/(12039:12116): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:33:41:710 Coordinador/(12039:12116): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:33:41:710 Coordinador/(12039:12116): Hago un retardo de 300000 microsegundos
+[TRACE] 15:33:42:11 Coordinador/(12039:12116): La clave se encuentra bloqueada
+[TRACE] 15:33:42:11 Coordinador/(12039:12116): Se ejecuto un GET
+[TRACE] 15:33:42:11 ESI/(12107:12107): Me quede bloqueado.
+[TRACE] 15:34:05:991 ESI/(12107:12107): Recibí una señal de avanzar del coordinador
+[TRACE] 15:34:05:991 ESI/(12107:12107): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:34:05:991 Coordinador/(12039:12039): Se conectó un componente
+[TRACE] 15:34:05:991 Coordinador/(12039:12039): Hilo asignado
+[TRACE] 15:34:05:991 Coordinador/(12039:12117): Se conectó un ESI
+[TRACE] 15:34:06:30 Coordinador/(12039:12117): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:34:06:30 Coordinador/(12039:12117): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:34:06:30 Coordinador/(12039:12117): Hago un retardo de 300000 microsegundos
+[TRACE] 15:34:06:331 Coordinador/(12039:12117): La clave se encuentra bloqueada
+[TRACE] 15:34:06:332 Coordinador/(12039:12117): Se ejecuto un GET
+[TRACE] 15:34:06:332 ESI/(12107:12107): Me quede bloqueado.
+[TRACE] 15:44:09:985 Coordinador/(12455:12455): Se conectó el planificador: Puerto=8000; Ip Planificador=150223920; Máximas conexiones=20
+[TRACE] 15:44:15:881 Instancia/(12492:12492): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 15:44:15:882 Coordinador/(12455:12455): Se conectó un componente
+[TRACE] 15:44:15:882 Coordinador/(12455:12455): Hilo asignado
+[TRACE] 15:44:15:885 Coordinador/(12455:12497): Se conectó una instancia
+[TRACE] 15:44:15:921 Coordinador/(12455:12497): Se conectó la instancia de nombre: Instancia1
+[TRACE] 15:44:15:922 Coordinador/(12455:12497): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 15:44:15:922 Instancia/(12492:12492): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 15:44:20:740 ESI/(12508:12508): Number of lines in the file is 3
+
+[TRACE] 15:44:26:740 ESI/(12508:12508): Recibí una señal de avanzar del coordinador
+[TRACE] 15:44:26:740 ESI/(12508:12508): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:44:26:740 Coordinador/(12455:12455): Se conectó un componente
+[TRACE] 15:44:26:740 Coordinador/(12455:12455): Hilo asignado
+[TRACE] 15:44:26:741 Coordinador/(12455:12513): Se conectó un ESI
+[TRACE] 15:44:26:778 Coordinador/(12455:12513): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:44:26:778 Coordinador/(12455:12513): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:44:26:778 Coordinador/(12455:12513): Hago un retardo de 300000 microsegundos
+[TRACE] 15:44:27:79 Coordinador/(12455:12513): Utilizo algoritmo de distribucion de instancias EL
+[TRACE] 15:44:27:80 Coordinador/(12455:12513): Se asigna la nueva clave a la instancia
+[TRACE] 15:44:27:80 ESI/(12508:12508): El coordinador me respondió que salió todo OK
+[TRACE] 15:44:27:80 ESI/(12508:12508): Recibí una señal de avanzar del coordinador
+[TRACE] 15:44:27:80 ESI/(12508:12508): Le comunico al coordinador la sentencia <SET futbol:messi TraemeLaCopa>
+[TRACE] 15:44:27:80 Coordinador/(12455:12513): Se ejecuto un GET
+[TRACE] 15:44:27:80 Coordinador/(12455:12455): Se conectó un componente
+[TRACE] 15:44:27:80 Coordinador/(12455:12455): Hilo asignado
+[TRACE] 15:44:27:85 Coordinador/(12455:12514): Se conectó un ESI
+[TRACE] 15:44:27:118 Coordinador/(12455:12514): Se pudo loguear: ESI_1 || SET futbol:messi TraemeLaCopa
+[TRACE] 15:44:27:118 Coordinador/(12455:12514): Recibimos el mensaje: Nombre = ESI_1; Mensaje = SET futbol:messi TraemeLaCopa
+[TRACE] 15:44:27:118 Coordinador/(12455:12514): Hago un retardo de 300000 microsegundos
+[TRACE] 15:44:27:418 Instancia/(12492:12492): Se recibió una sentencia: SET futbol:messi TraemeLaCopa
+[TRACE] 15:44:27:419 Instancia/(12492:12492): Setteo futbol:messi: TraemeLaCopa, en la entrada 0 con un largo de entradas 1
+[TRACE] 15:44:27:419 Coordinador/(12455:12514): La sentencia se ejecutó correctamente
+[TRACE] 15:44:27:419 Coordinador/(12455:12514): Se ejecuto un SET
+[TRACE] 15:44:27:420 ESI/(12508:12508): El coordinador me respondió que salió todo OK
+[TRACE] 15:44:27:420 ESI/(12508:12508): Recibí una señal de avanzar del coordinador
+[TRACE] 15:44:27:420 ESI/(12508:12508): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:44:27:421 Coordinador/(12455:12455): Se conectó un componente
+[TRACE] 15:44:27:421 Coordinador/(12455:12455): Hilo asignado
+[TRACE] 15:44:27:422 Coordinador/(12455:12515): Se conectó un ESI
+[TRACE] 15:44:27:462 Coordinador/(12455:12515): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:44:27:462 Coordinador/(12455:12515): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:44:27:463 Coordinador/(12455:12515): Hago un retardo de 300000 microsegundos
+[TRACE] 15:44:27:764 Coordinador/(12455:12515): La clave se encuentra bloqueada
+[TRACE] 15:44:27:764 Coordinador/(12455:12515): Se ejecuto un GET
+[TRACE] 15:44:27:764 ESI/(12508:12508): Me quede bloqueado.
+[TRACE] 15:45:17:678 ESI/(12508:12508): Recibí una señal de avanzar del coordinador
+[TRACE] 15:45:17:678 ESI/(12508:12508): Le comunico al coordinador la sentencia <GET futbol:messi>
+[TRACE] 15:45:17:679 Coordinador/(12455:12455): Se conectó un componente
+[TRACE] 15:45:17:679 Coordinador/(12455:12455): Hilo asignado
+[TRACE] 15:45:17:679 Coordinador/(12455:12519): Se conectó un ESI
+[TRACE] 15:45:17:717 Coordinador/(12455:12519): Se pudo loguear: ESI_1 || GET futbol:messi
+[TRACE] 15:45:17:717 Coordinador/(12455:12519): Recibimos el mensaje: Nombre = ESI_1; Mensaje = GET futbol:messi
+[TRACE] 15:45:17:718 Coordinador/(12455:12519): Hago un retardo de 300000 microsegundos
+[TRACE] 15:45:18:18 Coordinador/(12455:12519): La clave se encuentra bloqueada
+[TRACE] 15:45:18:19 Coordinador/(12455:12519): Se ejecuto un GET
+[TRACE] 15:45:18:19 ESI/(12508:12508): Me quede bloqueado.
+

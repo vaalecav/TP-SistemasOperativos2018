@@ -146,24 +146,14 @@ void manejoAlgoritmos() {
 						}
 						break;
 
-					case 3:
+					case 3: // STORE EXITO //
 						clave = malloc(header->largo + 1);
 						recibirMensaje(socketCoordinador, header->largo,
 								&clave);
 						clave[header->largo] = '\0';
 
-						claveAux = list_find_with_param(listaClaves,
-								(void*) clave, chequearClave);
-
-						auxiliar = list_remove(claveAux->listaEsi, 0);
-
-						if (auxiliar != NULL) {
-							esiAuxiliar =
-									(DATA*) list_remove_by_condition_with_param(
-											colaBloqueados, auxiliar,
-											buscarEnBloqueados);
-							list_add(colaReady, (void*) esiAuxiliar);
-						}
+						// Es un store, por lo que desbloqueo la clave
+						desbloquearClave(clave);
 
 						esi->lineas--;
 						switch (esi->lineas) {
@@ -213,6 +203,68 @@ void manejoAlgoritmos() {
 	}
 }
 
+int desbloquearClave(char* clave) {
+	CLAVE * claveParaDesbloquear;
+	void * claveParaDesbloquearVoid;
+	void * esiEjecutar;
+	DATA * esiBloqueada;
+
+	// Busco la clave en la lista
+	if ((claveParaDesbloquearVoid = list_find_with_param(listaClaves,
+			(void*) clave, chequearClave)) != NULL) {
+
+		// Agarro el primer ESI que exista para ejecutar
+		claveParaDesbloquear = (CLAVE*) claveParaDesbloquearVoid;
+		esiEjecutar = list_remove(claveParaDesbloquear->listaEsi, 0);
+
+		// Si hay un esi bloqueado por la clave, lo saco de la lista de bloqueados y lo paso a ready
+		if (esiEjecutar != NULL) {
+			esiBloqueada = list_remove_by_condition_with_param(colaBloqueados,
+					esiEjecutar, buscarEnBloqueados);
+			list_add(colaReady, (void*) esiBloqueada);
+		}
+
+		return 1;
+	} else {
+		printf("La clave <%s> no se puede desbloquear.", clave);
+		return 0;
+	}
+}
+
+int bloquearClaveESI(char* clave, int esi) {
+	CLAVE * claveParaDesbloquear;
+	void * claveParaDesbloquearVoid;
+	void * esiEjecutar;
+	DATA * esiBloqueada;
+
+	// Busco la clave en la lista
+	if ((claveParaDesbloquearVoid = list_find_with_param(listaClaves,
+			(void*) clave, chequearClave)) != NULL) {
+
+		// Agarro el esi si existe
+		claveParaDesbloquear = (CLAVE*) claveParaDesbloquearVoid;
+		esiEjecutar = list_find_with_param(claveParaDesbloquear->listaEsi,
+				(void*) &esi, buscarEnBloqueados);
+
+		// Si existe el esi bloqueado por la clave, lo desbloqueo
+		if (esiEjecutar != NULL) {
+			esiBloqueada = list_remove_by_condition_with_param(colaBloqueados,
+					esiEjecutar, buscarEnBloqueados);
+			list_add(colaReady, (void*) esiBloqueada);
+
+			return 1;
+		} else {
+			printf("La clave <%s> del ESI %d no se puede bloquear./n", clave,
+					esi);
+      
+			return 0;
+		  }
+  } else {
+		printf("La clave <%s> del ESI %d no se puede bloquear./n", clave, esi);
+    return 0;
+	  }
+}
+
 int finalizarESI(int esi) {
 	void * esiEjecutar;
 	DATA * esiBloqueada;
@@ -240,7 +292,8 @@ bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
 	DATA * esi = (DATA*) esiVoid;
-	int id = *((int*) idVoid);
+	;
+	int id = (int*) idVoid;
 	return esi->id == id;
 }
 
@@ -443,11 +496,23 @@ void imprimirEnPantallaClaves(void* claveVoid) {
 }
 
 void imprimirEnPantallaClavesAux(void* idVoid) {
-	int id = *((int*) idVoid);
+	int id = (int*) idVoid;
 	printf("ESI ID: %d\n", id);
 }
 
 //=======================COMANDOS DE CONSOLA====================================
+
+int cmdDesbloquear(char* clave) {
+	if (desbloquearClave(clave))
+		printf("Se desbloqueó la clave %s\n", clave);
+	return 0;
+}
+
+int cmdBloquear(char* clave, int esi) {
+	if (bloquearClaveESI(clave, esi))
+		printf("Se bloqueó la clave %s del ESI con ID %d\n", clave, esi);
+  return 0;
+}
 
 int cmdStatus(char* clave) {
 	// falta valor e instancia que nos lo da el coordinador
@@ -630,4 +695,3 @@ void iniciarConsola() {
 			ejecutarComando(aux);
 		free(linea);
 	}
-}

@@ -29,8 +29,8 @@
 //=======================COMANDOS DE CONSOLA====================================
 
 int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(),
-		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(), cmdKill(),
-		cmdStatus(); // Son las funciones que ejecutan los comandos ingresados por consola.
+		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(), cmdDesbloquear(char*), cmdBloquear(char*, int), cmdKill(int),
+		cmdStatus(char*); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
 
@@ -61,9 +61,10 @@ COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
 				"colaReady", cmdColaReady,
 				"Imprime en pantalla la cola de Ready.", 0 }, { "listaClaves",
 				cmdListaClaves, "Imprime la lista de Claves.", 0 },
-		/*{ "bloquear","Este comando aun no se ha desarrollado.", 2},
-		 { "desbloquear","Este comando aun no se ha desarrollado.", 1},
-		 { "listar","Este comando aun no se ha desarrollado.", 1},*/
+		{ "bloquear", cmdDesbloquear,
+				"Bloquea una clave.", 2 }, "desbloquear",
+				cmdBloquear, "Desbloquea una clave.", 2 },
+		 // { "listar","Este comando aun no se ha desarrollado.", 1},
 		{ "kill", cmdKill, "Finaliza el proceso.", 1 }, { "status", cmdStatus,
 				"Conocer el estado de una clave.", 1 },
 		//{ "deadlock","Este comando aun no se ha desarrollado.", 0},
@@ -99,6 +100,8 @@ void imprimirEnPantallaClavesAux(void* idVoid); // Imprime sublista de Claves.
 int chequearClave(void* claveVoid, void* nombreVoid); // Compara string de clave con ESI.
 int buscarEnBloqueados(void* esiVoid, void* idVoid); // Busca un ESI en bloqueados.
 bool menorCantidadDeLineas(void* esi1Void, void* esi2Void); // Para hacer un sort del SJF
+int desbloquearClave(char* clave); // Para desbloquear clave desde el STORE
+int desbloquearClaveESI(char* clave, char* valor);
 
 //=====================FUNCIONES DE CONSOLA=====================================
 
