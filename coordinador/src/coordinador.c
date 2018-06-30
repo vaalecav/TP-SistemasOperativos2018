@@ -366,11 +366,12 @@ void manejarComandoKill(int socketPlanificador, int largoMensaje){
 }
 
 void consolaPlanificador(void* socketPlanificadorVoid){
-	int socketPlanificador = *((int*)socketPlanificadorVoid);
+	int socketPlanificador = *(int*) socketPlanificadorVoid;
 	ContentHeader * header;
 
 	while(true){
 		header = recibirHeader(socketPlanificador);
+
 		switch (header->id) {
 			case COMANDO_KILL:
 				log_trace(logCoordinador, "Se recibio kill de esi desde el planificador");
@@ -381,7 +382,7 @@ void consolaPlanificador(void* socketPlanificadorVoid){
 				log_trace(logCoordinador, "Se recibio status de clave desde el planificador");
 				manejarComandoStatus(socketPlanificador, header->largo);
 				break;
-			}
+		}
 		free(header);
 	}
 }
@@ -417,7 +418,7 @@ int main() {
 
 	// Creo hilo para esperar mensajes de consola del planificador
 	pthread_t idHilo;
-	if (pthread_create(&idHilo, NULL, (void*) consolaPlanificador, (void*) socketConectadoPlanificador)) {
+	if (pthread_create(&idHilo, NULL, (void*) consolaPlanificador, (void*) &socketConectadoPlanificador)) {
 		log_error(logCoordinador, "No se pudo crear el hilo para recibir mensajes del Planificador");
 		//Libero memoria
 		close(socketEscucha);
@@ -433,8 +434,7 @@ int main() {
 	listaInstancias = list_create();
 
 	// Espero conexiones de ESIs e instancias
-	while ((socketComponente = servidorConectarComponente(&socketEscucha, "",
-			""))) {
+	while ((socketComponente = servidorConectarComponente(&socketEscucha, "", ""))) {
 		log_trace(logCoordinador, "Se conectó un componente");
 
 		socketsNecesarios.socketComponente = socketComponente;
@@ -567,8 +567,14 @@ void getClave(char* key, int socketPlanificador, int socketEsi, char* nombreEsi)
 				log_trace(logCoordinador, "La clave no se encuentra bloqueada, se bloquea");
 				respuestaGET = COORDINADOR_ESI_BLOQUEAR;
 				clave->bloqueado = 1;
+
 				// Asigno que esi la bloqueo
+				free(clave->nombreEsi);
+				clave->nombreEsi = malloc(strlen(nombreEsi) + 1);
 				strcpy(clave->nombreEsi, nombreEsi);
+				clave->nombreEsi[strlen(nombreEsi)] = '\0';
+
+				// Aviso
 				avisarA(socketEsi, "", respuestaGET);
 				avisarA(socketPlanificador, "", respuestaGET);
 			}
@@ -577,6 +583,7 @@ void getClave(char* key, int socketPlanificador, int socketEsi, char* nombreEsi)
 			// Instancia está caída
 			respuestaGET = COORDINADOR_INSTANCIA_CAIDA;
 			log_error(logCoordinador, "La clave que intenta acceder existe en el sistema pero se encuentra en una instancia que esta desconectada");
+
 			//Le aviso al planificador y esi del error
 			avisarA(socketEsi, "", respuestaGET);
 			avisarA(socketPlanificador, "", respuestaGET);
@@ -684,7 +691,7 @@ void ejecutarSentencia(int socketEsi, int socketPlanificador, char* mensaje, cha
 	// Valido que la clave esté bloqueada
 	clave = (Clave*) claveVoid;
 
-	if (!clave->bloqueado) {
+	if (!clave->bloqueado || strcmp(clave->nombreEsi, nombreESI) != 0) {
 		pthread_mutex_unlock(&mutexListaInstancias);
 
 		// Logueo el error
