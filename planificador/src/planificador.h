@@ -66,9 +66,9 @@ COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
 
 { "listaClaves", cmdListaClaves, "Imprime la lista de Claves.", 0 },
 
-{ "bloquear", cmdDesbloquear, "Bloquea una clave.", 2 },
+{ "bloquear", cmdBloquear, "Bloquea una clave.", 2 },
 
-{ "desbloquear", cmdBloquear, "Desbloquea una clave.", 1 },
+{ "desbloquear", cmdDesbloquear, "Desbloquea una clave.", 1 },
 
 // { "listar", "Este comando aun no se ha desarrollado.", 1 },
 
