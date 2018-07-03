@@ -10,7 +10,7 @@
 
 #include "planificador.h"
 
-// TODO poder bloquear esi en ejecucion //
+// TODO poder bloquear y matar esi en ejecucion //
 
 int main() {
 	// Declaraciones Iniciales //
@@ -75,9 +75,7 @@ int main() {
 
 void manejoAlgoritmos() {
 	DATA * esi;
-	DATA * esiAuxiliar;
 	void * esiVoid;
-	void * auxiliar;
 	char * algoritmo = config_get_string_value(configuracion, "ALGORITMO");
 	ContentHeader * header;
 	int paraSwitchear;
@@ -284,25 +282,6 @@ int bloquearClaveESI(char* parametros, int nada) {
 		return 0;
 	}
 }
-
-/* Lo empece me tira error en el list_find
- * int finalizarESI(int esi) {
- void * esiEjecutar;
- DATA * esiBloqueada;
-
- esiEjecutar = list_find_with_param(listaEsi, (void*) &esi,
- buscarEnBloqueados);
-
- if (esiEjecutar != NULL) {
- esiBloqueada = list_remove_by_condition_with_param(colaBloqueados,
- esiEjecutar, buscarEnBloqueados);
- list_add(colaReady, (void*) esiBloqueada);
- return 1;
- } else {
- printf("El ESI con ID %d no se pudo finalizar", esi);
- return 0;
- }
- }*/
 
 bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 	DATA* esi1 = (DATA*) esi1Void;
@@ -517,8 +496,60 @@ void imprimirEnPantallaClaves(void* claveVoid) {
 }
 
 void imprimirEnPantallaClavesAux(void* idVoid) {
-	int id = (int*) idVoid; //aca se rompe
+	int id = (int*) idVoid;
 	printf("ESI ID: %d\n", id);
+}
+
+void matarEsi(int esi) {
+
+}
+
+void hacerStatus(char *clave) {
+	void* claveStatusVoid;
+	CLAVE* claveStatus;
+	ContentHeader* header;
+	char* valorClave;
+	char* nombreInstancia;
+	char* nombreInstanciaNueva;
+
+	if ((claveStatusVoid = list_find_with_param(listaClaves, (void*) clave,
+			chequearClave)) != NULL) {
+		// Existe la clave, procedo:
+		enviarHeader(socketCoordinador, clave, COMANDO_STATUS);
+		enviarMensaje(socketCoordinador, clave);
+
+		//Recibo valorClave del coordinador:
+		header = recibirHeader(socketCoordinador);
+		valorClave = malloc(header->largo + 1);
+		recibirMensaje(socketCoordinador, header->largo, &valorClave);
+
+		//Recibo nombreInstancia del coordinador:
+		header = recibirHeader(socketCoordinador);
+		nombreInstancia = malloc(header->largo + 1);
+		recibirMensaje(socketCoordinador, header->largo, &nombreInstancia);
+
+		//Recibo nombreInstanciaNueva del coordinador:
+		header = recibirHeader(socketCoordinador);
+		nombreInstanciaNueva = malloc(header->largo + 1);
+		recibirMensaje(socketCoordinador, header->largo, &nombreInstanciaNueva);
+
+		//Imprimo los valores:
+		printf("Status de la clave: %s\n", clave);
+		printf("Valor de la clave: %s\n", valorClave);
+		printf("Instancia en la que se encuentra la clave: %s\n", nombreInstancia);
+		printf("Instancia en la que se guardaria actualmente la clave: %s\n", nombreInstanciaNueva);
+
+		//Imprimo los esi bloqueados por esa clave:
+		claveStatus = (CLAVE *) claveStatusVoid;
+		list_iterate(claveStatus->listaEsi, imprimirEnPantallaClavesAux);
+
+		//Libero memoria
+		free(valorClave);
+		free(nombreInstancia);
+		free(nombreInstanciaNueva);
+	} else {
+		puts("La clave solicitada no existe");
+	}
 }
 
 //=======================COMANDOS DE CONSOLA====================================
@@ -534,18 +565,15 @@ int cmdBloquear(char* clave, int esi) {
 	return 0;
 }
 
-int cmdStatus(char* clave) {
-// falta valor e instancia que nos lo da el coordinador
-	list_iterate(colaBloqueados, imprimirEnPantalla);
+int cmdKill(int esi) {
+	matarEsi(esi);
 	return 0;
 }
 
-/*ACA TAMBIEN LO EMPECE PERO BUENO COMO NO ANDA finalizarESI
- * int cmdKill(int esi) {
- if (finalizarESI(esi))
- printf("Se ha finalizado el ESI con ID %d", esi);
- return 0;
- }*/
+int cmdStatus(char* clave) {
+	hacerStatus(clave);
+	return 0;
+}
 
 int cmdListaClaves() {
 	list_iterate(listaClaves, imprimirEnPantallaClaves);

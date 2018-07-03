@@ -70,16 +70,17 @@ COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
 
 { "desbloquear", cmdDesbloquear, "Desbloquea una clave.", 1 },
 
-// { "listar", "Este comando aun no se ha desarrollado.", 1 },
-
-// { "kill", cmdKill, "Finaliza el proceso.", 1 },
+{ "kill", cmdKill, "Finaliza el proceso.", 1 },
 
 { "status", cmdStatus, "Conocer el estado de una clave.", 1 },
 
 //{ "deadlock","Este comando aun no se ha desarrollado.", 0},
-		{ "help", cmdHelp, "Imprime los comandos disponibles.", 0 }, { "quit",
-				cmdQuit, "Finaliza al Planificador.", 0 }, { (char *) NULL,
-				(Function *) NULL, (char *) NULL, (int *) NULL } };
+
+{ "help", cmdHelp, "Imprime los comandos disponibles.", 0 },
+
+{ "quit", cmdQuit, "Finaliza al Planificador.", 0 },
+
+{ (char *) NULL, (Function *) NULL, (char *) NULL, (int *) NULL } };
 
 //======================VARIABLES GLOBALES======================================
 
@@ -109,6 +110,7 @@ void imprimirEnPantallaClavesAux(void* idVoid); // Imprime sublista de Claves.
 int chequearClave(void* claveVoid, void* nombreVoid); // Compara string de clave con ESI.
 int buscarEnBloqueados(void* esiVoid, void* idVoid); // Busca un ESI en bloqueados.
 bool menorCantidadDeLineas(void* esi1Void, void* esi2Void); // Para hacer un sort del SJF
+int desbloquearClave(char* clave); // Desbloquea una clave.
 
 //=====================FUNCIONES DE CONSOLA=====================================
 
