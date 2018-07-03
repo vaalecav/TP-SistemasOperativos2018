@@ -431,7 +431,9 @@ void recibirSentencia() {
 		free(mensajeSplitted);
 
 	} else if (header->id == COMANDO_STATUS){
+		nombreClave = malloc(header->largo + 1);
 		recibirMensaje(socketCoordinador, header->largo, &nombreClave); // Recibo nombre de la clave
+		nombreClave[header->largo] = '\0';
 		// Valido si existe la entrada con la clave
 		if ((entradaVoid = list_find_with_param(estructuraAdministrativa.entradas, (void*)nombreClave, entradaEsIgualAClave)) == NULL) {
 			// No existe entrada entonces la clave no posee un valor, se lo comunico al coordinador
