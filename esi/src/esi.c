@@ -93,14 +93,15 @@ int main(int argc, char **argv) {
 		idEsi = header->id;
 	}
 
+	// Libero memoria
+	free(header);
+
 	// Envio la cantidad de filas al planificador //
 	int maxFilas = filasArchivo(path);
 	enviarHeader(socketPlanificador, "", maxFilas);
 
 	parsearScript(path, idEsi, maxFilas);
 
-	// Libero memoria
-	free(header);
 	liberarMemoria();
 
 	return 0;
@@ -245,7 +246,6 @@ void parsearScript(char* path, int idEsi, int maxFilas) {
 								"El coordinador me respondió que hubo un error: %s",
 								PROTOCOLO_MENSAJE[headerCoordinador->id]);
 						abortarEsi = 1;
-						// TODO ¿acá debería abortar o no le importa y espera que lo aborte el planificador?
 						break;
 					}
 
