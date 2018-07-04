@@ -746,3 +746,65 @@
 [TRACE] 14:47:16:554 Instancia/(9418:9424): Hice un DUMP
 [TRACE] 14:47:26:555 Instancia/(9418:9424): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
 [TRACE] 14:47:26:556 Instancia/(9418:9424): Hice un DUMP
+[TRACE] 14:55:45:553 Coordinador/(9766:9766): Se conectó el planificador: Puerto=8000; Ip Planificador=167287856; Máximas conexiones=20
+[TRACE] 14:55:45:553 Coordinador/(9766:9766): Hilo asignado para recibir mensajes del Planificador
+[TRACE] 14:55:48:999 Instancia/(9819:9819): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 14:55:48:0 Coordinador/(9766:9766): Se conectó un componente
+[TRACE] 14:55:48:0 Coordinador/(9766:9766): Hilo asignado
+[TRACE] 14:55:49:3 Coordinador/(9766:9824): Se conectó una instancia
+[TRACE] 14:55:49:38 Coordinador/(9766:9824): Se conectó la instancia de nombre: Instancia1
+[TRACE] 14:55:49:38 Coordinador/(9766:9824): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 14:55:49:38 Instancia/(9819:9819): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 14:55:49:38 Instancia/(9819:9819): El punto de montaje </home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/> existe.
+[TRACE] 14:55:49:38 Instancia/(9819:9819): Setteo futbol:messi: TraemeLaCopa, en la entrada 0 con un largo de entradas 1
+[TRACE] 14:55:49:38 Instancia/(9819:9819): Reincorporé la instancia
+[TRACE] 14:55:49:38 Instancia/(9819:9819): La tabla de entradas quedó: 10000000000000000000
+[TRACE] 14:55:49:38 Instancia/(9819:9819): Clave: futbol:messi - Valor: TraemeLaCopa - Entrada: 0 - Ocupa: 1
+[TRACE] 14:55:49:38 Instancia/(9819:9819): Hilo asignado para realizar el Dump
+[TRACE] 14:55:49:38 Coordinador/(9766:9824): Se ingresó la instancia nueva <Instancia1> con 19 entradas libres
+[TRACE] 14:55:49:39 Instancia/(9819:9819): Espero sentencias
+[TRACE] 14:55:51:802 ESI/(9837:9837): Number of lines in the file is 3
+
+[TRACE] 14:55:53:660 ESI/(9853:9853): Number of lines in the file is 3
+
+[TRACE] 14:55:55:418 ESI/(9868:9868): Number of lines in the file is 3
+
+[TRACE] 14:55:59:48 Instancia/(9819:9825): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 14:55:59:48 Instancia/(9819:9825): Hice un DUMP
+[TRACE] 14:56:04:302 Coordinador/(9766:9804): Se recibio kill de esi desde el planificador
+[TRACE] 14:56:09:57 Instancia/(9819:9825): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 14:56:09:58 Instancia/(9819:9825): Hice un DUMP
+[TRACE] 14:56:19:59 Instancia/(9819:9825): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 14:56:19:60 Instancia/(9819:9825): Hice un DUMP
+[TRACE] 14:56:29:65 Instancia/(9819:9825): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 14:56:29:66 Instancia/(9819:9825): Hice un DUMP
+[TRACE] 14:56:39:76 Instancia/(9819:9825): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 14:56:39:76 Instancia/(9819:9825): Hice un DUMP
+[TRACE] 15:03:47:425 Coordinador/(10071:10071): Se conectó el planificador: Puerto=8000; Ip Planificador=146222128; Máximas conexiones=20
+[TRACE] 15:03:47:425 Coordinador/(10071:10071): Hilo asignado para recibir mensajes del Planificador
+[TRACE] 15:03:51:63 Instancia/(10124:10124): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 15:03:51:78 Coordinador/(10071:10071): Se conectó un componente
+[TRACE] 15:03:51:78 Coordinador/(10071:10071): Hilo asignado
+[TRACE] 15:03:51:78 Coordinador/(10071:10129): Se conectó una instancia
+[TRACE] 15:03:51:123 Coordinador/(10071:10129): Se conectó la instancia de nombre: Instancia1
+[TRACE] 15:03:51:134 Coordinador/(10071:10129): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 15:03:51:134 Instancia/(10124:10124): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 15:03:51:134 Instancia/(10124:10124): El punto de montaje </home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/> existe.
+[TRACE] 15:03:51:134 Instancia/(10124:10124): Setteo futbol:messi: TraemeLaCopa, en la entrada 0 con un largo de entradas 1
+[TRACE] 15:03:51:134 Instancia/(10124:10124): Reincorporé la instancia
+[TRACE] 15:03:51:135 Instancia/(10124:10124): La tabla de entradas quedó: 10000000000000000000
+[TRACE] 15:03:51:135 Instancia/(10124:10124): Clave: futbol:messi - Valor: TraemeLaCopa - Entrada: 0 - Ocupa: 1
+[TRACE] 15:03:51:135 Instancia/(10124:10124): Hilo asignado para realizar el Dump
+[TRACE] 15:03:51:135 Coordinador/(10071:10129): Se ingresó la instancia nueva <Instancia1> con 19 entradas libres
+[TRACE] 15:03:51:135 Instancia/(10124:10124): Espero sentencias
+[TRACE] 15:03:54:845 ESI/(10159:10159): Number of lines in the file is 3
+
+[TRACE] 15:03:56:424 ESI/(10173:10173): Number of lines in the file is 3
+
+[TRACE] 15:03:58:460 ESI/(10187:10187): Number of lines in the file is 3
+
+[TRACE] 15:04:01:144 Instancia/(10124:10130): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 15:04:01:144 Instancia/(10124:10130): Hice un DUMP
+[TRACE] 15:04:09:163 Coordinador/(10071:10109): Se recibio kill de esi desde el planificador
+[TRACE] 15:04:11:154 Instancia/(10124:10130): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 15:04:11:154 Instancia/(10124:10130): Hice un DUMP

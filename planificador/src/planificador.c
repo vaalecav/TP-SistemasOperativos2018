@@ -11,6 +11,7 @@
 #include "planificador.h"
 
 // TODO poder bloquear y matar esi en ejecucion //
+// TODO cambiar el select() para que use las listas y no un array, asi concuerda con el resto del planif //
 
 int main() {
 	// Declaraciones Iniciales //
@@ -385,21 +386,22 @@ void tratarConexiones() {
 		/* Espera indefinida hasta que alguno de los descriptores tenga algo
 		 que decir: un nuevo cliente o un cliente ya conectado que envía un
 		 mensaje */
+
 		select(100, &descriptoresLectura, NULL, NULL, &timeout);
 
-		/* Se comprueba si algún cliente ya conectado ha enviado algo
+		// Se comprueba si algún cliente ya conectado ha enviado algo
 		for (i = 0; i < numeroClientes; i++) {
 			if (FD_ISSET(socketCliente[i], &descriptoresLectura)) {
-				/* Se indica que el cliente ha cerrado la conexión
+				// Se indica que el cliente ha cerrado la conexión
 				close(socketCliente[i]);
-				borrarDeColas(socketCliente[i]);
 				remove_element(socketCliente, i, numeroClientes);
 				numeroClientes--;
 			}
-		}*/
+		}
 
 		/* Se comprueba si algún cliente nuevo desea conectarse y se le
 		 admite */
+
 		if (FD_ISSET(socketServer, &descriptoresLectura)) {
 			/* Acepta la conexión con el cliente, guardándola en el array */
 			socketCliente[numeroClientes] = servidorConectarComponente(
@@ -518,7 +520,10 @@ void matarEsi(int esi) {
 		esiVoid = list_remove_by_condition_with_param(colaReady, (void*) esi,
 				buscarEnBloqueados);
 		esiMatar = (DATA*) esiVoid;
-		close(esiMatar->socket);
+
+		enviarHeader(esiMatar->socket, "", COMANDO_KILL);
+
+		//close(esiMatar->socket);
 		list_add(colaAbortados, esiVoid);
 
 		// Informo al coordinador
@@ -540,7 +545,10 @@ void matarEsi(int esi) {
 			esiVoid = list_remove_by_condition_with_param(colaBloqueados,
 					(void*) esi, buscarEnBloqueados);
 			esiMatar = (DATA*) esiVoid;
-			close(esiMatar->socket);
+
+			enviarHeader(esiMatar->socket, "", COMANDO_KILL);
+
+			//close(esiMatar->socket);
 			list_add(colaAbortados, esiVoid);
 
 			// Informo al coordinador

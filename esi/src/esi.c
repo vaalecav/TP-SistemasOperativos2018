@@ -261,6 +261,10 @@ void parsearScript(char* path, int idEsi, int maxFilas) {
 				log_error(logESI, "No se pudo leer la linea del script");
 				break;
 			}
+		} else {
+			puts("Me acaba de matar el planificador.");
+			close(socketPlanificador);
+			break;
 		}
 		free(headerPlanificador);
 	}
