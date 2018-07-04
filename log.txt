@@ -808,3 +808,41 @@
 [TRACE] 15:04:09:163 Coordinador/(10071:10109): Se recibio kill de esi desde el planificador
 [TRACE] 15:04:11:154 Instancia/(10124:10130): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
 [TRACE] 15:04:11:154 Instancia/(10124:10130): Hice un DUMP
+[TRACE] 15:17:00:854 Coordinador/(10578:10578): Se conectó el planificador: Puerto=8000; Ip Planificador=140164144; Máximas conexiones=20
+[TRACE] 15:17:00:855 Coordinador/(10578:10578): Hilo asignado para recibir mensajes del Planificador
+[TRACE] 15:17:05:36 Instancia/(10634:10634): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 15:17:05:37 Coordinador/(10578:10578): Se conectó un componente
+[TRACE] 15:17:05:37 Coordinador/(10578:10578): Hilo asignado
+[TRACE] 15:17:05:48 Coordinador/(10578:10639): Se conectó una instancia
+[TRACE] 15:17:05:68 Coordinador/(10578:10639): Se conectó la instancia de nombre: Instancia1
+[TRACE] 15:17:05:68 Coordinador/(10578:10639): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 15:17:05:68 Instancia/(10634:10634): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 15:17:05:68 Instancia/(10634:10634): El punto de montaje </home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/> existe.
+[TRACE] 15:17:05:68 Instancia/(10634:10634): Setteo futbol:messi: TraemeLaCopa, en la entrada 0 con un largo de entradas 1
+[TRACE] 15:17:05:69 Instancia/(10634:10634): Reincorporé la instancia
+[TRACE] 15:17:05:69 Instancia/(10634:10634): La tabla de entradas quedó: 10000000000000000000
+[TRACE] 15:17:05:69 Instancia/(10634:10634): Clave: futbol:messi - Valor: TraemeLaCopa - Entrada: 0 - Ocupa: 1
+[TRACE] 15:17:05:70 Instancia/(10634:10634): Hilo asignado para realizar el Dump
+[TRACE] 15:17:05:70 Coordinador/(10578:10639): Se ingresó la instancia nueva <Instancia1> con 19 entradas libres
+[TRACE] 15:17:05:70 Instancia/(10634:10634): Espero sentencias
+[TRACE] 15:17:08:290 ESI/(10651:10651): Number of lines in the file is 3
+
+[TRACE] 15:17:10:278 ESI/(10668:10668): Number of lines in the file is 3
+
+[TRACE] 15:17:12:139 ESI/(10682:10682): Number of lines in the file is 3
+
+[TRACE] 15:17:15:98 Instancia/(10634:10640): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 15:17:15:98 Instancia/(10634:10640): Hice un DUMP
+[TRACE] 15:17:22:186 Coordinador/(10578:10615): Se recibio kill de esi desde el planificador
+[TRACE] 15:17:25:104 Instancia/(10634:10640): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 15:17:25:104 Instancia/(10634:10640): Hice un DUMP
+[TRACE] 15:17:35:108 Instancia/(10634:10640): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 15:17:35:109 Instancia/(10634:10640): Hice un DUMP
+[TRACE] 15:17:45:114 Instancia/(10634:10640): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 15:17:45:114 Instancia/(10634:10640): Hice un DUMP
+[TRACE] 15:17:55:117 Instancia/(10634:10640): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 15:17:55:118 Instancia/(10634:10640): Hice un DUMP
+[TRACE] 15:18:05:128 Instancia/(10634:10640): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 15:18:05:128 Instancia/(10634:10640): Hice un DUMP
+[TRACE] 15:18:15:138 Instancia/(10634:10640): Hago store de la clave futbol:messi del valor TraemeLaCopa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/futbol:messi
+[TRACE] 15:18:15:138 Instancia/(10634:10640): Hice un DUMP

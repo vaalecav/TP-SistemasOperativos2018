@@ -298,6 +298,13 @@ int buscarEnBloqueados(void* esiVoid, void* idVoid) {
 	return esi->id == id;
 }
 
+int buscarPorSocket(void* esiVoid, void* idVoid) {
+	DATA * esi = (DATA*) esiVoid;
+	int id = (int*) idVoid;
+// 													ANTES COMO: int id = (int*) idVoid;
+	return esi->socket == id;
+}
+
 int chequearClave(void* claveVoid, void* nombreVoid) {
 	CLAVE * clave = (CLAVE*) claveVoid;
 	char * nombre = (char*) nombreVoid;
@@ -393,6 +400,7 @@ void tratarConexiones() {
 		for (i = 0; i < numeroClientes; i++) {
 			if (FD_ISSET(socketCliente[i], &descriptoresLectura)) {
 				// Se indica que el cliente ha cerrado la conexión
+				moveToAbortados(socketCliente[i]);
 				close(socketCliente[i]);
 				remove_element(socketCliente, i, numeroClientes);
 				numeroClientes--;
@@ -508,6 +516,20 @@ void imprimirEnPantallaClavesAux(void* idVoid) {
 	printf("ESI ID: %d\n", id);
 }
 
+void moveToAbortados(int socketId) {
+	void* esiVoid;
+	if ((esiVoid = list_find_with_param(colaReady, (void*) socketId,
+			buscarPorSocket)) != NULL) {
+		esiVoid = list_remove_by_condition_with_param(colaReady,
+				(void*) socketId, buscarPorSocket);
+		list_add(colaAbortados, esiVoid);
+	} else {
+		esiVoid = list_remove_by_condition_with_param(colaBloqueados,
+				(void*) socketId, buscarPorSocket);
+		list_add(colaAbortados, esiVoid);
+	}
+}
+
 void matarEsi(int esi) {
 	void* esiVoid;
 	DATA* esiMatar;
@@ -517,14 +539,14 @@ void matarEsi(int esi) {
 			buscarEnBloqueados)) != NULL) {
 
 		// Existe el ESI en ready, procedo //
-		esiVoid = list_remove_by_condition_with_param(colaReady, (void*) esi,
-				buscarEnBloqueados);
+		//esiVoid = list_remove_by_condition_with_param(colaReady, (void*) esi,
+		//		buscarEnBloqueados);
 		esiMatar = (DATA*) esiVoid;
 
 		enviarHeader(esiMatar->socket, "", COMANDO_KILL);
 
 		//close(esiMatar->socket);
-		list_add(colaAbortados, esiVoid);
+		//list_add(colaAbortados, esiVoid);
 
 		// Informo al coordinador
 		largoId = floor(log10(abs(esi))) + 1;
@@ -542,14 +564,14 @@ void matarEsi(int esi) {
 				buscarEnBloqueados)) != NULL) {
 
 			// Existe el ESI en ready, procedo //
-			esiVoid = list_remove_by_condition_with_param(colaBloqueados,
-					(void*) esi, buscarEnBloqueados);
+			//esiVoid = list_remove_by_condition_with_param(colaBloqueados,
+			//		(void*) esi, buscarEnBloqueados);
 			esiMatar = (DATA*) esiVoid;
 
 			enviarHeader(esiMatar->socket, "", COMANDO_KILL);
 
 			//close(esiMatar->socket);
-			list_add(colaAbortados, esiVoid);
+			//list_add(colaAbortados, esiVoid);
 
 			// Informo al coordinador
 			largoId = floor(log10(abs(esi))) + 1;
