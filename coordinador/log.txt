@@ -1,0 +1,10 @@
+ESI 3 || GET futbol:messi
+ESI 3 || SET futbol:messi TraemeLaCopa
+ESI 3 || STORE futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 2 || GET futbol:messi
+ESI 2 || SET futbol:messi TraemeLaCopa
+ESI 2 || STORE futbol:messi
+ESI 4 || GET futbol:messi

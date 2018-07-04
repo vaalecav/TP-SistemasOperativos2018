@@ -23,6 +23,7 @@
 #include <socket/sockets.h>
 #include <configuracion/configuracion.h>
 #include <semaphore.h>
+#include <math.h>
 
 //===================DEFINES====================================================
 
@@ -30,7 +31,7 @@
 
 int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(),
 		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(), cmdKill(),
-		cmdStatus(), cmdDesbloquear(), cmdBloquear(); // Son las funciones que ejecutan los comandos ingresados por consola.
+		cmdStatus(), cmdDesbloquear(), cmdBloquear(), cmdColaAbortados(); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
 
@@ -63,6 +64,8 @@ COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
 		"Imprime en pantalla la cola de Bloqueados.", 0 },
 
 { "colaReady", cmdColaReady, "Imprime en pantalla la cola de Ready.", 0 },
+
+{ "colaAbortados", cmdColaAbortados, "Imprime en pantalla la cola de Abortados.", 0 },
 
 { "listaClaves", cmdListaClaves, "Imprime la lista de Claves.", 0 },
 
