@@ -518,6 +518,9 @@ void imprimirEnPantallaClavesAux(void* idVoid) {
 
 void moveToAbortados(int socketId) {
 	void* esiVoid;
+	DATA* esiAMatar;
+	int largoId;
+	char* nombre;
 	if ((esiVoid = list_find_with_param(colaReady, (void*) socketId,
 			buscarPorSocket)) != NULL) {
 		esiVoid = list_remove_by_condition_with_param(colaReady,
@@ -528,6 +531,17 @@ void moveToAbortados(int socketId) {
 				(void*) socketId, buscarPorSocket);
 		list_add(colaAbortados, esiVoid);
 	}
+
+	esiAMatar = (DATA*) esiVoid;
+	largoId = floor(log10(abs(esiAMatar->id))) + 1;
+	nombre = malloc(4 + largoId + 1);
+	sprintf(nombre, "ESI %d", esiAMatar->id);
+	nombre[4 + largoId] = '\0';
+
+	enviarHeader(socketCoordinador, nombre, COMANDO_KILL);
+	enviarMensaje(socketCoordinador, nombre);
+
+	free(nombre);
 }
 
 void matarEsi(int esi) {
