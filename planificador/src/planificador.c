@@ -654,7 +654,28 @@ void hacerStatus(char *clave) {
 	}
 }
 
+void deadlock() {
+
+	//Conseguir lista de claves asociadas a esis
+	//listaClavesEsis
+	//Buscar esis bloqueados
+	list_iterate(colaBloqueados, buscarEnClavesEsis);
+	//Iterar con un for, por cada esi bloqueado, buscar en la listaClavesEsis si alguna de esas claves es la que necesita
+	//Si la necesita, buscar si el esi a la que esta asignada esa clave, esta bloqueado, y devuelta lo mismo
+	//Fijarse si llega al esi inicial y meterlo en esisEnDeadlock
+
+	else {
+		puts("Ningun ESI se encuentra en deadlock.")
+	}
+
+}
+
 //=======================COMANDOS DE CONSOLA====================================
+
+int cmdDeadlock() {
+	deadlock()
+	return 0;
+}
 
 int cmdDesbloquear(char* clave) {
 	if (desbloquearClave(clave))

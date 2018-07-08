@@ -31,7 +31,7 @@
 
 int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(),
 		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(), cmdKill(),
-		cmdStatus(), cmdDesbloquear(), cmdBloquear(), cmdColaAbortados(); // Son las funciones que ejecutan los comandos ingresados por consola.
+		cmdStatus(), cmdDesbloquear(), cmdBloquear(), cmdColaAbortados(), cmdDeadlock(); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
 
@@ -77,7 +77,7 @@ COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
 
 { "status", cmdStatus, "Conocer el estado de una clave.", 1 },
 
-//{ "deadlock","Este comando aun no se ha desarrollado.", 0},
+{ "deadlock","Analizar los deadlocks que existan en el sistema y a que ESI están asociados.", 0},
 
 { "help", cmdHelp, "Imprime los comandos disponibles.", 0 },
 
