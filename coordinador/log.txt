@@ -8,3 +8,193 @@ ESI 2 || GET futbol:messi
 ESI 2 || SET futbol:messi TraemeLaCopa
 ESI 2 || STORE futbol:messi
 ESI 4 || GET futbol:messi
+ESI 2 || GET aventura
+ESI 2 || SET aventura jake
+ESI 2 || GET hora
+ESI 2 || SET hora finn
+ESI 2 || GET reino
+ESI 2 || SET reino hielo
+ESI 2 || GET arbol
+ESI 2 || SET arbol bmo
+ESI 2 || GET caramelo
+ESI 2 || SET caramelo princesa
+ESI 2 || GET xilofon
+ESI 2 || SET xilofon magico
+ESI 2 || STORE aventura
+ESI 2 || STORE hora
+ESI 2 || STORE reino
+ESI 2 || STORE arbol
+ESI 2 || STORE caramelo
+ESI 2 || STORE xilofon
+ESI 1 || GET futbol:messi
+ESI 2 || GET aventura
+ESI 2 || SET aventura jake
+ESI 2 || GET hora
+ESI 2 || SET hora finn
+ESI 2 || GET reino
+ESI 2 || SET reino hielo
+ESI 2 || GET arbol
+ESI 2 || SET arbol bmo
+ESI 2 || GET caramelo
+ESI 2 || SET caramelo princesa
+ESI 2 || GET xilofon
+ESI 2 || SET xilofon magico
+ESI 2 || STORE aventura
+ESI 2 || STORE hora
+ESI 2 || STORE reino
+ESI 2 || STORE arbol
+ESI 2 || STORE caramelo
+ESI 2 || STORE xilofon
+ESI 3 || GET futbol:messi
+ESI 2 || GET aventura
+ESI 2 || SET aventura jake
+ESI 2 || GET hora
+ESI 2 || SET hora finn
+ESI 2 || GET reino
+ESI 2 || SET reino hielo
+ESI 2 || GET arbol
+ESI 2 || SET arbol bmo
+ESI 2 || GET caramelo
+ESI 2 || SET caramelo princesa
+ESI 2 || GET xilofon
+ESI 2 || SET xilofon magico
+ESI 2 || STORE aventura
+ESI 2 || STORE hora
+ESI 2 || STORE reino
+ESI 2 || STORE arbol
+ESI 2 || STORE caramelo
+ESI 2 || STORE xilofon
+ESI 2 || GET aventura
+ESI 2 || SET aventura jake
+ESI 2 || GET hora
+ESI 2 || SET hora finn
+ESI 2 || GET reino
+ESI 2 || SET reino hielo
+ESI 2 || GET arbol
+ESI 2 || SET arbol bmo
+ESI 2 || GET caramelo
+ESI 2 || SET caramelo princesa
+ESI 2 || GET xilofon
+ESI 2 || SET xilofon magico
+ESI 2 || STORE aventura
+ESI 2 || STORE hora
+ESI 2 || STORE reino
+ESI 2 || STORE arbol
+ESI 2 || STORE caramelo
+ESI 2 || STORE xilofon
+ESI 2 || GET aventura
+ESI 2 || SET aventura jake
+ESI 2 || GET hora
+ESI 2 || SET hora finn
+ESI 2 || GET reino
+ESI 2 || SET reino hielo
+ESI 2 || GET arbol
+ESI 2 || SET arbol bmo
+ESI 2 || GET caramelo
+ESI 2 || SET caramelo princesa
+ESI 2 || GET xilofon
+ESI 2 || SET xilofon magico
+ESI 2 || STORE aventura
+ESI 2 || STORE hora
+ESI 2 || STORE reino
+ESI 2 || STORE arbol
+ESI 2 || STORE caramelo
+ESI 2 || STORE xilofon
+ESI 3 || GET boca
+ESI 1 || GET boca
+ESI 3 || GET futbol:messi
+ESI 2 || GET futbol:messi
+ESI 2 || SET futbol:messi TraemeLaCopa
+ESI 2 || STORE futbol:messi
+ESI 1 || GET futbol:messi
+ESI 3 || GET futbol:messi
+ESI 3 || SET futbol:messi TraemeLaCopa
+ESI 3 || STORE futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 2 || GET futbol:messi
+ESI 2 || SET futbol:messi TraemeLaCopa
+ESI 2 || STORE futbol:messi
+ESI 3 || GET futbol:messi
+ESI 3 || SET futbol:messi TraemeLaCopa
+ESI 3 || STORE futbol:messi
+ESI 1 || GET futbol:messi
+ESI 3 || GET aventura
+ESI 3 || SET aventura jake
+ESI 3 || GET hora
+ESI 3 || SET hora finn
+ESI 3 || GET reino
+ESI 3 || SET reino hielo
+ESI 3 || GET arbol
+ESI 3 || SET arbol bmo
+ESI 3 || GET caramelo
+ESI 3 || SET caramelo princesa
+ESI 3 || GET xilofon
+ESI 3 || SET xilofon magico
+ESI 3 || STORE aventura
+ESI 3 || STORE hora
+ESI 3 || STORE reino
+ESI 3 || STORE arbol
+ESI 3 || STORE caramelo
+ESI 3 || STORE xilofon
+ESI 1 || GET aventura
+ESI 3 || GET aventura
+ESI 3 || SET aventura jake
+ESI 3 || GET hora
+ESI 3 || SET hora finn
+ESI 3 || GET reino
+ESI 3 || SET reino hielo
+ESI 3 || GET arbol
+ESI 3 || SET arbol bmo
+ESI 3 || GET caramelo
+ESI 3 || SET caramelo princesa
+ESI 3 || GET xilofon
+ESI 3 || SET xilofon magico
+ESI 3 || STORE aventura
+ESI 3 || STORE hora
+ESI 3 || STORE reino
+ESI 3 || STORE arbol
+ESI 3 || STORE caramelo
+ESI 3 || STORE xilofon
+ESI 1 || GET aventura
+ESI 3 || GET boca
+ESI 1 || GET futbol:messi
+ESI 3 || GET aventura
+ESI 3 || SET aventura jake
+ESI 3 || GET hora
+ESI 3 || SET hora finn
+ESI 3 || GET reino
+ESI 3 || SET reino hielo
+ESI 3 || GET arbol
+ESI 3 || SET arbol bmo
+ESI 3 || GET caramelo
+ESI 3 || SET caramelo princesa
+ESI 3 || GET xilofon
+ESI 3 || SET xilofon magico
+ESI 3 || STORE aventura
+ESI 3 || STORE hora
+ESI 3 || STORE reino
+ESI 3 || STORE arbol
+ESI 3 || STORE caramelo
+ESI 3 || STORE xilofon
+ESI 1 || GET aventura
+ESI 3 || GET aventura
+ESI 3 || SET aventura jake
+ESI 3 || GET hora
+ESI 3 || SET hora finn
+ESI 3 || GET reino
+ESI 3 || SET reino hielo
+ESI 3 || GET arbol
+ESI 3 || SET arbol bmo
+ESI 3 || GET caramelo
+ESI 3 || SET caramelo princesa
+ESI 3 || GET xilofon
+ESI 3 || SET xilofon magico
+ESI 3 || STORE aventura
+ESI 3 || STORE hora
+ESI 3 || STORE reino
+ESI 3 || STORE arbol
+ESI 3 || STORE caramelo
+ESI 3 || STORE xilofon
+ESI 1 || GET aventura

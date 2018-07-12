@@ -31,7 +31,7 @@
 
 int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(),
 		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(), cmdKill(),
-		cmdStatus(), cmdDesbloquear(), cmdBloquear(), cmdColaAbortados(), cmdDeadlock(); // Son las funciones que ejecutan los comandos ingresados por consola.
+		cmdStatus(), cmdDesbloquear(), cmdBloquear(), cmdColaAbortados(); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
 
@@ -44,6 +44,7 @@ typedef struct ESI {
 	int id;
 	int socket;
 	int lineas;
+	int espera;
 } DATA;
 
 typedef struct COMANDO {
@@ -77,7 +78,7 @@ COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
 
 { "status", cmdStatus, "Conocer el estado de una clave.", 1 },
 
-{ "deadlock","Analizar los deadlocks que existan en el sistema y a que ESI están asociados.", 0},
+//{ "deadlock","Analizar los deadlocks que existan en el sistema y a que ESI están asociados.", 0},
 
 { "help", cmdHelp, "Imprime los comandos disponibles.", 0 },
 
@@ -96,6 +97,7 @@ t_list* colaTerminados;		// Lista enlazada de Terminados.
 t_list* colaAbortados;		// Lista enlazada de Abortados.
 t_list* listaClaves;		// Lista enladaza de Claves y sus Bloqueados.
 int socketCoordinador;		// Socket del Coordinador.
+int alphaHRRN;				// Alpha para calculos del HRRN.
 
 //=====================FUNCIONES DE PLANIFICADOR=====================================
 
@@ -114,6 +116,9 @@ int chequearClave(void* claveVoid, void* nombreVoid); // Compara string de clave
 int buscarEnBloqueados(void* esiVoid, void* idVoid); // Busca un ESI en bloqueados.
 bool menorCantidadDeLineas(void* esi1Void, void* esi2Void); // Para hacer un sort del SJF
 int desbloquearClave(char* clave); // Desbloquea una clave.
+void aumentarEsperaDeEsi(); // Sube por 1 la espera de los ESI.
+void* aumentarEspera(void* esiVoid); // Funcion aux de la de arriba.
+bool formulaHRRN(void* esi1Void, void* esi2Void); // Comparadora para HRRN.
 
 //=====================FUNCIONES DE CONSOLA=====================================
 

@@ -10,9 +10,6 @@
 
 #include "planificador.h"
 
-// TODO poder bloquear y matar esi en ejecucion //
-// TODO cambiar el select() para que use las listas y no un array, asi concuerda con el resto del planif //
-
 int main() {
 	// Declaraciones Iniciales //
 	puts("Iniciando Planificador.");
@@ -78,6 +75,9 @@ void manejoAlgoritmos() {
 	DATA * esi;
 	void * esiVoid;
 	char * algoritmo = config_get_string_value(configuracion, "ALGORITMO");
+	if (strcmp(algoritmo, "HRRN") == 0) {
+		alphaHRRN = config_get_int_value(configuracion, "ALPHA");
+	}
 	ContentHeader * header;
 	int paraSwitchear;
 	char* clave;
@@ -92,16 +92,23 @@ void manejoAlgoritmos() {
 				list_sort(colaReady, menorCantidadDeLineas);
 			}
 
+			if (strcmp(algoritmo, "HRRN") == 0) {
+				list_sort(colaReady, formulaHRRN);
+			}
+
 			if ((esiVoid = list_remove(colaReady, 0)) == NULL) {
 				// No hay nadie para ejecutar //
 			} else {
 				while (flagFin != 1) {
-
 					// Le ordeno al ESI que ejecute //
 					esi = (DATA*) esiVoid;
 					enviarHeader(esi->socket, "", PLANIFICADOR);
 					CLAVE * claveAux;
 
+					// Le quito la espera //
+					esi->espera = 0;
+
+					//TODO ROMPE PORQUE NUNCA RECIBE EL HEADER DEL COORDINADOR //
 					// Espero la respuesta //
 					header = recibirHeader(socketCoordinador);
 
@@ -188,6 +195,8 @@ void manejoAlgoritmos() {
 
 					free(header);
 
+					aumentarEsperaDeEsi();
+
 					if (strcmp(algoritmo, "SJF-CD") == 0) {
 						if (flagFin == 0) {
 							list_add(colaReady, (void*) esi);
@@ -198,6 +207,16 @@ void manejoAlgoritmos() {
 			}
 		}
 	}
+}
+
+void aumentarEsperaDeEsi() {
+	colaReady = list_map(colaReady, aumentarEspera);
+}
+
+void* aumentarEspera(void* esiAumentarVoid) {
+	DATA* esiAumentar = (DATA*) esiAumentarVoid;
+	esiAumentar->espera++;
+	return (void*) esiAumentar;
 }
 
 int desbloquearClave(char* clave) {
@@ -278,7 +297,6 @@ int bloquearClaveESI(char* parametros, int nada) {
 		}
 	} else {
 		// El ESI no esta en ready, procedo //
-		// TODO fijarse si esta ejecutando para hacer lo mismo que si fuera ready //
 		puts("El ESI ingresado no existe. No se realizaron acciones.");
 		return 0;
 	}
@@ -289,6 +307,16 @@ bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 	DATA* esi2 = (DATA*) esi2Void;
 
 	return esi1->lineas < esi2->lineas;
+}
+
+bool formulaHRRN(void* esi1Void, void* esi2Void) {
+	DATA* esi1 = (DATA*) esi1Void;
+	DATA* esi2 = (DATA*) esi2Void;
+	float ratioEsi1 = (((float) alphaHRRN / 100) * esi1->espera)
+			+ ((1 - ((float) alphaHRRN / 100)) * esi1->lineas);
+	float ratioEsi2 = (((float) alphaHRRN / 100) * esi2->espera)
+			+ ((1 - ((float) alphaHRRN / 100)) * esi2->lineas);
+	return ratioEsi1 < ratioEsi2;
 }
 
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
@@ -436,6 +464,7 @@ void tratarConexiones() {
 				nuevoEsi->id = nextIdEsi;
 				nuevoEsi->lineas = cantLineas;
 				nuevoEsi->socket = socketCliente[numeroClientes - 1];
+				nuevoEsi->espera = 0;
 				list_add(colaReady, (void*) nuevoEsi);
 
 				/* Aumento el ID para el proximo ESI */
@@ -501,8 +530,8 @@ void remove_element(int *array, int index, int array_length) {
 
 void imprimirEnPantalla(void* esiVoid) {
 	DATA* esi = (DATA*) esiVoid;
-	printf("ID: %d, SOCKET: %d, LARGO: %d\n", esi->id, esi->socket,
-			esi->lineas);
+	printf("ID: %d, SOCKET: %d, LARGO: %d, TIEMPO EN READY: %d\n", esi->id,
+			esi->socket, esi->lineas, esi->espera);
 }
 
 void imprimirEnPantallaClaves(void* claveVoid) {
@@ -525,14 +554,23 @@ void moveToAbortados(int socketId) {
 			buscarPorSocket)) != NULL) {
 		esiVoid = list_remove_by_condition_with_param(colaReady,
 				(void*) socketId, buscarPorSocket);
+		esiAMatar = (DATA*) esiVoid;
 		list_add(colaAbortados, esiVoid);
 	} else {
-		esiVoid = list_remove_by_condition_with_param(colaBloqueados,
-				(void*) socketId, buscarPorSocket);
-		list_add(colaAbortados, esiVoid);
+		if ((esiVoid = list_find_with_param(colaBloqueados, (void*) socketId,
+				buscarPorSocket)) != NULL) {
+			esiVoid = list_remove_by_condition_with_param(colaBloqueados,
+							(void*) socketId, buscarPorSocket);
+			esiAMatar = (DATA*) esiVoid;
+			list_add(colaAbortados, esiVoid);
+		} else {
+			esiVoid = list_remove_by_condition_with_param(colaTerminados,
+					(void*) socketId, buscarPorSocket);
+			esiAMatar = (DATA*) esiVoid;
+			esiAMatar->socket = 0;
+			list_add(colaTerminados, (void*) esiAMatar);
+		}
 	}
-
-	esiAMatar = (DATA*) esiVoid;
 	largoId = floor(log10(abs(esiAMatar->id))) + 1;
 	nombre = malloc(4 + largoId + 1);
 	sprintf(nombre, "ESI %d", esiAMatar->id);
@@ -654,28 +692,27 @@ void hacerStatus(char *clave) {
 	}
 }
 
-void deadlock() {
+/*void deadlock() {
 
-	//Conseguir lista de claves asociadas a esis
-	//listaClavesEsis
-	//Buscar esis bloqueados
-	list_iterate(colaBloqueados, buscarEnClavesEsis);
-	//Iterar con un for, por cada esi bloqueado, buscar en la listaClavesEsis si alguna de esas claves es la que necesita
-	//Si la necesita, buscar si el esi a la que esta asignada esa clave, esta bloqueado, y devuelta lo mismo
-	//Fijarse si llega al esi inicial y meterlo en esisEnDeadlock
+ //Conseguir lista de claves asociadas a esis
+ //listaClavesEsis
+ //Buscar esis bloqueados
+ list_iterate(colaBloqueados, buscarEnClavesEsis);
+ //Iterar con un for, por cada esi bloqueado, buscar en la listaClavesEsis si alguna de esas claves es la que necesita
+ //Si la necesita, buscar si el esi a la que esta asignada esa clave, esta bloqueado, y devuelta lo mismo
+ //Fijarse si llega al esi inicial y meterlo en esisEnDeadlock
 
-	else {
-		puts("Ningun ESI se encuentra en deadlock.")
-	}
+ else {
+ puts("Ningun ESI se encuentra en deadlock.")
+ }
 
-}
+ } */
 
 //=======================COMANDOS DE CONSOLA====================================
-
-int cmdDeadlock() {
-	deadlock()
-	return 0;
-}
+/*int cmdDeadlock() {
+ deadlock()
+ b return 0;
+ }*/
 
 int cmdDesbloquear(char* clave) {
 	if (desbloquearClave(clave))
