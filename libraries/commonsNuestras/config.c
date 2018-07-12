@@ -21,7 +21,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#include "../commons/collections/dictionary.h"
+#include "../commonsNuestras/collections/dictionary.h"
 #include "../commonsNuestras/string.h"
 
 t_config *config_create(char *path) {
