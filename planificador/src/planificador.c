@@ -82,6 +82,12 @@ void manejoAlgoritmos() {
 	int paraSwitchear;
 	char* clave;
 	int flagFin;
+
+	// CLAVES BLOQUEADAS DESDE EL PRINCIPIO //
+	char* clavesBloqueadas = config_get_string_value(configuracion, "CLAVES_BLOQUEADAS");
+	enviarHeader(socketCoordinador, clavesBloqueadas, BLOQUEAR_CLAVE_MANUAL);
+	enviarMensaje(socketCoordinador, clavesBloqueadas);
+
 	while (done == 0) {
 		flagFin = 0;
 		if (ejecutar == 1) {
@@ -238,6 +244,9 @@ int desbloquearClave(char* clave) {
 			esiBloqueada = list_remove_by_condition_with_param(colaBloqueados,
 					esiEjecutar, buscarEnBloqueados);
 			list_add(colaReady, (void*) esiBloqueada);
+		} else {
+			// Si no hay esis, libero la clave.
+			list_remove_by_condition_with_param(listaClaves, (void*) clave, chequearClave);
 		}
 
 		return 1;
