@@ -18,7 +18,7 @@ void freeEntrada(void* ent) {
 
 void loguearEntrada(void* entr) {
 	Entrada entrada = *(Entrada*)entr;
-	log_trace(logInstancia, "Clave: %s - Valor: %s - Entrada: %d - Ocupa: %d", entrada.clave, entrada.valor, entrada.primeraEntrada, entrada.cantidadEntradas);
+	log_info(logInstancia, "Clave: %s - Valor: %s - Entrada: %d - Ocupa: %d", entrada.clave, entrada.valor, entrada.primeraEntrada, entrada.cantidadEntradas);
 }
 
 void mostrarEntrada(void* entr) {
@@ -41,7 +41,7 @@ void loguearInstancia() {
 	entradasUsadas[estructuraAdministrativa.cantidadEntradas] = '\0';
 
 	// Logueo la tabla de entradas
-	log_trace(logInstancia, "La tabla de entradas quedó: %s", entradasUsadas);
+	log_info(logInstancia, "La tabla de entradas quedó: %s", entradasUsadas);
 	list_iterate(estructuraAdministrativa.entradas, loguearEntrada);
 }
 
@@ -406,7 +406,9 @@ void recibirSentencia() {
 			respuesta = setearClave(mensajeSplitted[1], mensajeSplitted[2]);
 
 			// Si no salió todo OK, le tengo que avisar al coordinador que no compacte
-			if (respuesta != INSTANCIA_SENTENCIA_OK_SET) {
+			if (respuesta == INSTANCIA_SENTENCIA_OK_SET) {
+				loguearInstancia();
+			} else {
 				avisarAlCoordinador(0);
 			}
 		} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
