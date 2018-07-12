@@ -23,13 +23,15 @@
 #include <socket/sockets.h>
 #include <configuracion/configuracion.h>
 #include <semaphore.h>
+#include <math.h>
 
 //===================DEFINES====================================================
 
 //=======================COMANDOS DE CONSOLA====================================
 
 int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(),
-		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(); // Son las funciones que ejecutan los comandos ingresados por consola.
+		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(), cmdKill(),
+		cmdStatus(), cmdDesbloquear(), cmdBloquear(), cmdColaAbortados(); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
 
@@ -42,6 +44,7 @@ typedef struct ESI {
 	int id;
 	int socket;
 	int lineas;
+	int espera;
 } DATA;
 
 typedef struct COMANDO {
@@ -52,22 +55,36 @@ typedef struct COMANDO {
 } COMANDO;
 
 COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
-		{ "continuar", cmdContinue, "Reanuda la ejecucion de ESIs.", 0 }, {
-				"colaTerminados", cmdColaTerminados,
-				"Reanuda la ejecucion de ESIs.", 0 }, { "colaBloqueados",
-				cmdColaBloqueados, "Reanuda la ejecucion de ESIs.", 0 }, {
-				"colaReady", cmdColaReady,
-				"Imprime en pantalla la cola de Ready.", 0 }, { "listaClaves",
-				cmdListaClaves, "Imprime la lista de Claves.", 0 },
-		/*		{ "bloquear","Este comando aun no se ha desarrollado.", 2},
-		 { "desbloquear","Este comando aun no se ha desarrollado.", 1},
-		 { "listar","Este comando aun no se ha desarrollado.", 1},
-		 { "kill","Este comando aun no se ha desarrollado.", 1},
-		 { "status","Este comando aun no se ha desarrollado.", 1},
-		 { "deadlock","Este comando aun no se ha desarrollado.", 0},*/
-		{ "help", cmdHelp, "Imprime los comandos disponibles.", 0 }, { "quit",
-				cmdQuit, "Finaliza al Planificador.", 0 }, { (char *) NULL,
-				(Function *) NULL, (char *) NULL, (int *) NULL } };
+
+{ "continuar", cmdContinue, "Reanuda la ejecucion de ESIs.", 0 },
+
+{ "colaTerminados", cmdColaTerminados,
+		"Imprime en pantalla la cola de Terminados.", 0 },
+
+{ "colaBloqueados", cmdColaBloqueados,
+		"Imprime en pantalla la cola de Bloqueados.", 0 },
+
+{ "colaReady", cmdColaReady, "Imprime en pantalla la cola de Ready.", 0 },
+
+{ "colaAbortados", cmdColaAbortados, "Imprime en pantalla la cola de Abortados.", 0 },
+
+{ "listaClaves", cmdListaClaves, "Imprime la lista de Claves.", 0 },
+
+{ "bloquear", cmdBloquear, "Bloquea una clave.", 2 },
+
+{ "desbloquear", cmdDesbloquear, "Desbloquea una clave.", 1 },
+
+{ "kill", cmdKill, "Finaliza el proceso.", 1 },
+
+{ "status", cmdStatus, "Conocer el estado de una clave.", 1 },
+
+//{ "deadlock","Analizar los deadlocks que existan en el sistema y a que ESI están asociados.", 0},
+
+{ "help", cmdHelp, "Imprime los comandos disponibles.", 0 },
+
+{ "quit", cmdQuit, "Finaliza al Planificador.", 0 },
+
+{ (char *) NULL, (Function *) NULL, (char *) NULL, (int *) NULL } };
 
 //======================VARIABLES GLOBALES======================================
 
@@ -80,6 +97,7 @@ t_list* colaTerminados;		// Lista enlazada de Terminados.
 t_list* colaAbortados;		// Lista enlazada de Abortados.
 t_list* listaClaves;		// Lista enladaza de Claves y sus Bloqueados.
 int socketCoordinador;		// Socket del Coordinador.
+int alphaHRRN;				// Alpha para calculos del HRRN.
 
 //=====================FUNCIONES DE PLANIFICADOR=====================================
 
@@ -97,6 +115,10 @@ void imprimirEnPantallaClavesAux(void* idVoid); // Imprime sublista de Claves.
 int chequearClave(void* claveVoid, void* nombreVoid); // Compara string de clave con ESI.
 int buscarEnBloqueados(void* esiVoid, void* idVoid); // Busca un ESI en bloqueados.
 bool menorCantidadDeLineas(void* esi1Void, void* esi2Void); // Para hacer un sort del SJF
+int desbloquearClave(char* clave); // Desbloquea una clave.
+void aumentarEsperaDeEsi(); // Sube por 1 la espera de los ESI.
+void* aumentarEspera(void* esiVoid); // Funcion aux de la de arriba.
+bool formulaHRRN(void* esi1Void, void* esi2Void); // Comparadora para HRRN.
 
 //=====================FUNCIONES DE CONSOLA=====================================
 

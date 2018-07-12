@@ -54,11 +54,11 @@ int main(int argc, char **argv) {
 	int idEsi;
 	ContentHeader * header;
 
-	char* path = argv[1];
+	//char* path = argv[1];
 
 	// Para probar en Eclipse
-	// char* path = "/home/utnso/tp-2018-1c-Los-Simuladores/esi/pruebas/ESI_3";
-	// argc = 2;
+	 char* path = "/home/utnso/tp-2018-1c-Los-Simuladores/esi/pruebas/ESI_2";
+	 argc = 2;
 
 	// Leo el Archivo de Configuracion
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
@@ -93,14 +93,15 @@ int main(int argc, char **argv) {
 		idEsi = header->id;
 	}
 
+	// Libero memoria
+	free(header);
+
 	// Envio la cantidad de filas al planificador //
 	int maxFilas = filasArchivo(path);
 	enviarHeader(socketPlanificador, "", maxFilas);
 
 	parsearScript(path, idEsi, maxFilas);
 
-	// Libero memoria
-	free(header);
 	liberarMemoria();
 
 	return 0;
@@ -245,7 +246,6 @@ void parsearScript(char* path, int idEsi, int maxFilas) {
 								"El coordinador me respondió que hubo un error: %s",
 								PROTOCOLO_MENSAJE[headerCoordinador->id]);
 						abortarEsi = 1;
-						// TODO ¿acá debería abortar o no le importa y espera que lo aborte el planificador?
 						break;
 					}
 
@@ -261,6 +261,10 @@ void parsearScript(char* path, int idEsi, int maxFilas) {
 				log_error(logESI, "No se pudo leer la linea del script");
 				break;
 			}
+		} else {
+			puts("Me acaba de matar el planificador.");
+			close(socketPlanificador);
+			break;
 		}
 		free(headerPlanificador);
 	}

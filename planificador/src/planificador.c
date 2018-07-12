@@ -10,10 +10,6 @@
 
 #include "planificador.h"
 
-// TODO CERRAR CONEXIONES QUE QUEDEN >0 EN ABORTADOS Y TERMINADOS DESPUES DEL SELECT() //
-// TODO IMPLEMENTAR SEMAFOROS PARA LAS LISTAS //
-// TODO IMPLEMENTAR SJF CON Y SIN DESALOJO POR CONFIGURACION //
-
 int main() {
 	// Declaraciones Iniciales //
 	puts("Iniciando Planificador.");
@@ -77,10 +73,11 @@ int main() {
 
 void manejoAlgoritmos() {
 	DATA * esi;
-	DATA * esiAuxiliar;
 	void * esiVoid;
-	void * auxiliar;
 	char * algoritmo = config_get_string_value(configuracion, "ALGORITMO");
+	if (strcmp(algoritmo, "HRRN") == 0) {
+		alphaHRRN = config_get_int_value(configuracion, "ALPHA");
+	}
 	ContentHeader * header;
 	int paraSwitchear;
 	char* clave;
@@ -95,16 +92,23 @@ void manejoAlgoritmos() {
 				list_sort(colaReady, menorCantidadDeLineas);
 			}
 
+			if (strcmp(algoritmo, "HRRN") == 0) {
+				list_sort(colaReady, formulaHRRN);
+			}
+
 			if ((esiVoid = list_remove(colaReady, 0)) == NULL) {
 				// No hay nadie para ejecutar //
 			} else {
 				while (flagFin != 1) {
-
 					// Le ordeno al ESI que ejecute //
 					esi = (DATA*) esiVoid;
 					enviarHeader(esi->socket, "", PLANIFICADOR);
 					CLAVE * claveAux;
 
+					// Le quito la espera //
+					esi->espera = 0;
+
+					//TODO ROMPE PORQUE NUNCA RECIBE EL HEADER DEL COORDINADOR //
 					// Espero la respuesta //
 					header = recibirHeader(socketCoordinador);
 
@@ -146,24 +150,14 @@ void manejoAlgoritmos() {
 						}
 						break;
 
-					case 3:
+					case 3: // STORE EXITO //
 						clave = malloc(header->largo + 1);
 						recibirMensaje(socketCoordinador, header->largo,
 								&clave);
 						clave[header->largo] = '\0';
 
-						claveAux = list_find_with_param(listaClaves,
-								(void*) clave, chequearClave);
-
-						auxiliar = list_remove(claveAux->listaEsi, 0);
-
-						if (auxiliar != NULL) {
-							esiAuxiliar =
-									(DATA*) list_remove_by_condition_with_param(
-											colaBloqueados, auxiliar,
-											buscarEnBloqueados);
-							list_add(colaReady, (void*) esiAuxiliar);
-						}
+						// Es un store, por lo que desbloqueo la clave
+						desbloquearClave(clave);
 
 						esi->lineas--;
 						switch (esi->lineas) {
@@ -201,6 +195,8 @@ void manejoAlgoritmos() {
 
 					free(header);
 
+					aumentarEsperaDeEsi();
+
 					if (strcmp(algoritmo, "SJF-CD") == 0) {
 						if (flagFin == 0) {
 							list_add(colaReady, (void*) esi);
@@ -213,6 +209,99 @@ void manejoAlgoritmos() {
 	}
 }
 
+void aumentarEsperaDeEsi() {
+	colaReady = list_map(colaReady, aumentarEspera);
+}
+
+void* aumentarEspera(void* esiAumentarVoid) {
+	DATA* esiAumentar = (DATA*) esiAumentarVoid;
+	esiAumentar->espera++;
+	return (void*) esiAumentar;
+}
+
+int desbloquearClave(char* clave) {
+	CLAVE * claveParaDesbloquear;
+	void * claveParaDesbloquearVoid;
+	void * esiEjecutar;
+	DATA * esiBloqueada;
+
+	// Busco la clave en la lista
+	if ((claveParaDesbloquearVoid = list_find_with_param(listaClaves,
+			(void*) clave, chequearClave)) != NULL) {
+
+		// Agarro el primer ESI que exista para ejecutar
+		claveParaDesbloquear = (CLAVE*) claveParaDesbloquearVoid;
+		esiEjecutar = list_remove(claveParaDesbloquear->listaEsi, 0);
+
+		// Si hay un esi bloqueado por la clave, lo saco de la lista de bloqueados y lo paso a ready
+		if (esiEjecutar != NULL) {
+			esiBloqueada = list_remove_by_condition_with_param(colaBloqueados,
+					esiEjecutar, buscarEnBloqueados);
+			list_add(colaReady, (void*) esiBloqueada);
+		}
+
+		return 1;
+	} else {
+		printf("La clave <%s> no existe.\n", clave);
+		return 0;
+	}
+}
+
+int bloquearClaveESI(char* parametros, int nada) {
+	CLAVE * claveParaBloquear;
+	void * claveParaBloquearVoid;
+	void * esiBloquearVoid;
+	DATA * esiBloquear;
+	CLAVE * claveAux;
+
+	// SEPARO PARAMETROS //
+	char* search = " ";
+	char* clave = strtok(parametros, search);
+	int esi = atoi(strtok(NULL, search));
+
+	// Me fijo si existe el ESI en ready //
+	if ((esiBloquearVoid = list_find_with_param(colaReady, (void*) esi,
+			buscarEnBloqueados)) != NULL) {
+
+		// Existe el ESI en ready, procedo //
+		esiBloquearVoid = list_remove_by_condition_with_param(colaReady,
+				(void*) esi, buscarEnBloqueados);
+
+		esiBloquear = (DATA *) esiBloquearVoid;
+
+		// Busco la clave, si no existe la creo //
+		if ((claveParaBloquearVoid = list_find_with_param(listaClaves,
+				(void*) clave, chequearClave)) != NULL) {
+			claveParaBloquear = (CLAVE *) claveParaBloquearVoid;
+			// Existe la clave, procedo //
+			list_add(claveParaBloquear->listaEsi, (void*) esiBloquear->id);
+			list_add(colaBloqueados, (void*) esiBloquear);
+			printf("Se bloqueó la clave %s del ESI con ID %d\n", clave, esi);
+			return 1;
+		} else {
+			// No existe la clave, procedo //
+			claveParaBloquear = (CLAVE*) malloc(sizeof(CLAVE));
+			claveParaBloquear->clave = malloc(sizeof(clave));
+			strcpy(claveParaBloquear->clave, clave);
+			claveParaBloquear->listaEsi = list_create();
+			list_add(listaClaves, (void*) claveParaBloquear);
+
+			claveAux = list_find_with_param(listaClaves, (void*) clave,
+					chequearClave);
+			list_add(claveAux->listaEsi, (void*) esi);
+
+			list_add(colaBloqueados, (void*) esiBloquear);
+			printf("Se creo la clave: %s\n", clave);
+			printf("Se bloqueó la clave %s del ESI con ID %d\n", clave, esi);
+			return 1;
+		}
+	} else {
+		// El ESI no esta en ready, procedo //
+		puts("El ESI ingresado no existe. No se realizaron acciones.");
+		return 0;
+	}
+}
+
 bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 	DATA* esi1 = (DATA*) esi1Void;
 	DATA* esi2 = (DATA*) esi2Void;
@@ -220,10 +309,28 @@ bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 	return esi1->lineas < esi2->lineas;
 }
 
+bool formulaHRRN(void* esi1Void, void* esi2Void) {
+	DATA* esi1 = (DATA*) esi1Void;
+	DATA* esi2 = (DATA*) esi2Void;
+	float ratioEsi1 = (((float) alphaHRRN / 100) * esi1->espera)
+			+ ((1 - ((float) alphaHRRN / 100)) * esi1->lineas);
+	float ratioEsi2 = (((float) alphaHRRN / 100) * esi2->espera)
+			+ ((1 - ((float) alphaHRRN / 100)) * esi2->lineas);
+	return ratioEsi1 < ratioEsi2;
+}
+
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
 	DATA * esi = (DATA*) esiVoid;
-	int id = *((int*) idVoid);
+	int id = (int*) idVoid;
+// 													ANTES COMO: int id = (int*) idVoid;
 	return esi->id == id;
+}
+
+int buscarPorSocket(void* esiVoid, void* idVoid) {
+	DATA * esi = (DATA*) esiVoid;
+	int id = (int*) idVoid;
+// 													ANTES COMO: int id = (int*) idVoid;
+	return esi->socket == id;
 }
 
 int chequearClave(void* claveVoid, void* nombreVoid) {
@@ -245,6 +352,12 @@ int chequearRespuesta(int id) {
 		a = 0;
 		break;
 	case COORDINADOR_INSTANCIA_CAIDA:
+		a = 0;
+		break;
+	case NO_HAY_INSTANCIAS:
+		a = 0;
+		break;
+	case INSTANCIA_ERROR:
 		a = 0;
 		break;
 	case COORDINADOR_ESI_BLOQUEADO:
@@ -308,14 +421,15 @@ void tratarConexiones() {
 		/* Espera indefinida hasta que alguno de los descriptores tenga algo
 		 que decir: un nuevo cliente o un cliente ya conectado que envía un
 		 mensaje */
+
 		select(100, &descriptoresLectura, NULL, NULL, &timeout);
 
-		/* Se comprueba si algún cliente ya conectado ha enviado algo */
+		// Se comprueba si algún cliente ya conectado ha enviado algo
 		for (i = 0; i < numeroClientes; i++) {
 			if (FD_ISSET(socketCliente[i], &descriptoresLectura)) {
-				/* Se indica que el cliente ha cerrado la conexión */
+				// Se indica que el cliente ha cerrado la conexión
+				moveToAbortados(socketCliente[i]);
 				close(socketCliente[i]);
-				borrarDeColas(socketCliente[i]);
 				remove_element(socketCliente, i, numeroClientes);
 				numeroClientes--;
 			}
@@ -323,6 +437,7 @@ void tratarConexiones() {
 
 		/* Se comprueba si algún cliente nuevo desea conectarse y se le
 		 admite */
+
 		if (FD_ISSET(socketServer, &descriptoresLectura)) {
 			/* Acepta la conexión con el cliente, guardándola en el array */
 			socketCliente[numeroClientes] = servidorConectarComponente(
@@ -349,6 +464,7 @@ void tratarConexiones() {
 				nuevoEsi->id = nextIdEsi;
 				nuevoEsi->lineas = cantLineas;
 				nuevoEsi->socket = socketCliente[numeroClientes - 1];
+				nuevoEsi->espera = 0;
 				list_add(colaReady, (void*) nuevoEsi);
 
 				/* Aumento el ID para el proximo ESI */
@@ -414,8 +530,8 @@ void remove_element(int *array, int index, int array_length) {
 
 void imprimirEnPantalla(void* esiVoid) {
 	DATA* esi = (DATA*) esiVoid;
-	printf("ID: %d, SOCKET: %d, LARGO: %d\n", esi->id, esi->socket,
-			esi->lineas);
+	printf("ID: %d, SOCKET: %d, LARGO: %d, TIEMPO EN READY: %d\n", esi->id,
+			esi->socket, esi->lineas, esi->espera);
 }
 
 void imprimirEnPantallaClaves(void* claveVoid) {
@@ -425,11 +541,199 @@ void imprimirEnPantallaClaves(void* claveVoid) {
 }
 
 void imprimirEnPantallaClavesAux(void* idVoid) {
-	int id = *((int*) idVoid);
+	int id = (int*) idVoid;
 	printf("ESI ID: %d\n", id);
 }
 
+void moveToAbortados(int socketId) {
+	void* esiVoid;
+	DATA* esiAMatar;
+	int largoId;
+	char* nombre;
+	if ((esiVoid = list_find_with_param(colaReady, (void*) socketId,
+			buscarPorSocket)) != NULL) {
+		esiVoid = list_remove_by_condition_with_param(colaReady,
+				(void*) socketId, buscarPorSocket);
+		esiAMatar = (DATA*) esiVoid;
+		list_add(colaAbortados, esiVoid);
+	} else {
+		if ((esiVoid = list_find_with_param(colaBloqueados, (void*) socketId,
+				buscarPorSocket)) != NULL) {
+			esiVoid = list_remove_by_condition_with_param(colaBloqueados,
+							(void*) socketId, buscarPorSocket);
+			esiAMatar = (DATA*) esiVoid;
+			list_add(colaAbortados, esiVoid);
+		} else {
+			esiVoid = list_remove_by_condition_with_param(colaTerminados,
+					(void*) socketId, buscarPorSocket);
+			esiAMatar = (DATA*) esiVoid;
+			esiAMatar->socket = 0;
+			list_add(colaTerminados, (void*) esiAMatar);
+		}
+	}
+	largoId = floor(log10(abs(esiAMatar->id))) + 1;
+	nombre = malloc(4 + largoId + 1);
+	sprintf(nombre, "ESI %d", esiAMatar->id);
+	nombre[4 + largoId] = '\0';
+
+	enviarHeader(socketCoordinador, nombre, COMANDO_KILL);
+	enviarMensaje(socketCoordinador, nombre);
+
+	free(nombre);
+}
+
+void matarEsi(int esi) {
+	void* esiVoid;
+	DATA* esiMatar;
+	int largoId;
+	char* nombre;
+	if ((esiVoid = list_find_with_param(colaReady, (void*) esi,
+			buscarEnBloqueados)) != NULL) {
+
+		// Existe el ESI en ready, procedo //
+		//esiVoid = list_remove_by_condition_with_param(colaReady, (void*) esi,
+		//		buscarEnBloqueados);
+		esiMatar = (DATA*) esiVoid;
+
+		enviarHeader(esiMatar->socket, "", COMANDO_KILL);
+
+		//close(esiMatar->socket);
+		//list_add(colaAbortados, esiVoid);
+
+		// Informo al coordinador
+		largoId = floor(log10(abs(esi))) + 1;
+		nombre = malloc(4 + largoId + 1);
+		sprintf(nombre, "ESI %d", esi);
+		nombre[4 + largoId] = '\0';
+
+		enviarHeader(socketCoordinador, nombre, COMANDO_KILL);
+		enviarMensaje(socketCoordinador, nombre);
+
+		printf("Se mato al ESI %d.\n", esi);
+		free(nombre);
+	} else {
+		if ((esiVoid = list_find_with_param(colaBloqueados, (void*) esi,
+				buscarEnBloqueados)) != NULL) {
+
+			// Existe el ESI en ready, procedo //
+			//esiVoid = list_remove_by_condition_with_param(colaBloqueados,
+			//		(void*) esi, buscarEnBloqueados);
+			esiMatar = (DATA*) esiVoid;
+
+			enviarHeader(esiMatar->socket, "", COMANDO_KILL);
+
+			//close(esiMatar->socket);
+			//list_add(colaAbortados, esiVoid);
+
+			// Informo al coordinador
+			largoId = floor(log10(abs(esi))) + 1;
+			nombre = malloc(4 + largoId + 1);
+			sprintf(nombre, "ESI %d", esi);
+			nombre[4 + largoId] = '\0';
+
+			enviarHeader(socketCoordinador, nombre, COMANDO_KILL);
+			enviarMensaje(socketCoordinador, nombre);
+
+			printf("Se mato al ESI %d.\n", esi);
+			free(nombre);
+		} else {
+			printf("El ESI %d no se pudo matar.\n", esi);
+		}
+	}
+}
+
+void hacerStatus(char *clave) {
+	void* claveStatusVoid;
+	CLAVE* claveStatus;
+	ContentHeader* header;
+	char* valorClave;
+	char* nombreInstancia;
+	char* nombreInstanciaNueva;
+
+	if ((claveStatusVoid = list_find_with_param(listaClaves, (void*) clave,
+			chequearClave)) != NULL) {
+		// Existe la clave, procedo:
+		enviarHeader(socketCoordinador, clave, COMANDO_STATUS);
+		enviarMensaje(socketCoordinador, clave);
+
+		//Recibo valorClave del coordinador:
+		header = recibirHeader(socketCoordinador);
+		valorClave = malloc(header->largo + 1);
+		recibirMensaje(socketCoordinador, header->largo, &valorClave);
+
+		//Recibo nombreInstancia del coordinador:
+		header = recibirHeader(socketCoordinador);
+		nombreInstancia = malloc(header->largo + 1);
+		recibirMensaje(socketCoordinador, header->largo, &nombreInstancia);
+
+		//Recibo nombreInstanciaNueva del coordinador:
+		header = recibirHeader(socketCoordinador);
+		nombreInstanciaNueva = malloc(header->largo + 1);
+		recibirMensaje(socketCoordinador, header->largo, &nombreInstanciaNueva);
+
+		//Imprimo los valores:
+		printf("Status de la clave: %s\n", clave);
+		printf("Valor de la clave: %s\n", valorClave);
+		printf("Instancia en la que se encuentra la clave: %s\n",
+				nombreInstancia);
+		printf("Instancia en la que se guardaria actualmente la clave: %s\n",
+				nombreInstanciaNueva);
+
+		//Imprimo los esi bloqueados por esa clave:
+		claveStatus = (CLAVE *) claveStatusVoid;
+		list_iterate(claveStatus->listaEsi, imprimirEnPantallaClavesAux);
+
+		//Libero memoria
+		free(valorClave);
+		free(nombreInstancia);
+		free(nombreInstanciaNueva);
+	} else {
+		puts("La clave solicitada no existe.");
+	}
+}
+
+/*void deadlock() {
+
+ //Conseguir lista de claves asociadas a esis
+ //listaClavesEsis
+ //Buscar esis bloqueados
+ list_iterate(colaBloqueados, buscarEnClavesEsis);
+ //Iterar con un for, por cada esi bloqueado, buscar en la listaClavesEsis si alguna de esas claves es la que necesita
+ //Si la necesita, buscar si el esi a la que esta asignada esa clave, esta bloqueado, y devuelta lo mismo
+ //Fijarse si llega al esi inicial y meterlo en esisEnDeadlock
+
+ else {
+ puts("Ningun ESI se encuentra en deadlock.")
+ }
+
+ } */
+
 //=======================COMANDOS DE CONSOLA====================================
+/*int cmdDeadlock() {
+ deadlock()
+ b return 0;
+ }*/
+
+int cmdDesbloquear(char* clave) {
+	if (desbloquearClave(clave))
+		printf("Se desbloqueó la clave %s\n", clave);
+	return 0;
+}
+
+int cmdBloquear(char* clave, int esi) {
+	bloquearClaveESI(clave, esi);
+	return 0;
+}
+
+int cmdKill(char* esi) {
+	matarEsi(atoi(esi));
+	return 0;
+}
+
+int cmdStatus(char* clave) {
+	hacerStatus(clave);
+	return 0;
+}
 
 int cmdListaClaves() {
 	list_iterate(listaClaves, imprimirEnPantallaClaves);
@@ -438,6 +742,11 @@ int cmdListaClaves() {
 
 int cmdColaReady() {
 	list_iterate(colaReady, imprimirEnPantalla);
+	return 0;
+}
+
+int cmdColaAbortados() {
+	list_iterate(colaAbortados, imprimirEnPantalla);
 	return 0;
 }
 
