@@ -352,9 +352,9 @@ void manejarComandoKill(int socketPlanificador, int largoMensaje){
 	recibirMensaje(socketPlanificador, largoMensaje, &nombreEsi);
 	// Busco instancias con claves del esi
 	pthread_mutex_lock(&mutexListaInstancias);
-	while((instanciaVoid = list_find_with_param(listaInstancias, (void*) nombreEsi, buscarInstanciaConEsi)) != NULL){
+	if ((instanciaVoid = list_find_with_param(listaInstancias, (void*) nombreEsi, buscarInstanciaConEsi)) != NULL){
 		// Busco claves del esi en la instancia
-		while((claveVoid = list_find_with_param(((Instancia*) instanciaVoid)->claves, (void*) nombreEsi, buscarClaveDeEsi)) != NULL){
+		if ((claveVoid = list_find_with_param(((Instancia*) instanciaVoid)->claves, (void*) nombreEsi, buscarClaveDeEsi)) != NULL){
 			clave = (Clave*) claveVoid;
 			// Desbloqueo clave del esi
 			clave->bloqueado = 0;
