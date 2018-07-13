@@ -119,6 +119,7 @@ int desbloquearClave(char* clave); // Desbloquea una clave.
 void aumentarEsperaDeEsi(); // Sube por 1 la espera de los ESI.
 void* aumentarEspera(void* esiVoid); // Funcion aux de la de arriba.
 bool formulaHRRN(void* esi1Void, void* esi2Void); // Comparadora para HRRN.
+float calcularRatio(int, int);
 
 //=====================FUNCIONES DE CONSOLA=====================================
 
