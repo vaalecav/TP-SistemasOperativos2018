@@ -5802,3 +5802,417 @@
 [TRACE] 19:03:14:69 Instancia/(5534:5536): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
 [TRACE] 19:03:14:69 Instancia/(5534:5536): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
 [TRACE] 19:03:14:69 Instancia/(5534:5536): Hice un DUMP
+[TRACE] 21:33:39:217 Coordinador/(5236:5236): Se conectó el planificador: Puerto=8000; Ip Planificador=152943672; Máximas conexiones=20
+[TRACE] 21:33:39:233 Coordinador/(5236:5236): Hilo asignado para recibir mensajes del Planificador
+[TRACE] 21:33:39:242 Coordinador/(5236:5570): Se recibieron claves para bloquear
+[ERROR] 21:33:39:255 Coordinador/(5236:5570): No se puede seleccionar algoritmo de distribucion, todas las instancias se encuentran caidas
+[ERROR] 21:33:39:255 Coordinador/(5236:5570): No se puede seleccionar algoritmo de distribucion, todas las instancias se encuentran caidas
+[TRACE] 21:54:48:244 Coordinador/(6367:6367): Se conectó el planificador: Puerto=8000; Ip Planificador=135572536; Máximas conexiones=20
+[TRACE] 21:54:48:245 Coordinador/(6367:6367): Hilo asignado para recibir mensajes del Planificador
+[TRACE] 21:54:48:249 Coordinador/(6367:6494): Se recibieron claves para bloquear
+[TRACE] 21:55:38:95 Instancia/(6726:6726): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 21:55:38:97 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:55:38:97 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:55:38:102 Coordinador/(6367:6727): Se conectó una instancia
+[ERROR] 21:55:38:106 Coordinador/(6367:6494): No se puede seleccionar algoritmo de distribucion, todas las instancias se encuentran caidas
+[ERROR] 21:55:38:106 Coordinador/(6367:6494): No se puede seleccionar algoritmo de distribucion, todas las instancias se encuentran caidas
+[TRACE] 21:55:38:138 Coordinador/(6367:6727): Se conectó la instancia de nombre: Instancia1
+[TRACE] 21:55:38:138 Coordinador/(6367:6727): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 21:55:38:138 Instancia/(6726:6726): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 21:55:38:139 Instancia/(6726:6726): El punto de montaje </home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/> existe.
+[TRACE] 21:55:38:166 Instancia/(6726:6726): Setteo xilofon: magico, en la entrada 0 con un largo de entradas 1
+[TRACE] 21:55:38:167 Instancia/(6726:6726): Setteo caramelo: princesa, en la entrada 1 con un largo de entradas 1
+[TRACE] 21:55:38:167 Instancia/(6726:6726): Setteo aventura: jake, en la entrada 2 con un largo de entradas 1
+[TRACE] 21:55:38:168 Instancia/(6726:6726): Setteo reino: hielo, en la entrada 3 con un largo de entradas 1
+[TRACE] 21:55:38:168 Instancia/(6726:6726): Setteo arbol: bmo, en la entrada 4 con un largo de entradas 1
+[TRACE] 21:55:38:169 Instancia/(6726:6726): Setteo hora: finn, en la entrada 5 con un largo de entradas 1
+[TRACE] 21:55:38:169 Instancia/(6726:6726): Reincorporé la instancia
+[INFO] 21:55:38:169 Instancia/(6726:6726): La tabla de entradas quedó: 11111100000000000000
+[INFO] 21:55:38:169 Instancia/(6726:6726): Clave: xilofon - Valor: magico - Entrada: 0 - Ocupa: 1
+[INFO] 21:55:38:169 Instancia/(6726:6726): Clave: caramelo - Valor: princesa - Entrada: 1 - Ocupa: 1
+[INFO] 21:55:38:169 Instancia/(6726:6726): Clave: aventura - Valor: jake - Entrada: 2 - Ocupa: 1
+[INFO] 21:55:38:169 Instancia/(6726:6726): Clave: reino - Valor: hielo - Entrada: 3 - Ocupa: 1
+[INFO] 21:55:38:169 Instancia/(6726:6726): Clave: arbol - Valor: bmo - Entrada: 4 - Ocupa: 1
+[INFO] 21:55:38:169 Instancia/(6726:6726): Clave: hora - Valor: finn - Entrada: 5 - Ocupa: 1
+[TRACE] 21:55:38:170 Coordinador/(6367:6727): Se ingresó la instancia nueva <Instancia1> con 14 entradas libres
+[TRACE] 21:55:38:170 Instancia/(6726:6726): Hilo asignado para realizar el Dump
+[TRACE] 21:55:38:170 Instancia/(6726:6726): Espero sentencias
+[TRACE] 21:55:48:174 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:55:48:175 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:55:48:175 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:55:48:175 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:55:48:176 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:55:48:176 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:55:48:176 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:55:58:177 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:55:58:178 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:55:58:178 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:55:58:178 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:55:58:179 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:55:58:179 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:55:58:179 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:56:08:179 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:56:08:180 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:56:08:180 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:56:08:180 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:56:08:181 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:56:08:181 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:56:08:181 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:56:18:182 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:56:18:183 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:56:18:183 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:56:18:183 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:56:18:184 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:56:18:184 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:56:18:184 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:56:28:184 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:56:28:185 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:56:28:185 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:56:28:186 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:56:28:186 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:56:28:186 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:56:28:187 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:56:38:188 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:56:38:189 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:56:38:189 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:56:38:189 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:56:38:190 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:56:38:190 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:56:38:190 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:56:48:190 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:56:48:191 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:56:48:191 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:56:48:192 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:56:48:192 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:56:48:192 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:56:48:193 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:56:51:387 ESI/(6859:6859): Number of lines in the file is 18
+
+[TRACE] 21:56:51:388 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:51:389 ESI/(6859:6859): Le comunico al coordinador la sentencia <GET aventura>
+[TRACE] 21:56:51:390 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:51:390 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:51:393 Coordinador/(6367:6860): Se conectó un ESI
+[TRACE] 21:56:51:455 Coordinador/(6367:6860): Se pudo loguear: ESI 1 || GET aventura
+[TRACE] 21:56:51:457 Coordinador/(6367:6860): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET aventura
+[TRACE] 21:56:51:457 Coordinador/(6367:6860): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:51:757 Coordinador/(6367:6860): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 21:56:51:757 Coordinador/(6367:6860): Se asigna la nueva clave a la instancia
+[TRACE] 21:56:51:758 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:51:758 Coordinador/(6367:6860): Se ejecuto un GET
+[TRACE] 21:56:51:794 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:51:794 ESI/(6859:6859): Le comunico al coordinador la sentencia <SET aventura jake>
+[TRACE] 21:56:51:794 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:51:794 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:51:796 Coordinador/(6367:6861): Se conectó un ESI
+[TRACE] 21:56:51:834 Coordinador/(6367:6861): Se pudo loguear: ESI 1 || SET aventura jake
+[TRACE] 21:56:51:834 Coordinador/(6367:6861): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET aventura jake
+[TRACE] 21:56:51:834 Coordinador/(6367:6861): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:52:135 Instancia/(6726:6726): Se recibió una sentencia: SET aventura jake
+[TRACE] 21:56:52:136 Instancia/(6726:6726): La clave ya está seteada en la instancia
+[TRACE] 21:56:52:136 Instancia/(6726:6726): Setteo aventura: jake, en la entrada 2 con un largo de entradas 1
+[INFO] 21:56:52:136 Instancia/(6726:6726): La tabla de entradas quedó: 11111100000000000000
+[INFO] 21:56:52:136 Instancia/(6726:6726): Clave: xilofon - Valor: magico - Entrada: 0 - Ocupa: 1
+[INFO] 21:56:52:136 Instancia/(6726:6726): Clave: caramelo - Valor: princesa - Entrada: 1 - Ocupa: 1
+[INFO] 21:56:52:136 Instancia/(6726:6726): Clave: aventura - Valor: jake - Entrada: 2 - Ocupa: 1
+[INFO] 21:56:52:136 Instancia/(6726:6726): Clave: reino - Valor: hielo - Entrada: 3 - Ocupa: 1
+[INFO] 21:56:52:136 Instancia/(6726:6726): Clave: arbol - Valor: bmo - Entrada: 4 - Ocupa: 1
+[INFO] 21:56:52:136 Instancia/(6726:6726): Clave: hora - Valor: finn - Entrada: 5 - Ocupa: 1
+[TRACE] 21:56:52:136 Coordinador/(6367:6861): La sentencia se ejecutó correctamente
+[TRACE] 21:56:52:136 Coordinador/(6367:6861): Se ejecuto un SET
+[TRACE] 21:56:52:136 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:52:137 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:52:137 ESI/(6859:6859): Le comunico al coordinador la sentencia <GET hora>
+[TRACE] 21:56:52:137 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:52:137 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:52:138 Coordinador/(6367:6862): Se conectó un ESI
+[TRACE] 21:56:52:174 Coordinador/(6367:6862): Se pudo loguear: ESI 1 || GET hora
+[TRACE] 21:56:52:174 Coordinador/(6367:6862): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET hora
+[TRACE] 21:56:52:174 Coordinador/(6367:6862): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:52:476 Coordinador/(6367:6862): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 21:56:52:476 Coordinador/(6367:6862): Se asigna la nueva clave a la instancia
+[TRACE] 21:56:52:476 Coordinador/(6367:6862): Se ejecuto un GET
+[TRACE] 21:56:52:476 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:52:476 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:52:476 ESI/(6859:6859): Le comunico al coordinador la sentencia <SET hora finn>
+[TRACE] 21:56:52:476 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:52:476 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:52:478 Coordinador/(6367:6863): Se conectó un ESI
+[TRACE] 21:56:52:514 Coordinador/(6367:6863): Se pudo loguear: ESI 1 || SET hora finn
+[TRACE] 21:56:52:515 Coordinador/(6367:6863): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET hora finn
+[TRACE] 21:56:52:515 Coordinador/(6367:6863): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:52:816 Instancia/(6726:6726): Se recibió una sentencia: SET hora finn
+[TRACE] 21:56:52:816 Instancia/(6726:6726): La clave ya está seteada en la instancia
+[TRACE] 21:56:52:816 Instancia/(6726:6726): Setteo hora: finn, en la entrada 5 con un largo de entradas 1
+[INFO] 21:56:52:816 Instancia/(6726:6726): La tabla de entradas quedó: 11111100000000000000
+[INFO] 21:56:52:816 Instancia/(6726:6726): Clave: xilofon - Valor: magico - Entrada: 0 - Ocupa: 1
+[INFO] 21:56:52:816 Instancia/(6726:6726): Clave: caramelo - Valor: princesa - Entrada: 1 - Ocupa: 1
+[INFO] 21:56:52:817 Instancia/(6726:6726): Clave: aventura - Valor: jake - Entrada: 2 - Ocupa: 1
+[INFO] 21:56:52:817 Instancia/(6726:6726): Clave: reino - Valor: hielo - Entrada: 3 - Ocupa: 1
+[INFO] 21:56:52:817 Instancia/(6726:6726): Clave: arbol - Valor: bmo - Entrada: 4 - Ocupa: 1
+[INFO] 21:56:52:817 Instancia/(6726:6726): Clave: hora - Valor: finn - Entrada: 5 - Ocupa: 1
+[TRACE] 21:56:52:817 Coordinador/(6367:6863): La sentencia se ejecutó correctamente
+[TRACE] 21:56:52:817 Coordinador/(6367:6863): Se ejecuto un SET
+[TRACE] 21:56:52:817 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:52:817 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:52:817 ESI/(6859:6859): Le comunico al coordinador la sentencia <GET reino>
+[TRACE] 21:56:52:817 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:52:817 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:52:818 Coordinador/(6367:6864): Se conectó un ESI
+[TRACE] 21:56:52:854 Coordinador/(6367:6864): Se pudo loguear: ESI 1 || GET reino
+[TRACE] 21:56:52:855 Coordinador/(6367:6864): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET reino
+[TRACE] 21:56:52:855 Coordinador/(6367:6864): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:53:156 Coordinador/(6367:6864): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 21:56:53:157 Coordinador/(6367:6864): Se asigna la nueva clave a la instancia
+[TRACE] 21:56:53:157 Coordinador/(6367:6864): Se ejecuto un GET
+[TRACE] 21:56:53:157 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:53:157 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:53:157 ESI/(6859:6859): Le comunico al coordinador la sentencia <SET reino hielo>
+[TRACE] 21:56:53:157 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:53:157 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:53:158 Coordinador/(6367:6866): Se conectó un ESI
+[TRACE] 21:56:53:194 Coordinador/(6367:6866): Se pudo loguear: ESI 1 || SET reino hielo
+[TRACE] 21:56:53:195 Coordinador/(6367:6866): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET reino hielo
+[TRACE] 21:56:53:195 Coordinador/(6367:6866): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:53:496 Instancia/(6726:6726): Se recibió una sentencia: SET reino hielo
+[TRACE] 21:56:53:496 Instancia/(6726:6726): La clave ya está seteada en la instancia
+[TRACE] 21:56:53:496 Instancia/(6726:6726): Setteo reino: hielo, en la entrada 3 con un largo de entradas 1
+[INFO] 21:56:53:496 Instancia/(6726:6726): La tabla de entradas quedó: 11111100000000000000
+[INFO] 21:56:53:496 Instancia/(6726:6726): Clave: xilofon - Valor: magico - Entrada: 0 - Ocupa: 1
+[INFO] 21:56:53:496 Instancia/(6726:6726): Clave: caramelo - Valor: princesa - Entrada: 1 - Ocupa: 1
+[INFO] 21:56:53:496 Instancia/(6726:6726): Clave: aventura - Valor: jake - Entrada: 2 - Ocupa: 1
+[INFO] 21:56:53:496 Instancia/(6726:6726): Clave: reino - Valor: hielo - Entrada: 3 - Ocupa: 1
+[INFO] 21:56:53:497 Instancia/(6726:6726): Clave: arbol - Valor: bmo - Entrada: 4 - Ocupa: 1
+[INFO] 21:56:53:497 Instancia/(6726:6726): Clave: hora - Valor: finn - Entrada: 5 - Ocupa: 1
+[TRACE] 21:56:53:497 Coordinador/(6367:6866): La sentencia se ejecutó correctamente
+[TRACE] 21:56:53:497 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:53:497 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:53:497 ESI/(6859:6859): Le comunico al coordinador la sentencia <GET arbol>
+[TRACE] 21:56:53:497 Coordinador/(6367:6866): Se ejecuto un SET
+[TRACE] 21:56:53:497 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:53:497 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:53:499 Coordinador/(6367:6867): Se conectó un ESI
+[TRACE] 21:56:53:534 Coordinador/(6367:6867): Se pudo loguear: ESI 1 || GET arbol
+[TRACE] 21:56:53:534 Coordinador/(6367:6867): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET arbol
+[TRACE] 21:56:53:534 Coordinador/(6367:6867): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:53:835 Coordinador/(6367:6867): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 21:56:53:836 Coordinador/(6367:6867): Se asigna la nueva clave a la instancia
+[TRACE] 21:56:53:836 Coordinador/(6367:6867): Se ejecuto un GET
+[TRACE] 21:56:53:836 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:53:836 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:53:836 ESI/(6859:6859): Le comunico al coordinador la sentencia <SET arbol bmo>
+[TRACE] 21:56:53:836 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:53:836 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:53:837 Coordinador/(6367:6868): Se conectó un ESI
+[TRACE] 21:56:53:875 Coordinador/(6367:6868): Se pudo loguear: ESI 1 || SET arbol bmo
+[TRACE] 21:56:53:877 Coordinador/(6367:6868): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET arbol bmo
+[TRACE] 21:56:53:877 Coordinador/(6367:6868): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:54:178 Instancia/(6726:6726): Se recibió una sentencia: SET arbol bmo
+[TRACE] 21:56:54:179 Instancia/(6726:6726): La clave ya está seteada en la instancia
+[TRACE] 21:56:54:179 Instancia/(6726:6726): Setteo arbol: bmo, en la entrada 4 con un largo de entradas 1
+[INFO] 21:56:54:179 Instancia/(6726:6726): La tabla de entradas quedó: 11111100000000000000
+[INFO] 21:56:54:179 Instancia/(6726:6726): Clave: xilofon - Valor: magico - Entrada: 0 - Ocupa: 1
+[INFO] 21:56:54:179 Instancia/(6726:6726): Clave: caramelo - Valor: princesa - Entrada: 1 - Ocupa: 1
+[INFO] 21:56:54:179 Instancia/(6726:6726): Clave: aventura - Valor: jake - Entrada: 2 - Ocupa: 1
+[INFO] 21:56:54:179 Instancia/(6726:6726): Clave: reino - Valor: hielo - Entrada: 3 - Ocupa: 1
+[INFO] 21:56:54:179 Instancia/(6726:6726): Clave: arbol - Valor: bmo - Entrada: 4 - Ocupa: 1
+[INFO] 21:56:54:179 Instancia/(6726:6726): Clave: hora - Valor: finn - Entrada: 5 - Ocupa: 1
+[TRACE] 21:56:54:179 Coordinador/(6367:6868): La sentencia se ejecutó correctamente
+[TRACE] 21:56:54:180 Coordinador/(6367:6868): Se ejecuto un SET
+[TRACE] 21:56:54:180 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:54:180 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:54:180 ESI/(6859:6859): Le comunico al coordinador la sentencia <GET caramelo>
+[TRACE] 21:56:54:180 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:54:180 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:54:181 Coordinador/(6367:6869): Se conectó un ESI
+[TRACE] 21:56:54:220 Coordinador/(6367:6869): Se pudo loguear: ESI 1 || GET caramelo
+[TRACE] 21:56:54:221 Coordinador/(6367:6869): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET caramelo
+[TRACE] 21:56:54:221 Coordinador/(6367:6869): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:54:522 Coordinador/(6367:6869): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 21:56:54:523 Coordinador/(6367:6869): Se asigna la nueva clave a la instancia
+[TRACE] 21:56:54:523 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:54:523 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:54:523 ESI/(6859:6859): Le comunico al coordinador la sentencia <SET caramelo princesa>
+[TRACE] 21:56:54:523 Coordinador/(6367:6869): Se ejecuto un GET
+[TRACE] 21:56:54:523 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:54:523 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:54:524 Coordinador/(6367:6870): Se conectó un ESI
+[TRACE] 21:56:54:562 Coordinador/(6367:6870): Se pudo loguear: ESI 1 || SET caramelo princesa
+[TRACE] 21:56:54:562 Coordinador/(6367:6870): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET caramelo princesa
+[TRACE] 21:56:54:562 Coordinador/(6367:6870): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:54:863 Instancia/(6726:6726): Se recibió una sentencia: SET caramelo princesa
+[TRACE] 21:56:54:863 Instancia/(6726:6726): La clave ya está seteada en la instancia
+[TRACE] 21:56:54:863 Instancia/(6726:6726): Setteo caramelo: princesa, en la entrada 1 con un largo de entradas 1
+[INFO] 21:56:54:863 Instancia/(6726:6726): La tabla de entradas quedó: 11111100000000000000
+[INFO] 21:56:54:863 Instancia/(6726:6726): Clave: xilofon - Valor: magico - Entrada: 0 - Ocupa: 1
+[INFO] 21:56:54:863 Instancia/(6726:6726): Clave: caramelo - Valor: princesa - Entrada: 1 - Ocupa: 1
+[INFO] 21:56:54:863 Instancia/(6726:6726): Clave: aventura - Valor: jake - Entrada: 2 - Ocupa: 1
+[INFO] 21:56:54:863 Instancia/(6726:6726): Clave: reino - Valor: hielo - Entrada: 3 - Ocupa: 1
+[INFO] 21:56:54:863 Instancia/(6726:6726): Clave: arbol - Valor: bmo - Entrada: 4 - Ocupa: 1
+[INFO] 21:56:54:863 Instancia/(6726:6726): Clave: hora - Valor: finn - Entrada: 5 - Ocupa: 1
+[TRACE] 21:56:54:864 Coordinador/(6367:6870): La sentencia se ejecutó correctamente
+[TRACE] 21:56:54:864 Coordinador/(6367:6870): Se ejecuto un SET
+[TRACE] 21:56:54:864 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:54:864 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:54:864 ESI/(6859:6859): Le comunico al coordinador la sentencia <GET xilofon>
+[TRACE] 21:56:54:864 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:54:864 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:54:865 Coordinador/(6367:6871): Se conectó un ESI
+[TRACE] 21:56:54:902 Coordinador/(6367:6871): Se pudo loguear: ESI 1 || GET xilofon
+[TRACE] 21:56:54:902 Coordinador/(6367:6871): Recibimos el mensaje: Nombre = ESI 1; Mensaje = GET xilofon
+[TRACE] 21:56:54:903 Coordinador/(6367:6871): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:55:203 Coordinador/(6367:6871): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 21:56:55:203 Coordinador/(6367:6871): Se asigna la nueva clave a la instancia
+[TRACE] 21:56:55:204 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:55:204 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:55:204 ESI/(6859:6859): Le comunico al coordinador la sentencia <SET xilofon magico>
+[TRACE] 21:56:55:204 Coordinador/(6367:6871): Se ejecuto un GET
+[TRACE] 21:56:55:204 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:55:204 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:55:205 Coordinador/(6367:6872): Se conectó un ESI
+[TRACE] 21:56:55:242 Coordinador/(6367:6872): Se pudo loguear: ESI 1 || SET xilofon magico
+[TRACE] 21:56:55:242 Coordinador/(6367:6872): Recibimos el mensaje: Nombre = ESI 1; Mensaje = SET xilofon magico
+[TRACE] 21:56:55:243 Coordinador/(6367:6872): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:55:543 Instancia/(6726:6726): Se recibió una sentencia: SET xilofon magico
+[TRACE] 21:56:55:544 Instancia/(6726:6726): La clave ya está seteada en la instancia
+[TRACE] 21:56:55:544 Instancia/(6726:6726): Setteo xilofon: magico, en la entrada 0 con un largo de entradas 1
+[INFO] 21:56:55:544 Instancia/(6726:6726): La tabla de entradas quedó: 11111100000000000000
+[INFO] 21:56:55:544 Instancia/(6726:6726): Clave: xilofon - Valor: magico - Entrada: 0 - Ocupa: 1
+[INFO] 21:56:55:544 Instancia/(6726:6726): Clave: caramelo - Valor: princesa - Entrada: 1 - Ocupa: 1
+[INFO] 21:56:55:544 Instancia/(6726:6726): Clave: aventura - Valor: jake - Entrada: 2 - Ocupa: 1
+[INFO] 21:56:55:544 Instancia/(6726:6726): Clave: reino - Valor: hielo - Entrada: 3 - Ocupa: 1
+[INFO] 21:56:55:544 Instancia/(6726:6726): Clave: arbol - Valor: bmo - Entrada: 4 - Ocupa: 1
+[INFO] 21:56:55:544 Instancia/(6726:6726): Clave: hora - Valor: finn - Entrada: 5 - Ocupa: 1
+[TRACE] 21:56:55:544 Coordinador/(6367:6872): La sentencia se ejecutó correctamente
+[TRACE] 21:56:55:545 Coordinador/(6367:6872): Se ejecuto un SET
+[TRACE] 21:56:55:545 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:55:545 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:55:545 ESI/(6859:6859): Le comunico al coordinador la sentencia <STORE aventura>
+[TRACE] 21:56:55:545 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:55:545 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:55:573 Coordinador/(6367:6873): Se conectó un ESI
+[TRACE] 21:56:55:583 Coordinador/(6367:6873): Se pudo loguear: ESI 1 || STORE aventura
+[TRACE] 21:56:55:584 Coordinador/(6367:6873): Recibimos el mensaje: Nombre = ESI 1; Mensaje = STORE aventura
+[TRACE] 21:56:55:584 Coordinador/(6367:6873): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:55:884 Coordinador/(6367:6873): Desbloqueo la clave aventura
+[TRACE] 21:56:55:922 Instancia/(6726:6726): Se recibió una sentencia: STORE aventura
+[TRACE] 21:56:55:923 Instancia/(6726:6726): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:56:55:923 Coordinador/(6367:6873): La sentencia se ejecutó correctamente
+[TRACE] 21:56:55:923 Coordinador/(6367:6873): Se ejecuto un STORE
+[TRACE] 21:56:55:923 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:55:923 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:55:923 ESI/(6859:6859): Le comunico al coordinador la sentencia <STORE hora>
+[TRACE] 21:56:55:923 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:55:923 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:55:926 Coordinador/(6367:6874): Se conectó un ESI
+[TRACE] 21:56:55:962 Coordinador/(6367:6874): Se pudo loguear: ESI 1 || STORE hora
+[TRACE] 21:56:55:963 Coordinador/(6367:6874): Recibimos el mensaje: Nombre = ESI 1; Mensaje = STORE hora
+[TRACE] 21:56:55:963 Coordinador/(6367:6874): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:56:264 Coordinador/(6367:6874): Desbloqueo la clave hora
+[TRACE] 21:56:56:302 Instancia/(6726:6726): Se recibió una sentencia: STORE hora
+[TRACE] 21:56:56:302 Instancia/(6726:6726): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:56:56:302 Coordinador/(6367:6874): La sentencia se ejecutó correctamente
+[TRACE] 21:56:56:302 Coordinador/(6367:6874): Se ejecuto un STORE
+[TRACE] 21:56:56:302 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:56:302 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:56:302 ESI/(6859:6859): Le comunico al coordinador la sentencia <STORE reino>
+[TRACE] 21:56:56:303 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:56:303 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:56:305 Coordinador/(6367:6875): Se conectó un ESI
+[TRACE] 21:56:56:342 Coordinador/(6367:6875): Se pudo loguear: ESI 1 || STORE reino
+[TRACE] 21:56:56:342 Coordinador/(6367:6875): Recibimos el mensaje: Nombre = ESI 1; Mensaje = STORE reino
+[TRACE] 21:56:56:342 Coordinador/(6367:6875): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:56:643 Coordinador/(6367:6875): Desbloqueo la clave reino
+[TRACE] 21:56:56:682 Instancia/(6726:6726): Se recibió una sentencia: STORE reino
+[TRACE] 21:56:56:683 Instancia/(6726:6726): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:56:56:683 Coordinador/(6367:6875): La sentencia se ejecutó correctamente
+[TRACE] 21:56:56:683 Coordinador/(6367:6875): Se ejecuto un STORE
+[TRACE] 21:56:56:683 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:56:683 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:56:683 ESI/(6859:6859): Le comunico al coordinador la sentencia <STORE arbol>
+[TRACE] 21:56:56:683 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:56:683 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:56:685 Coordinador/(6367:6876): Se conectó un ESI
+[TRACE] 21:56:56:722 Coordinador/(6367:6876): Se pudo loguear: ESI 1 || STORE arbol
+[TRACE] 21:56:56:723 Coordinador/(6367:6876): Recibimos el mensaje: Nombre = ESI 1; Mensaje = STORE arbol
+[TRACE] 21:56:56:723 Coordinador/(6367:6876): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:57:23 Coordinador/(6367:6876): Desbloqueo la clave arbol
+[TRACE] 21:56:57:62 Instancia/(6726:6726): Se recibió una sentencia: STORE arbol
+[TRACE] 21:56:57:62 Instancia/(6726:6726): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:56:57:62 Coordinador/(6367:6876): La sentencia se ejecutó correctamente
+[TRACE] 21:56:57:62 Coordinador/(6367:6876): Se ejecuto un STORE
+[TRACE] 21:56:57:62 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:57:63 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:57:63 ESI/(6859:6859): Le comunico al coordinador la sentencia <STORE caramelo>
+[TRACE] 21:56:57:63 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:57:63 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:57:65 Coordinador/(6367:6877): Se conectó un ESI
+[TRACE] 21:56:57:104 Coordinador/(6367:6877): Se pudo loguear: ESI 1 || STORE caramelo
+[TRACE] 21:56:57:105 Coordinador/(6367:6877): Recibimos el mensaje: Nombre = ESI 1; Mensaje = STORE caramelo
+[TRACE] 21:56:57:105 Coordinador/(6367:6877): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:57:406 Coordinador/(6367:6877): Desbloqueo la clave caramelo
+[TRACE] 21:56:57:446 Instancia/(6726:6726): Se recibió una sentencia: STORE caramelo
+[TRACE] 21:56:57:446 Instancia/(6726:6726): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:56:57:447 Coordinador/(6367:6877): La sentencia se ejecutó correctamente
+[TRACE] 21:56:57:447 Coordinador/(6367:6877): Se ejecuto un STORE
+[TRACE] 21:56:57:447 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:57:447 ESI/(6859:6859): Recibí una señal de avanzar del coordinador
+[TRACE] 21:56:57:447 ESI/(6859:6859): Le comunico al coordinador la sentencia <STORE xilofon>
+[TRACE] 21:56:57:447 Coordinador/(6367:6367): Se conectó un componente
+[TRACE] 21:56:57:447 Coordinador/(6367:6367): Hilo asignado
+[TRACE] 21:56:57:449 Coordinador/(6367:6878): Se conectó un ESI
+[TRACE] 21:56:57:486 Coordinador/(6367:6878): Se pudo loguear: ESI 1 || STORE xilofon
+[TRACE] 21:56:57:487 Coordinador/(6367:6878): Recibimos el mensaje: Nombre = ESI 1; Mensaje = STORE xilofon
+[TRACE] 21:56:57:487 Coordinador/(6367:6878): Hago un retardo de 300000 microsegundos
+[TRACE] 21:56:57:788 Coordinador/(6367:6878): Desbloqueo la clave xilofon
+[TRACE] 21:56:57:826 Instancia/(6726:6726): Se recibió una sentencia: STORE xilofon
+[TRACE] 21:56:57:827 Instancia/(6726:6726): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:56:57:827 Coordinador/(6367:6878): La sentencia se ejecutó correctamente
+[TRACE] 21:56:57:827 Coordinador/(6367:6878): Se ejecuto un STORE
+[TRACE] 21:56:57:827 ESI/(6859:6859): El coordinador me respondió que salió todo OK
+[TRACE] 21:56:57:830 Coordinador/(6367:6494): Se recibio kill de esi desde el planificador
+[TRACE] 21:56:58:193 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:56:58:194 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:56:58:194 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:56:58:194 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:56:58:194 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:56:58:195 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:56:58:195 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:57:08:196 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:57:08:197 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:57:08:197 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:57:08:197 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:57:08:198 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:57:08:198 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:57:08:198 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:57:18:199 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:57:18:200 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:57:18:200 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:57:18:200 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:57:18:200 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:57:18:201 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:57:18:201 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:57:28:201 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:57:28:202 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:57:28:202 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:57:28:203 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:57:28:203 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:57:28:203 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:57:28:204 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:57:38:204 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:57:38:205 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:57:38:205 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:57:38:206 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:57:38:206 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:57:38:206 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:57:38:206 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 21:57:48:207 Instancia/(6726:6728): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 21:57:48:207 Instancia/(6726:6728): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 21:57:48:208 Instancia/(6726:6728): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 21:57:48:208 Instancia/(6726:6728): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 21:57:48:208 Instancia/(6726:6728): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 21:57:48:209 Instancia/(6726:6728): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 21:57:48:209 Instancia/(6726:6728): Hice un DUMP
+[TRACE] 22:00:28:846 Coordinador/(7655:7655): Se conectó el planificador: Puerto=8000; Ip Planificador=147348536; Máximas conexiones=20
+[TRACE] 22:00:28:847 Coordinador/(7655:7655): Hilo asignado para recibir mensajes del Planificador
+[TRACE] 22:00:28:850 Coordinador/(7655:7782): Se recibieron claves para bloquear

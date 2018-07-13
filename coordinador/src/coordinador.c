@@ -220,6 +220,7 @@ void manejarConexion(void* socketsNecesarios) {
 
 	switch (header->id) {
 	case INSTANCIA:
+		llegoUnaInstancia = 1;
 		log_trace(logCoordinador, "Se conectó una instancia");
 		manejarInstancia(socketsConectados.socketComponente, header->largo);
 		break;
@@ -365,6 +366,25 @@ void manejarComandoKill(int socketPlanificador, int largoMensaje){
 	free(nombreEsi);
 }
 
+void manejarBloquearClaveManual(int socketPlanificador, int largoMensaje) {
+	char** claves;
+	char* todasLasClaves = malloc(largoMensaje +1);
+	
+	// Recibo las claves que tengo que bloquear
+	recibirMensaje(socketPlanificador, largoMensaje, &todasLasClaves);
+	
+	// Espero hasta que llegue una instancia
+	while(llegoUnaInstancia == 0);
+
+	if (guardarClavesBloqueadasAlIniciar) {
+		// Recorro todas las claves y bloqueo una por una
+		claves = string_split(todasLasClaves, ",");
+		for (int i = 0; claves[i] != NULL; i++) {
+			asignarClaveAInstancia(claves[i], "");
+		}
+	}
+}
+
 void consolaPlanificador(void* socketPlanificadorVoid){
 	int socketPlanificador = *(int*) socketPlanificadorVoid;
 	ContentHeader * header;
@@ -382,14 +402,25 @@ void consolaPlanificador(void* socketPlanificadorVoid){
 				log_trace(logCoordinador, "Se recibio status de clave desde el planificador");
 				manejarComandoStatus(socketPlanificador, header->largo);
 				break;
+
+			case BLOQUEAR_CLAVE_MANUAL:
+				log_trace(logCoordinador, "Se recibieron claves para bloquear");
+				manejarBloquearClaveManual(socketPlanificador, header->largo);
 		}
 		free(header);
 	}
 }
 
+void cerrarCoordinador(int sig) {
+	guardarClavesBloqueadasAlIniciar = 0;
+	llegoUnaInstancia = 1;
+	close(socketEscucha);
+	exit(1);
+}
+
 int main() {
 	puts("Iniciando Coordinador.");
-	int socketEscucha, socketComponente, socketConectadoPlanificador;
+	int socketComponente, socketConectadoPlanificador;
 	SocketHilos socketsNecesarios;
 	t_config* configuracion;
 	int puerto;
@@ -397,6 +428,12 @@ int main() {
 	char* ipPlanificador;
 
 	indexInstanciaEL = 0;
+
+	// Claves bloqueadas por defecto
+	guardarClavesBloqueadasAlIniciar = 1;
+	llegoUnaInstancia = 0;
+
+	signal(SIGTSTP, &cerrarCoordinador);
 
 	// Inicio el log
 	logCoordinador = log_create(ARCHIVO_LOG, "Coordinador", LOG_PRINT, LOG_LEVEL_TRACE);

@@ -88,3 +88,21 @@ ESI 5 || STORE reino
 ESI 5 || STORE arbol
 ESI 5 || STORE caramelo
 ESI 5 || STORE xilofon
+ESI 1 || GET aventura
+ESI 1 || SET aventura jake
+ESI 1 || GET hora
+ESI 1 || SET hora finn
+ESI 1 || GET reino
+ESI 1 || SET reino hielo
+ESI 1 || GET arbol
+ESI 1 || SET arbol bmo
+ESI 1 || GET caramelo
+ESI 1 || SET caramelo princesa
+ESI 1 || GET xilofon
+ESI 1 || SET xilofon magico
+ESI 1 || STORE aventura
+ESI 1 || STORE hora
+ESI 1 || STORE reino
+ESI 1 || STORE arbol
+ESI 1 || STORE caramelo
+ESI 1 || STORE xilofon

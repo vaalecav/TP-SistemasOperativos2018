@@ -23,6 +23,7 @@
 #include <commonsNuestras/string.h>
 #include <socket/sockets.h>
 #include <generales/generales.h>
+#include <signal.h>
 #include <pthread.h>
 
 #include "algoritmosDistribucion/algoritmosDistribucion.h"
@@ -31,6 +32,11 @@ t_list *listaInstancias;
 pthread_mutex_t mutexListaInstancias;
 pthread_mutex_t mutexLog;
 t_log* logCoordinador;
+
+int socketEscucha;
+
+int llegoUnaInstancia;
+int guardarClavesBloqueadasAlIniciar;
 
 enum CLAVE {
 	NO_EN_INSTANCIA = 0,
@@ -74,10 +80,5 @@ void consolaPlanificador(void*);
 char* obtenerValorClaveInstancia(int, char*);
 int buscarClaveDeEsi(void*, void*);
 int buscarInstanciaConEsi(void*, void*);
-
-
-
-
-
 
 #endif /* COORDINADOR_H_ */
