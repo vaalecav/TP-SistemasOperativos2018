@@ -248,6 +248,7 @@ void* calcularEstimacion(void* esiCalcularVoid) {
 		esiCalcular->estimacion = (((float) alphaHRRN / 100)
 				* esiCalcular->rafaga)
 				+ ((1 - ((float) alphaHRRN / 100)) * esiCalcular->estimacion);
+		esiCalcular->necesitaCalcular = 0;
 		return (void*) esiCalcular;
 	} else
 		return (void*) esiCalcular;
