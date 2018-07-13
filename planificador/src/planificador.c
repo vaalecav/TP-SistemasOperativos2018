@@ -580,9 +580,8 @@ void remove_element(int *array, int index, int array_length) {
 void imprimirEnPantalla(void* esiVoid) {
 	DATA* esi = (DATA*) esiVoid;
 	printf(
-			"ID: %d, SOCKET: %d, LARGO: %d, TIEMPO EN READY: %d, ESTIMACION: %d, RAFAGA ANTERIOR: %d\n",
-			esi->id, esi->socket, esi->lineas, esi->espera, esi->estimacion,
-			esi->rafaga);
+			"ID: %d, SOCKET: %d, LARGO: %d, TIEMPO EN READY: %d, RAFAGA ANTERIOR: %d\n",
+			esi->id, esi->socket, esi->lineas, esi->espera, esi->rafaga);
 }
 
 void imprimirEnPantallaClaves(void* claveVoid) {
