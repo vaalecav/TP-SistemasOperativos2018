@@ -381,7 +381,10 @@ void manejarBloquearClaveManual(int socketPlanificador, int largoMensaje) {
 		claves = string_split(todasLasClaves, ",");
 		for (int i = 0; claves[i] != NULL; i++) {
 			asignarClaveAInstancia(claves[i], "");
+			free(claves[i]);
 		}
+		
+		free(claves);
 	}
 }
 
