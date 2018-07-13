@@ -92,23 +92,21 @@ void manejoAlgoritmos() {
 	while (done == 0) {
 		flagFin = 0;
 		if (ejecutar == 1) {
-
 			// Si es SJF, antes de ejecutar tiene que ordenar la cola de ready
-			if (strcmp(algoritmo, "SJF-CD") == 0
-					|| strcmp(algoritmo, "SJF-SD") == 0) {
+			if (strcmp(algoritmo, "SJF-SD") == 0) {
 				realizarEstimaciones();
 				list_sort(colaReady, menorCantidadDeLineas);
 			}
-
 			if (strcmp(algoritmo, "HRRN") == 0) {
 				realizarRatios();
 				list_sort(colaReady, mayorRatio);
 			}
 
-			if ((esiVoid = list_remove(colaReady, 0)) == NULL) {
+			if ((esiVoid = list_remove(colaReady, 0)) == NULL) { //TODO
 				// No hay nadie para ejecutar //
 			} else {
 				while (flagFin != 1) {
+					pthread_mutex_lock(&mutexTerminarEsi);
 					// Le ordeno al ESI que ejecute //
 					esi = (DATA*) esiVoid;
 					enviarHeader(esi->socket, "", PLANIFICADOR);
@@ -123,6 +121,8 @@ void manejoAlgoritmos() {
 
 					// Veo que tengo que hacer //
 					paraSwitchear = chequearRespuesta(header->id);
+
+					printf("%d", paraSwitchear);
 
 					switch (paraSwitchear) {
 					case 0: // ERROR //
@@ -168,7 +168,6 @@ void manejoAlgoritmos() {
 
 						// Es un store, por lo que desbloqueo la clave
 						desbloquearClave(clave);
-
 						esi->lineas--;
 						esi->rafaga++;
 						switch (esi->lineas) {
@@ -216,6 +215,8 @@ void manejoAlgoritmos() {
 							flagFin = 1;
 						}
 					}
+
+					pthread_mutex_unlock(&mutexTerminarEsi);
 				}
 			}
 		}
@@ -282,13 +283,10 @@ int desbloquearClave(char* clave) {
 			list_add(colaReady, (void*) esiBloqueada);
 		} else {
 			// Si no hay esis, libero la clave.
-			list_remove_by_condition_with_param(listaClaves, (void*) clave,
-					chequearClave);
 		}
 
 		return 1;
 	} else {
-		printf("La clave <%s> no existe.\n", clave);
 		return 0;
 	}
 }
@@ -359,7 +357,7 @@ bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 	DATA* esi1 = (DATA*) esi1Void;
 	DATA* esi2 = (DATA*) esi2Void;
 
-	return esi1->estimacion < esi2->estimacion;
+	return esi1->estimacion <= esi2->estimacion;
 }
 
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
@@ -580,9 +578,8 @@ void remove_element(int *array, int index, int array_length) {
 void imprimirEnPantalla(void* esiVoid) {
 	DATA* esi = (DATA*) esiVoid;
 	printf(
-			"ID: %d, SOCKET: %d, LARGO: %d, TIEMPO EN READY: %d, ESTIMACION: %d, RAFAGA ANTERIOR: %d\n",
-			esi->id, esi->socket, esi->lineas, esi->espera, esi->estimacion,
-			esi->rafaga);
+			"ID: %d, SOCKET: %d, LARGO: %d, TIEMPO EN READY: %d, RAFAGA ANTERIOR: %d\n",
+			esi->id, esi->socket, esi->lineas, esi->espera, esi->rafaga);
 }
 
 void imprimirEnPantallaClaves(void* claveVoid) {
@@ -601,6 +598,7 @@ void moveToAbortados(int socketId) {
 	DATA* esiAMatar;
 	int largoId;
 	char* nombre;
+	pthread_mutex_lock(&mutexTerminarEsi);
 	if ((esiVoid = list_find_with_param(colaReady, (void*) socketId,
 			buscarPorSocket)) != NULL) {
 		esiVoid = list_remove_by_condition_with_param(colaReady,
@@ -622,6 +620,7 @@ void moveToAbortados(int socketId) {
 			list_add(colaTerminados, (void*) esiAMatar);
 		}
 	}
+	pthread_mutex_unlock(&mutexTerminarEsi);
 	largoId = floor(log10(abs(esiAMatar->id))) + 1;
 	nombre = malloc(4 + largoId + 1);
 	sprintf(nombre, "ESI %d", esiAMatar->id);

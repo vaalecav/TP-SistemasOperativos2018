@@ -17,12 +17,12 @@
 
 //Eclipse
 
-// #define ARCHIVO_CONFIGURACION "./configuraciones/configuracion.txt"
-// #define ARCHIVO_LOG "../log.txt"
+ #define ARCHIVO_CONFIGURACION "./configuraciones/configuracion.txt"
+ #define ARCHIVO_LOG "../log.txt"
 
 //Consola
-#define ARCHIVO_CONFIGURACION "../configuraciones/configuracion.txt"
-#define ARCHIVO_LOG "../../log.txt"
+//#define ARCHIVO_CONFIGURACION "../configuraciones/configuracion.txt"
+//#define ARCHIVO_LOG "../../log.txt"
 
 
 // Logs

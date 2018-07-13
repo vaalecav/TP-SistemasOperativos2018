@@ -102,6 +102,7 @@ t_list* colaAbortados;		// Lista enlazada de Abortados.
 t_list* listaClaves;		// Lista enladaza de Claves y sus Bloqueados.
 int socketCoordinador;		// Socket del Coordinador.
 int alphaHRRN;				// Alpha para calculos del HRRN.
+pthread_mutex_t mutexTerminarEsi;
 
 //=====================FUNCIONES DE PLANIFICADOR=====================================
 
