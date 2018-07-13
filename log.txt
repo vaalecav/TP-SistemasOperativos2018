@@ -6216,3 +6216,135 @@
 [TRACE] 22:00:28:846 Coordinador/(7655:7655): Se conectó el planificador: Puerto=8000; Ip Planificador=147348536; Máximas conexiones=20
 [TRACE] 22:00:28:847 Coordinador/(7655:7655): Hilo asignado para recibir mensajes del Planificador
 [TRACE] 22:00:28:850 Coordinador/(7655:7782): Se recibieron claves para bloquear
+[TRACE] 22:12:03:654 Coordinador/(8375:8375): Se conectó el planificador: Puerto=8000; Ip Planificador=167611448; Máximas conexiones=20
+[TRACE] 22:12:03:655 Coordinador/(8375:8375): Hilo asignado para recibir mensajes del Planificador
+[TRACE] 22:12:03:658 Coordinador/(8375:8398): Se recibieron claves para bloquear
+[TRACE] 22:12:09:357 Coordinador/(8375:8375): Se conectó un componente
+[TRACE] 22:12:09:357 Coordinador/(8375:8375): Hilo asignado
+[TRACE] 22:12:45:357 Coordinador/(8603:8603): Se conectó el planificador: Puerto=8000; Ip Planificador=159476792; Máximas conexiones=20
+[TRACE] 22:12:45:357 Coordinador/(8603:8603): Hilo asignado para recibir mensajes del Planificador
+[TRACE] 22:12:45:362 Coordinador/(8603:8728): Se recibieron claves para bloquear
+[TRACE] 22:12:54:789 Instancia/(8854:8854): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 22:12:54:790 Coordinador/(8603:8603): Se conectó un componente
+[TRACE] 22:12:54:790 Coordinador/(8603:8603): Hilo asignado
+[TRACE] 22:12:54:794 Coordinador/(8603:8855): Se conectó una instancia
+[ERROR] 22:12:54:795 Coordinador/(8603:8728): No se puede seleccionar algoritmo de distribucion, todas las instancias se encuentran caidas
+[ERROR] 22:12:54:795 Coordinador/(8603:8728): No se puede seleccionar algoritmo de distribucion, todas las instancias se encuentran caidas
+[TRACE] 22:12:54:830 Coordinador/(8603:8855): Se conectó la instancia de nombre: Instancia1
+[TRACE] 22:12:54:831 Coordinador/(8603:8855): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 22:12:54:831 Instancia/(8854:8854): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 22:12:54:831 Instancia/(8854:8854): El punto de montaje </home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/> existe.
+[TRACE] 22:12:54:832 Instancia/(8854:8854): Setteo xilofon: magico, en la entrada 0 con un largo de entradas 1
+[TRACE] 22:12:54:832 Instancia/(8854:8854): Setteo caramelo: princesa, en la entrada 1 con un largo de entradas 1
+[TRACE] 22:12:54:832 Instancia/(8854:8854): Setteo aventura: jake, en la entrada 2 con un largo de entradas 1
+[TRACE] 22:12:54:832 Instancia/(8854:8854): Setteo reino: hielo, en la entrada 3 con un largo de entradas 1
+[TRACE] 22:12:54:832 Instancia/(8854:8854): Setteo arbol: bmo, en la entrada 4 con un largo de entradas 1
+[TRACE] 22:12:54:832 Instancia/(8854:8854): Setteo hora: finn, en la entrada 5 con un largo de entradas 1
+[TRACE] 22:12:54:832 Instancia/(8854:8854): Reincorporé la instancia
+[INFO] 22:12:54:832 Instancia/(8854:8854): La tabla de entradas quedó: 11111100000000000000
+[INFO] 22:12:54:832 Instancia/(8854:8854): Clave: xilofon - Valor: magico - Entrada: 0 - Ocupa: 1
+[INFO] 22:12:54:832 Instancia/(8854:8854): Clave: caramelo - Valor: princesa - Entrada: 1 - Ocupa: 1
+[INFO] 22:12:54:832 Instancia/(8854:8854): Clave: aventura - Valor: jake - Entrada: 2 - Ocupa: 1
+[INFO] 22:12:54:832 Instancia/(8854:8854): Clave: reino - Valor: hielo - Entrada: 3 - Ocupa: 1
+[INFO] 22:12:54:832 Instancia/(8854:8854): Clave: arbol - Valor: bmo - Entrada: 4 - Ocupa: 1
+[INFO] 22:12:54:832 Instancia/(8854:8854): Clave: hora - Valor: finn - Entrada: 5 - Ocupa: 1
+[TRACE] 22:12:54:833 Instancia/(8854:8854): Hilo asignado para realizar el Dump
+[TRACE] 22:12:54:833 Coordinador/(8603:8855): Se ingresó la instancia nueva <Instancia1> con 14 entradas libres
+[TRACE] 22:12:54:833 Instancia/(8854:8854): Espero sentencias
+[TRACE] 22:13:04:839 Instancia/(8854:8856): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 22:13:04:839 Instancia/(8854:8856): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 22:13:04:840 Instancia/(8854:8856): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 22:13:04:841 Instancia/(8854:8856): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 22:13:04:841 Instancia/(8854:8856): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 22:13:04:841 Instancia/(8854:8856): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 22:13:04:842 Instancia/(8854:8856): Hice un DUMP
+[TRACE] 22:13:14:844 Instancia/(8854:8856): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 22:13:14:845 Instancia/(8854:8856): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 22:13:14:845 Instancia/(8854:8856): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 22:13:14:846 Instancia/(8854:8856): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 22:13:14:846 Instancia/(8854:8856): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 22:13:14:847 Instancia/(8854:8856): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 22:13:14:848 Instancia/(8854:8856): Hice un DUMP
+[INFO] 22:13:21:756 Instancia/(8854:8854): La tabla de entradas quedó: 11111100000000000000
+[INFO] 22:13:21:757 Instancia/(8854:8854): Clave: xilofon - Valor: magico - Entrada: 0 - Ocupa: 1
+[INFO] 22:13:21:757 Instancia/(8854:8854): Clave: caramelo - Valor: princesa - Entrada: 1 - Ocupa: 1
+[INFO] 22:13:21:757 Instancia/(8854:8854): Clave: aventura - Valor: jake - Entrada: 2 - Ocupa: 1
+[INFO] 22:13:21:757 Instancia/(8854:8854): Clave: reino - Valor: hielo - Entrada: 3 - Ocupa: 1
+[INFO] 22:13:21:757 Instancia/(8854:8854): Clave: arbol - Valor: bmo - Entrada: 4 - Ocupa: 1
+[INFO] 22:13:21:757 Instancia/(8854:8854): Clave: hora - Valor: finn - Entrada: 5 - Ocupa: 1
+[TRACE] 22:13:28:198 Instancia/(8932:8932): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 22:13:28:200 Coordinador/(8603:8603): Se conectó un componente
+[TRACE] 22:13:28:200 Coordinador/(8603:8603): Hilo asignado
+[TRACE] 22:13:28:204 Coordinador/(8603:8933): Se conectó una instancia
+[TRACE] 22:13:28:238 Coordinador/(8603:8933): Se conectó la instancia de nombre: Instancia1
+[TRACE] 22:13:28:239 Coordinador/(8603:8933): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 22:13:28:239 Instancia/(8932:8932): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 22:13:28:239 Instancia/(8932:8932): El punto de montaje </home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/> existe.
+[TRACE] 22:13:28:239 Instancia/(8932:8932): Setteo xilofon: magico, en la entrada 0 con un largo de entradas 1
+[TRACE] 22:13:28:239 Instancia/(8932:8932): Setteo caramelo: princesa, en la entrada 1 con un largo de entradas 1
+[TRACE] 22:13:28:239 Instancia/(8932:8932): Setteo aventura: jake, en la entrada 2 con un largo de entradas 1
+[TRACE] 22:13:28:239 Instancia/(8932:8932): Setteo reino: hielo, en la entrada 3 con un largo de entradas 1
+[TRACE] 22:13:28:240 Instancia/(8932:8932): Setteo arbol: bmo, en la entrada 4 con un largo de entradas 1
+[TRACE] 22:13:28:240 Instancia/(8932:8932): Setteo hora: finn, en la entrada 5 con un largo de entradas 1
+[TRACE] 22:13:28:240 Instancia/(8932:8932): Reincorporé la instancia
+[INFO] 22:13:28:240 Instancia/(8932:8932): La tabla de entradas quedó: 11111100000000000000
+[INFO] 22:13:28:240 Instancia/(8932:8932): Clave: xilofon - Valor: magico - Entrada: 0 - Ocupa: 1
+[INFO] 22:13:28:240 Instancia/(8932:8932): Clave: caramelo - Valor: princesa - Entrada: 1 - Ocupa: 1
+[INFO] 22:13:28:240 Instancia/(8932:8932): Clave: aventura - Valor: jake - Entrada: 2 - Ocupa: 1
+[INFO] 22:13:28:240 Instancia/(8932:8932): Clave: reino - Valor: hielo - Entrada: 3 - Ocupa: 1
+[INFO] 22:13:28:240 Instancia/(8932:8932): Clave: arbol - Valor: bmo - Entrada: 4 - Ocupa: 1
+[INFO] 22:13:28:240 Instancia/(8932:8932): Clave: hora - Valor: finn - Entrada: 5 - Ocupa: 1
+[TRACE] 22:13:28:241 Instancia/(8932:8932): Hilo asignado para realizar el Dump
+[TRACE] 22:13:28:241 Coordinador/(8603:8933): Se reincorporó la instancia <Instancia1> con 14 entradas libres
+[TRACE] 22:13:28:241 Instancia/(8932:8932): Espero sentencias
+[TRACE] 22:18:09:111 Coordinador/(9325:9325): Se conectó el planificador: Puerto=8000; Ip Planificador=142298168; Máximas conexiones=20
+[TRACE] 22:18:09:112 Coordinador/(9325:9325): Hilo asignado para recibir mensajes del Planificador
+[TRACE] 22:18:09:114 Coordinador/(9325:9450): Se recibieron claves para bloquear
+[TRACE] 22:18:30:35 Instancia/(9595:9595): Envio al coordinador el nombre de mi instancia: Instancia1
+[TRACE] 22:18:30:38 Coordinador/(9325:9325): Se conectó un componente
+[TRACE] 22:18:30:38 Coordinador/(9325:9325): Hilo asignado
+[TRACE] 22:18:30:39 Coordinador/(9325:9596): Se conectó una instancia
+[TRACE] 22:18:30:78 Coordinador/(9325:9596): Se conectó la instancia de nombre: Instancia1
+[TRACE] 22:18:30:78 Coordinador/(9325:9596): Enviamos a la Instancia: Cant. de Entradas = 20; Tam. de Entrada = 100
+[TRACE] 22:18:30:78 Instancia/(9595:9595): Se conectó el coordinador e instanció la estructura administrativa: Cant. entradas=20; Tam. entrada=100;
+[TRACE] 22:18:30:78 Instancia/(9595:9595): El punto de montaje </home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/> existe.
+[TRACE] 22:18:30:78 Instancia/(9595:9595): Setteo xilofon: magico, en la entrada 0 con un largo de entradas 1
+[TRACE] 22:18:30:78 Instancia/(9595:9595): Setteo caramelo: princesa, en la entrada 1 con un largo de entradas 1
+[TRACE] 22:18:30:79 Instancia/(9595:9595): Setteo aventura: jake, en la entrada 2 con un largo de entradas 1
+[TRACE] 22:18:30:79 Instancia/(9595:9595): Setteo reino: hielo, en la entrada 3 con un largo de entradas 1
+[TRACE] 22:18:30:79 Instancia/(9595:9595): Setteo arbol: bmo, en la entrada 4 con un largo de entradas 1
+[TRACE] 22:18:30:79 Instancia/(9595:9595): Setteo hora: finn, en la entrada 5 con un largo de entradas 1
+[TRACE] 22:18:30:79 Instancia/(9595:9595): Reincorporé la instancia
+[INFO] 22:18:30:79 Instancia/(9595:9595): La tabla de entradas quedó: 11111100000000000000
+[INFO] 22:18:30:79 Instancia/(9595:9595): Clave: xilofon - Valor: magico - Entrada: 0 - Ocupa: 1
+[INFO] 22:18:30:79 Instancia/(9595:9595): Clave: caramelo - Valor: princesa - Entrada: 1 - Ocupa: 1
+[INFO] 22:18:30:79 Instancia/(9595:9595): Clave: aventura - Valor: jake - Entrada: 2 - Ocupa: 1
+[INFO] 22:18:30:79 Instancia/(9595:9595): Clave: reino - Valor: hielo - Entrada: 3 - Ocupa: 1
+[INFO] 22:18:30:80 Instancia/(9595:9595): Clave: arbol - Valor: bmo - Entrada: 4 - Ocupa: 1
+[INFO] 22:18:30:80 Instancia/(9595:9595): Clave: hora - Valor: finn - Entrada: 5 - Ocupa: 1
+[TRACE] 22:18:30:80 Instancia/(9595:9595): Hilo asignado para realizar el Dump
+[TRACE] 22:18:30:80 Coordinador/(9325:9596): Se ingresó la instancia nueva <Instancia1> con 14 entradas libres
+[TRACE] 22:18:30:81 Instancia/(9595:9595): Espero sentencias
+[TRACE] 22:18:30:94 Coordinador/(9325:9450): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 22:18:30:95 Coordinador/(9325:9450): Utilizo algoritmo de distribucion de instancias LSU
+[TRACE] 22:18:40:90 Instancia/(9595:9597): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 22:18:40:91 Instancia/(9595:9597): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 22:18:40:91 Instancia/(9595:9597): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 22:18:40:91 Instancia/(9595:9597): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 22:18:40:92 Instancia/(9595:9597): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 22:18:40:92 Instancia/(9595:9597): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 22:18:40:93 Instancia/(9595:9597): Hice un DUMP
+[TRACE] 22:18:50:93 Instancia/(9595:9597): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 22:18:50:94 Instancia/(9595:9597): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 22:18:50:95 Instancia/(9595:9597): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 22:18:50:95 Instancia/(9595:9597): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 22:18:50:96 Instancia/(9595:9597): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 22:18:50:96 Instancia/(9595:9597): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 22:18:50:96 Instancia/(9595:9597): Hice un DUMP
+[TRACE] 22:19:00:97 Instancia/(9595:9597): Hago store de la clave xilofon del valor magico en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/xilofon
+[TRACE] 22:19:00:97 Instancia/(9595:9597): Hago store de la clave caramelo del valor princesa en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/caramelo
+[TRACE] 22:19:00:98 Instancia/(9595:9597): Hago store de la clave aventura del valor jake en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/aventura
+[TRACE] 22:19:00:98 Instancia/(9595:9597): Hago store de la clave reino del valor hielo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/reino
+[TRACE] 22:19:00:99 Instancia/(9595:9597): Hago store de la clave arbol del valor bmo en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/arbol
+[TRACE] 22:19:00:99 Instancia/(9595:9597): Hago store de la clave hora del valor finn en /home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/hora
+[TRACE] 22:19:00:99 Instancia/(9595:9597): Hice un DUMP
