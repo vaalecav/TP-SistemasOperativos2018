@@ -86,12 +86,17 @@ void manejoAlgoritmos() {
 	// CLAVES BLOQUEADAS DESDE EL PRINCIPIO //
 	char* clavesBloqueadas = config_get_string_value(configuracion,
 			"CLAVES_BLOQUEADAS");
-	enviarHeader(socketCoordinador, clavesBloqueadas, BLOQUEAR_CLAVE_MANUAL);
-	enviarMensaje(socketCoordinador, clavesBloqueadas);
 
+	if (clavesBloqueadas == NULL) {
+	} else {
+		enviarHeader(socketCoordinador, clavesBloqueadas,
+				BLOQUEAR_CLAVE_MANUAL);
+		enviarMensaje(socketCoordinador, clavesBloqueadas);
+	}
 	while (done == 0) {
 		flagFin = 0;
 		if (ejecutar == 1) {
+
 			// Si es SJF, antes de ejecutar tiene que ordenar la cola de ready
 			if (strcmp(algoritmo, "SJF-SD") == 0) {
 				realizarEstimaciones();
@@ -104,25 +109,25 @@ void manejoAlgoritmos() {
 
 			if ((esiVoid = list_remove(colaReady, 0)) == NULL) { //TODO
 				// No hay nadie para ejecutar //
+				ejecutar = 0;
+				//puts("Se pauso la ejecucion ya que la cola de Ready esta vacia.");
 			} else {
+				esi = (DATA*) esiVoid;
+				esi->rafaga = 0;
 				while (flagFin != 1) {
 					pthread_mutex_lock(&mutexTerminarEsi);
 					// Le ordeno al ESI que ejecute //
-					esi = (DATA*) esiVoid;
 					enviarHeader(esi->socket, "", PLANIFICADOR);
 					CLAVE * claveAux;
 
 					// Le quito la espera y la rafaga anterior //
 					esi->espera = 0;
-					esi->rafaga = 0;
 
 					// Espero la respuesta //
 					header = recibirHeader(socketCoordinador);
 
 					// Veo que tengo que hacer //
 					paraSwitchear = chequearRespuesta(header->id);
-
-					printf("%d", paraSwitchear);
 
 					switch (paraSwitchear) {
 					case 0: // ERROR //

@@ -126,6 +126,8 @@ void* aumentarEspera(void* esiVoid); // Funcion aux de la de arriba.
 void* calcularEstimacion(void* esiCalcularVoid);
 void* calcularRatio(void* esiCalcularRatio);
 bool mayorRatio(void* esi1Void, void* esi2Void);
+void realizarEstimaciones();
+void realizarRatios();
 
 //=====================FUNCIONES DE CONSOLA=====================================
 
