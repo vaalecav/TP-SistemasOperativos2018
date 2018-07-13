@@ -282,13 +282,10 @@ int desbloquearClave(char* clave) {
 			list_add(colaReady, (void*) esiBloqueada);
 		} else {
 			// Si no hay esis, libero la clave.
-			list_remove_by_condition_with_param(listaClaves, (void*) clave,
-					chequearClave);
 		}
 
 		return 1;
 	} else {
-		printf("La clave <%s> no existe.\n", clave);
 		return 0;
 	}
 }
