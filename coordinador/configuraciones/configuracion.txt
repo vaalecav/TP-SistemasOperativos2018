@@ -1,5 +1,5 @@
 #Conexiones
-IP=127.0.0.1
+IP=192.168.0.52
 PUERTO=8000
 MAX_CONEX=20
 #
@@ -7,11 +7,11 @@ MAX_CONEX=20
 #	EL 	- Equitative Load
 #	LSU - Least Space Used
 #	KE 	- Key Explicit
-ALG_DISTR=LSU
+ALG_DISTR=EL
 #
 #Entradas Instancias
-CANTIDAD_ENTRADAS=20
-TAMANIO_ENTRADA=100
+CANTIDAD_ENTRADAS=50
+TAMANIO_ENTRADA=20
 #
 #Retardo ficticio
-RETARDO=300
+RETARDO=200
