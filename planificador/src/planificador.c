@@ -321,11 +321,14 @@ bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 bool formulaHRRN(void* esi1Void, void* esi2Void) {
 	DATA* esi1 = (DATA*) esi1Void;
 	DATA* esi2 = (DATA*) esi2Void;
-	float ratioEsi1 = (((float) alphaHRRN / 100) * esi1->espera)
-			+ ((1 - ((float) alphaHRRN / 100)) * esi1->lineas);
-	float ratioEsi2 = (((float) alphaHRRN / 100) * esi2->espera)
-			+ ((1 - ((float) alphaHRRN / 100)) * esi2->lineas);
+	float ratioEsi1 = calcularRatio(esi1->espera, esi1->lineas);
+	float ratioEsi2 = calcularRatio(esi2->espera, esi2->lineas);
 	return ratioEsi1 < ratioEsi2;
+}
+
+float calcularRatio(int espera, int lineas) {
+	return (((float) alphaHRRN / 100) * espera)
+			+ ((1 - ((float) alphaHRRN / 100)) * lineas)
 }
 
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
