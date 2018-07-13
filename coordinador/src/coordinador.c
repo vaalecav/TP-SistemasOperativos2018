@@ -220,9 +220,9 @@ void manejarConexion(void* socketsNecesarios) {
 
 	switch (header->id) {
 	case INSTANCIA:
-		llegoUnaInstancia = 1;
 		log_trace(logCoordinador, "Se conectó una instancia");
 		manejarInstancia(socketsConectados.socketComponente, header->largo);
+		llegoUnaInstancia = 1;
 		break;
 
 	case ESI:
