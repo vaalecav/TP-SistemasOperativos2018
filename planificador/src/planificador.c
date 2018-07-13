@@ -328,7 +328,7 @@ bool formulaHRRN(void* esi1Void, void* esi2Void) {
 
 float calcularRatio(int espera, int lineas) {
 	return (((float) alphaHRRN / 100) * espera)
-			+ ((1 - ((float) alphaHRRN / 100)) * lineas)
+			+ ((1 - ((float) alphaHRRN / 100)) * lineas);
 }
 
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
