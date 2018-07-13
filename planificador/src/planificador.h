@@ -45,6 +45,10 @@ typedef struct ESI {
 	int socket;
 	int lineas;
 	int espera;
+	float estimacion;
+	int rafaga;
+	int necesitaCalcular; // si esta en 1 hay que calcularlo
+	float ratio; // para hrrn
 } DATA;
 
 typedef struct COMANDO {
@@ -118,8 +122,9 @@ bool menorCantidadDeLineas(void* esi1Void, void* esi2Void); // Para hacer un sor
 int desbloquearClave(char* clave); // Desbloquea una clave.
 void aumentarEsperaDeEsi(); // Sube por 1 la espera de los ESI.
 void* aumentarEspera(void* esiVoid); // Funcion aux de la de arriba.
-bool formulaHRRN(void* esi1Void, void* esi2Void); // Comparadora para HRRN.
-float calcularRatio(int, int);
+void* calcularEstimacion(void* esiCalcularVoid);
+void* calcularRatio(void* esiCalcularRatio);
+bool mayorRatio(void* esi1Void, void* esi2Void);
 
 //=====================FUNCIONES DE CONSOLA=====================================
 

@@ -84,7 +84,8 @@ void manejoAlgoritmos() {
 	int flagFin;
 
 	// CLAVES BLOQUEADAS DESDE EL PRINCIPIO //
-	char* clavesBloqueadas = config_get_string_value(configuracion, "CLAVES_BLOQUEADAS");
+	char* clavesBloqueadas = config_get_string_value(configuracion,
+			"CLAVES_BLOQUEADAS");
 	enviarHeader(socketCoordinador, clavesBloqueadas, BLOQUEAR_CLAVE_MANUAL);
 	enviarMensaje(socketCoordinador, clavesBloqueadas);
 
@@ -95,11 +96,13 @@ void manejoAlgoritmos() {
 			// Si es SJF, antes de ejecutar tiene que ordenar la cola de ready
 			if (strcmp(algoritmo, "SJF-CD") == 0
 					|| strcmp(algoritmo, "SJF-SD") == 0) {
+				realizarEstimaciones();
 				list_sort(colaReady, menorCantidadDeLineas);
 			}
 
 			if (strcmp(algoritmo, "HRRN") == 0) {
-				list_sort(colaReady, formulaHRRN);
+				realizarRatios();
+				list_sort(colaReady, mayorRatio);
 			}
 
 			if ((esiVoid = list_remove(colaReady, 0)) == NULL) {
@@ -111,10 +114,10 @@ void manejoAlgoritmos() {
 					enviarHeader(esi->socket, "", PLANIFICADOR);
 					CLAVE * claveAux;
 
-					// Le quito la espera //
+					// Le quito la espera y la rafaga anterior //
 					esi->espera = 0;
+					esi->rafaga = 0;
 
-					//TODO ROMPE PORQUE NUNCA RECIBE EL HEADER DEL COORDINADOR //
 					// Espero la respuesta //
 					header = recibirHeader(socketCoordinador);
 
@@ -147,6 +150,7 @@ void manejoAlgoritmos() {
 
 					case 2: // EXITO //
 						esi->lineas--;
+						esi->rafaga++;
 						switch (esi->lineas) {
 						case 0: // TERMINO EL ESI //
 							// Lo agrego a la cola de Terminados //
@@ -166,6 +170,7 @@ void manejoAlgoritmos() {
 						desbloquearClave(clave);
 
 						esi->lineas--;
+						esi->rafaga++;
 						switch (esi->lineas) {
 						case 0: // TERMINO EL ESI //
 							// Lo agrego a la cola de Terminados //
@@ -188,6 +193,7 @@ void manejoAlgoritmos() {
 						claveAux->listaEsi = list_create();
 						list_add(listaClaves, (void*) claveAux);
 						esi->lineas--;
+						esi->rafaga++;
 						switch (esi->lineas) {
 						case 0: // TERMINO EL ESI //
 							// Lo agrego a la cola de Terminados //
@@ -205,6 +211,7 @@ void manejoAlgoritmos() {
 
 					if (strcmp(algoritmo, "SJF-CD") == 0) {
 						if (flagFin == 0) {
+							esi->necesitaCalcular = 1;
 							list_add(colaReady, (void*) esi);
 							flagFin = 1;
 						}
@@ -217,6 +224,33 @@ void manejoAlgoritmos() {
 
 void aumentarEsperaDeEsi() {
 	colaReady = list_map(colaReady, aumentarEspera);
+}
+
+void realizarRatios() {
+	realizarEstimaciones();
+	colaReady = list_map(colaReady, calcularRatio);
+}
+
+void realizarEstimaciones() {
+	colaReady = list_map(colaReady, calcularEstimacion);
+}
+
+void* calcularRatio(void* esiCalcularRatio) {
+	DATA* esiCalcular = (DATA*) esiCalcularRatio;
+	esiCalcular->ratio = (esiCalcular->espera + esiCalcular->estimacion)
+			/ esiCalcular->estimacion;
+	return (void*) esiCalcular;
+}
+
+void* calcularEstimacion(void* esiCalcularVoid) {
+	DATA* esiCalcular = (DATA*) esiCalcularVoid;
+	if (esiCalcular->necesitaCalcular == 1) {
+		esiCalcular->estimacion = (((float) alphaHRRN / 100)
+				* esiCalcular->rafaga)
+				+ ((1 - ((float) alphaHRRN / 100)) * esiCalcular->estimacion);
+		return (void*) esiCalcular;
+	} else
+		return (void*) esiCalcular;
 }
 
 void* aumentarEspera(void* esiAumentarVoid) {
@@ -243,10 +277,12 @@ int desbloquearClave(char* clave) {
 		if (esiEjecutar != NULL) {
 			esiBloqueada = list_remove_by_condition_with_param(colaBloqueados,
 					esiEjecutar, buscarEnBloqueados);
+			esiBloqueada->necesitaCalcular = 1;
 			list_add(colaReady, (void*) esiBloqueada);
 		} else {
 			// Si no hay esis, libero la clave.
-			list_remove_by_condition_with_param(listaClaves, (void*) clave, chequearClave);
+			list_remove_by_condition_with_param(listaClaves, (void*) clave,
+					chequearClave);
 		}
 
 		return 1;
@@ -311,24 +347,18 @@ int bloquearClaveESI(char* parametros, int nada) {
 	}
 }
 
+bool mayorRatio(void* esi1Void, void* esi2Void) {
+	DATA* esi1 = (DATA*) esi1Void;
+	DATA* esi2 = (DATA*) esi2Void;
+
+	return esi1->ratio > esi2->ratio;
+}
+
 bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 	DATA* esi1 = (DATA*) esi1Void;
 	DATA* esi2 = (DATA*) esi2Void;
 
-	return esi1->lineas < esi2->lineas;
-}
-
-bool formulaHRRN(void* esi1Void, void* esi2Void) {
-	DATA* esi1 = (DATA*) esi1Void;
-	DATA* esi2 = (DATA*) esi2Void;
-	float ratioEsi1 = calcularRatio(esi1->espera, esi1->lineas);
-	float ratioEsi2 = calcularRatio(esi2->espera, esi2->lineas);
-	return ratioEsi1 < ratioEsi2;
-}
-
-float calcularRatio(int espera, int lineas) {
-	return (((float) alphaHRRN / 100) * espera)
-			+ ((1 - ((float) alphaHRRN / 100)) * lineas);
+	return esi1->estimacion < esi2->estimacion;
 }
 
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
@@ -397,11 +427,13 @@ void tratarConexiones() {
 	int puerto;
 	int maxConex;
 	int socketServer;
+	int estimacionOriginal;
 
 // Leo el Archivo de Configuracion //
 	puerto = config_get_int_value(configuracion, "PUERTO");
 	ip = config_get_string_value(configuracion, "IP");
 	maxConex = config_get_int_value(configuracion, "MAX_CONEX");
+	estimacionOriginal = config_get_int_value(configuracion, "ESTIMACION");
 
 // Nuevas Declaraciones //
 	fd_set descriptoresLectura;
@@ -477,6 +509,10 @@ void tratarConexiones() {
 				nuevoEsi->lineas = cantLineas;
 				nuevoEsi->socket = socketCliente[numeroClientes - 1];
 				nuevoEsi->espera = 0;
+				nuevoEsi->estimacion = estimacionOriginal;
+				nuevoEsi->rafaga = 0;
+				nuevoEsi->necesitaCalcular = 0;
+				nuevoEsi->ratio = 0;
 				list_add(colaReady, (void*) nuevoEsi);
 
 				/* Aumento el ID para el proximo ESI */
@@ -542,8 +578,10 @@ void remove_element(int *array, int index, int array_length) {
 
 void imprimirEnPantalla(void* esiVoid) {
 	DATA* esi = (DATA*) esiVoid;
-	printf("ID: %d, SOCKET: %d, LARGO: %d, TIEMPO EN READY: %d\n", esi->id,
-			esi->socket, esi->lineas, esi->espera);
+	printf(
+			"ID: %d, SOCKET: %d, LARGO: %d, TIEMPO EN READY: %d, ESTIMACION: %d, RAFAGA ANTERIOR: %d\n",
+			esi->id, esi->socket, esi->lineas, esi->espera, esi->estimacion,
+			esi->rafaga);
 }
 
 void imprimirEnPantallaClaves(void* claveVoid) {
@@ -572,7 +610,7 @@ void moveToAbortados(int socketId) {
 		if ((esiVoid = list_find_with_param(colaBloqueados, (void*) socketId,
 				buscarPorSocket)) != NULL) {
 			esiVoid = list_remove_by_condition_with_param(colaBloqueados,
-							(void*) socketId, buscarPorSocket);
+					(void*) socketId, buscarPorSocket);
 			esiAMatar = (DATA*) esiVoid;
 			list_add(colaAbortados, esiVoid);
 		} else {
