@@ -74,6 +74,7 @@ int main() {
 void manejoAlgoritmos() {
 	DATA * esi;
 	void * esiVoid;
+	char ** clavesAux;
 	char * algoritmo = config_get_string_value(configuracion, "ALGORITMO");
 	if (strcmp(algoritmo, "HRRN") == 0) {
 		alphaHRRN = config_get_int_value(configuracion, "ALPHA");
@@ -89,6 +90,17 @@ void manejoAlgoritmos() {
 
 	if (clavesBloqueadas == NULL) {
 	} else {
+		clavesAux = string_split(clavesBloqueadas, ",");
+		for (int i = 0; clavesAux[i] != NULL; i++) {
+			CLAVE* claveCrear = malloc(sizeof(CLAVE));
+			claveCrear->clave = malloc(strlen(clavesAux[i]) + 1);
+			strcpy(claveCrear->clave,clavesAux[i]);
+			claveCrear->clave[strlen(clavesAux[i])] = '\0';
+			claveCrear->listaEsi = list_create();
+			list_add(listaClaves, (void*) claveCrear);
+			free(clavesAux[i]);
+		}
+		free(clavesAux);
 		enviarHeader(socketCoordinador, clavesBloqueadas,
 				BLOQUEAR_CLAVE_MANUAL);
 		enviarMensaje(socketCoordinador, clavesBloqueadas);
@@ -749,58 +761,58 @@ void hacerStatus(char *clave) {
 
 /*
 
-int buscarEsiEnClave(void* idVoid, void* idBuscadoVoid) {
-	int id = (int*) idVoid;
-	int idBuscado = (int*) idBuscadoVoid;
-	return id == idBuscado;
-}
+ int buscarEsiEnClave(void* idVoid, void* idBuscadoVoid) {
+ int id = (int*) idVoid;
+ int idBuscado = (int*) idBuscadoVoid;
+ return id == idBuscado;
+ }
 
-char* buscarNecesidad(int esiId) {
-	void* claveVoid;
-	CLAVE* clave;
-	int i;
-	// Voy a recorrar la lista de claves hasta encontrar el ESI indicado //
-	for (i = 0; (claveVoid = list_get(listaClaves, i)) != NULL; i++) {
-		clave = (CLAVE*) claveVoid;
+ char* buscarNecesidad(int esiId) {
+ void* claveVoid;
+ CLAVE* clave;
+ int i;
+ // Voy a recorrar la lista de claves hasta encontrar el ESI indicado //
+ for (i = 0; (claveVoid = list_get(listaClaves, i)) != NULL; i++) {
+ clave = (CLAVE*) claveVoid;
 
-		// Me fijo si la clave en mano tiene el esi pedido //
-		if (list_find_with_param(clave->listaEsi, (void*) esiId,
-				buscarEsiEnClave) != NULL) {
-			//Si lo encuentro salgo del for para pasar la clave.
-			break;
-		} else {
-			//Si no lo encuentro sigo el for para encontrar la clave buscada.
-		}
-	}
-	return clave->clave;
-}
+ // Me fijo si la clave en mano tiene el esi pedido //
+ if (list_find_with_param(clave->listaEsi, (void*) esiId,
+ buscarEsiEnClave) != NULL) {
+ //Si lo encuentro salgo del for para pasar la clave.
+ break;
+ } else {
+ //Si no lo encuentro sigo el for para encontrar la clave buscada.
+ }
+ }
+ return clave->clave;
+ }
 
-void deadlock() {
-	void* esiBloqueadoVoid;
-	DATA* esiBloqueado;
-	char* claveNecesitada;
-	int i;
+ void deadlock() {
+ void* esiBloqueadoVoid;
+ DATA* esiBloqueado;
+ char* claveNecesitada;
+ int i;
 
-	// Voy a recorrer la lista de bloqueados hasta pasar por todos los bloqueados //
-	for (i = 0; (esiBloqueadoVoid = list_get(colaBloqueados, i)) != NULL; i++) {
-		esiBloqueado = (DATA*) esiBloqueadoVoid;
+ // Voy a recorrer la lista de bloqueados hasta pasar por todos los bloqueados //
+ for (i = 0; (esiBloqueadoVoid = list_get(colaBloqueados, i)) != NULL; i++) {
+ esiBloqueado = (DATA*) esiBloqueadoVoid;
 
-		// Averiguo que clave quiere ese ESI //
-		claveNecesitada = buscarNecesidad(esiBloqueado->id);
+ // Averiguo que clave quiere ese ESI //
+ claveNecesitada = buscarNecesidad(esiBloqueado->id);
 
-		// Averiguo que ESI posee actualmente esa clave //
-	}
-}
+ // Averiguo que ESI posee actualmente esa clave //
+ }
+ }
 
 
 
-//=======================COMANDOS DE CONSOLA====================================
-int cmdDeadlock() {
-	deadlock();
-	return 0;
-}
+ //=======================COMANDOS DE CONSOLA====================================
+ int cmdDeadlock() {
+ deadlock();
+ return 0;
+ }
 
-*/
+ */
 
 int cmdDesbloquear(char* clave) {
 	if (desbloquearClave(clave))
