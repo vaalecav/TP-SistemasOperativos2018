@@ -18,7 +18,7 @@ void freeEntrada(void* ent) {
 
 void loguearEntrada(void* entr) {
 	Entrada entrada = *(Entrada*)entr;
-	log_info(logInstancia, "Clave: %s - Valor: %s - Entrada: %d - Ocupa: %d", entrada.clave, entrada.valor, entrada.primeraEntrada, entrada.cantidadEntradas);
+	log_info(logInstancia, "Clave: %s - Valor: %s - Entrada: %d - Ocupa: %d - Ultima vez usada: %d", entrada.clave, entrada.valor, entrada.primeraEntrada, entrada.cantidadEntradas, entrada.indexUltimaSentencia);
 }
 
 void mostrarEntrada(void* entr) {
@@ -144,6 +144,7 @@ int setearValor(char* clave, char* valor, int entradasNecesarias, int posicionPa
 	entrada->primeraEntrada = posicionParaSetear;
 	entrada->cantidadEntradas = entradasNecesarias;
 	entrada->indexUltimaSentencia = cantidadSentencias;
+	cantidadSentencias++;
 
 	if (entradaVoid == NULL) {
 		list_add(estructuraAdministrativa.entradas, (void*)entrada);
@@ -187,18 +188,18 @@ int cantidadEntradasPosiblesContinuas() {
 int tieneElIndexYEsAtomico(void* entradaVoid, void* indexVoid) {
 	Entrada* entrada = (Entrada*)entradaVoid;
 	int index = *(int*)indexVoid;
-
+	
 	return entrada->primeraEntrada == index && entrada->cantidadEntradas == 1;
 }
 
 bool instanciaLRU(void* entrada1, void* entrada2) {
 	// Sobre la que hace más tiempo se hizo una sentencia
-	return ((Entrada*)entrada1)->indexUltimaSentencia < ((Entrada*)entrada1)->indexUltimaSentencia;
+	return ((Entrada*)entrada1)->indexUltimaSentencia < ((Entrada*)entrada2)->indexUltimaSentencia;
 }
 
 bool instanciaBSU(void* entrada1, void* entrada2) {
 	// El que más espacio ocupe
-	return strlen(((Entrada*)entrada1)->valor) > strlen(((Entrada*)entrada1)->valor);
+	return strlen(((Entrada*)entrada1)->valor) > strlen(((Entrada*)entrada2)->valor);
 }
 
 void ejecutarAlgoritmoDeRemplazo() {
@@ -218,6 +219,11 @@ void ejecutarAlgoritmoDeRemplazo() {
 
 		// Aumento el index
 		indexCirc++;
+
+		// Si el index se pasó de la cantidad de entradas, vuelvo a 0
+		if (indexCirc > estructuraAdministrativa.cantidadEntradas) {
+			indexCirc = 0;
+		}
 	} else if (strcmp(algoritmo, "LRU") == 0 || strcmp(algoritmo, "BSU") == 0) {
 		// LRU y BSU solo difieren en la forma que se ordena la lista
 
@@ -227,11 +233,11 @@ void ejecutarAlgoritmoDeRemplazo() {
 
 			// Ordeno la lista según LRU
 			list_sort(estructuraAdministrativa.entradas, instanciaLRU);
-
+		
 		} else if (strcmp(algoritmo, "BSU") == 0) {
 			// Logueo que ejecuto el algoritmo de remplazo
 			log_trace(logInstancia, "Ejecuto algoritmo de remplazo BSU");
-
+			
 			// Ordeno la lista según BSU
 			list_sort(estructuraAdministrativa.entradas, instanciaBSU);
 		}
@@ -314,14 +320,13 @@ int setearClave(char* clave, char* valor) {
 
 		// Verifico que la cantidad de entradas necesarias no sea mayor que la actual
 		if (entradasNecesarias > entrada->cantidadEntradas) {
-			log_error(logInstancia, "El valor <%s> de la clave <%s> necesita %d entradas cuando actualmente ocupa %d", valor, clave, entradasNecesarias, entrada->cantidadEntradas);
 			return INSTANCIA_ERROR;
 
 		}
 
 		// Marco la entrada en la que se tiene que guardar y libero todas
 		entradaGuardar = entrada->primeraEntrada;
-		for (int i = entrada->primeraEntrada; i < entrada->cantidadEntradas; i++) {
+		for (int i = entrada->primeraEntrada; i < entrada->primeraEntrada + entrada->cantidadEntradas; i++) {
 			estructuraAdministrativa.entradasUsadas[i] = 0;
 		}
 	} else {
@@ -365,6 +370,7 @@ int storeClave(char* clave) {
 	if ((archivo = fopen(nombreArchivo, "w"))) {
 		entrada = (Entrada*)entradaVoid;
 		entrada->indexUltimaSentencia = cantidadSentencias;
+		cantidadSentencias++;
 		fprintf(archivo, "%s", entrada->valor);
 		fclose(archivo);
 
@@ -402,7 +408,6 @@ void recibirSentencia() {
 		mensajeSplitted = string_split(mensaje, " ");
 
 		if (strcmp(mensajeSplitted[0], "SET") == 0) {
-			cantidadSentencias++;
 			respuesta = setearClave(mensajeSplitted[1], mensajeSplitted[2]);
 
 			// Si no salió todo OK, le tengo que avisar al coordinador que no compacte
@@ -412,7 +417,6 @@ void recibirSentencia() {
 				avisarAlCoordinador(0);
 			}
 		} else if (strcmp(mensajeSplitted[0], "STORE") == 0) {
-			cantidadSentencias++;
 			respuesta = storeClave(mensajeSplitted[1]);
 		} else {
 			respuesta = INSTANCIA_ERROR;
@@ -447,6 +451,8 @@ void recibirSentencia() {
 			enviarMensaje(socketCoordinador, entrada->valor);
 		}
 		free(nombreClave);
+	} else if (header->id == COMPACTAR) {
+		compactar();
 	}
 
 	free(header);
