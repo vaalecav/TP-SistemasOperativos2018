@@ -747,27 +747,60 @@ void hacerStatus(char *clave) {
 	}
 }
 
-/*void deadlock() {
+/*
 
- //Conseguir lista de claves asociadas a esis
- //listaClavesEsis
- //Buscar esis bloqueados
- list_iterate(colaBloqueados, buscarEnClavesEsis);
- //Iterar con un for, por cada esi bloqueado, buscar en la listaClavesEsis si alguna de esas claves es la que necesita
- //Si la necesita, buscar si el esi a la que esta asignada esa clave, esta bloqueado, y devuelta lo mismo
- //Fijarse si llega al esi inicial y meterlo en esisEnDeadlock
+int buscarEsiEnClave(void* idVoid, void* idBuscadoVoid) {
+	int id = (int*) idVoid;
+	int idBuscado = (int*) idBuscadoVoid;
+	return id == idBuscado;
+}
 
- else {
- puts("Ningun ESI se encuentra en deadlock.")
- }
+char* buscarNecesidad(int esiId) {
+	void* claveVoid;
+	CLAVE* clave;
+	int i;
+	// Voy a recorrar la lista de claves hasta encontrar el ESI indicado //
+	for (i = 0; (claveVoid = list_get(listaClaves, i)) != NULL; i++) {
+		clave = (CLAVE*) claveVoid;
 
- } */
+		// Me fijo si la clave en mano tiene el esi pedido //
+		if (list_find_with_param(clave->listaEsi, (void*) esiId,
+				buscarEsiEnClave) != NULL) {
+			//Si lo encuentro salgo del for para pasar la clave.
+			break;
+		} else {
+			//Si no lo encuentro sigo el for para encontrar la clave buscada.
+		}
+	}
+	return clave->clave;
+}
+
+void deadlock() {
+	void* esiBloqueadoVoid;
+	DATA* esiBloqueado;
+	char* claveNecesitada;
+	int i;
+
+	// Voy a recorrer la lista de bloqueados hasta pasar por todos los bloqueados //
+	for (i = 0; (esiBloqueadoVoid = list_get(colaBloqueados, i)) != NULL; i++) {
+		esiBloqueado = (DATA*) esiBloqueadoVoid;
+
+		// Averiguo que clave quiere ese ESI //
+		claveNecesitada = buscarNecesidad(esiBloqueado->id);
+
+		// Averiguo que ESI posee actualmente esa clave //
+	}
+}
+
+
 
 //=======================COMANDOS DE CONSOLA====================================
-/*int cmdDeadlock() {
- deadlock()
- b return 0;
- }*/
+int cmdDeadlock() {
+	deadlock();
+	return 0;
+}
+
+*/
 
 int cmdDesbloquear(char* clave) {
 	if (desbloquearClave(clave))
