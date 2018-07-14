@@ -16,12 +16,12 @@
 
 
 //Eclipse
-//#define ARCHIVO_CONFIGURACION "./configuraciones/configuracion.txt"
-//#define ARCHIVO_LOG "../log.txt"
+#define ARCHIVO_CONFIGURACION "./configuraciones/configuracion.txt"
+#define ARCHIVO_LOG "../log.txt"
 
 //Consola
-#define ARCHIVO_CONFIGURACION "../configuraciones/configuracion.txt"
-#define ARCHIVO_LOG "../../log.txt"
+//#define ARCHIVO_CONFIGURACION "../configuraciones/configuracion.txt"
+//#define ARCHIVO_LOG "../../log.txt"
 
 
 // Logs
@@ -34,6 +34,7 @@ t_link_element* list_find_element_with_param(t_list*, void*, int(*condition)(voi
 void* list_find_with_param(t_list*, void*, int(*condition)(void*, void*));
 int strcmpVoid(void*, void*);
 void* list_remove_by_condition_with_param(t_list*, void*, int(*condition)(void*, void*));
+void freeNull(void*);
 
 // Estructuras necesarias
 

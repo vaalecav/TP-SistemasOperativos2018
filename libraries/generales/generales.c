@@ -49,3 +49,10 @@ void* list_remove_by_condition_with_param(t_list *self, void* param, int(*condit
 
 	return NULL;
 }
+
+void freeNull(void* x) {
+	if (x != NULL) {
+		free(x);
+		x = NULL;
+	}
+}

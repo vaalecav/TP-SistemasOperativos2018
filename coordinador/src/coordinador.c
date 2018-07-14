@@ -359,7 +359,7 @@ void manejarComandoKill(int socketPlanificador, int largoMensaje){
 			clave = (Clave*) claveVoid;
 			// Desbloqueo clave del esi
 			clave->bloqueado = 0;
-			free(clave->nombreEsi);
+			freeNull(clave->nombreEsi);
 		}
 	}
 	pthread_mutex_unlock(&mutexListaInstancias);
@@ -410,7 +410,7 @@ void manejarDesbloquearClaveManual(int socketPlanificador, int largoMensaje){
 			// Desbloqueo clave del esi
 			clave = (Clave*) claveVoid;
 			clave->bloqueado = 0;
-			free(clave->nombreEsi);
+			freeNull(clave->nombreEsi);
 		}
 	}
 	pthread_mutex_unlock(&mutexListaInstancias);
@@ -599,7 +599,7 @@ int asignarClaveAInstancia(char* key, char* nombreEsi) {
 	if(instancia == NULL){
 		// Libero memoria, ya loguie antes
 		free(clave->nombre);
-		free(clave->nombreEsi);
+		freeNull(clave->nombreEsi);
 		free(clave);
 		return 0;
 	}
@@ -643,7 +643,7 @@ void getClave(char* key, int socketPlanificador, int socketEsi, char* nombreEsi)
 				clave->bloqueado = 1;
 
 				// Asigno que esi la bloqueo
-				free(clave->nombreEsi);
+				freeNull(clave->nombreEsi);
 				clave->nombreEsi = malloc(strlen(nombreEsi) + 1);
 				strcpy(clave->nombreEsi, nombreEsi);
 				clave->nombreEsi[strlen(nombreEsi)] = '\0';
