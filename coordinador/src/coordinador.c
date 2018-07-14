@@ -353,8 +353,6 @@ void desbloquearClavesQueTenganEsi(void* nombreEsi, void* clave) {
 
 void manejarComandoKill(int socketPlanificador, int largoMensaje){
 	void* instanciaVoid;
-	void* claveVoid;
-	Clave* clave;
 	char* nombreEsi = malloc(largoMensaje +1);
 	// Recibo nombre del esi
 	recibirMensaje(socketPlanificador, largoMensaje, &nombreEsi);

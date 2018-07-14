@@ -131,15 +131,11 @@ void manejoAlgoritmos() {
 						enviarHeader(esi->socket, "", PLANIFICADOR);
 						CLAVE * claveAux;
 
-						sleep(5);
-
 						// Le quito la espera y la rafaga anterior //
 						esi->espera = 0;
 
 						// Espero la respuesta //
-						puts("ME TRABE ACA");
 						header = recibirHeader(socketCoordinador);
-						puts("NO ME TRABE ACA");
 
 						// Veo que tengo que hacer //
 						paraSwitchear = chequearRespuesta(header->id);
@@ -198,9 +194,6 @@ void manejoAlgoritmos() {
 							clavesiNuevo->clave[strlen(clave)] = '\0';
 							clavesiNuevo->esi = esi->id;
 
-							printf("Agrego clave %s al esi %d\n",
-									clavesiNuevo->clave, clavesiNuevo->esi);
-							puts("XXXX");
 							list_add(listaClavesi, (void*) clavesiNuevo);
 
 							switch (esi->lineas) {
@@ -269,9 +262,6 @@ void manejoAlgoritmos() {
 									'\0';
 							clavesiNuevo2->esi = esi->id;
 
-							printf("Agrego clave %s al esi %d\n",
-									clavesiNuevo2->clave, clavesiNuevo2->esi);
-							puts("XXXX");
 							list_add(listaClavesi, (void*) clavesiNuevo2);
 
 							switch (esi->lineas) {
@@ -574,9 +564,7 @@ void tratarConexiones() {
 		for (i = 0; i < numeroClientes; i++) {
 			if (FD_ISSET(socketCliente[i], &descriptoresLectura)) {
 				// Se indica que el cliente ha cerrado la conexión
-				puts("HOLA");
 				moveToAbortados(socketCliente[i]);
-				puts("CHAU");
 				pthread_mutex_unlock(&mutexTerminarInvertido);
 				close(socketCliente[i]);
 				remove_element(socketCliente, i, numeroClientes);
@@ -742,7 +730,6 @@ void moveToAbortados(int socketId) {
 	nombre[4 + largoId] = '\0';
 
 	printf("al coordinador le mando %s", nombre);
-	puts("aux");
 
 	enviarHeader(socketCoordinador, nombre, COMANDO_KILL);
 	enviarMensaje(socketCoordinador, nombre);
