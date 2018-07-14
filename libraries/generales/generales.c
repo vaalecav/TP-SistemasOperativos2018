@@ -50,9 +50,12 @@ void* list_remove_by_condition_with_param(t_list *self, void* param, int(*condit
 	return NULL;
 }
 
-void freeNull(void* x) {
-	if (x != NULL) {
-		free(x);
-		x = NULL;
+void list_iterate_with_param(t_list* self, void* param, void(*closure)(void*, void*)) {
+	t_link_element *element = self->head;
+	t_link_element *aux = NULL;
+	while (element != NULL) {
+		aux = element->next;
+		closure(param, element->data);
+		element = aux;
 	}
 }

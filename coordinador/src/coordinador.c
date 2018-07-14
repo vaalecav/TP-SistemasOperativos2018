@@ -344,6 +344,13 @@ void manejarComandoStatus(int socketPlanificador, int largoMensaje){
 	free(instanciaNueva);
 }
 
+void desbloquearClavesQueTenganEsi(void* nombreEsi, void* clave) {
+	if (strcmp(((Clave*) clave)->nombreEsi, (char*) nombreEsi) == 0) {
+		log_trace(logCoordinador, "Desbloqueo la clave %s del esi %s", ((Clave*) clave)->nombre, ((Clave*) clave)->nombreEsi);
+		((Clave*) clave)->bloqueado = 0;
+	}
+}
+
 void manejarComandoKill(int socketPlanificador, int largoMensaje){
 	void* instanciaVoid;
 	void* claveVoid;
@@ -353,13 +360,12 @@ void manejarComandoKill(int socketPlanificador, int largoMensaje){
 	recibirMensaje(socketPlanificador, largoMensaje, &nombreEsi);
 	// Busco instancias con claves del esi
 	pthread_mutex_lock(&mutexListaInstancias);
-	if ((instanciaVoid = list_find_with_param(listaInstancias, (void*) nombreEsi, buscarInstanciaConEsi)) != NULL){
+
+	// Duplico la lista de  instancias, voy recorriendolas y desbloqueo todas las claves
+	t_list* duplicada = list_duplicate(listaInstancias);
+	while ((instanciaVoid = list_remove_by_condition_with_param(duplicada, (void*) nombreEsi, buscarInstanciaConEsi)) != NULL){
 		// Busco claves del esi en la instancia
-		if ((claveVoid = list_find_with_param(((Instancia*) instanciaVoid)->claves, (void*) nombreEsi, buscarClaveDeEsi)) != NULL){
-			clave = (Clave*) claveVoid;
-			// Desbloqueo clave del esi
-			clave->bloqueado = 0;
-		}
+		list_iterate_with_param(((Instancia*) instanciaVoid)->claves, (void*) nombreEsi, desbloquearClavesQueTenganEsi);
 	}
 	pthread_mutex_unlock(&mutexListaInstancias);
 
@@ -648,7 +654,7 @@ void getClave(char* key, int socketPlanificador, int socketEsi, char* nombreEsi)
 
 				// Aviso
 				avisarA(socketEsi, "", respuestaGET);
-				avisarA(socketPlanificador, "", respuestaGET);
+				avisarA(socketPlanificador, clave->nombre, respuestaGET);
 			}
 			pthread_mutex_unlock(&mutexListaInstancias);
 		} else {

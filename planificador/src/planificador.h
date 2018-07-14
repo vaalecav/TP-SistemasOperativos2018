@@ -31,9 +31,14 @@
 
 int cmdQuit(), cmdHelp(), cmdPause(), cmdContinue(), cmdColaReady(),
 		cmdColaBloqueados(), cmdColaTerminados(), cmdListaClaves(), cmdKill(),
-		cmdStatus(), cmdDesbloquear(), cmdBloquear(), cmdColaAbortados(); // Son las funciones que ejecutan los comandos ingresados por consola.
+		cmdStatus(), cmdDesbloquear(), cmdBloquear(), cmdColaAbortados(), cmdListaClavesi(); // Son las funciones que ejecutan los comandos ingresados por consola.
 
 //==========================ESTRUCTURAS=========================================
+
+typedef struct CLAVESI {
+	char * clave;
+	int esi;
+} CLAVESI ;
 
 typedef struct CLAVE {
 	char* clave;
@@ -74,6 +79,8 @@ COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
 
 { "listaClaves", cmdListaClaves, "Imprime la lista de Claves.", 0 },
 
+{ "listaClavesi", cmdListaClavesi, "Imprime la lista de Clavesi.", 0 },
+
 { "bloquear", cmdBloquear, "Bloquea una clave.", 2 },
 
 { "desbloquear", cmdDesbloquear, "Desbloquea una clave.", 1 },
@@ -100,9 +107,11 @@ t_list* colaBloqueados;		// Lista enlazada de Bloqueados.
 t_list* colaTerminados;		// Lista enlazada de Terminados.
 t_list* colaAbortados;		// Lista enlazada de Abortados.
 t_list* listaClaves;		// Lista enladaza de Claves y sus Bloqueados.
+t_list* listaClavesi;
 int socketCoordinador;		// Socket del Coordinador.
 int alphaHRRN;				// Alpha para calculos del HRRN.
 pthread_mutex_t mutexTerminarEsi;
+pthread_mutex_t mutexTerminarInvertido;
 
 //=====================FUNCIONES DE PLANIFICADOR=====================================
 
@@ -128,6 +137,8 @@ void* calcularRatio(void* esiCalcularRatio);
 bool mayorRatio(void* esi1Void, void* esi2Void);
 void realizarEstimaciones();
 void realizarRatios();
+int removerPorId(void* clavesiVoid, void* idVoid);
+void moveToAbortados(int socketId);
 
 //=====================FUNCIONES DE CONSOLA=====================================
 

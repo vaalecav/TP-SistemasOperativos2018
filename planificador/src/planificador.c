@@ -17,6 +17,7 @@ int main() {
 	pthread_t hiloAlgoritmos;
 	char* ipCoordinador;
 	int puertoCoordinador;
+	pthread_mutex_lock(&mutexTerminarInvertido);
 
 	// Leo el Archivo de Configuracion //
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
@@ -34,6 +35,7 @@ int main() {
 	colaTerminados = list_create();
 	colaAbortados = list_create();
 	listaClaves = list_create();
+	listaClavesi = list_create();
 
 	// Inicio el hilo que maneja las Conexiones //
 	if (pthread_create(&hiloConexiones, NULL, (void *) tratarConexiones,
@@ -83,7 +85,7 @@ void manejoAlgoritmos() {
 	int paraSwitchear;
 	char* clave;
 	int flagFin;
-
+	int seTermina = 0;
 	// CLAVES BLOQUEADAS DESDE EL PRINCIPIO //
 	char* clavesBloqueadas = config_get_string_value(configuracion,
 			"CLAVES_BLOQUEADAS");
@@ -129,11 +131,15 @@ void manejoAlgoritmos() {
 						enviarHeader(esi->socket, "", PLANIFICADOR);
 						CLAVE * claveAux;
 
+						sleep(5);
+
 						// Le quito la espera y la rafaga anterior //
 						esi->espera = 0;
 
 						// Espero la respuesta //
+						puts("ME TRABE ACA");
 						header = recibirHeader(socketCoordinador);
+						puts("NO ME TRABE ACA");
 
 						// Veo que tengo que hacer //
 						paraSwitchear = chequearRespuesta(header->id);
@@ -143,6 +149,7 @@ void manejoAlgoritmos() {
 							// Lo agrego a la cola de Abortados //
 							list_add(colaAbortados, (void*) esi);
 							flagFin = 1;
+							seTermina = 1;
 							break;
 
 						case 1: // BLOQUEO //
@@ -162,7 +169,7 @@ void manejoAlgoritmos() {
 							flagFin = 1;
 							break;
 
-						case 2: // EXITO //
+						case 2: // EXITO SET //
 							esi->lineas--;
 							esi->rafaga++;
 							switch (esi->lineas) {
@@ -170,6 +177,38 @@ void manejoAlgoritmos() {
 								// Lo agrego a la cola de Terminados //
 								list_add(colaTerminados, (void*) esi);
 								flagFin = 1;
+								seTermina = 1;
+								break;
+							}
+							break;
+
+						case 5: // EXITO GET ya existe la clave //
+							clave = malloc(header->largo + 1);
+							recibirMensaje(socketCoordinador, header->largo,
+									&clave);
+							clave[header->largo] = '\0';
+
+							esi->lineas--;
+							esi->rafaga++;
+
+							// Agrego a CLAVESI
+							CLAVESI* clavesiNuevo = malloc(sizeof(CLAVESI));
+							clavesiNuevo->clave = malloc(strlen(clave) + 1);
+							strcpy(clavesiNuevo->clave, clave);
+							clavesiNuevo->clave[strlen(clave)] = '\0';
+							clavesiNuevo->esi = esi->id;
+
+							printf("Agrego clave %s al esi %d\n",
+									clavesiNuevo->clave, clavesiNuevo->esi);
+							puts("XXXX");
+							list_add(listaClavesi, (void*) clavesiNuevo);
+
+							switch (esi->lineas) {
+							case 0: // TERMINO EL ESI //
+								// Lo agrego a la cola de Terminados //
+								list_add(colaTerminados, (void*) esi);
+								flagFin = 1;
+								seTermina = 1;
 								break;
 							}
 							break;
@@ -184,17 +223,30 @@ void manejoAlgoritmos() {
 							desbloquearClave(clave);
 							esi->lineas--;
 							esi->rafaga++;
+
+							// LO SACO DE CLAVESI //
+							CLAVESI* clavesiSacar;
+							void* clavesiSacarVoid;
+							clavesiSacarVoid =
+									list_remove_by_condition_with_param(
+											listaClavesi, (void*) esi->id,
+											removerPorId);
+							clavesiSacar = (CLAVESI*) clavesiSacarVoid;
+							free(clavesiSacar->clave);
+							free(clavesiSacar);
+
 							switch (esi->lineas) {
 							case 0: // TERMINO EL ESI //
 								// Lo agrego a la cola de Terminados //
 								list_add(colaTerminados, (void*) esi);
 								flagFin = 1;
+								seTermina = 1;
 								break;
 							}
 							free(clave);
 							break;
 
-						case 4:
+						case 4: // GET hay que crear la clave //
 							clave = malloc(header->largo + 1);
 							recibirMensaje(socketCoordinador, header->largo,
 									&clave);
@@ -207,11 +259,27 @@ void manejoAlgoritmos() {
 							list_add(listaClaves, (void*) claveAux);
 							esi->lineas--;
 							esi->rafaga++;
+
+							// Agrego a CLAVESI
+							CLAVESI* clavesiNuevo2 = malloc(sizeof(CLAVESI));
+							clavesiNuevo2->clave = malloc(
+									strlen(claveAux->clave) + 1);
+							strcpy(clavesiNuevo2->clave, claveAux->clave);
+							clavesiNuevo2->clave[strlen(claveAux->clave)] =
+									'\0';
+							clavesiNuevo2->esi = esi->id;
+
+							printf("Agrego clave %s al esi %d\n",
+									clavesiNuevo2->clave, clavesiNuevo2->esi);
+							puts("XXXX");
+							list_add(listaClavesi, (void*) clavesiNuevo2);
+
 							switch (esi->lineas) {
 							case 0: // TERMINO EL ESI //
 								// Lo agrego a la cola de Terminados //
 								list_add(colaTerminados, (void*) esi);
 								flagFin = 1;
+								seTermina = 1;
 								break;
 							}
 							free(clave);
@@ -221,6 +289,13 @@ void manejoAlgoritmos() {
 						free(header);
 
 						aumentarEsperaDeEsi();
+						pthread_mutex_unlock(&mutexTerminarEsi);
+
+						// SI seTermina es uno significa que el ESI termina, por lo tanto tengo que esperar al semaforo //
+						if (seTermina == 1) {
+							pthread_mutex_lock(&mutexTerminarInvertido);
+							seTermina = 0;
+						}
 
 						if (strcmp(algoritmo, "SJF-CD") == 0) {
 							if (flagFin == 0) {
@@ -230,7 +305,8 @@ void manejoAlgoritmos() {
 							}
 						}
 
-						pthread_mutex_unlock(&mutexTerminarEsi);
+						while (ejecutar == 0)
+							;
 					}
 				}
 			}
@@ -387,6 +463,13 @@ int buscarEnBloqueados(void* esiVoid, void* idVoid) {
 	return esi->id == id;
 }
 
+int removerPorId(void* clavesiVoid, void* idVoid) {
+	CLAVESI * clavesi = (CLAVESI*) clavesiVoid;
+	int id = (int*) idVoid;
+// 													ANTES COMO: int id = (int*) idVoid;
+	return clavesi->esi == id;
+}
+
 int buscarPorSocket(void* esiVoid, void* idVoid) {
 	DATA * esi = (DATA*) esiVoid;
 	int id = (int*) idVoid;
@@ -424,13 +507,13 @@ int chequearRespuesta(int id) {
 	case COORDINADOR_ESI_BLOQUEADO:
 		a = 1;
 		break;
-	case COORDINADOR_ESI_BLOQUEAR:
-		a = 2;
+	case COORDINADOR_ESI_BLOQUEAR: // GET ya existe la clave
+		a = 5;
 		break;
-	case COORDINADOR_ESI_CREADO:
+	case COORDINADOR_ESI_CREADO: // GET no existe la clave
 		a = 4;
 		break;
-	case INSTANCIA_SENTENCIA_OK_SET:
+	case INSTANCIA_SENTENCIA_OK_SET: // SET
 		a = 2;
 		break;
 	case INSTANCIA_SENTENCIA_OK_STORE:
@@ -491,7 +574,10 @@ void tratarConexiones() {
 		for (i = 0; i < numeroClientes; i++) {
 			if (FD_ISSET(socketCliente[i], &descriptoresLectura)) {
 				// Se indica que el cliente ha cerrado la conexión
+				puts("HOLA");
 				moveToAbortados(socketCliente[i]);
+				puts("CHAU");
+				pthread_mutex_unlock(&mutexTerminarInvertido);
 				close(socketCliente[i]);
 				remove_element(socketCliente, i, numeroClientes);
 				numeroClientes--;
@@ -608,6 +694,11 @@ void imprimirEnPantallaClaves(void* claveVoid) {
 	list_iterate(clave->listaEsi, imprimirEnPantallaClavesAux);
 }
 
+void imprimirEnPantallaClavesi(void* clavesiVoid) {
+	CLAVESI* clavesi = (CLAVESI*) clavesiVoid;
+	printf("CLAVE: %s la tiene ESI: %d\n", clavesi->clave, clavesi->esi);
+}
+
 void imprimirEnPantallaClavesAux(void* idVoid) {
 	int id = (int*) idVoid;
 	printf("ESI ID: %d\n", id);
@@ -640,16 +731,24 @@ void moveToAbortados(int socketId) {
 			list_add(colaTerminados, (void*) esiAMatar);
 		}
 	}
-	pthread_mutex_unlock(&mutexTerminarEsi);
+
+	while (list_remove_by_condition_with_param(listaClavesi,
+			(void*) esiAMatar->id, removerPorId) != NULL);
+
+
 	largoId = floor(log10(abs(esiAMatar->id))) + 1;
 	nombre = malloc(4 + largoId + 1);
 	sprintf(nombre, "ESI %d", esiAMatar->id);
 	nombre[4 + largoId] = '\0';
 
+	printf("al coordinador le mando %s", nombre);
+	puts("aux");
+
 	enviarHeader(socketCoordinador, nombre, COMANDO_KILL);
 	enviarMensaje(socketCoordinador, nombre);
 
 	free(nombre);
+	pthread_mutex_unlock(&mutexTerminarEsi);
 }
 
 void matarEsi(int esi) {
@@ -807,8 +906,6 @@ void hacerStatus(char *clave) {
  }
  }
 
-
-
  //=======================COMANDOS DE CONSOLA====================================
  int cmdDeadlock() {
  deadlock();
@@ -840,6 +937,11 @@ int cmdStatus(char* clave) {
 
 int cmdListaClaves() {
 	list_iterate(listaClaves, imprimirEnPantallaClaves);
+	return 0;
+}
+
+int cmdListaClavesi() {
+	list_iterate(listaClavesi, imprimirEnPantallaClavesi);
 	return 0;
 }
 
