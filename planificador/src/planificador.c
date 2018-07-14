@@ -295,15 +295,19 @@ void manejoAlgoritmos() {
 
 						if (strcmp(algoritmo, "SJF-CD") == 0) {
 							if (flagFin == 0) {
-								realizarEstimaciones();
-								list_sort(colaReady, menorCantidadDeLineas);
-								void* mejorEsiVoid = list_get(colaReady, 0);
-								DATA* mejorEsi = (DATA*) mejorEsiVoid;
-								float estimacionCalculada = esi->estimacion - esi->rafaga;
-								if(mejorEsi->estimacion < estimacionCalculada){
-									flagFin = 1;
-									esi->necesitaCalcular = 1;
-									list_add(colaReady, (void*) esi);
+								if (!list_is_empty(colaReady)) {
+									realizarEstimaciones();
+									list_sort(colaReady, menorCantidadDeLineas);
+									void* mejorEsiVoid = list_get(colaReady, 0);
+									DATA* mejorEsi = (DATA*) mejorEsiVoid;
+									float estimacionCalculada = esi->estimacion
+											- esi->rafaga;
+									if (mejorEsi->estimacion
+											<= estimacionCalculada) {
+										flagFin = 1;
+										esi->necesitaCalcular = 1;
+										list_add(colaReady, (void*) esi);
+									}
 								}
 							}
 						}
@@ -322,6 +326,7 @@ void aumentarEsperaDeEsi() {
 	list_aux = list_map(colaReady, aumentarEspera);
 	list_destroy(colaReady);
 	colaReady = list_aux;
+
 }
 
 void realizarRatios() {
@@ -458,7 +463,7 @@ bool mayorRatio(void* esi1Void, void* esi2Void) {
 	DATA* esi1 = (DATA*) esi1Void;
 	DATA* esi2 = (DATA*) esi2Void;
 
-	return esi1->ratio > esi2->ratio;
+	return esi1->ratio >= esi2->ratio;
 }
 
 bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
