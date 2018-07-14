@@ -165,7 +165,6 @@ void manejarEsi(int socketEsi, int socketPlanificador, int largoMensaje) {
 	recibirMensaje(socketEsi, largoMensaje, &nombre);
 
 	// Recibo mensaje del esi
-	header = (ContentHeader*) malloc(sizeof(ContentHeader));
 	header = recibirHeader(socketEsi);
 	mensaje = malloc(header->largo + 1);
 	recibirMensaje(socketEsi, header->largo, &mensaje);
@@ -236,13 +235,9 @@ void manejarConexion(void* socketsNecesarios) {
 
 int correrEnHilo(SocketHilos socketsConectados) {
 	pthread_t idHilo;
-	SocketHilos* socketsNecesarios;
-	socketsNecesarios = (SocketHilos*) malloc(sizeof(SocketHilos));
-	*socketsNecesarios = socketsConectados;
 
-	if (pthread_create(&idHilo, NULL, (void*) manejarConexion, (void*) socketsNecesarios)) {
+	if (pthread_create(&idHilo, NULL, (void*) manejarConexion, (void*) &socketsConectados)) {
 		log_error(logCoordinador, "No se pudo crear el hilo");
-		free(socketsNecesarios);
 		return 0;
 	}
 
@@ -365,6 +360,7 @@ void manejarComandoKill(int socketPlanificador, int largoMensaje){
 		// Busco claves del esi en la instancia
 		list_iterate_with_param(((Instancia*) instanciaVoid)->claves, (void*) nombreEsi, desbloquearClavesQueTenganEsi);
 	}
+	list_destroy(duplicada);
 	pthread_mutex_unlock(&mutexListaInstancias);
 
 	free(nombreEsi);
@@ -393,6 +389,8 @@ void manejarBloquearClaveManual(int socketPlanificador, int largoMensaje) {
 		
 		free(claves);
 	}
+
+	free(todasLasClaves);
 }
 
 void manejarDesbloquearClaveManual(int socketPlanificador, int largoMensaje){

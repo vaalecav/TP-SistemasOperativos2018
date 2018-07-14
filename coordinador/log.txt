@@ -1123,3 +1123,930 @@ ESI 2 || STORE futbol:messi
 ESI 3 || GET futbol:messi
 ESI 3 || SET futbol:messi TraemeLaCopa
 ESI 3 || STORE futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || GET aventura
+ESI 1 || SET aventura jake
+ESI 1 || GET hora
+ESI 1 || SET hora finn
+ESI 1 || GET reino
+ESI 1 || SET reino hielo
+ESI 1 || GET arbol
+ESI 1 || SET arbol bmo
+ESI 1 || GET caramelo
+ESI 1 || SET caramelo princesa
+ESI 1 || GET xilofon
+ESI 1 || SET xilofon magico
+ESI 1 || STORE aventura
+ESI 1 || STORE hora
+ESI 1 || STORE reino
+ESI 1 || STORE arbol
+ESI 1 || STORE caramelo
+ESI 1 || STORE xilofon
+ESI 2 || GET boca
+ESI 3 || GET futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || GET futbol:messi
+ESI 2 || GET futbol:messi
+ESI 3 || GET futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || GET futbol:messi
+ESI 2 || GET futbol:messi
+ESI 3 || GET futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || GET futbol:messi
+ESI 2 || GET futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || GET boca
+ESI 2 || GET flauta
+ESI 3 || GET futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 2 || GET flauta
+ESI 3 || GET boca
+ESI 3 || GET boca
+ESI 3 || GET futbol:palermo
+ESI 3 || SET futbol:palermo Hola
+ESI 3 || STORE boca
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 2 || GET flauta
+ESI 3 || GET boca
+ESI 3 || GET boca
+ESI 3 || GET futbol:palermo
+ESI 3 || SET futbol:palermo Hola
+ESI 3 || SET boca campeon
+ESI 3 || STORE boca
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 2 || GET flauta
+ESI 3 || GET boca
+ESI 3 || GET boca
+ESI 3 || GET futbol:palermo
+ESI 3 || SET futbol:palermo Hola
+ESI 3 || SET boca campeon
+ESI 3 || STORE futbol:palermo
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 2 || GET flauta
+ESI 3 || GET boca
+ESI 3 || GET boca
+ESI 3 || GET futbol:palermo
+ESI 3 || SET futbol:palermo Hola
+ESI 3 || SET boca campeon
+ESI 3 || STORE boca
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 2 || GET flauta
+ESI 3 || GET boca
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 2 || GET flauta
+ESI 3 || GET boca
+ESI 3 || GET boca
+ESI 3 || GET futbol:palermo
+ESI 3 || SET futbol:palermo Hola
+ESI 3 || SET boca campeon
+ESI 3 || STORE boca
+ESI 2 || GET flauta
+ESI 2 || SET flauta riquelme
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 2 || GET futbol:messi
+ESI 2 || SET futbol:messi TraemeLaCopa
+ESI 2 || STORE futbol:messi
+ESI 3 || GET futbol:messi
+ESI 3 || SET futbol:messi TraemeLaCopa
+ESI 3 || STORE futbol:messi
+ESI 4 || GET futbol:messi
+ESI 4 || SET futbol:messi TraemeLaCopa
+ESI 4 || STORE futbol:messi
+ESI 5 || GET futbol:messi
+ESI 5 || SET futbol:messi TraemeLaCopa
+ESI 5 || STORE futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 2 || GET futbol:messi
+ESI 2 || SET futbol:messi TraemeLaCopa
+ESI 2 || STORE futbol:messi
+ESI 3 || GET futbol:messi
+ESI 3 || SET futbol:messi TraemeLaCopa
+ESI 3 || STORE futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 1 || GET futbol:messi
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 1 || STORE futbol:messi
+ESI 2 || GET futbol:messi
+ESI 2 || SET futbol:messi TraemeLaCopa
+ESI 2 || STORE futbol:messi
+ESI 3 || GET futbol:messi
+ESI 3 || SET futbol:messi TraemeLaCopa
+ESI 3 || STORE futbol:messi
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || GET futbol:messi4
+ESI 1 || GET futbol:messi5
+ESI 1 || GET futbol:messi6
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || GET futbol:messi4
+ESI 1 || GET futbol:messi5
+ESI 1 || GET futbol:messi6
+ESI 1 || GET futbol:messi7
+ESI 1 || GET futbol:messi8
+ESI 1 || GET futbol:messi9
+ESI 1 || SET futbol:messi TraemeLaCopa
+ESI 2 || GET futbol:messi1
+ESI 3 || GET futbol:messi1
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 2 || GET futbol:messi2
+ESI 2 || GET futbol:messi3
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 2 || GET futbol:messi2
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 2 || GET futbol:messi2
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 2 || GET futbol:messi2
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 2 || GET futbol:messi2
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 2 || GET futbol:messi2
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 2 || GET futbol:messi2
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 2 || GET futbol:messi2
+ESI 2 || GET futbol:messi3
+ESI 2 || SET futbol:messi1 TraemeLaCopa
+ESI 2 || STORE futbol:messi1
+ESI 3 || GET futbol:messi1
+ESI 3 || GET futbol:messi2
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 2 || GET futbol:messi2
+ESI 2 || GET futbol:messi3
+ESI 2 || SET futbol:messi1 TraemeLaCopa
+ESI 2 || STORE futbol:messi1
+ESI 3 || GET futbol:messi1
+ESI 3 || GET futbol:messi2
+ESI 3 || GET futbol:messi3
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 2 || GET futbol:messi2
+ESI 2 || GET futbol:messi3
+ESI 2 || SET futbol:messi1 TraemeLaCopa
+ESI 2 || STORE futbol:messi1
+ESI 3 || GET futbol:messi1
+ESI 3 || GET futbol:messi2
+ESI 3 || GET futbol:messi3
+ESI 3 || SET futbol:messi1 TraemeLaCopa
+ESI 3 || STORE futbol:messi1
+ESI 1 || GET futbol:messi1
+ESI 1 || GET futbol:messi2
+ESI 1 || GET futbol:messi3
+ESI 1 || SET futbol:messi1 TraemeLaCopa
+ESI 1 || STORE futbol:messi1
+ESI 2 || GET futbol:messi1
+ESI 2 || GET futbol:messi2
+ESI 2 || GET futbol:messi3
+ESI 2 || SET futbol:messi1 TraemeLaCopa
+ESI 2 || STORE futbol:messi1
+ESI 3 || GET futbol:messi1
+ESI 3 || GET futbol:messi2
+ESI 3 || GET futbol:messi3
+ESI 3 || SET futbol:messi1 TraemeLaCopa
+ESI 3 || STORE futbol:messi1
+ESI 1 || GET sony:consola:ps1
+ESI 1 || GET sony:consola:ps2
+ESI 1 || GET sony:consola:ps3
+ESI 1 || GET sony:consola:ps4
+ESI 1 || GET microsoft:consola:xbox
+ESI 1 || GET microsoft:consola:xbox360
+ESI 1 || GET microsoft:consola:xboxone
+ESI 1 || GET nintendo:consola:nes
+ESI 1 || GET nintendo:consola:snes
+ESI 1 || GET nintendo:consola:nintendo64
+ESI 1 || GET nintendo:consola:gamecube
+ESI 1 || GET nintendo:consola:wii
+ESI 1 || GET nintendo:consola:wiiu
+ESI 1 || GET nintendo:consola:switch
+ESI 1 || SET nintendo:consola:nes Mario
+ESI 1 || SET nintendo:consola:snes SuperMario
+ESI 1 || SET nintendo:consola:nintendo64 Mario64
+ESI 1 || SET nintendo:consola:gamecube Mario
+ESI 1 || SET nintendo:consola:wii MarioGalaxy
+ESI 1 || SET nintendo:consola:wiiu RIP
+ESI 1 || SET nintendo:consola:switch MarioOddysey
+ESI 1 || SET sony:consola:ps1 FinalFantasy
+ESI 1 || SET sony:consola:ps2 GodOfWar
+ESI 1 || SET sony:consola:ps3 TLOU
+ESI 1 || SET sony:consola:ps4 Bloodborne
+ESI 1 || SET microsoft:consola:xbox Halo
+ESI 1 || SET microsoft:consola:xbox360 Halo
+ESI 1 || SET microsoft:consola:xboxone Halo
+ESI 2 || GET sony:consola:ps1
+ESI 2 || GET sony:consola:ps2
+ESI 2 || GET sony:consola:ps3
+ESI 2 || GET sony:consola:ps4
+ESI 2 || GET microsoft:consola:xbox
+ESI 2 || GET microsoft:consola:xbox360
+ESI 2 || GET microsoft:consola:xboxone
+ESI 2 || GET nintendo:consola:nes
+ESI 2 || GET nintendo:consola:snes
+ESI 2 || GET nintendo:consola:nintendo64
+ESI 2 || GET nintendo:consola:gamecube
+ESI 2 || GET nintendo:consola:wii
+ESI 2 || GET nintendo:consola:wiiu
+ESI 2 || GET nintendo:consola:switch
+ESI 2 || SET nintendo:consola:nes Mario
+ESI 2 || SET nintendo:consola:snes SuperMario
+ESI 2 || SET nintendo:consola:nintendo64 Mario64
+ESI 2 || SET nintendo:consola:gamecube FinalFantasyTactics
+ESI 2 || SET nintendo:consola:wii MarioGalaxy
+ESI 2 || SET nintendo:consola:wii MarioGalaxy2
+ESI 2 || SET nintendo:consola:wiiu RIP
+ESI 2 || SET nintendo:consola:nintendo64 MarioKart
+ESI 2 || SET sony:consola:ps1 FF7
+ESI 2 || SET nintendo:consola:nintendo64 PkmnSnap
+ESI 2 || SET sony:consola:ps2 GodOfWar
+ESI 2 || SET sony:consola:ps1 FF8
+ESI 2 || SET sony:consola:ps3 TLOU
+ESI 2 || SET sony:consola:ps2 GodOfWar2
+ESI 2 || SET sony:consola:ps4 Bloodborne
+ESI 2 || SET sony:consola:ps3 GodOfWar3
+ESI 2 || SET microsoft:consola:xbox Halo
+ESI 2 || SET microsoft:consola:xbox360 Halo
+ESI 2 || SET microsoft:consola:xboxone Halo
+ESI 2 || SET nintendo:consola:switch ZeldaBOTW
+ESI 3 || GET primerplato:ingrediente1
+ESI 3 || GET platoprincipal:ingrediente1
+ESI 3 || GET segundoplato:ingrediente1
+ESI 3 || GET postre:ingrediente1
+ESI 3 || GET primerplato:ingrediente2
+ESI 3 || GET platoprincipal:ingrediente2
+ESI 3 || GET segundoplato:ingrediente2
+ESI 3 || GET postre:ingrediente2
+ESI 3 || GET primerplato:ingrediente3
+ESI 3 || GET platoprincipal:ingrediente3
+ESI 3 || GET segundoplato:ingrediente3
+ESI 5 || GET bebida1
+ESI 5 || GET bebida10
+ESI 5 || GET bebida11
+ESI 5 || GET bebida12
+ESI 5 || GET bebida13
+ESI 6 || GET platoprincipal:ingrediente5
+ESI 6 || GET platoprincipal:ingrediente4
+ESI 6 || GET platoprincipal:ingrediente3
+ESI 7 || GET bebida2
+ESI 7 || GET bebida3
+ESI 7 || GET bebida4
+ESI 7 || GET bebida5
+ESI 7 || GET bebida6
+ESI 7 || GET bebida7
+ESI 7 || GET bebida8
+ESI 7 || GET bebida9
+ESI 7 || GET bebida10
+ESI 5 || GET bebida13
+ESI 5 || GET bebida14
+ESI 5 || GET bebida15
+ESI 5 || GET bebida2
+ESI 3 || GET segundoplato:ingrediente3
+ESI 3 || GET postre:ingrediente3
+ESI 3 || GET primerplato:ingrediente4
+ESI 3 || GET platoprincipal:ingrediente4
+ESI 1 || GET sony:consola:ps1
+ESI 1 || GET sony:consola:ps2
+ESI 1 || GET sony:consola:ps3
+ESI 1 || GET sony:consola:ps4
+ESI 1 || GET microsoft:consola:xbox
+ESI 1 || GET microsoft:consola:xbox360
+ESI 1 || GET microsoft:consola:xboxone
+ESI 1 || GET nintendo:consola:nes
+ESI 1 || GET nintendo:consola:snes
+ESI 1 || GET nintendo:consola:nintendo64
+ESI 1 || GET nintendo:consola:gamecube
+ESI 1 || GET nintendo:consola:wii
+ESI 1 || GET nintendo:consola:wiiu
+ESI 1 || GET nintendo:consola:switch
+ESI 1 || SET nintendo:consola:nes Mario
+ESI 1 || SET nintendo:consola:snes SuperMario
+ESI 1 || SET nintendo:consola:nintendo64 Mario64
+ESI 1 || SET nintendo:consola:gamecube Mario
+ESI 1 || SET nintendo:consola:wii MarioGalaxy
+ESI 1 || SET nintendo:consola:wiiu RIP
+ESI 1 || SET nintendo:consola:switch MarioOddysey
+ESI 1 || SET sony:consola:ps1 FinalFantasy
+ESI 1 || SET sony:consola:ps2 GodOfWar
+ESI 1 || SET sony:consola:ps3 TLOU
+ESI 1 || SET sony:consola:ps4 Bloodborne
+ESI 1 || SET microsoft:consola:xbox Halo
+ESI 1 || SET microsoft:consola:xbox360 Halo
+ESI 1 || SET microsoft:consola:xboxone Halo
+ESI 2 || GET sony:consola:ps1
+ESI 2 || GET sony:consola:ps2
+ESI 2 || GET sony:consola:ps3
+ESI 2 || GET sony:consola:ps4
+ESI 2 || GET microsoft:consola:xbox
+ESI 2 || GET microsoft:consola:xbox360
+ESI 2 || GET microsoft:consola:xboxone
+ESI 2 || GET nintendo:consola:nes
+ESI 2 || GET nintendo:consola:snes
+ESI 2 || GET nintendo:consola:nintendo64
+ESI 2 || GET nintendo:consola:gamecube
+ESI 2 || GET nintendo:consola:wii
+ESI 2 || GET nintendo:consola:wiiu
+ESI 2 || GET nintendo:consola:switch
+ESI 2 || SET nintendo:consola:nes Mario
+ESI 2 || SET nintendo:consola:snes SuperMario
+ESI 2 || SET nintendo:consola:nintendo64 Mario64
+ESI 2 || SET nintendo:consola:gamecube FinalFantasyTactics
+ESI 2 || SET nintendo:consola:wii MarioGalaxy
+ESI 2 || SET nintendo:consola:wii MarioGalaxy2
+ESI 2 || SET nintendo:consola:wiiu RIP
+ESI 2 || SET nintendo:consola:nintendo64 MarioKart
+ESI 2 || SET sony:consola:ps1 FF7
+ESI 2 || SET nintendo:consola:nintendo64 PkmnSnap
+ESI 2 || SET sony:consola:ps2 GodOfWar
+ESI 2 || SET sony:consola:ps1 FF8
+ESI 2 || SET sony:consola:ps3 TLOU
+ESI 2 || SET sony:consola:ps2 GodOfWar2
+ESI 2 || SET sony:consola:ps4 Bloodborne
+ESI 2 || SET sony:consola:ps3 GodOfWar3
+ESI 2 || SET microsoft:consola:xbox Halo
+ESI 2 || SET microsoft:consola:xbox360 Halo
+ESI 2 || SET microsoft:consola:xboxone Halo
+ESI 2 || SET nintendo:consola:switch ZeldaBOTW
+ESI 3 || GET primerplato:ingrediente1
+ESI 3 || GET platoprincipal:ingrediente1
+ESI 3 || GET segundoplato:ingrediente1
+ESI 3 || GET postre:ingrediente1
+ESI 3 || GET primerplato:ingrediente2
+ESI 3 || GET platoprincipal:ingrediente2
+ESI 3 || GET segundoplato:ingrediente2
+ESI 3 || GET postre:ingrediente2
+ESI 3 || GET primerplato:ingrediente3
+ESI 3 || GET platoprincipal:ingrediente3
+ESI 3 || GET segundoplato:ingrediente3
+ESI 4 || GET bebida1
+ESI 4 || GET bebida10
+ESI 4 || GET bebida11
+ESI 4 || GET bebida12
+ESI 4 || GET bebida13
+ESI 5 || GET platoprincipal:ingrediente5
+ESI 5 || GET platoprincipal:ingrediente4
+ESI 5 || GET platoprincipal:ingrediente3
+ESI 6 || GET bebida2
+ESI 6 || GET bebida3
+ESI 6 || GET bebida4
+ESI 6 || GET bebida5
+ESI 6 || GET bebida6
+ESI 6 || GET bebida7
+ESI 6 || GET bebida8
+ESI 6 || GET bebida9
+ESI 6 || GET bebida10
+ESI 4 || GET bebida13
+ESI 4 || GET bebida14
+ESI 4 || GET bebida15
+ESI 4 || GET bebida2
+ESI 3 || GET segundoplato:ingrediente3
+ESI 3 || GET postre:ingrediente3
+ESI 3 || GET primerplato:ingrediente4
+ESI 3 || GET platoprincipal:ingrediente4
+ESI 1 || GET sony:consola:ps1
+ESI 1 || GET sony:consola:ps2
+ESI 1 || GET sony:consola:ps3
+ESI 1 || GET sony:consola:ps4
+ESI 1 || GET microsoft:consola:xbox
+ESI 1 || GET microsoft:consola:xbox360
+ESI 1 || GET microsoft:consola:xboxone
+ESI 1 || GET nintendo:consola:nes
+ESI 1 || GET nintendo:consola:snes
+ESI 1 || GET nintendo:consola:nintendo64
+ESI 1 || GET nintendo:consola:gamecube
+ESI 1 || GET nintendo:consola:wii
+ESI 1 || GET nintendo:consola:wiiu
+ESI 1 || GET nintendo:consola:switch
+ESI 1 || SET nintendo:consola:nes Mario
+ESI 1 || SET nintendo:consola:snes SuperMario
+ESI 1 || SET nintendo:consola:nintendo64 Mario64
+ESI 1 || SET nintendo:consola:gamecube Mario
+ESI 1 || SET nintendo:consola:wii MarioGalaxy
+ESI 1 || SET nintendo:consola:wiiu RIP
+ESI 1 || SET nintendo:consola:switch MarioOddysey
+ESI 1 || SET sony:consola:ps1 FinalFantasy
+ESI 1 || SET sony:consola:ps2 GodOfWar
+ESI 1 || SET sony:consola:ps3 TLOU
+ESI 1 || SET sony:consola:ps4 Bloodborne
+ESI 1 || SET microsoft:consola:xbox Halo
+ESI 1 || SET microsoft:consola:xbox360 Halo
+ESI 1 || SET microsoft:consola:xboxone Halo
+ESI 3 || GET sony:consola:ps1
+ESI 4 || GET primerplato:ingrediente1
+ESI 4 || GET platoprincipal:ingrediente1
+ESI 4 || GET segundoplato:ingrediente1
+ESI 4 || GET postre:ingrediente1
+ESI 4 || GET primerplato:ingrediente2
+ESI 4 || GET platoprincipal:ingrediente2
+ESI 4 || GET segundoplato:ingrediente2
+ESI 4 || GET postre:ingrediente2
+ESI 4 || GET primerplato:ingrediente3
+ESI 4 || GET platoprincipal:ingrediente3
+ESI 4 || GET segundoplato:ingrediente3
+ESI 5 || GET bebida1
+ESI 5 || GET bebida10
+ESI 5 || GET bebida11
+ESI 5 || GET bebida12
+ESI 5 || GET bebida13
+ESI 1 || GET sony:consola:ps1
+ESI 1 || GET sony:consola:ps2
+ESI 1 || GET sony:consola:ps3
+ESI 1 || GET sony:consola:ps4
+ESI 1 || GET microsoft:consola:xbox
+ESI 1 || GET microsoft:consola:xbox360
+ESI 1 || GET microsoft:consola:xboxone
+ESI 1 || GET nintendo:consola:nes
+ESI 1 || GET nintendo:consola:snes
+ESI 1 || GET nintendo:consola:nintendo64
+ESI 1 || GET nintendo:consola:gamecube
+ESI 1 || GET nintendo:consola:wii
+ESI 1 || GET nintendo:consola:wiiu
+ESI 1 || GET nintendo:consola:switch
+ESI 1 || SET nintendo:consola:nes Mario
+ESI 1 || SET nintendo:consola:snes SuperMario
+ESI 1 || SET nintendo:consola:nintendo64 Mario64
+ESI 1 || SET nintendo:consola:gamecube Mario
+ESI 1 || SET nintendo:consola:wii MarioGalaxy
+ESI 1 || SET nintendo:consola:wiiu RIP
+ESI 1 || SET nintendo:consola:switch MarioOddysey
+ESI 1 || SET sony:consola:ps1 FinalFantasy
+ESI 1 || SET sony:consola:ps2 GodOfWar
+ESI 1 || SET sony:consola:ps3 TLOU
+ESI 1 || SET sony:consola:ps4 Bloodborne
+ESI 1 || SET microsoft:consola:xbox Halo
+ESI 1 || SET microsoft:consola:xbox360 Halo
+ESI 1 || SET microsoft:consola:xboxone Halo
+ESI 2 || GET sony:consola:ps1
+ESI 2 || GET sony:consola:ps2
+ESI 2 || GET sony:consola:ps3
+ESI 2 || GET sony:consola:ps4
+ESI 2 || GET microsoft:consola:xbox
+ESI 2 || GET microsoft:consola:xbox360
+ESI 2 || GET microsoft:consola:xboxone
+ESI 2 || GET nintendo:consola:nes
+ESI 2 || GET nintendo:consola:snes
+ESI 2 || GET nintendo:consola:nintendo64
+ESI 2 || GET nintendo:consola:gamecube
+ESI 2 || GET nintendo:consola:wii
+ESI 2 || GET nintendo:consola:wiiu
+ESI 2 || GET nintendo:consola:switch
+ESI 2 || SET nintendo:consola:nes Mario
+ESI 2 || SET nintendo:consola:snes SuperMario
+ESI 2 || SET nintendo:consola:nintendo64 Mario64
+ESI 2 || SET nintendo:consola:gamecube FinalFantasyTactics
+ESI 2 || SET nintendo:consola:wii MarioGalaxy
+ESI 2 || SET nintendo:consola:wii MarioGalaxy2
+ESI 2 || SET nintendo:consola:wiiu RIP
+ESI 2 || SET nintendo:consola:nintendo64 MarioKart
+ESI 2 || SET sony:consola:ps1 FF7
+ESI 2 || SET nintendo:consola:nintendo64 PkmnSnap
+ESI 2 || SET sony:consola:ps2 GodOfWar
+ESI 2 || SET sony:consola:ps1 FF8
+ESI 2 || SET sony:consola:ps3 TLOU
+ESI 2 || SET sony:consola:ps2 GodOfWar2
+ESI 2 || SET sony:consola:ps4 Bloodborne
+ESI 2 || SET sony:consola:ps3 GodOfWar3
+ESI 2 || SET microsoft:consola:xbox Halo
+ESI 2 || SET microsoft:consola:xbox360 Halo
+ESI 2 || SET microsoft:consola:xboxone Halo
+ESI 2 || SET nintendo:consola:switch ZeldaBOTW
+ESI 3 || GET primerplato:ingrediente1
+ESI 3 || GET platoprincipal:ingrediente1
+ESI 3 || GET segundoplato:ingrediente1
+ESI 3 || GET postre:ingrediente1
+ESI 3 || GET primerplato:ingrediente2
+ESI 3 || GET platoprincipal:ingrediente2
+ESI 3 || GET segundoplato:ingrediente2
+ESI 3 || GET postre:ingrediente2
+ESI 3 || GET primerplato:ingrediente3
+ESI 3 || GET platoprincipal:ingrediente3
+ESI 3 || GET segundoplato:ingrediente3
+ESI 4 || GET bebida1
+ESI 4 || GET bebida10
+ESI 4 || GET bebida11
+ESI 4 || GET bebida12
+ESI 4 || GET bebida13
+ESI 5 || GET platoprincipal:ingrediente5
+ESI 5 || GET platoprincipal:ingrediente4
+ESI 5 || GET platoprincipal:ingrediente3
+ESI 6 || GET bebida2
+ESI 6 || GET bebida3
+ESI 6 || GET bebida4
+ESI 6 || GET bebida5
+ESI 6 || GET bebida6
+ESI 6 || GET bebida7
+ESI 6 || GET bebida8
+ESI 6 || GET bebida9
+ESI 6 || GET bebida10
+ESI 1 || GET bebida1
+ESI 1 || GET bebida10
+ESI 1 || GET bebida11
+ESI 1 || GET bebida12
+ESI 1 || GET bebida13
+ESI 1 || GET bebida1
+ESI 1 || GET bebida10
+ESI 1 || GET bebida11
+ESI 1 || GET bebida12
+ESI 1 || GET bebida13
+ESI 1 || GET bebida1
+ESI 1 || GET bebida10
+ESI 1 || GET bebida11
+ESI 1 || GET bebida12
+ESI 1 || GET bebida13
+ESI 1 || GET bebida1
+ESI 1 || GET bebida10
+ESI 1 || GET bebida11
+ESI 1 || GET bebida12
+ESI 1 || GET bebida13
+ESI 1 || GET bebida13
+ESI 1 || GET bebida14
+ESI 1 || GET bebida15
+ESI 1 || GET bebida2
+ESI 1 || GET bebida3
+ESI 1 || GET bebida4
+ESI 1 || GET bebida5
+ESI 1 || GET bebida6
+ESI 1 || GET bebida7
+ESI 1 || GET bebida8
+ESI 1 || GET bebida9
+ESI 1 || SET bebida1 cerveza
+ESI 1 || SET bebida2 fernet
+ESI 1 || SET bebida3 cocacola
+ESI 1 || SET bebida4 smirnoff
+ESI 1 || SET bebida5 whisky
+ESI 1 || SET bebida6 ron
+ESI 1 || SET bebida7 gin
+ESI 1 || SET bebida8 gancia
+ESI 1 || SET bebida9 sprite
+ESI 1 || SET bebida10 tequila
+ESI 1 || SET bebida11 cachaza
+ESI 1 || SET bebida12 caña
+ESI 1 || SET bebida13 vinoespumante
+ESI 1 || SET bebida14 speed
+ESI 1 || SET bebida15 agua
+ESI 1 || GET sony:consola:ps1
+ESI 1 || GET sony:consola:ps2
+ESI 1 || GET sony:consola:ps3
+ESI 1 || GET sony:consola:ps4
+ESI 1 || GET microsoft:consola:xbox
+ESI 1 || GET microsoft:consola:xbox360
+ESI 1 || GET microsoft:consola:xboxone
+ESI 1 || GET nintendo:consola:nes
+ESI 1 || GET nintendo:consola:snes
+ESI 1 || GET nintendo:consola:nintendo64
+ESI 1 || GET nintendo:consola:gamecube
+ESI 1 || GET nintendo:consola:wii
+ESI 1 || GET nintendo:consola:wiiu
+ESI 1 || GET nintendo:consola:switch
+ESI 1 || SET nintendo:consola:nes Mario
+ESI 1 || SET nintendo:consola:snes SuperMario
+ESI 1 || SET nintendo:consola:nintendo64 Mario64
+ESI 1 || SET nintendo:consola:gamecube Mario
+ESI 1 || SET nintendo:consola:wii MarioGalaxy
+ESI 1 || SET nintendo:consola:wiiu RIP
+ESI 1 || SET nintendo:consola:switch MarioOddysey
+ESI 1 || SET sony:consola:ps1 FinalFantasy
+ESI 1 || SET sony:consola:ps2 GodOfWar
+ESI 1 || SET sony:consola:ps3 TLOU
+ESI 1 || SET sony:consola:ps4 Bloodborne
+ESI 1 || SET microsoft:consola:xbox Halo
+ESI 1 || SET microsoft:consola:xbox360 Halo
+ESI 1 || SET microsoft:consola:xboxone Halo
+ESI 2 || GET sony:consola:ps1
+ESI 2 || GET sony:consola:ps2
+ESI 2 || GET sony:consola:ps3
+ESI 2 || GET sony:consola:ps4
+ESI 2 || GET microsoft:consola:xbox
+ESI 2 || GET microsoft:consola:xbox360
+ESI 2 || GET microsoft:consola:xboxone
+ESI 2 || GET nintendo:consola:nes
+ESI 2 || GET nintendo:consola:snes
+ESI 2 || GET nintendo:consola:nintendo64
+ESI 2 || GET nintendo:consola:gamecube
+ESI 2 || GET nintendo:consola:wii
+ESI 2 || GET nintendo:consola:wiiu
+ESI 2 || GET nintendo:consola:switch
+ESI 2 || SET nintendo:consola:nes Mario
+ESI 2 || SET nintendo:consola:snes SuperMario
+ESI 2 || SET nintendo:consola:nintendo64 Mario64
+ESI 2 || SET nintendo:consola:gamecube FinalFantasyTactics
+ESI 2 || SET nintendo:consola:wii MarioGalaxy
+ESI 2 || SET nintendo:consola:wii MarioGalaxy2
+ESI 2 || SET nintendo:consola:wiiu RIP
+ESI 2 || SET nintendo:consola:nintendo64 MarioKart
+ESI 2 || SET sony:consola:ps1 FF7
+ESI 2 || SET nintendo:consola:nintendo64 PkmnSnap
+ESI 2 || SET sony:consola:ps2 GodOfWar
+ESI 2 || SET sony:consola:ps1 FF8
+ESI 2 || SET sony:consola:ps3 TLOU
+ESI 2 || SET sony:consola:ps2 GodOfWar2
+ESI 2 || SET sony:consola:ps4 Bloodborne
+ESI 2 || SET sony:consola:ps3 GodOfWar3
+ESI 2 || SET microsoft:consola:xbox Halo
+ESI 2 || SET microsoft:consola:xbox360 Halo
+ESI 2 || SET microsoft:consola:xboxone Halo
+ESI 2 || SET nintendo:consola:switch ZeldaBOTW
+ESI 3 || GET primerplato:ingrediente1
+ESI 3 || GET platoprincipal:ingrediente1
+ESI 3 || GET segundoplato:ingrediente1
+ESI 3 || GET postre:ingrediente1
+ESI 3 || GET primerplato:ingrediente2
+ESI 3 || GET platoprincipal:ingrediente2
+ESI 3 || GET segundoplato:ingrediente2
+ESI 3 || GET postre:ingrediente2
+ESI 3 || GET primerplato:ingrediente3
+ESI 3 || GET platoprincipal:ingrediente3
+ESI 3 || GET segundoplato:ingrediente3
+ESI 4 || GET bebida1
+ESI 4 || GET bebida10
+ESI 4 || GET bebida11
+ESI 4 || GET bebida12
+ESI 4 || GET bebida13
+ESI 5 || GET platoprincipal:ingrediente5
+ESI 5 || GET platoprincipal:ingrediente4
+ESI 5 || GET platoprincipal:ingrediente3
+ESI 6 || GET bebida2
+ESI 6 || GET bebida3
+ESI 6 || GET bebida4
+ESI 6 || GET bebida5
+ESI 6 || GET bebida6
+ESI 6 || GET bebida7
+ESI 6 || GET bebida8
+ESI 6 || GET bebida9
+ESI 6 || GET bebida10
+ESI 4 || GET bebida13
+ESI 4 || GET bebida14
+ESI 4 || GET bebida15
+ESI 4 || GET bebida2
+ESI 3 || GET segundoplato:ingrediente3
+ESI 3 || GET postre:ingrediente3
+ESI 3 || GET primerplato:ingrediente4
+ESI 3 || GET platoprincipal:ingrediente4
+ESI 1 || GET sony:consola:ps1
+ESI 1 || GET sony:consola:ps2
+ESI 1 || GET sony:consola:ps3
+ESI 1 || GET sony:consola:ps4
+ESI 1 || GET microsoft:consola:xbox
+ESI 1 || GET microsoft:consola:xbox360
+ESI 1 || GET microsoft:consola:xboxone
+ESI 1 || GET nintendo:consola:nes
+ESI 1 || GET nintendo:consola:snes
+ESI 1 || GET nintendo:consola:nintendo64
+ESI 1 || GET nintendo:consola:gamecube
+ESI 1 || GET nintendo:consola:wii
+ESI 1 || GET nintendo:consola:wiiu
+ESI 1 || GET nintendo:consola:switch
+ESI 1 || SET nintendo:consola:nes Mario
+ESI 1 || SET nintendo:consola:snes SuperMario
+ESI 1 || SET nintendo:consola:nintendo64 Mario64
+ESI 1 || SET nintendo:consola:gamecube Mario
+ESI 1 || SET nintendo:consola:wii MarioGalaxy
+ESI 1 || SET nintendo:consola:wiiu RIP
+ESI 1 || SET nintendo:consola:switch MarioOddysey
+ESI 1 || SET sony:consola:ps1 FinalFantasy
+ESI 1 || SET sony:consola:ps2 GodOfWar
+ESI 1 || SET sony:consola:ps3 TLOU
+ESI 1 || SET sony:consola:ps4 Bloodborne
+ESI 1 || SET microsoft:consola:xbox Halo
+ESI 1 || SET microsoft:consola:xbox360 Halo
+ESI 1 || SET microsoft:consola:xboxone Halo
+ESI 2 || GET sony:consola:ps1
+ESI 2 || GET sony:consola:ps2
+ESI 2 || GET sony:consola:ps3
+ESI 2 || GET sony:consola:ps4
+ESI 2 || GET microsoft:consola:xbox
+ESI 2 || GET microsoft:consola:xbox360
+ESI 2 || GET microsoft:consola:xboxone
+ESI 2 || GET nintendo:consola:nes
+ESI 2 || GET nintendo:consola:snes
+ESI 2 || GET nintendo:consola:nintendo64
+ESI 2 || GET nintendo:consola:gamecube
+ESI 2 || GET nintendo:consola:wii
+ESI 2 || GET nintendo:consola:wiiu
+ESI 2 || GET nintendo:consola:switch
+ESI 2 || SET nintendo:consola:nes Mario
+ESI 2 || SET nintendo:consola:snes SuperMario
+ESI 2 || SET nintendo:consola:nintendo64 Mario64
+ESI 2 || SET nintendo:consola:gamecube FinalFantasyTactics
+ESI 2 || SET nintendo:consola:wii MarioGalaxy
+ESI 2 || SET nintendo:consola:wii MarioGalaxy2
+ESI 2 || SET nintendo:consola:wiiu RIP
+ESI 2 || SET nintendo:consola:nintendo64 MarioKart
+ESI 2 || SET sony:consola:ps1 FF7
+ESI 2 || SET nintendo:consola:nintendo64 PkmnSnap
+ESI 2 || SET sony:consola:ps2 GodOfWar
+ESI 2 || SET sony:consola:ps1 FF8
+ESI 2 || SET sony:consola:ps3 TLOU
+ESI 2 || SET sony:consola:ps2 GodOfWar2
+ESI 2 || SET sony:consola:ps4 Bloodborne
+ESI 2 || SET sony:consola:ps3 GodOfWar3
+ESI 2 || SET microsoft:consola:xbox Halo
+ESI 2 || SET microsoft:consola:xbox360 Halo
+ESI 2 || SET microsoft:consola:xboxone Halo
+ESI 2 || SET nintendo:consola:switch ZeldaBOTW
+ESI 3 || GET primerplato:ingrediente1
+ESI 3 || GET platoprincipal:ingrediente1
+ESI 3 || GET segundoplato:ingrediente1
+ESI 3 || GET postre:ingrediente1
+ESI 3 || GET primerplato:ingrediente2
+ESI 3 || GET platoprincipal:ingrediente2
+ESI 3 || GET segundoplato:ingrediente2
+ESI 3 || GET postre:ingrediente2
+ESI 3 || GET primerplato:ingrediente3
+ESI 3 || GET platoprincipal:ingrediente3
+ESI 3 || GET segundoplato:ingrediente3
+ESI 4 || GET bebida1
+ESI 4 || GET bebida10
+ESI 4 || GET bebida11
+ESI 4 || GET bebida12
+ESI 4 || GET bebida13
+ESI 5 || GET platoprincipal:ingrediente5
+ESI 5 || GET platoprincipal:ingrediente4
+ESI 5 || GET platoprincipal:ingrediente3
+ESI 6 || GET bebida2
+ESI 6 || GET bebida3
+ESI 6 || GET bebida4
+ESI 6 || GET bebida5
+ESI 6 || GET bebida6
+ESI 6 || GET bebida7
+ESI 6 || GET bebida8
+ESI 6 || GET bebida9
+ESI 6 || GET bebida10
+ESI 4 || GET bebida13
+ESI 4 || GET bebida14
+ESI 4 || GET bebida15
+ESI 4 || GET bebida2
+ESI 3 || GET segundoplato:ingrediente3
+ESI 3 || GET postre:ingrediente3
+ESI 3 || GET primerplato:ingrediente4
+ESI 3 || GET platoprincipal:ingrediente4
+ESI 1 || GET bebida2
+ESI 1 || GET bebida3
+ESI 1 || GET bebida4
+ESI 1 || GET bebida5
+ESI 1 || GET bebida6
+ESI 1 || GET bebida7
+ESI 1 || GET bebida8
+ESI 1 || GET bebida9
+ESI 1 || GET bebida10
+ESI 1 || GET bebida11
+ESI 1 || GET bebida12
+ESI 1 || GET bebida13
+ESI 2 || GET bebida2
+ESI 2 || GET bebida2
+ESI 2 || GET bebida3
+ESI 1 || GET bebida13
+ESI 1 || GET bebida14
+ESI 1 || GET bebida15
+ESI 1 || GET bebida1
+ESI 1 || SET bebida1 cerveza
+ESI 1 || SET bebida2 fernet
+ESI 1 || GET bebida2
+ESI 1 || GET bebida3
+ESI 1 || GET bebida4
+ESI 1 || GET bebida5
+ESI 1 || GET bebida6
+ESI 1 || GET bebida7
+ESI 1 || GET bebida8
+ESI 1 || GET bebida9
+ESI 1 || GET bebida10
+ESI 1 || GET bebida11
+ESI 1 || GET bebida12
+ESI 1 || GET bebida13
+ESI 2 || GET bebida2
+ESI 2 || GET bebida2
+ESI 2 || GET bebida3
+ESI 1 || GET bebida13
+ESI 1 || GET bebida14
+ESI 1 || GET bebida15
+ESI 1 || GET bebida1
+ESI 1 || SET bebida1 cerveza
+ESI 1 || SET bebida2 fernet
