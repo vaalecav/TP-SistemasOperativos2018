@@ -406,7 +406,7 @@ void manejarDesbloquearClaveManual(int socketPlanificador, int largoMensaje){
 	if ((instanciaVoid = list_find_with_param(listaInstancias, (void*) claveDesbloquear, buscarInstanciaConClave)) != NULL){
 		
 		// Busco claves del esi en la instancia
-		if ((claveVoid = list_find_with_param(((Instancia*) instanciaVoid)->claves, (void*) nombreEsi, buscarClaveEnListaDeClaves)) != NULL){
+		if ((claveVoid = list_find_with_param(((Instancia*) instanciaVoid)->claves, (void*) claveDesbloquear, buscarClaveEnListaDeClaves)) != NULL){
 			// Desbloqueo clave del esi
 			clave = (Clave*) claveVoid;
 			clave->bloqueado = 0;
