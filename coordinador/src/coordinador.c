@@ -373,6 +373,9 @@ void manejarBloquearClaveManual(int socketPlanificador, int largoMensaje) {
 	// Recibo las claves que tengo que bloquear
 	recibirMensaje(socketPlanificador, largoMensaje, &todasLasClaves);
 	
+	// Logueo la recepción
+	log_trace(logCoordinador, "Se recibieron las claves <%s> para bloquear", todasLasClaves);
+	
 	// Espero hasta que llegue una instancia
 	while(llegoUnaInstancia == 0);
 
@@ -407,7 +410,6 @@ void consolaPlanificador(void* socketPlanificadorVoid){
 				break;
 
 			case BLOQUEAR_CLAVE_MANUAL:
-				log_trace(logCoordinador, "Se recibieron claves para bloquear");
 				manejarBloquearClaveManual(socketPlanificador, header->largo);
 		}
 		free(header);
