@@ -292,6 +292,10 @@ int desbloquearClave(char* clave) {
 		claveParaDesbloquear = (CLAVE*) claveParaDesbloquearVoid;
 		esiEjecutar = list_remove(claveParaDesbloquear->listaEsi, 0);
 
+		// Le aviso al coordinador que libere la clave.
+		enviarHeader(socketCoordinador, claveParaDesbloquear->clave, DESBLOQUEAR_CLAVE_MANUAL);
+		enviarMensaje(socketCoordinador, claveParaDesbloquear->clave);
+
 		// Si hay un esi bloqueado por la clave, lo saco de la lista de bloqueados y lo paso a ready
 		if (esiEjecutar != NULL) {
 			esiBloqueada = list_remove_by_condition_with_param(colaBloqueados,
