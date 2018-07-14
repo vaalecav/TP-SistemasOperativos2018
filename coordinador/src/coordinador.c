@@ -359,6 +359,7 @@ void manejarComandoKill(int socketPlanificador, int largoMensaje){
 			clave = (Clave*) claveVoid;
 			// Desbloqueo clave del esi
 			clave->bloqueado = 0;
+			free(clave->nombreEsi);
 		}
 	}
 	pthread_mutex_unlock(&mutexListaInstancias);
@@ -391,6 +392,32 @@ void manejarBloquearClaveManual(int socketPlanificador, int largoMensaje) {
 	}
 }
 
+void manejarDesbloquearClaveManual(int socketPlanificador, int largoMensaje){
+	void* instanciaVoid;
+	void* claveVoid;
+	Clave* clave;
+	char* claveDesbloquear = malloc(largoMensaje +1);
+	
+	// Recibo la clave que tengo que desbloquear
+	recibirMensaje(socketPlanificador, largoMensaje, &claveDesbloquear);
+	
+	// Busco instancias con claves del esi
+	pthread_mutex_lock(&mutexListaInstancias);
+	if ((instanciaVoid = list_find_with_param(listaInstancias, (void*) claveDesbloquear, buscarInstanciaConClave)) != NULL){
+		
+		// Busco claves del esi en la instancia
+		if ((claveVoid = list_find_with_param(((Instancia*) instanciaVoid)->claves, (void*) nombreEsi, buscarClaveEnListaDeClaves)) != NULL){
+			// Desbloqueo clave del esi
+			clave = (Clave*) claveVoid;
+			clave->bloqueado = 0;
+			free(clave->nombreEsi);
+		}
+	}
+	pthread_mutex_unlock(&mutexListaInstancias);
+
+	free(claveDesbloquear);
+}
+
 void consolaPlanificador(void* socketPlanificadorVoid){
 	int socketPlanificador = *(int*) socketPlanificadorVoid;
 	ContentHeader * header;
@@ -411,6 +438,11 @@ void consolaPlanificador(void* socketPlanificadorVoid){
 
 			case BLOQUEAR_CLAVE_MANUAL:
 				manejarBloquearClaveManual(socketPlanificador, header->largo);
+				break;
+
+			case DESBLOQUEAR_CLAVE_MANUAL:
+				manejarDesbloquearClaveManual(socketPlanificador, header->largo);
+				break;
 		}
 		free(header);
 	}
