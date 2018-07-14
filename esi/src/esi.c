@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
 	//char* path = argv[1];
 
 	// Para probar en Eclipse
-	 char* path = "/home/utnso/tp-2018-1c-Los-Simuladores/esi/pruebas/ESI_1";
+	 char* path = "/home/utnso/tp-2018-1c-Los-Simuladores/entrega_final_esis/TestFinales/ESI_Bar2";
 	 argc = 2;
 
 	// Leo el Archivo de Configuracion

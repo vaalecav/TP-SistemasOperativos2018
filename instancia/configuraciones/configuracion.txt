@@ -3,7 +3,7 @@ IP_COORDINADOR=127.0.0.1
 PUERTO_COORDINADOR=8000
 #
 #Informacion
-NOMBRE=Inst3
+NOMBRE=Inst1
 #
 #Algoritmo de remplazo
 # 	CIRC 	- Circular
@@ -12,7 +12,7 @@ NOMBRE=Inst3
 ALG_REMP=CIRC
 #
 #Punto de montaje (donde se guardan las entradas)
-PUNTO_MONTAJE=/home/utnso/inst_3
+PUNTO_MONTAJE=/home/utnso/inst_1
 #
 #Dump
-INTERVALO_DUMP=50
+INTERVALO_DUMP=10
