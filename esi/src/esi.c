@@ -57,8 +57,8 @@ int main(int argc, char **argv) {
 	char* path = argv[1];
 
 	// Para probar en Eclipse
-	// char* path = "/home/utnso/tp-2018-1c-Los-Simuladores/entrega_final_esis/TestFinales/ESI_Bar2";
-	// argc = 2;
+	//char* path = "/home/utnso/tp-2018-1c-Los-Simuladores/entrega_final_esis/TestFinales/ESI_Largo";
+	//argc = 2;
 
 	// Leo el Archivo de Configuracion
 	configuracion = config_create(ARCHIVO_CONFIGURACION);
@@ -134,6 +134,7 @@ void parsearScript(char* path, int idEsi, int maxFilas) {
 	nombre = malloc(4 + largoId + 1);
 	sprintf(nombre, "ESI %d", idEsi);
 	nombre[4 + largoId] = '\0';
+
 
 	// Valido que el archivo exista
 	if ((fp = fopen(path, "r")) == NULL) {
@@ -215,7 +216,7 @@ void parsearScript(char* path, int idEsi, int maxFilas) {
 					// Le mando el nombre
 					enviarHeader(socketCoordinador, nombre, ESI);
 					enviarMensaje(socketCoordinador, nombre);
-					free(nombre);
+
 
 					// Le mando la sentencia
 					enviarHeader(socketCoordinador, mensajeCoordinador, ESI);
@@ -269,6 +270,7 @@ void parsearScript(char* path, int idEsi, int maxFilas) {
 		}
 		free(headerPlanificador);
 	}
+	free(nombre);
 	fclose(fp);
 	if (line)
 		free(line);
