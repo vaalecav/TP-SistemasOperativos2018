@@ -43,6 +43,8 @@ void loguearInstancia() {
 	// Logueo la tabla de entradas
 	log_info(logInstancia, "La tabla de entradas quedó: %s", entradasUsadas);
 	list_iterate(estructuraAdministrativa.entradas, loguearEntrada);
+
+	free(entradasUsadas);
 }
 
 void liberarMemoria(){
@@ -380,6 +382,7 @@ int storeClave(char* clave) {
 		log_error(logInstancia, "No se puede acceder al archivo de la clave para hacer store del valor");
 	}
 
+	free(nombreArchivo);
 	return INSTANCIA_SENTENCIA_OK_STORE;
 }
 

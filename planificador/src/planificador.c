@@ -118,6 +118,10 @@ void manejoAlgoritmos() {
 					realizarEstimaciones();
 					list_sort(colaReady, menorCantidadDeLineas);
 				}
+				if (strcmp(algoritmo, "SJF-CD") == 0) {
+					realizarEstimaciones();
+					list_sort(colaReady, menorCantidadDeLineas);
+				}
 				if (strcmp(algoritmo, "HRRN") == 0) {
 					realizarRatios();
 					list_sort(colaReady, mayorRatio);
@@ -159,7 +163,7 @@ void manejoAlgoritmos() {
 
 							claveAux = list_find_with_param(listaClaves,
 									(void*) clave, chequearClave);
-							list_add(claveAux->listaEsi, (void*) esi->id);
+							list_add(claveAux->listaEsi, (void*) &esi->id);
 
 							list_add(colaBloqueados, (void*) esi);
 							free(clave);
@@ -196,6 +200,7 @@ void manejoAlgoritmos() {
 							clavesiNuevo->esi = esi->id;
 
 							list_add(listaClavesi, (void*) clavesiNuevo);
+							free(clave);
 
 							switch (esi->lineas) {
 							case 0: // TERMINO EL ESI //
@@ -223,7 +228,7 @@ void manejoAlgoritmos() {
 							void* clavesiSacarVoid;
 							clavesiSacarVoid =
 									list_remove_by_condition_with_param(
-											listaClavesi, (void*) esi->id,
+											listaClavesi, (void*) &esi->id,
 											removerPorId);
 							clavesiSacar = (CLAVESI*) clavesiSacarVoid;
 							free(clavesiSacar->clave);
@@ -290,9 +295,16 @@ void manejoAlgoritmos() {
 
 						if (strcmp(algoritmo, "SJF-CD") == 0) {
 							if (flagFin == 0) {
-								esi->necesitaCalcular = 1;
-								list_add(colaReady, (void*) esi);
-								flagFin = 1;
+								realizarEstimaciones();
+								list_sort(colaReady, menorCantidadDeLineas);
+								void* mejorEsiVoid = list_get(colaReady, 0);
+								DATA* mejorEsi = (DATA*) mejorEsiVoid;
+								float estimacionCalculada = esi->estimacion - esi->rafaga;
+								if(mejorEsi->estimacion < estimacionCalculada){
+									flagFin = 1;
+									esi->necesitaCalcular = 1;
+									list_add(colaReady, (void*) esi);
+								}
 							}
 						}
 
@@ -306,16 +318,25 @@ void manejoAlgoritmos() {
 }
 
 void aumentarEsperaDeEsi() {
-	colaReady = list_map(colaReady, aumentarEspera);
+	t_list* list_aux;
+	list_aux = list_map(colaReady, aumentarEspera);
+	list_destroy(colaReady);
+	colaReady = list_aux;
 }
 
 void realizarRatios() {
+	t_list* list_aux;
 	realizarEstimaciones();
-	colaReady = list_map(colaReady, calcularRatio);
+	list_aux = list_map(colaReady, calcularRatio);
+	list_destroy(colaReady);
+	colaReady = list_aux;
 }
 
 void realizarEstimaciones() {
-	colaReady = list_map(colaReady, calcularEstimacion);
+	t_list* list_aux;
+	list_aux = list_map(colaReady, calcularEstimacion);
+	list_destroy(colaReady);
+	colaReady = list_aux;
 }
 
 void* calcularRatio(void* esiCalcularRatio) {
@@ -349,21 +370,21 @@ int desbloquearClave(char* clave) {
 	void * esiEjecutar;
 	DATA * esiBloqueada;
 
-	// Busco la clave en la lista
+// Busco la clave en la lista
 	if ((claveParaDesbloquearVoid = list_find_with_param(listaClaves,
 			(void*) clave, chequearClave)) != NULL) {
 
-		// Agarro el primer ESI que exista para ejecutar
 		claveParaDesbloquear = (CLAVE*) claveParaDesbloquearVoid;
-		esiEjecutar = list_remove(claveParaDesbloquear->listaEsi, 0);
-
 		// Le aviso al coordinador que libere la clave.
 		enviarHeader(socketCoordinador, claveParaDesbloquear->clave,
 				DESBLOQUEAR_CLAVE_MANUAL);
 		enviarMensaje(socketCoordinador, claveParaDesbloquear->clave);
 
-		// Si hay un esi bloqueado por la clave, lo saco de la lista de bloqueados y lo paso a ready
-		if (esiEjecutar != NULL) {
+		if (!list_is_empty(claveParaDesbloquear->listaEsi)) {
+			// Agarro el primer ESI que exista para ejecutar
+			esiEjecutar = list_remove(claveParaDesbloquear->listaEsi, 0);
+
+			// Si hay un esi bloqueado por la clave, lo saco de la lista de bloqueados y lo paso a ready
 			esiBloqueada = list_remove_by_condition_with_param(colaBloqueados,
 					esiEjecutar, buscarEnBloqueados);
 			esiBloqueada->necesitaCalcular = 1;
@@ -385,18 +406,18 @@ int bloquearClaveESI(char* parametros, int nada) {
 	DATA * esiBloquear;
 	CLAVE * claveAux;
 
-	// SEPARO PARAMETROS //
+// SEPARO PARAMETROS //
 	char* search = " ";
 	char* clave = strtok(parametros, search);
 	int esi = atoi(strtok(NULL, search));
 
-	// Me fijo si existe el ESI en ready //
-	if ((esiBloquearVoid = list_find_with_param(colaReady, (void*) esi,
+// Me fijo si existe el ESI en ready //
+	if ((esiBloquearVoid = list_find_with_param(colaReady, (void*) &esi,
 			buscarEnBloqueados)) != NULL) {
 
 		// Existe el ESI en ready, procedo //
 		esiBloquearVoid = list_remove_by_condition_with_param(colaReady,
-				(void*) esi, buscarEnBloqueados);
+				(void*) &esi, buscarEnBloqueados);
 
 		esiBloquear = (DATA *) esiBloquearVoid;
 
@@ -405,7 +426,7 @@ int bloquearClaveESI(char* parametros, int nada) {
 				(void*) clave, chequearClave)) != NULL) {
 			claveParaBloquear = (CLAVE *) claveParaBloquearVoid;
 			// Existe la clave, procedo //
-			list_add(claveParaBloquear->listaEsi, (void*) esiBloquear->id);
+			list_add(claveParaBloquear->listaEsi, (void*) &esiBloquear->id);
 			list_add(colaBloqueados, (void*) esiBloquear);
 			printf("Se bloqueó la clave %s del ESI con ID %d\n", clave, esi);
 			return 1;
@@ -419,7 +440,7 @@ int bloquearClaveESI(char* parametros, int nada) {
 
 			claveAux = list_find_with_param(listaClaves, (void*) clave,
 					chequearClave);
-			list_add(claveAux->listaEsi, (void*) esi);
+			list_add(claveAux->listaEsi, (void*) &esi);
 
 			list_add(colaBloqueados, (void*) esiBloquear);
 			printf("Se creo la clave: %s\n", clave);
@@ -449,14 +470,16 @@ bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
 	DATA * esi = (DATA*) esiVoid;
-	int id = (int*) idVoid;
+//TODO BORRAR '
+	int id = *(int*) idVoid;
+
 // 													ANTES COMO: int id = (int*) idVoid;
 	return esi->id == id;
 }
 
 int removerPorId(void* clavesiVoid, void* idVoid) {
 	CLAVESI * clavesi = (CLAVESI*) clavesiVoid;
-	int id = (int*) idVoid;
+	int id = *(int*) idVoid;
 // 													ANTES COMO: int id = (int*) idVoid;
 	return clavesi->esi == id;
 }
@@ -470,7 +493,7 @@ int removerPorClave(void* clavesiVoid, void* claveVoid) {
 
 int buscarPorSocket(void* esiVoid, void* idVoid) {
 	DATA * esi = (DATA*) esiVoid;
-	int id = (int*) idVoid;
+	int id = *(int*) idVoid;
 // 													ANTES COMO: int id = (int*) idVoid;
 	return esi->socket == id;
 }
@@ -696,7 +719,7 @@ void imprimirEnPantallaClavesi(void* clavesiVoid) {
 }
 
 void imprimirEnPantallaClavesAux(void* idVoid) {
-	int id = (int*) idVoid;
+	int id = *(int*) idVoid;
 	printf("ESI ID: %d\n", id);
 }
 
@@ -706,22 +729,22 @@ void moveToAbortados(int socketId) {
 	int largoId;
 	char* nombre;
 	pthread_mutex_lock(&mutexTerminarEsi);
-	if ((esiVoid = list_find_with_param(colaReady, (void*) socketId,
+	if ((esiVoid = list_find_with_param(colaReady, (void*) &socketId,
 			buscarPorSocket)) != NULL) {
 		esiVoid = list_remove_by_condition_with_param(colaReady,
-				(void*) socketId, buscarPorSocket);
+				(void*) &socketId, buscarPorSocket);
 		esiAMatar = (DATA*) esiVoid;
 		list_add(colaAbortados, esiVoid);
 	} else {
-		if ((esiVoid = list_find_with_param(colaBloqueados, (void*) socketId,
+		if ((esiVoid = list_find_with_param(colaBloqueados, (void*) &socketId,
 				buscarPorSocket)) != NULL) {
 			esiVoid = list_remove_by_condition_with_param(colaBloqueados,
-					(void*) socketId, buscarPorSocket);
+					(void*) &socketId, buscarPorSocket);
 			esiAMatar = (DATA*) esiVoid;
 			list_add(colaAbortados, esiVoid);
 		} else {
 			esiVoid = list_remove_by_condition_with_param(colaTerminados,
-					(void*) socketId, buscarPorSocket);
+					(void*) &socketId, buscarPorSocket);
 			esiAMatar = (DATA*) esiVoid;
 			esiAMatar->socket = 0;
 			list_add(colaTerminados, (void*) esiAMatar);
@@ -729,7 +752,7 @@ void moveToAbortados(int socketId) {
 	}
 
 	while (list_remove_by_condition_with_param(listaClavesi,
-			(void*) esiAMatar->id, removerPorId) != NULL)
+			(void*) &esiAMatar->id, removerPorId) != NULL)
 		;
 
 	largoId = floor(log10(abs(esiAMatar->id))) + 1;
@@ -749,7 +772,7 @@ void matarEsi(int esi) {
 	DATA* esiMatar;
 	int largoId;
 	char* nombre;
-	if ((esiVoid = list_find_with_param(colaReady, (void*) esi,
+	if ((esiVoid = list_find_with_param(colaReady, (void*) &esi,
 			buscarEnBloqueados)) != NULL) {
 
 		// Existe el ESI en ready, procedo //
@@ -774,7 +797,7 @@ void matarEsi(int esi) {
 		printf("Se mato al ESI %d.\n", esi);
 		free(nombre);
 	} else {
-		if ((esiVoid = list_find_with_param(colaBloqueados, (void*) esi,
+		if ((esiVoid = list_find_with_param(colaBloqueados, (void*) &esi,
 				buscarEnBloqueados)) != NULL) {
 
 			// Existe el ESI en ready, procedo //
@@ -855,19 +878,19 @@ void hacerStatus(char *clave) {
 }
 
 int buscarEsiEnClave(void* idVoid, void* idBuscadoVoid) {
-	int id = (int*) idVoid;
-	int idBuscado = (int*) idBuscadoVoid;
+	int id = *(int*) idVoid;
+	int idBuscado = *(int*) idBuscadoVoid;
 	return id == idBuscado;
 }
 
 void imprimirDeadlock(void* idVoid) {
-	int enDeadlock = (int*) idVoid;
+	int enDeadlock = *(int*) idVoid;
 	printf("ESI %d SE ENCUENTRA EN DEADLOCK\n", enDeadlock);
 }
 
 int buscarEnDeadlock(void* id1void, void* id2void) {
-	int id1 = (int*) id1void;
-	int id2 = (int*) id2void;
+	int id1 = *(int*) id1void;
+	int id2 = *(int*) id2void;
 	return id1 == id2;
 }
 
@@ -880,7 +903,7 @@ char* buscarNecesidad(int esiId) {
 		clave = (CLAVE*) claveVoid;
 
 		// Me fijo si la clave en mano tiene el esi pedido //
-		if (list_find_with_param(clave->listaEsi, (void*) esiId,
+		if (list_find_with_param(clave->listaEsi, (void*) &esiId,
 				buscarEsiEnClave) != NULL) {
 			//Si lo encuentro salgo del for para pasar la clave.
 			break;
@@ -911,7 +934,7 @@ int deadlockRecursivo(int idEsiBloqueado) {
 
 		// Me fijo si el esi ya esta en listaDeadlock //
 		chequearEnDeadlockVoid = list_find_with_param(listaDeadlock,
-				(void*) clavesiBloqueador->esi, buscarEnDeadlock);
+				(void*) &clavesiBloqueador->esi, buscarEnDeadlock);
 		if (chequearEnDeadlockVoid != NULL) {
 			// ENCONTRE DEADLOCK! //
 			return 1;
@@ -919,10 +942,10 @@ int deadlockRecursivo(int idEsiBloqueado) {
 
 		// Me fijo si el esi esta bloqueado //
 		esiVoid = list_find_with_param(colaBloqueados,
-				(void*) clavesiBloqueador->esi, buscarEnBloqueados);
+				(void*) &clavesiBloqueador->esi, buscarEnBloqueados);
 		if (esiVoid != NULL) {
 			// El esi bloqueador tambien esta bloqueado //
-			list_add(listaDeadlock, (void*) clavesiBloqueador->esi);
+			list_add(listaDeadlock, (void*) &clavesiBloqueador->esi);
 			return deadlockRecursivo(clavesiBloqueador->esi);
 		} else {
 			return 0; // NO HAY DEADLOCK.
@@ -958,11 +981,11 @@ void deadlock() {
 
 			// Me fijo si el esi que tiene la clave tambien esta bloqueado //
 			esiVoid = list_find_with_param(colaBloqueados,
-					(void*) clavesiBloqueador->esi, buscarEnBloqueados);
+					(void*) &clavesiBloqueador->esi, buscarEnBloqueados);
 			if (esiVoid != NULL) {
 				// El esi bloqueador tambien esta bloqueado, procedo con recursividad.
-				list_add(listaDeadlock, (void*) esiBloqueado->id);
-				list_add(listaDeadlock, (void*) clavesiBloqueador->esi);
+				list_add(listaDeadlock, (void*) &esiBloqueado->id);
+				list_add(listaDeadlock, (void*) &clavesiBloqueador->esi);
 
 				if (deadlockRecursivo(clavesiBloqueador->esi)) {
 					//TODO HUBO DEADLOCK, LO IMPRIMO Y VACIO LA LISTA //
@@ -977,8 +1000,9 @@ void deadlock() {
 	}
 }
 
-void vaciarDeadlock(){
-	while(list_remove(listaDeadlock, 0) != NULL);
+void vaciarDeadlock() {
+	while (list_remove(listaDeadlock, 0) != NULL)
+		;
 }
 
 //=======================COMANDOS DE CONSOLA====================================
