@@ -94,7 +94,7 @@ void manejoAlgoritmos() {
 		for (int i = 0; clavesAux[i] != NULL; i++) {
 			CLAVE* claveCrear = malloc(sizeof(CLAVE));
 			claveCrear->clave = malloc(strlen(clavesAux[i]) + 1);
-			strcpy(claveCrear->clave,clavesAux[i]);
+			strcpy(claveCrear->clave, clavesAux[i]);
 			claveCrear->clave[strlen(clavesAux[i])] = '\0';
 			claveCrear->listaEsi = list_create();
 			list_add(listaClaves, (void*) claveCrear);
@@ -109,131 +109,129 @@ void manejoAlgoritmos() {
 		flagFin = 0;
 		if (ejecutar == 1) {
 
-			// Si es SJF, antes de ejecutar tiene que ordenar la cola de ready
-			if (strcmp(algoritmo, "SJF-SD") == 0) {
-				realizarEstimaciones();
-				list_sort(colaReady, menorCantidadDeLineas);
-			}
-			if (strcmp(algoritmo, "HRRN") == 0) {
-				realizarRatios();
-				list_sort(colaReady, mayorRatio);
-			}
+			if (!list_is_empty(colaReady)) {
+				// Si es SJF, antes de ejecutar tiene que ordenar la cola de ready
+				if (strcmp(algoritmo, "SJF-SD") == 0) {
+					realizarEstimaciones();
+					list_sort(colaReady, menorCantidadDeLineas);
+				}
+				if (strcmp(algoritmo, "HRRN") == 0) {
+					realizarRatios();
+					list_sort(colaReady, mayorRatio);
+				}
 
-			if ((esiVoid = list_remove(colaReady, 0)) == NULL) { //TODO
-				// No hay nadie para ejecutar //
-				ejecutar = 0;
-				//puts("Se pauso la ejecucion ya que la cola de Ready esta vacia.");
-			} else {
-				esi = (DATA*) esiVoid;
-				esi->rafaga = 0;
-				while (flagFin != 1) {
-					pthread_mutex_lock(&mutexTerminarEsi);
-					// Le ordeno al ESI que ejecute //
-					enviarHeader(esi->socket, "", PLANIFICADOR);
-					CLAVE * claveAux;
+				if ((esiVoid = list_remove(colaReady, 0)) != NULL) {
+					esi = (DATA*) esiVoid;
+					esi->rafaga = 0;
+					while (flagFin != 1) {
+						pthread_mutex_lock(&mutexTerminarEsi);
+						// Le ordeno al ESI que ejecute //
+						enviarHeader(esi->socket, "", PLANIFICADOR);
+						CLAVE * claveAux;
 
-					// Le quito la espera y la rafaga anterior //
-					esi->espera = 0;
+						// Le quito la espera y la rafaga anterior //
+						esi->espera = 0;
 
-					// Espero la respuesta //
-					header = recibirHeader(socketCoordinador);
+						// Espero la respuesta //
+						header = recibirHeader(socketCoordinador);
 
-					// Veo que tengo que hacer //
-					paraSwitchear = chequearRespuesta(header->id);
+						// Veo que tengo que hacer //
+						paraSwitchear = chequearRespuesta(header->id);
 
-					switch (paraSwitchear) {
-					case 0: // ERROR //
-						// Lo agrego a la cola de Abortados //
-						list_add(colaAbortados, (void*) esi);
-						flagFin = 1;
-						break;
-
-					case 1: // BLOQUEO //
-						// Lo agrego a la cola de Bloqueados //
-
-						clave = malloc(header->largo + 1);
-						recibirMensaje(socketCoordinador, header->largo,
-								&clave);
-						clave[header->largo] = '\0';
-
-						claveAux = list_find_with_param(listaClaves,
-								(void*) clave, chequearClave);
-						list_add(claveAux->listaEsi, (void*) esi->id);
-
-						list_add(colaBloqueados, (void*) esi);
-						free(clave);
-						flagFin = 1;
-						break;
-
-					case 2: // EXITO //
-						esi->lineas--;
-						esi->rafaga++;
-						switch (esi->lineas) {
-						case 0: // TERMINO EL ESI //
-							// Lo agrego a la cola de Terminados //
-							list_add(colaTerminados, (void*) esi);
+						switch (paraSwitchear) {
+						case 0: // ERROR //
+							// Lo agrego a la cola de Abortados //
+							list_add(colaAbortados, (void*) esi);
 							flagFin = 1;
 							break;
-						}
-						break;
 
-					case 3: // STORE EXITO //
-						clave = malloc(header->largo + 1);
-						recibirMensaje(socketCoordinador, header->largo,
-								&clave);
-						clave[header->largo] = '\0';
+						case 1: // BLOQUEO //
+							// Lo agrego a la cola de Bloqueados //
 
-						// Es un store, por lo que desbloqueo la clave
-						desbloquearClave(clave);
-						esi->lineas--;
-						esi->rafaga++;
-						switch (esi->lineas) {
-						case 0: // TERMINO EL ESI //
-							// Lo agrego a la cola de Terminados //
-							list_add(colaTerminados, (void*) esi);
+							clave = malloc(header->largo + 1);
+							recibirMensaje(socketCoordinador, header->largo,
+									&clave);
+							clave[header->largo] = '\0';
+
+							claveAux = list_find_with_param(listaClaves,
+									(void*) clave, chequearClave);
+							list_add(claveAux->listaEsi, (void*) esi->id);
+
+							list_add(colaBloqueados, (void*) esi);
+							free(clave);
 							flagFin = 1;
 							break;
-						}
-						free(clave);
-						break;
 
-					case 4:
-						clave = malloc(header->largo + 1);
-						recibirMensaje(socketCoordinador, header->largo,
-								&clave);
-						clave[header->largo] = '\0';
-						claveAux = (CLAVE*) malloc(sizeof(CLAVE));
-						claveAux->clave = malloc(header->largo + 1);
-						strcpy(claveAux->clave, clave);
-						claveAux->clave[header->largo] = '\0';
-						claveAux->listaEsi = list_create();
-						list_add(listaClaves, (void*) claveAux);
-						esi->lineas--;
-						esi->rafaga++;
-						switch (esi->lineas) {
-						case 0: // TERMINO EL ESI //
-							// Lo agrego a la cola de Terminados //
-							list_add(colaTerminados, (void*) esi);
-							flagFin = 1;
+						case 2: // EXITO //
+							esi->lineas--;
+							esi->rafaga++;
+							switch (esi->lineas) {
+							case 0: // TERMINO EL ESI //
+								// Lo agrego a la cola de Terminados //
+								list_add(colaTerminados, (void*) esi);
+								flagFin = 1;
+								break;
+							}
+							break;
+
+						case 3: // STORE EXITO //
+							clave = malloc(header->largo + 1);
+							recibirMensaje(socketCoordinador, header->largo,
+									&clave);
+							clave[header->largo] = '\0';
+
+							// Es un store, por lo que desbloqueo la clave
+							desbloquearClave(clave);
+							esi->lineas--;
+							esi->rafaga++;
+							switch (esi->lineas) {
+							case 0: // TERMINO EL ESI //
+								// Lo agrego a la cola de Terminados //
+								list_add(colaTerminados, (void*) esi);
+								flagFin = 1;
+								break;
+							}
+							free(clave);
+							break;
+
+						case 4:
+							clave = malloc(header->largo + 1);
+							recibirMensaje(socketCoordinador, header->largo,
+									&clave);
+							clave[header->largo] = '\0';
+							claveAux = (CLAVE*) malloc(sizeof(CLAVE));
+							claveAux->clave = malloc(header->largo + 1);
+							strcpy(claveAux->clave, clave);
+							claveAux->clave[header->largo] = '\0';
+							claveAux->listaEsi = list_create();
+							list_add(listaClaves, (void*) claveAux);
+							esi->lineas--;
+							esi->rafaga++;
+							switch (esi->lineas) {
+							case 0: // TERMINO EL ESI //
+								// Lo agrego a la cola de Terminados //
+								list_add(colaTerminados, (void*) esi);
+								flagFin = 1;
+								break;
+							}
+							free(clave);
 							break;
 						}
-						free(clave);
-						break;
+
+						free(header);
+
+						aumentarEsperaDeEsi();
+
+						if (strcmp(algoritmo, "SJF-CD") == 0) {
+							if (flagFin == 0) {
+								esi->necesitaCalcular = 1;
+								list_add(colaReady, (void*) esi);
+								flagFin = 1;
+							}
+						}
+
+						pthread_mutex_unlock(&mutexTerminarEsi);
 					}
-
-					free(header);
-
-					aumentarEsperaDeEsi();
-
-					if (strcmp(algoritmo, "SJF-CD") == 0) {
-						if (flagFin == 0) {
-							esi->necesitaCalcular = 1;
-							list_add(colaReady, (void*) esi);
-							flagFin = 1;
-						}
-					}
-
-					pthread_mutex_unlock(&mutexTerminarEsi);
 				}
 			}
 		}
@@ -293,7 +291,8 @@ int desbloquearClave(char* clave) {
 		esiEjecutar = list_remove(claveParaDesbloquear->listaEsi, 0);
 
 		// Le aviso al coordinador que libere la clave.
-		enviarHeader(socketCoordinador, claveParaDesbloquear->clave, DESBLOQUEAR_CLAVE_MANUAL);
+		enviarHeader(socketCoordinador, claveParaDesbloquear->clave,
+				DESBLOQUEAR_CLAVE_MANUAL);
 		enviarMensaje(socketCoordinador, claveParaDesbloquear->clave);
 
 		// Si hay un esi bloqueado por la clave, lo saco de la lista de bloqueados y lo paso a ready
