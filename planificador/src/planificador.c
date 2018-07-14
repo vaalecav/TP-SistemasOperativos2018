@@ -729,8 +729,6 @@ void moveToAbortados(int socketId) {
 	sprintf(nombre, "ESI %d", esiAMatar->id);
 	nombre[4 + largoId] = '\0';
 
-	printf("al coordinador le mando %s", nombre);
-
 	enviarHeader(socketCoordinador, nombre, COMANDO_KILL);
 	enviarMensaje(socketCoordinador, nombre);
 
