@@ -86,37 +86,42 @@ void manejoAlgoritmos() {
 	// CLAVES BLOQUEADAS DESDE EL PRINCIPIO //
 	char* clavesBloqueadas = config_get_string_value(configuracion,
 			"CLAVES_BLOQUEADAS");
-	enviarHeader(socketCoordinador, clavesBloqueadas, BLOQUEAR_CLAVE_MANUAL);
-	enviarMensaje(socketCoordinador, clavesBloqueadas);
 
+	if (clavesBloqueadas == NULL) {
+	} else {
+		enviarHeader(socketCoordinador, clavesBloqueadas,
+				BLOQUEAR_CLAVE_MANUAL);
+		enviarMensaje(socketCoordinador, clavesBloqueadas);
+	}
 	while (done == 0) {
 		flagFin = 0;
 		if (ejecutar == 1) {
 
 			// Si es SJF, antes de ejecutar tiene que ordenar la cola de ready
-			if (strcmp(algoritmo, "SJF-CD") == 0
-					|| strcmp(algoritmo, "SJF-SD") == 0) {
+			if (strcmp(algoritmo, "SJF-SD") == 0) {
 				realizarEstimaciones();
 				list_sort(colaReady, menorCantidadDeLineas);
 			}
-
 			if (strcmp(algoritmo, "HRRN") == 0) {
 				realizarRatios();
 				list_sort(colaReady, mayorRatio);
 			}
 
-			if ((esiVoid = list_remove(colaReady, 0)) == NULL) {
+			if ((esiVoid = list_remove(colaReady, 0)) == NULL) { //TODO
 				// No hay nadie para ejecutar //
+				ejecutar = 0;
+				//puts("Se pauso la ejecucion ya que la cola de Ready esta vacia.");
 			} else {
+				esi = (DATA*) esiVoid;
+				esi->rafaga = 0;
 				while (flagFin != 1) {
+					pthread_mutex_lock(&mutexTerminarEsi);
 					// Le ordeno al ESI que ejecute //
-					esi = (DATA*) esiVoid;
 					enviarHeader(esi->socket, "", PLANIFICADOR);
 					CLAVE * claveAux;
 
 					// Le quito la espera y la rafaga anterior //
 					esi->espera = 0;
-					esi->rafaga = 0;
 
 					// Espero la respuesta //
 					header = recibirHeader(socketCoordinador);
@@ -168,7 +173,6 @@ void manejoAlgoritmos() {
 
 						// Es un store, por lo que desbloqueo la clave
 						desbloquearClave(clave);
-
 						esi->lineas--;
 						esi->rafaga++;
 						switch (esi->lineas) {
@@ -216,6 +220,8 @@ void manejoAlgoritmos() {
 							flagFin = 1;
 						}
 					}
+
+					pthread_mutex_unlock(&mutexTerminarEsi);
 				}
 			}
 		}
@@ -356,7 +362,7 @@ bool menorCantidadDeLineas(void* esi1Void, void* esi2Void) {
 	DATA* esi1 = (DATA*) esi1Void;
 	DATA* esi2 = (DATA*) esi2Void;
 
-	return esi1->estimacion < esi2->estimacion;
+	return esi1->estimacion <= esi2->estimacion;
 }
 
 int buscarEnBloqueados(void* esiVoid, void* idVoid) {
@@ -597,6 +603,7 @@ void moveToAbortados(int socketId) {
 	DATA* esiAMatar;
 	int largoId;
 	char* nombre;
+	pthread_mutex_lock(&mutexTerminarEsi);
 	if ((esiVoid = list_find_with_param(colaReady, (void*) socketId,
 			buscarPorSocket)) != NULL) {
 		esiVoid = list_remove_by_condition_with_param(colaReady,
@@ -618,6 +625,7 @@ void moveToAbortados(int socketId) {
 			list_add(colaTerminados, (void*) esiAMatar);
 		}
 	}
+	pthread_mutex_unlock(&mutexTerminarEsi);
 	largoId = floor(log10(abs(esiAMatar->id))) + 1;
 	nombre = malloc(4 + largoId + 1);
 	sprintf(nombre, "ESI %d", esiAMatar->id);
