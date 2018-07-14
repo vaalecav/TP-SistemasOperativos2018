@@ -680,7 +680,7 @@ void getClave(char* key, int socketPlanificador, int socketEsi, char* nombreEsi)
 // Cosas para el SET y para el STORE
 void avisarA(int socketAvisar, char* mensaje, int error) {
 	enviarHeader(socketAvisar, mensaje, error);
-	if (strlen(mensaje) > 1) {
+	if (strlen(mensaje) >= 1) {
 		enviarMensaje(socketAvisar, mensaje);
 	}
 }
