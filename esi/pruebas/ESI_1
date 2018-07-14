@@ -1,3 +1,5 @@
-GET futbol:messi
-SET futbol:messi TraemeLaCopa
-STORE futbol:messi
+GET futbol:messi1
+GET futbol:messi2
+GET futbol:messi3
+SET futbol:messi1 TraemeLaCopa
+STORE futbol:messi1

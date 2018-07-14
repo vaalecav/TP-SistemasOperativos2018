@@ -36,6 +36,7 @@ int main() {
 	colaAbortados = list_create();
 	listaClaves = list_create();
 	listaClavesi = list_create();
+	listaDeadlock = list_create();
 
 	// Inicio el hilo que maneja las Conexiones //
 	if (pthread_create(&hiloConexiones, NULL, (void *) tratarConexiones,
@@ -460,6 +461,13 @@ int removerPorId(void* clavesiVoid, void* idVoid) {
 	return clavesi->esi == id;
 }
 
+int removerPorClave(void* clavesiVoid, void* claveVoid) {
+	CLAVESI * clavesi = (CLAVESI*) clavesiVoid;
+	char* clave = (char*) claveVoid;
+// 													ANTES COMO: int id = (int*) idVoid;
+	return strcmp(clavesi->clave, clave) == 0;
+}
+
 int buscarPorSocket(void* esiVoid, void* idVoid) {
 	DATA * esi = (DATA*) esiVoid;
 	int id = (int*) idVoid;
@@ -721,8 +729,8 @@ void moveToAbortados(int socketId) {
 	}
 
 	while (list_remove_by_condition_with_param(listaClavesi,
-			(void*) esiAMatar->id, removerPorId) != NULL);
-
+			(void*) esiAMatar->id, removerPorId) != NULL)
+		;
 
 	largoId = floor(log10(abs(esiAMatar->id))) + 1;
 	nombre = malloc(4 + largoId + 1);
@@ -846,58 +854,139 @@ void hacerStatus(char *clave) {
 	}
 }
 
-/*
+int buscarEsiEnClave(void* idVoid, void* idBuscadoVoid) {
+	int id = (int*) idVoid;
+	int idBuscado = (int*) idBuscadoVoid;
+	return id == idBuscado;
+}
 
- int buscarEsiEnClave(void* idVoid, void* idBuscadoVoid) {
- int id = (int*) idVoid;
- int idBuscado = (int*) idBuscadoVoid;
- return id == idBuscado;
- }
+void imprimirDeadlock(void* idVoid) {
+	int enDeadlock = (int*) idVoid;
+	printf("ESI %d SE ENCUENTRA EN DEADLOCK\n", enDeadlock);
+}
 
- char* buscarNecesidad(int esiId) {
- void* claveVoid;
- CLAVE* clave;
- int i;
- // Voy a recorrar la lista de claves hasta encontrar el ESI indicado //
- for (i = 0; (claveVoid = list_get(listaClaves, i)) != NULL; i++) {
- clave = (CLAVE*) claveVoid;
+int buscarEnDeadlock(void* id1void, void* id2void) {
+	int id1 = (int*) id1void;
+	int id2 = (int*) id2void;
+	return id1 == id2;
+}
 
- // Me fijo si la clave en mano tiene el esi pedido //
- if (list_find_with_param(clave->listaEsi, (void*) esiId,
- buscarEsiEnClave) != NULL) {
- //Si lo encuentro salgo del for para pasar la clave.
- break;
- } else {
- //Si no lo encuentro sigo el for para encontrar la clave buscada.
- }
- }
- return clave->clave;
- }
+char* buscarNecesidad(int esiId) {
+	void* claveVoid;
+	CLAVE* clave;
+	int i;
+// Voy a recorrar la lista de claves hasta encontrar el ESI indicado //
+	for (i = 0; (claveVoid = list_get(listaClaves, i)) != NULL; i++) {
+		clave = (CLAVE*) claveVoid;
 
- void deadlock() {
- void* esiBloqueadoVoid;
- DATA* esiBloqueado;
- char* claveNecesitada;
- int i;
+		// Me fijo si la clave en mano tiene el esi pedido //
+		if (list_find_with_param(clave->listaEsi, (void*) esiId,
+				buscarEsiEnClave) != NULL) {
+			//Si lo encuentro salgo del for para pasar la clave.
+			break;
+		} else {
+			//Si no lo encuentro sigo el for para encontrar la clave buscada.
+		}
+	}
+	return clave->clave;
+}
 
- // Voy a recorrer la lista de bloqueados hasta pasar por todos los bloqueados //
- for (i = 0; (esiBloqueadoVoid = list_get(colaBloqueados, i)) != NULL; i++) {
- esiBloqueado = (DATA*) esiBloqueadoVoid;
+int deadlockRecursivo(int idEsiBloqueado) {
+	char* claveNecesitada;
+	void* clavesiBloqueadorVoid;
+	void* esiVoid;
+	CLAVESI* clavesiBloqueador;
+	void* chequearEnDeadlockVoid;
 
- // Averiguo que clave quiere ese ESI //
- claveNecesitada = buscarNecesidad(esiBloqueado->id);
+// Busco la clave que necesita el ESI bloqueado //
+	claveNecesitada = buscarNecesidad(idEsiBloqueado);
 
- // Averiguo que ESI posee actualmente esa clave //
- }
- }
+// Busco quien tiene la clave //
+	clavesiBloqueadorVoid = list_find_with_param(listaClavesi,
+			(void*) claveNecesitada, removerPorClave);
 
- //=======================COMANDOS DE CONSOLA====================================
- int cmdDeadlock() {
- deadlock();
- return 0;
- }
+// Chequeo que la clave este asignada a algun esi //
+	if (clavesiBloqueadorVoid != NULL) {
+		clavesiBloqueador = (CLAVESI*) clavesiBloqueadorVoid;
 
- */
+		// Me fijo si el esi ya esta en listaDeadlock //
+		chequearEnDeadlockVoid = list_find_with_param(listaDeadlock,
+				(void*) clavesiBloqueador->esi, buscarEnDeadlock);
+		if (chequearEnDeadlockVoid != NULL) {
+			// ENCONTRE DEADLOCK! //
+			return 1;
+		}
+
+		// Me fijo si el esi esta bloqueado //
+		esiVoid = list_find_with_param(colaBloqueados,
+				(void*) clavesiBloqueador->esi, buscarEnBloqueados);
+		if (esiVoid != NULL) {
+			// El esi bloqueador tambien esta bloqueado //
+			list_add(listaDeadlock, (void*) clavesiBloqueador->esi);
+			return deadlockRecursivo(clavesiBloqueador->esi);
+		} else {
+			return 0; // NO HAY DEADLOCK.
+		}
+	} else {
+		return 0; // NO HAY DEADLOCK.
+	}
+}
+
+void deadlock() {
+	void* esiBloqueadoVoid;
+	DATA* esiBloqueado;
+	void* clavesiBloqueadorVoid;
+	CLAVESI* clavesiBloqueador;
+	void* esiVoid;
+	char* claveNecesitada;
+	int i;
+
+// Voy a recorrer la lista de bloqueados hasta pasar por todos los bloqueados //
+	for (i = 0; (esiBloqueadoVoid = list_get(colaBloqueados, i)) != NULL; i++) {
+		esiBloqueado = (DATA*) esiBloqueadoVoid;
+
+		// Averiguo que clave quiere ese ESI //
+		claveNecesitada = buscarNecesidad(esiBloqueado->id);
+
+		// Averiguo que ESI posee actualmente esa clave //
+		clavesiBloqueadorVoid = list_find_with_param(listaClavesi,
+				(void*) claveNecesitada, removerPorClave);
+
+		// Chequeo que la clave este asignada a algun esi //
+		if (clavesiBloqueadorVoid != NULL) {
+			clavesiBloqueador = (CLAVESI*) clavesiBloqueadorVoid;
+
+			// Me fijo si el esi que tiene la clave tambien esta bloqueado //
+			esiVoid = list_find_with_param(colaBloqueados,
+					(void*) clavesiBloqueador->esi, buscarEnBloqueados);
+			if (esiVoid != NULL) {
+				// El esi bloqueador tambien esta bloqueado, procedo con recursividad.
+				list_add(listaDeadlock, (void*) esiBloqueado->id);
+				list_add(listaDeadlock, (void*) clavesiBloqueador->esi);
+
+				if (deadlockRecursivo(clavesiBloqueador->esi)) {
+					//TODO HUBO DEADLOCK, LO IMPRIMO Y VACIO LA LISTA //
+					list_iterate(listaDeadlock, imprimirDeadlock);
+					vaciarDeadlock();
+				} else {
+					//TODO NO HUBO DEADLOCK, VACIO LA LISTA //
+					vaciarDeadlock();
+				}
+			}
+		}
+	}
+}
+
+void vaciarDeadlock(){
+	while(list_remove(listaDeadlock, 0) != NULL);
+}
+
+//=======================COMANDOS DE CONSOLA====================================
+
+int cmdDeadlock() {
+	deadlock();
+	return 0;
+}
 
 int cmdDesbloquear(char* clave) {
 	if (desbloquearClave(clave))

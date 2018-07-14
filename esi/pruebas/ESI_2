@@ -1,18 +1,2 @@
-GET aventura
-SET aventura jake
-GET hora 
-SET hora finn
-GET reino
-SET reino hielo
-GET arbol
-SET arbol bmo
-GET caramelo
-SET caramelo princesa
-GET xilofon
-SET xilofon magico
-STORE aventura
-STORE hora
-STORE reino
-STORE arbol
-STORE caramelo
-STORE xilofon
+GET flauta
+SET flauta riquelme

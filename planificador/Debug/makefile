@@ -26,7 +26,7 @@ endif
 all: planificador
 
 dependents:
-	-cd /home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug && $(MAKE) all
+	-cd /home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug && $(MAKE) clean all
 
 # Tool invocations
 planificador: $(OBJS) $(USER_OBJS) /home/utnso/tp-2018-1c-Los-Simuladores/libraries/Debug/liblibraries.so

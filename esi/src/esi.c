@@ -54,11 +54,11 @@ int main(int argc, char **argv) {
 	int idEsi;
 	ContentHeader * header;
 
-	char* path = argv[1];
+	//char* path = argv[1];
 
 	// Para probar en Eclipse
-	// char* path = "/home/utnso/tp-2018-1c-Los-Simuladores/esi/pruebas/ESI_2";
-	// argc = 2;
+	 char* path = "/home/utnso/tp-2018-1c-Los-Simuladores/esi/pruebas/ESI_1";
+	 argc = 2;
 
 	// Leo el Archivo de Configuracion
 	configuracion = config_create(ARCHIVO_CONFIGURACION);

@@ -89,7 +89,7 @@ COMANDO comandos[] = { { "pausar", cmdPause, "Pausa la ejecucion de ESIs.", 0 },
 
 { "status", cmdStatus, "Conocer el estado de una clave.", 1 },
 
-//{ "deadlock","Analizar los deadlocks que existan en el sistema y a que ESI están asociados.", 0},
+{ "deadlock", cmdDeadlock, "Analizar los deadlocks que existan en el sistema y a que ESI están asociados.", 0},
 
 { "help", cmdHelp, "Imprime los comandos disponibles.", 0 },
 
@@ -108,6 +108,7 @@ t_list* colaTerminados;		// Lista enlazada de Terminados.
 t_list* colaAbortados;		// Lista enlazada de Abortados.
 t_list* listaClaves;		// Lista enladaza de Claves y sus Bloqueados.
 t_list* listaClavesi;
+t_list* listaDeadlock;
 int socketCoordinador;		// Socket del Coordinador.
 int alphaHRRN;				// Alpha para calculos del HRRN.
 pthread_mutex_t mutexTerminarEsi;
@@ -139,6 +140,7 @@ void realizarEstimaciones();
 void realizarRatios();
 int removerPorId(void* clavesiVoid, void* idVoid);
 void moveToAbortados(int socketId);
+void vaciarDeadlock();
 
 //=====================FUNCIONES DE CONSOLA=====================================
 
