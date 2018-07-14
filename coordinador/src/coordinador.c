@@ -220,9 +220,9 @@ void manejarConexion(void* socketsNecesarios) {
 
 	switch (header->id) {
 	case INSTANCIA:
-		llegoUnaInstancia = 1;
 		log_trace(logCoordinador, "Se conectó una instancia");
 		manejarInstancia(socketsConectados.socketComponente, header->largo);
+		llegoUnaInstancia = 1;
 		break;
 
 	case ESI:
@@ -381,7 +381,10 @@ void manejarBloquearClaveManual(int socketPlanificador, int largoMensaje) {
 		claves = string_split(todasLasClaves, ",");
 		for (int i = 0; claves[i] != NULL; i++) {
 			asignarClaveAInstancia(claves[i], "");
+			free(claves[i]);
 		}
+		
+		free(claves);
 	}
 }
 

@@ -1,9 +1,9 @@
 #Conexiones
-IP_COORDINADOR=127.0.0.1
+IP_COORDINADOR=192.168.0.53
 PUERTO_COORDINADOR=8000
 #
 #Informacion
-NOMBRE=Instancia1
+NOMBRE=Inst3
 #
 #Algoritmo de remplazo
 # 	CIRC 	- Circular
@@ -12,7 +12,7 @@ NOMBRE=Instancia1
 ALG_REMP=CIRC
 #
 #Punto de montaje (donde se guardan las entradas)
-PUNTO_MONTAJE=/home/utnso/tp-2018-1c-Los-Simuladores/instancia/tabla_entradas/
+PUNTO_MONTAJE=/home/utnso/inst_3
 #
 #Dump
-INTERVALO_DUMP=10
+INTERVALO_DUMP=50
