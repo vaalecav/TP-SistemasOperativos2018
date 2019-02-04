@@ -1,5 +1,9 @@
 # TRABAJO PRÁCTICO SISTEMAS OPERATIVOS 2018 
-## Repositorio del TP de Sistemas Operativos de Los Simuladores
+
+## Breve descripción del proyecto
+
+El trabajo consta de cuatro procesos base que se coordinan en conjunto para lograr la ejecución de los scripts otorgados por la cátedra.
+Los Procesos ESI son el punto de entrada al Sistema. Estos correrán un script con instrucciones a ser ejecutadas. Sú función es la de interpretar de a una las líneas de un programa a medida que el Planificador se lo indique. Para resolver las distintas sentencias del programa a ser interpretado; deberá colaborar con el Coordinador para bloquear/liberar recursos o datos. El Coordinador es el proceso encargado de distribuir los pedidos de información del Sistema y gestionar las Instancias que son los procesos encargados del almacenamiento de los datos.
 
 ### Orden para ejecutar:
 
