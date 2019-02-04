@@ -1,4 +1,4 @@
-# tp-2018-1c-Los-Simuladores
+# TRABAJO PRÁCTICO SISTEMAS OPERATIVOS 2018 
 ## Repositorio del TP de Sistemas Operativos de Los Simuladores
 
 ### Orden para ejecutar:
